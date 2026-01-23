@@ -1,0 +1,182 @@
+.addOrderForm {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  & input {
+    width: 100%;
+    padding: var(--input-padding);
+    border: var(--input-border);
+    border-radius: var(--default-radius);
+    font-size: 14px;
+    transition: all 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: var(--input-border-focus);
+      box-shadow: var(--default-box-shadow);
+    }
+  }
+}
+
+.orderFormTitle {
+  margin-bottom: var(--default-padding);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.nameInfo {
+  display: flex;
+
+  width: 100%;
+  gap: 14px;
+  justify-content: space-between;
+}
+
+.pasportInfo {
+  display: flex;
+  margin-bottom: 14px;
+  width: 100%;
+  gap: 14px;
+  justify-content: space-between;
+}
+
+.flexItem {
+  flex: 1 1 200px; /* Растягивает поле, но не дает сжиматься меньше 200px */
+  width: 100%;
+}
+
+.sectionTitle {
+  /* text-align: center; */
+  margin-bottom: 14px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.addClientSelect {
+  width: 100%;
+  margin-bottom: 14px;
+  padding: var(--input-padding);
+  border: var(--input-border);
+  border-radius: var(--default-radius);
+  font-size: 14px;
+  transition: all 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: var(--input-border-focus);
+    box-shadow: var(--default-box-shadow);
+  }
+}
+
+.dateInputs {
+  display: flex;
+  /* justify-content: space-between; */
+  gap: 14px;
+
+  margin-top: 10px;
+
+  & div {
+    width: 100%;
+  }
+}
+
+.totalAmountBlock {
+  margin-top: 20px;
+  padding: 14px;
+  background-color: #f0fdf4; /* Светло-зеленый фон (успех/деньги) */
+  border: 1px solid #bbf7d0; /* Мягкая граница */
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: fadeIn 0.3s ease-in-out; /* Плавное появление при расчете */
+
+  & span {
+    font-size: 14px;
+    color: #166534; /* Темно-зеленый текст */
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  & strong {
+    font-size: 20px;
+    color: #15803d;
+    font-weight: 700;
+  }
+}
+
+.totalAmountError {
+  background-color: red;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.btn {
+  margin: 30px 0;
+  padding: var(--button-padding);
+  background-color: var(--header-background);
+  color: var(--color-white);
+  border: 1px solid var(--btn-border-color);
+  border-radius: var(--default-radius);
+  font-size: 16px;
+  transition:
+    background-color 0.3s ease,
+    transform 0.1s ease;
+  box-shadow: var(--default-box-shadow);
+
+  &:hover {
+    background-color: var(--btn-hover-color);
+  }
+
+  &:active {
+    background-color: var(--color-white);
+    color: var(--btn-text-color-active);
+    border-color: var(--btn-hover-color);
+    transform: scale(0.97);
+  }
+}
+
+/*  */
+
+.printWrapper {
+  /* Показываем в документе обычным способом (если нужно) */
+  display: block;
+}
+
+/* Правила для печати: скрыть всё кроме .printWrapper */
+@media print {
+  /* Скрыть весь документ */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Показать только printWrapper и её потомков */
+  .printWrapper,
+  .printWrapper * {
+    visibility: visible;
+  }
+
+  /* Разместить печатный блок в верхнем левом углу и растянуть */
+  .printWrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* если нужно убрать отступы страницы */
+    padding: 0;
+    margin: 0;
+  }
+}
+
+/* ...existing code... */

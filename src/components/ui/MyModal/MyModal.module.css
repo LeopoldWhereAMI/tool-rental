@@ -1,0 +1,185 @@
+/* Базовый контейнер диалога */
+.modal {
+  border: none;
+  border-radius: 12px;
+  padding: 0;
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-width: 440px;
+  width: calc(100% - 32px);
+  margin: auto;
+  inset: 0;
+  background-color: #ffffff;
+
+  /* Состояние для анимации (закрыто) */
+  opacity: 0;
+  transform: scale(0.95) translateY(10px);
+
+  /* Плавный переход для появления и исчезновения */
+  transition:
+    opacity 0.3s ease-out,
+    transform 0.3s ease-out,
+    display 0.3s ease-out allow-discrete;
+}
+
+/* Состояние при открытии (атрибут [open] добавляется браузером) */
+.modal[open] {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Магия для плавного появления в современных браузерах */
+@starting-style {
+  .modal[open] {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+}
+
+/* Стилизация заднего фона (backdrop) */
+.modal::backdrop {
+  background-color: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  transition:
+    display 0.3s allow-discrete,
+    overlay 0.3s allow-discrete,
+    background-color 0.3s ease-out,
+    backdrop-filter 0.3s ease-out;
+}
+
+.modal[open]::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+}
+
+@starting-style {
+  .modal[open]::backdrop {
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+  }
+}
+
+/* Внутренняя разметка */
+.modalContent {
+  padding: 24px;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modalTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #9ca3af;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.closeBtn:hover {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+/* Стили сообщения для специализированной модалки удаления */
+.confirmWrapper {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.warningIcon {
+  color: #dc2626;
+  flex-shrink: 0;
+}
+
+.confirmMessage {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.6;
+  font-size: 0.9375rem;
+}
+
+.confirmMessage strong {
+  color: #111827;
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 1rem;
+}
+
+.warningText {
+  display: block;
+  font-size: 0.8125rem;
+  color: #9ca3af;
+  margin-top: 8px;
+}
+
+/* Блок кнопок внизу */
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.deleteBtnConfirm {
+  background-color: #dc2626;
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+}
+
+.deleteBtnConfirm:hover:not(:disabled) {
+  background-color: #b91c1c;
+}
+
+.deleteBtnConfirm:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.cancelBtn {
+  background-color: #ffffff;
+  color: #374151;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: 1px solid #d1d5db;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancelBtn:hover:not(:disabled) {
+  background-color: #f9fafb;
+}
+
+/* Состояние загрузки/блокировки */
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

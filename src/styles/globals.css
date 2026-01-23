@@ -1,0 +1,30 @@
+@import "./reset.css";
+@import "./variables.css";
+
+body {
+  font-family: var(--font-nunito), system-ui, sans-serif;
+}
+
+.app-layout {
+  display: flex;
+  min-height: calc(100vh - 114px);
+  height: 100vh;
+
+  padding-left: var(--sidebar-width);
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 57px); /* Высота экрана минус высота хедера */
+  margin-left: 220px; /* Ширина вашего сайдбара */
+  background-color: #f3f3f3;
+}
+
+.main-content {
+  flex: 1;
+  background-color: #f3f3f3;
+  padding: var(--default-padding);
+
+  margin-left: 0;
+}

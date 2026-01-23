@@ -1,0 +1,12 @@
+.itemInfoList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  & li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    border-bottom: var(--input-border);
+  }
+}

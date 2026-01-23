@@ -1,0 +1,28 @@
+.inventoryPage {
+  font-size: 14px;
+}
+
+.addInventoryBtn {
+  margin-bottom: 14px;
+  padding: var(--button-padding);
+  background-color: var(--header-background);
+  color: var(--color-white);
+  border: 1px solid var(--btn-border-color);
+  border-radius: var(--default-radius);
+  font-size: 16px;
+  transition:
+    background-color 0.3s ease,
+    transform 0.1s ease;
+  box-shadow: var(--default-box-shadow);
+
+  &:hover {
+    background-color: var(--btn-hover-color);
+  }
+
+  &:active {
+    background-color: var(--color-white);
+    color: var(--btn-text-color-active);
+    border-color: var(--btn-hover-color);
+    transform: scale(0.97);
+  }
+}

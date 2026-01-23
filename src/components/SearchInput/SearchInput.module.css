@@ -1,0 +1,51 @@
+/* .searchInput {
+  width: 100%;
+  margin-top: 14px;
+  padding: var(--input-padding);
+  border: var(--input-border);
+  border-radius: var(--default-radius);
+  font-size: 14px;
+  transition: all 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: var(--input-border-focus);
+    box-shadow: var(--default-box-shadow);
+  }
+} */
+
+.searchInput {
+  width: 100%;
+  /* Убираем margin-top, так как контейнер .controls уже управляет позицией */
+  margin-top: 0;
+
+  /* Высота 44px соответствует высоте .filters в page.module.css */
+  height: 44px;
+
+  /* Увеличиваем боковые отступы для красоты */
+  padding: 0 16px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 12px; /* Совпадает с радиусом .filters */
+  font-size: 14px;
+  background-color: #ffffff;
+  color: #111827;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: #9ca3af;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #2563eb; /* Акцентный синий */
+    background-color: #fff;
+    /* Мягкая тень при фокусе */
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  }
+
+  &:hover {
+    border-color: #d1d5db;
+  }
+}

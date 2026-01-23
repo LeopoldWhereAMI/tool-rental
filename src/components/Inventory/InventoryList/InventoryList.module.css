@@ -1,0 +1,217 @@
+.table {
+  width: 100%;
+  margin-top: 14px;
+  background: #fff;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+}
+
+.table th {
+  padding: 14px 16px;
+  background-color: #f9fafb;
+  text-align: left;
+  font-weight: 600;
+  color: #4b5563;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.table th,
+.table td {
+  padding: 16px;
+  vertical-align: middle;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 14px;
+  color: #1f2937;
+  text-align: center; /* Центрируем всё */
+}
+
+/* Исключение для второй колонки (обычно это Название) */
+.table th:nth-child(2),
+.table td:nth-child(2),
+.table th:nth-child(3),
+.table td:nth-child(3) {
+  text-align: left; /* Вторая колонка прижата к левому краю */
+}
+
+.table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.selectWrapper {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+
+.select {
+  appearance: none; /* Убираем стандартную стрелку браузера */
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 4px 8px 4px 8px; /* Место справа под свою стрелочку */
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4b5563;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+
+  /* Кастомная стрелочка (SVG) */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234b5563'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+  background-size: 14px;
+}
+
+.select:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.select:focus {
+  background-color: #fff;
+  border-color: #e5e7eb;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Стили для самих пунктов меню */
+.select option {
+  background-color: #ffffff;
+  color: #1f2937;
+  padding: 12px;
+  font-size: 14px;
+  /* В некоторых браузерах это единственный способ повлиять на вид */
+}
+
+/* Убираем стандартный серый фон в Safari/Chrome при фокусе */
+.select:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: -2px;
+  border-radius: 8px;
+}
+
+/* --- Статусы (Бейджи) — Общий стиль --- */
+.statusBadge {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
+  border: 1px solid transparent;
+}
+
+/* Цвета для Заказов */
+.statusActive,
+.statusAvailable {
+  background-color: #ecfdf5;
+  color: #065f46;
+  border-color: rgba(5, 150, 105, 0.1);
+}
+
+.statusCompleted,
+.statusRented {
+  background-color: #eff6ff;
+  color: #1e40af;
+  border-color: rgba(37, 99, 235, 0.1);
+}
+
+.statusCancelled,
+.statusMaintenance {
+  background-color: #fef2f2;
+  color: #991b1b;
+  border-color: rgba(220, 38, 38, 0.1);
+}
+
+/* --- Кнопки действий --- */
+.actionButton {
+  background: transparent;
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+  color: #9ca3af;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  width: 32px;
+  height: 32px;
+}
+
+.actionButton:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+/* --- Динамический статус срока --- */
+.returnStatus {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dateLabel {
+  font-size: 12px;
+  color: #6b7280;
+}
+.statusText {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.overdue .statusText {
+  color: #dc2626;
+  animation: pulseOpacity 2s infinite;
+}
+.today .statusText {
+  color: #d97706;
+}
+.onTime .statusText {
+  color: #059669;
+}
+
+@keyframes pulseOpacity {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* --- Адаптив --- */
+@media (max-width: 1024px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px 0;
+  }
+  .filters {
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+  .searchWrapper {
+    max-width: none;
+  }
+}

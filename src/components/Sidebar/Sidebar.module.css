@@ -1,0 +1,42 @@
+.aside {
+  width: var(--sidebar-width);
+  /* height: 100vh; */
+  height: calc(100vh - 57px);
+  position: fixed;
+  top: 57px;
+
+  left: 0;
+  z-index: 1000;
+
+  background-color: var(--sidebar-background);
+  color: var(--color-neutral);
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.asideNavList {
+  display: flex;
+  flex-direction: column;
+
+  & li {
+    transition: all 0.3s ease;
+    border-left: 0 solid var(--btn-border-color);
+
+    &:hover {
+      color: var(--color-white);
+      background-color: var(--sidebar-background-color);
+    }
+
+    & a {
+      width: 100%;
+      padding: var(--default-padding);
+    }
+  }
+
+  & .active {
+    color: var(--color-white);
+    background-color: var(--sidebar-background-color);
+    border-left: 4px solid var(--btn-border-color);
+  }
+}

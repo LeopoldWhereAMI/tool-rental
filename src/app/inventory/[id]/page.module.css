@@ -1,0 +1,124 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 40px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.editBtn {
+  padding: var(--button-padding);
+  background-color: var(--header-background);
+  color: var(--color-white);
+  border: 1px solid var(--btn-border-color);
+  border-radius: var(--default-radius);
+  font-size: 16px;
+  transition:
+    background-color 0.3s ease,
+    transform 0.1s ease;
+  box-shadow: var(--default-box-shadow);
+
+  &:hover {
+    background-color: var(--btn-hover-color);
+  }
+
+  &:active {
+    background-color: var(--color-white);
+    color: var(--btn-text-color-active);
+    border-color: var(--btn-hover-color);
+    transform: scale(0.97);
+  }
+}
+
+/* Основная сетка */
+.mainGrid {
+  display: grid;
+  grid-template-columns: 400px 1fr; /* Фиксированная левая колонка, гибкая правая */
+  gap: 24px;
+}
+
+/* Общая карточка */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #eef0f2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.cardHeader {
+  padding: 16px 24px;
+  border-bottom: 1px solid #f5f7f9;
+  background-color: #fcfdfe;
+}
+
+.cardHeader h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: #1a1c1e;
+  text-align: left; /* Убираем центрирование */
+}
+
+.cardContent {
+  padding: 24px;
+}
+
+/* Блок цены */
+.rentalPrice {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rentalPrice .label {
+  color: #8c949e;
+  font-size: 14px;
+}
+
+.rentalPrice .value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #000;
+}
+
+/* Статусы под фото */
+.quickStats {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  padding: 100px;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 900px) {
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .leftCol {
+    max-width: 100%;
+    /*  */
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}

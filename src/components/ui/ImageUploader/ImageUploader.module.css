@@ -1,0 +1,82 @@
+.uploaderWrapper {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.uploaderWrapper:has(img) {
+  border: var(--input-border);
+  border-radius: var(--default-radius);
+  padding: var(--default-padding);
+}
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #e2e8f0;
+  border-radius: 12px;
+  padding: 2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #f8fafc;
+}
+
+.dropzone:hover {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.imagePreviewContainer {
+  position: relative;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.previewImage {
+  max-width: 100%;
+  max-height: 250px;
+  border-radius: 8px;
+  display: block;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.previewImage:hover {
+  transform: scale(1.05); /* Легкое увеличение при наведении */
+}
+
+.removeBtn {
+  position: absolute;
+  top: -8px;
+  right: -48px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  margin-bottom: 8px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.placeholderState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #64748b;
+  gap: 4px;
+}

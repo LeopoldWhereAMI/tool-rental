@@ -1,0 +1,109 @@
+.actionsMenu {
+  position: absolute;
+  right: 14px;
+  min-width: 180px;
+  background-color: var(--color-white);
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  overflow: hidden;
+  padding: 4px;
+
+  /* 2. Применяем анимацию */
+  animation: slideIn 0.15s ease-out;
+  /* 3. Оптимизируем рендеринг */
+  will-change: transform, opacity;
+}
+
+.actionsMenuList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.actionsMenuList li {
+  display: flex;
+}
+
+.actionsMenuList a,
+.actionsMenuList button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  text-decoration: none;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.actionsMenuList li:hover a,
+.actionsMenuList li:hover button {
+  background-color: #f3f4f6;
+  color: var(--color-black);
+}
+
+/* Специфические стили для кнопок */
+.maintenanceBtn {
+  color: #dc2626 !important; /* Насыщенный красный */
+}
+
+.availableBtn {
+  color: #059669 !important; /* Насыщенный зеленый */
+}
+
+.cancelBtn:hover {
+  background-color: #fff7ed !important; /* Бледно-оранжевый */
+  color: #ea580c !important; /* Насыщенный оранжевый */
+}
+
+.deleteSeparator {
+  height: 1px;
+  background-color: #f3f4f6;
+  margin: 4px 8px;
+}
+
+.deleteBtn {
+  color: #6b7280 !important;
+}
+
+.actionsMenuList a svg,
+.actionsMenuList button svg {
+  flex-shrink: 0;
+  opacity: 0.7; /* Делаем иконки чуть мягче */
+}
+
+.actionsMenuList li:hover svg {
+  opacity: 1;
+}
+
+/* Стили для деструктивной кнопки удаления при наведении */
+.deleteBtn:hover {
+  background-color: #fff1f2 !important; /* Бледно-красный фон */
+  color: #e11d48 !important; /* Насыщенный красный текст */
+}
+
+/* 1. Определяем саму анимацию */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

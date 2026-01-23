@@ -1,0 +1,276 @@
+/* --- Контейнер Хеадера --- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding: 16px 0;
+  gap: 24px;
+  border-bottom: 1px solid #eee; /* Тонкая линия разделения */
+}
+
+.titleGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 26px; /* Чуть крупнее для солидности */
+  font-weight: 800;
+  color: #111827; /* Насыщенный темный */
+  letter-spacing: -0.02em; /* Современный плотный трекинг */
+  margin: 0;
+}
+
+.countBadge {
+  background-color: #f3f4f6;
+  color: #6b7280;
+  font-size: 13px;
+  padding: 2px 10px;
+  border-radius: 999px; /* Идеальный овал */
+  font-weight: 600;
+  border: 1px solid #e5e7eb;
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+}
+
+/* --- Панель управления --- */
+.searchWrapper {
+  display: flex;
+  align-items: center;
+  min-width: 200px;
+  max-width: 800px;
+  gap: 12px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.searchWrapper > div {
+  width: 100%;
+}
+
+/* Группа фильтров (Сегментированный контроль) */
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: #f3f4f6; /* Светло-серый фон "подложки" */
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  height: 44px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.filterBtn {
+  height: 100%;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b5563;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.filterBtn:hover:not(.activeFilter) {
+  color: #111827;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* Активное состояние (белая плашка) */
+.activeFilter {
+  background: #ffffff;
+  color: #111827;
+  font-weight: 600;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* Цветовые индикаторы для активных фильтров */
+.activeFilter.statusActive {
+  color: #059669;
+  background-color: #ffffff;
+  border: 1px solid rgba(5, 150, 105, 0.1);
+}
+.activeFilter.statusCompleted {
+  color: #2563eb;
+  background-color: #ffffff;
+  border: 1px solid rgba(37, 99, 235, 0.1);
+}
+.activeFilter.statusCancelled {
+  color: #dc2626;
+  background-color: #ffffff;
+  border: 1px solid rgba(220, 38, 38, 0.1);
+}
+
+/* --- Таблица --- */
+.table {
+  width: 100%;
+  margin-top: 8px;
+  background: #fff;
+  border-collapse: separate; /* Для красивых скруглений */
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+}
+
+.table th {
+  padding: 14px 16px;
+  background-color: #f9fafb;
+  text-align: left;
+  font-weight: 600;
+  color: #4b5563;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table td {
+  padding: 16px;
+  vertical-align: middle;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 14px;
+  color: #1f2937;
+}
+
+.table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Статусы внутри таблицы */
+.statusBadge {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+}
+
+.statusActive {
+  background-color: #ecfdf5;
+  color: #065f46;
+}
+.statusCompleted {
+  background-color: #eff6ff;
+  color: #1e40af;
+}
+.statusCancelled {
+  background-color: #fef2f2;
+  color: #991b1b;
+}
+
+.phoneLink {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.phoneLink:hover {
+  text-decoration: underline;
+}
+
+.actionButton {
+  background: transparent;
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.actionButton:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.returnStatus {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dateLabel {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.statusText {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Состояния */
+.overdue .statusText {
+  color: #dc2626; /* Яркий красный */
+}
+
+.today .statusText {
+  color: #d97706; /* Оранжевый */
+}
+
+.onTime .statusText {
+  color: #059669; /* Зеленый */
+}
+
+/* Небольшая пульсация для просрочки (по желанию) */
+.overdue {
+  animation: pulseOpacity 2s infinite;
+}
+
+@keyframes pulseOpacity {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* --- Адаптив --- */
+@media (max-width: 1024px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 0;
+  }
+
+  .controls {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .controls > div:first-child {
+    max-width: none;
+  }
+
+  .filters {
+    overflow-x: auto; /* Скролл фильтров на мобилках */
+    justify-content: flex-start;
+  }
+}
