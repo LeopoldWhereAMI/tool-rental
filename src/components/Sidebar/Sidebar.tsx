@@ -1,4 +1,4 @@
-import Navigation from "./Navigation";
+import Navigation from "./Navigation/Navigation";
 import styles from "./Sidebar.module.css";
 
 export default function Sidebar() {

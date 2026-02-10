@@ -32,12 +32,6 @@ export const inventoryCreateSchema = z.object({
     .min(0, "Цена не может быть отрицательной")
     .max(1000000, "Слишком высокая цена"),
 
-  quantity: z.coerce
-    .number()
-    .int("Должно быть целое число")
-    .min(0, "Количество не может быть отрицательным")
-    .max(1000, "Слишком большое количество"),
-
   purchase_price: z.coerce
     .number()
     .min(0, "Цена не может быть отрицательной")

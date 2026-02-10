@@ -1,42 +1,104 @@
 .aside {
   width: var(--sidebar-width);
-  /* height: 100vh; */
-  height: calc(100vh - 57px);
+  height: 100vh;
   position: fixed;
   top: 57px;
+  overflow-y: auto;
+  background: linear-gradient(135deg, #475569 0%, #334155 100%);
+  border-right: 1px solid #e2e8f0;
+  padding: 1rem 0;
+  box-shadow: inset -1px 0 0 0 rgba(255, 255, 255, 0.05);
+}
 
-  left: 0;
-  z-index: 1000;
-
-  background-color: var(--sidebar-background);
-  color: var(--color-neutral);
-
-  font-size: 14px;
-  font-weight: 600;
+/* Настройка скроллбара внутри сайдбара (сделаем его аккуратным) */
+.aside::-webkit-scrollbar {
+  width: 4px;
+}
+.aside::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
 }
 
 .asideNavList {
   display: flex;
   flex-direction: column;
+  gap: 4px; /* Небольшой зазор между пунктами */
+  list-style: none;
+  padding: 0 12px;
+}
 
-  & li {
-    transition: all 0.3s ease;
-    border-left: 0 solid var(--btn-border-color);
+.asideNavList li {
+  margin: 4px; /* Пункты теперь как "островки" */
+  border-radius: 8px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-    &:hover {
-      color: var(--color-white);
-      background-color: var(--sidebar-background-color);
-    }
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  color: var(--color-neutral);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
 
-    & a {
-      width: 100%;
-      padding: var(--default-padding);
-    }
+.asideNavList li:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--color-white);
+}
+
+.asideNavList li.active {
+  background-color: var(--sidebar-background-color);
+  color: var(--color-white);
+  /* Вместо border-left сделаем легкое свечение или яркий акцент */
+  position: relative;
+}
+
+.active .navLink {
+  color: var(--color-white);
+}
+
+/* Красивый индикатор активного пункта */
+.asideNavList li.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 20%;
+  height: 60%;
+  width: 4px;
+  background-color: var(--header-background);
+  border-radius: 0 4px 4px 0;
+}
+
+@media (max-width: 1024px) {
+  .aside {
+    width: 72px; /* Ширина только для иконок + отступы */
+    padding: 20px 8px;
   }
 
-  & .active {
-    color: var(--color-white);
-    background-color: var(--sidebar-background-color);
-    border-left: 4px solid var(--btn-border-color);
+  .asideNavList li {
+    margin: 4px 0;
+  }
+
+  .asideNavList li.active::before {
+    display: none;
+  }
+
+  .active .navLink {
+    color: #2563eb;
+  }
+
+  .navLink {
+    justify-content: center; /* Центрируем иконку */
+    padding: 12px 0;
+    gap: 0;
+  }
+
+  /* Скрываем текст */
+  .navLink span {
+    display: none;
   }
 }

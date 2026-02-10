@@ -1,80 +1,135 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
-import Head from "next/head";
-
-interface Client {
-  id: string;
-  name: string;
-  phone: string | null;
-  company: string | null;
-  total_orders: number;
-  total_spent: number;
-  created_at: string;
-}
+import { useState } from "react";
+import PageWrapper from "@/components/PageWrapper/PageWrapper";
+import SearchInput from "@/components/SearchInput/SearchInput";
+import styles from "./page.module.css";
+import DeleteConfirmModal from "@/components/ui/MyModal/DeleteConfirmModal";
+import ErrorBlock from "@/components/ui/ErrorBlock/ErrorBlock";
+import ClientsSkeleton from "./ClientsSkeleton";
+import ClientRow from "./components/ClientRow";
+import { useClients } from "@/hooks/useClients";
+import usePagination from "@/hooks/usePagination";
+import PaginationControls from "@/components/ui/PaginationControls/PaginationControls";
+import { Plus } from "lucide-react";
+import CreateClientModal from "@/components/ui/MyModal/CreateClientModal/CreateClientModal";
 
 export default function ClientsPage() {
-  const [clients, setClients] = useState<Client[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const [deleteClientId, setDeleteClientId] = useState<string | null>(null);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const {
+    clients,
+    filteredClients,
+    loading,
+    error,
+    searchQuery,
+    setSearchQuery,
+    addClient,
+    removeClient,
+  } = useClients();
 
-  useEffect(() => {
-    loadClients();
-  }, []);
+  const {
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    currentItems: pagedClients,
+  } = usePagination({ items: filteredClients, itemsPerPage: 10 });
 
-  async function loadClients() {
-    try {
-      const { data, error } = await supabase
-        .from("clients")
-        .select("*")
-        .order("created_at", { ascending: false });
+  if (error && !clients.length) {
+    return <ErrorBlock message={error} />;
+  }
 
-      if (error) throw error;
-      setClients(data || []);
-    } catch (error) {
-      console.error("Ошибка загрузки:", error);
-    } finally {
-      setLoading(false);
+  const toggleMenu = (id: string) =>
+    setOpenMenuId((prev) => (prev === id ? null : id));
+
+  const handleConfirmDelete = async () => {
+    if (!deleteClientId) return;
+    const success = await removeClient(deleteClientId);
+    if (success) {
+      setDeleteClientId(null);
     }
-  }
-
-  async function addClient() {
-    const name = prompt("Введите имя клиента:");
-    const phone = prompt("Введите телефон:");
-
-    if (!name) return;
-
-    const { data } = await supabase
-      .from("clients")
-      .insert([{ name, phone }])
-      .select();
-
-    if (data) {
-      setClients([data[0], ...clients]);
-    }
-  }
-
-  if (loading) {
-    return (
-      <div>
-        <div>Загрузка клиентов...</div>
-      </div>
-    );
-  }
+  };
 
   return (
-    <>
-      <Head>
-        <title>Клиенты</title>
-        <meta name="description" content="Список всех клиентов" />
-      </Head>
-      <div>
-        {clients.map((client) => (
-          <div key={client.id}>
-            {client.name} {client.phone}
-          </div>
-        ))}
+    <PageWrapper>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Клиенты</h1>
+        <div className={styles.headerActions}>
+          <SearchInput value={searchQuery} setSearch={setSearchQuery} />
+          <button
+            className={styles.addButton}
+            onClick={() => setIsCreateModalOpen(true)}
+          >
+            <Plus size={18} />
+            <span>Добавить клиента</span>
+          </button>
+        </div>
       </div>
-    </>
+
+      <div className={styles.tableContainer}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>Клиент</th>
+              <th>Телефон</th>
+              <th>Дата регистрации</th>
+              <th style={{ width: "50px" }}></th>
+            </tr>
+          </thead>
+          <tbody>
+            {loading ? (
+              /* 1. Состояние загрузки */
+              <ClientsSkeleton />
+            ) : pagedClients.length > 0 ? (
+              /* 2. Рендер списка, если клиенты найдены */
+              pagedClients.map((client) => (
+                <ClientRow
+                  key={client.id}
+                  client={client}
+                  isMenuOpen={openMenuId === client.id}
+                  onToggleMenu={toggleMenu}
+                  onDelete={(id) => {
+                    setDeleteClientId(id);
+                    setOpenMenuId(null);
+                  }}
+                />
+              ))
+            ) : (
+              /* 3. Состояние "Пусто" */
+              <tr>
+                <td colSpan={4} className={styles.emptyCell}>
+                  Ничего не найдено
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {totalPages > 1 && (
+        // <div className={styles.paginationWrapper}>
+        <PaginationControls
+          currentPage={currentPage}
+          totalPages={totalPages}
+          clickHandler={setCurrentPage}
+        />
+        // </div>
+      )}
+
+      <CreateClientModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSave={addClient}
+      />
+
+      <DeleteConfirmModal
+        isOpen={!!deleteClientId}
+        onClose={() => setDeleteClientId(null)}
+        onConfirm={handleConfirmDelete}
+        itemName={clients.find((c) => c.id === deleteClientId)?.last_name}
+        itemType="клиент"
+      />
+    </PageWrapper>
   );
 }

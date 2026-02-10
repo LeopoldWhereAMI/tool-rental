@@ -1,13 +1,14 @@
 .container {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 10px 0 40px;
+  padding: 20px;
 }
 
 .topNav {
   display: flex;
-  justify-content: flex-start;
-  margin-bottom: 16px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
 }
 
 .backBtn {
@@ -18,26 +19,29 @@
   border: none;
   color: #666;
   cursor: pointer;
-  margin-bottom: 20px;
-  transition: color 0.2s;
+  font-size: 15px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s;
 }
 
 .backBtn:hover {
   color: #000;
+  background: #f5f5f5;
 }
 
 .mainCard {
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   overflow: hidden;
-  border: 1px solid #eee;
+  border: 1px solid #f0f0f0;
 }
 
 .header {
-  padding: 30px;
-  background: #fcfcfc;
-  border-bottom: 1px solid #eee;
+  padding: 32px 40px;
+  background: linear-gradient(135deg, #fafafa 0%, #fff 100%);
+  border-bottom: 1px solid #f0f0f0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -46,96 +50,387 @@
 .titleInfo {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .titleInfo h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.dateInfo {
+  color: #888;
+  font-size: 14px;
 }
 
 .statusBadge {
-  min-width: 100px;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
+  min-width: 110px;
+  padding: 8px 16px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-weight: 600;
   text-align: center;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
 }
 
-/* Статусы (те же, что были в списке) */
+/* Статусы */
 .statusActive {
-  background: #e8f5e9;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
   color: #2e7d32;
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.15);
 }
+
 .statusCompleted {
-  background: #e3f2fd;
-  color: #1565c0;
+  /* background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  color: #1565c0; */
+  background-color: #f9fafb;
+  color: #6b7280;
+  box-shadow: 0 2px 8px rgba(21, 101, 192, 0.15);
 }
+
 .statusCancelled {
-  background: #ffebee;
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
   color: #c62828;
+  box-shadow: 0 2px 8px rgba(198, 40, 40, 0.15);
 }
 
 .infoGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1px; /* Линии между блоками */
-  background: #eee; /* Цвет линий */
+  gap: 0;
+  background: #f8f8f8;
 }
 
 .infoBlock {
   background: #fff;
-  padding: 30px;
+  padding: 32px;
+  border-right: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s;
+}
+.contactInfo {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contactRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 14px;
+}
+
+.contactRow svg {
+  color: #2ecc71; /* Зеленый акцент для иконок связи */
+  opacity: 0.8;
+}
+
+.name {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #1a1a1a;
+}
+
+.name {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.infoBlock:hover {
+  background: #fafafa;
+}
+
+.infoBlock:nth-child(2n) {
+  border-right: none;
 }
 
 .blockTitle {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #888;
-  margin-bottom: 15px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.blockTitle svg {
+  color: #999;
 }
 
 .blockTitle h3 {
-  font-size: 14px;
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   margin: 0;
+  font-weight: 600;
+}
+
+.blockContent {
+  position: relative;
 }
 
 .name {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
-  margin: 0 0 5px 0;
+  margin: 0 0 8px 0;
+  color: #1a1a1a;
 }
 
 .subText {
   color: #666;
   margin: 0;
-  font-style: italic;
+  font-size: 14px;
 }
 
 .dates {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+}
+
+.dates strong {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.dates span {
+  color: #999;
 }
 
 .totalBlock {
-  background: #f8f9fa;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 2px solid #dee2e6;
+}
+
+.totalBlock:hover {
+  background: linear-gradient(135deg, #f1f3f5 0%, #e9ecef 100%);
 }
 
 .totalLabel {
-  color: #888;
-  margin-bottom: 5px;
+  color: #666;
+  margin-bottom: 8px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.debtDetails {
+  margin-top: 16px;
+  padding: 12px;
+  background-color: rgba(225, 29, 72, 0.05); /* Очень легкий красный фон */
+  border-radius: 12px;
+  border: 1px dashed rgba(225, 29, 72, 0.2);
+}
+
+.debtHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #e11d48;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.debtBreakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  color: #666;
+}
+
+.debtPlus {
+  color: #e11d48;
+  font-weight: 700;
 }
 
 .price {
-  font-size: 28px;
-  font-weight: 700;
-  color: #000;
+  font-size: 36px;
+  font-weight: 800;
+  color: #2ecc71;
   margin: 0;
+  letter-spacing: -1px;
+}
+
+/* скидки наценки */
+.adjustmentBlock {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #f0f1f3;
+}
+
+.adjLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.adjInput {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.adjInput:focus {
+  border-color: #2563eb;
+}
+
+/*  */
+.completeOrderBtn {
+  width: 100%;
+  margin-top: 20px;
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.completeOrderBtn:hover {
+  background-color: #059669;
+}
+
+.finalPriceText {
+  display: block;
+  font-size: 24px;
+  color: #10b981;
+  margin-top: 8px;
+}
+
+.completedStatus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 10px;
+  background-color: #f0fdf4; /* Светло-зеленый фон */
+  border-radius: 8px;
+  color: #166534; /* Темно-зеленый текст */
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #bbf7d0;
+}
+
+/* Стили для списка инструментов */
+.wideBlock {
+  grid-column: 1 / -1;
+  border-right: none;
+  border-bottom: none;
+}
+
+.toolsListDetailed {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolItemEntry {
+  padding: 20px;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  background: #fafafa;
+  transition: all 0.3s ease;
+}
+
+.toolItemEntry:hover {
+  background: #fff;
+  border-color: #2ecc71;
+  box-shadow: 0 4px 16px rgba(46, 204, 113, 0.1);
+  transform: translateY(-2px);
+}
+
+.toolHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+  gap: 16px;
+}
+
+.toolHeader .name {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0;
+  color: #1a1a1a;
+  flex: 1;
+}
+
+.toolPrice {
+  font-weight: 700;
+  color: #2ecc71;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 20px;
+  white-space: nowrap;
+}
+
+.toolPrice .subText {
+  font-weight: 500;
+  color: #999;
+  font-size: 0.7rem;
+  font-style: normal;
+}
+
+.toolMeta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.toolMeta .subText {
+  font-size: 13px;
+  color: #666;
+  font-style: normal;
+  background: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #e8e8e8;
+  font-weight: 500;
+}
+
+.individualDates {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #666;
+  background: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #e8e8e8;
+  font-weight: 500;
+}
+
+.individualDates svg {
+  color: #2ecc71;
 }
 
 .center {
@@ -144,29 +439,121 @@
   padding: 50px;
 }
 
-.detailRow {
+/* Адаптивность */
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .header {
+    padding: 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .infoBlock {
+    border-right: none;
+  }
+
+  .titleInfo h1 {
+    font-size: 22px;
+  }
+
+  .price {
+    font-size: 28px;
+  }
+}
+
+/* Дополнительно для кнопки печати в хедере */
+.printBtn {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 8px;
-  padding: 4px 0;
-  border-bottom: 1px dashed #e5e7eb; /* Легкая пунктирная линия для разделения */
-}
-
-.detailRow:last-of-type {
-  border-bottom: none;
-}
-
-.label {
-  font-size: 12px;
-  color: #6b7280;
-  text-transform: uppercase;
-  letter-spacing: 0.025em;
-}
-
-.value {
-  font-size: 14px;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  padding: 10px 18px;
+  border-radius: 10px;
+  color: #1a1a1a;
   font-weight: 600;
-  color: #1f2937;
-  font-family: monospace; /* Моноширинный шрифт для серийников выглядит солиднее */
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.printBtn:hover {
+  border-color: #2ecc71;
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.05);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+/* Адаптивность для модалки */
+@media (max-width: 480px) {
+  .modalGrid {
+    grid-template-columns: 1fr;
+  }
+  .modal {
+    padding: 24px;
+  }
+}
+
+/* Отступ для "заголовков" внутри секций скелетона */
+.skeletonLabel {
+  margin-bottom: 12px;
+}
+
+/* Контейнер для списка инструментов в скелетоне */
+.skeletonList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Если в оригинальном .section нет grid-column, добавим этот класс */
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+/* доп для статусов */
+.periodWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.startDateInfo {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.miniLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #999;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.divider {
+  width: 30px;
+  height: 2px;
+  background: #f0f0f0;
+  border-radius: 2px;
+}
+
+.startDateInfo strong {
+  font-size: 18px;
+  color: #1a1a1a;
+  font-weight: 700;
 }

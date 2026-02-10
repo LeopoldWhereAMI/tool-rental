@@ -3,10 +3,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 20px;
   padding: 16px 0;
   gap: 24px;
-  border-bottom: 1px solid #eee; /* Тонкая линия разделения */
+  border-bottom: 1px solid #eee;
 }
 
 .titleGroup {
@@ -18,10 +18,10 @@
 }
 
 .title {
-  font-size: 26px; /* Чуть крупнее для солидности */
+  font-size: 26px;
   font-weight: 800;
-  color: #111827; /* Насыщенный темный */
-  letter-spacing: -0.02em; /* Современный плотный трекинг */
+  color: #111827;
+  letter-spacing: -0.02em;
   margin: 0;
 }
 
@@ -30,7 +30,7 @@
   color: #6b7280;
   font-size: 13px;
   padding: 2px 10px;
-  border-radius: 999px; /* Идеальный овал */
+  border-radius: 999px;
   font-weight: 600;
   border: 1px solid #e5e7eb;
   display: inline-flex;
@@ -38,132 +38,139 @@
   height: 22px;
 }
 
-/* --- Панель управления --- */
 .searchWrapper {
-  display: flex;
-  align-items: center;
-  min-width: 200px;
-  max-width: 800px;
-  gap: 12px;
   flex: 1;
-  justify-content: flex-end;
+  max-width: 800px;
 }
 
-.searchWrapper > div {
+/*  */
+.tableWrapper {
   width: 100%;
-}
-
-/* Группа фильтров (Сегментированный контроль) */
-.filters {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  background: #f3f4f6; /* Светло-серый фон "подложки" */
-  padding: 4px;
+  max-width: 1500px;
+  margin-inline: auto;
+  overflow-x: auto;
   border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  height: 44px;
-  box-sizing: border-box;
-  flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  background: #fff;
 }
 
-.filterBtn {
-  height: 100%;
-  padding: 0 14px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  background: transparent;
-  font-size: 14px;
-  font-weight: 500;
-  color: #4b5563;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.filterBtn:hover:not(.activeFilter) {
-  color: #111827;
-  background: rgba(0, 0, 0, 0.04);
-}
-
-/* Активное состояние (белая плашка) */
-.activeFilter {
-  background: #ffffff;
-  color: #111827;
-  font-weight: 600;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.1),
-    0 1px 2px rgba(0, 0, 0, 0.06);
-}
-
-/* Цветовые индикаторы для активных фильтров */
-.activeFilter.statusActive {
-  color: #059669;
-  background-color: #ffffff;
-  border: 1px solid rgba(5, 150, 105, 0.1);
-}
-.activeFilter.statusCompleted {
-  color: #2563eb;
-  background-color: #ffffff;
-  border: 1px solid rgba(37, 99, 235, 0.1);
-}
-.activeFilter.statusCancelled {
-  color: #dc2626;
-  background-color: #ffffff;
-  border: 1px solid rgba(220, 38, 38, 0.1);
-}
-
-/* --- Таблица --- */
 .table {
   width: 100%;
-  margin-top: 8px;
-  background: #fff;
-  border-collapse: separate; /* Для красивых скруглений */
-  border-spacing: 0;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e5e7eb;
+  border-collapse: collapse;
+  table-layout: fixed;
 }
 
+/* Настраиваем ширину колонок для Десктопа */
+.orderNumberCell {
+  width: 100px;
+}
+.clientCell {
+  width: 180px;
+}
+
+.toolListCell {
+  width: auto;
+}
+
+.priceCell {
+  width: 123px;
+  text-align: right;
+}
+.actionsCell {
+  width: 65px;
+  text-align: center;
+}
+
+/* Шапка таблицы */
 .table th {
-  padding: 14px 16px;
+  padding: 12px 16px;
   background-color: #f9fafb;
   text-align: left;
   font-weight: 600;
-  color: #4b5563;
-  font-size: 13px;
+  color: #6b7280;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border-bottom: 1px solid #e5e7eb;
 }
 
+/* Ячейки */
 .table td {
-  padding: 16px;
-  vertical-align: middle;
+  padding: 14px 16px;
+  vertical-align: top;
   border-bottom: 1px solid #f3f4f6;
-  font-size: 14px;
-  color: #1f2937;
 }
 
-.table tbody tr:hover {
-  background-color: #f8fafc;
+.cellInner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
 }
 
-/* Статусы внутри таблицы */
-.statusBadge {
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 12px;
+/* Иерархия текста */
+.primaryText {
   font-weight: 600;
+  font-size: 14px;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.secondaryText {
+  font-size: 12px;
+  color: #6b7280;
+  text-decoration: none;
+  display: block;
+}
+
+.statusBadge {
+  padding: 2px 8px;
+  margin-left: -8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
   display: inline-flex;
+}
+
+/* Списки инструментов */
+.toolList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.toolItem {
+  font-size: 13px;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  min-width: 90px;
+  gap: 6px;
+}
+
+.toolMarker {
+  width: 6px;
+  height: 6px;
+  background-color: transparent;
+  border: 1.5px solid #9ca3af;
+  border-radius: 50%;
+  flex-shrink: 0;
+  opacity: 0.6;
+  transition: all 0.2s ease;
+}
+
+.activeRow .toolMarker {
+  background-color: #10b981;
+  border-color: #10b981;
+  opacity: 1;
+}
+
+.overdueRow .toolMarker {
+  background-color: #ef4444;
+  border-color: #ef4444;
+  opacity: 1;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.3);
 }
 
 .statusActive {
@@ -171,22 +178,19 @@
   color: #065f46;
 }
 .statusCompleted {
-  background-color: #eff6ff;
-  color: #1e40af;
+  background-color: #f9fafb;
+  color: #6b7280;
 }
+
 .statusCancelled {
   background-color: #fef2f2;
   color: #991b1b;
 }
 
 .phoneLink {
-  color: #2563eb;
   text-decoration: none;
   font-weight: 500;
-}
-
-.phoneLink:hover {
-  text-decoration: underline;
+  transition: all 0.2s;
 }
 
 .actionButton {
@@ -199,78 +203,404 @@
   transition: all 0.2s;
 }
 
-.actionButton:hover {
-  background: #f3f4f6;
+.periodWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.startDateInfo {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.miniLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #999;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.divider {
+  width: 30px;
+  height: 2px;
+  background: #f0f0f0;
+  border-radius: 2px;
+}
+
+/* Убедимся, что strong в этом контексте выглядит солидно */
+.startDateInfo strong {
+  font-size: 18px;
+  color: #1a1a1a;
+  font-weight: 700;
+}
+
+/* Цена */
+.priceContainer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
+  font-size: 15px;
   color: #111827;
 }
 
-.returnStatus {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+/* Базовые стили для всех строк, чтобы переходы были плавными */
+.table tr {
+  transition: all 0.2s ease;
+  background-color: #fff;
 }
 
-.dateLabel {
-  font-size: 12px;
-  color: #6b7280;
+.table tbody tr td:first-child {
+  border-left: 3px solid transparent;
 }
 
-.statusText {
-  font-size: 13px;
-  font-weight: 600;
-}
-
-/* Состояния */
-.overdue .statusText {
-  color: #dc2626; /* Яркий красный */
-}
-
-.today .statusText {
-  color: #d97706; /* Оранжевый */
-}
-
-.onTime .statusText {
-  color: #059669; /* Зеленый */
-}
-
-/* Небольшая пульсация для просрочки (по желанию) */
-.overdue {
-  animation: pulseOpacity 2s infinite;
-}
-
-@keyframes pulseOpacity {
-  0% {
-    opacity: 1;
+/* Ховеры работают только на устройствах с поддержкой hover (десктопы) */
+@media (hover: hover) and (pointer: fine) {
+  .table tbody tr:hover {
+    background-color: #f8fafc;
   }
-  50% {
-    opacity: 0.7;
+
+  .table tbody tr:hover td:first-child {
+    border-left-color: #e5e7eb;
   }
-  100% {
-    opacity: 1;
+
+  .secondaryText:hover {
+    color: #2563eb;
+  }
+
+  .phoneLink:hover {
+    color: #2563eb;
+    text-decoration: underline;
+  }
+
+  .actionButton:hover {
+    background: #f3f4f6;
+    color: #111827;
+  }
+
+  .activeRow:hover {
+    background-color: #f0fdf4 !important;
+  }
+
+  .overdueRow:hover {
+    background-color: #fff1f2 !important;
   }
 }
 
 /* --- Адаптив --- */
+
 @media (max-width: 1024px) {
+  /* Уменьшаем общие отступы страницы и контейнера */
   .header {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 20px 0;
+    margin-bottom: 20px;
+    padding: 10px 0;
   }
 
-  .controls {
-    width: 100%;
+  .title {
+    font-size: 20px; /* Уменьшаем заголовок */
+  }
+
+  /* Сжимаем ячейки таблицы */
+  .table th,
+  .table td {
+    padding: 10px 8px; /* Меньше падинги — больше места данным */
+  }
+
+  /* Перенастраиваем ширину колонок для 1024px */
+  /* .orderNumberCell {
+    width: 85px;
+  }
+
+  .clientCell {
+    width: 150px;
+  } */
+
+  .priceCell {
+    width: 100px;
+  }
+
+  .actionsCell {
+    width: 44px;
+  }
+
+  /* Уменьшаем шрифты */
+  .primaryText {
+    font-size: 13px;
+  }
+
+  .secondaryText {
+    font-size: 11px;
+  }
+
+  .toolItem {
+    font-size: 12px;
+  }
+
+  .statusBadge {
+    padding: 1px 6px;
+    font-size: 9px;
+  }
+
+  /* Скрываем менее важные детали, если они есть */
+  .toolMarker {
+    display: none; /* Экономим 10-15px ширины */
+  }
+
+  .priceContainer {
+    font-size: 13px;
+    /* justify-content: flex-end; */
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
     flex-direction: column;
     align-items: stretch;
     gap: 16px;
+    margin-bottom: 24px;
   }
 
-  .controls > div:first-child {
-    max-width: none;
+  .titleGroup {
+    justify-content: space-between;
+    width: 100%;
   }
 
-  .filters {
-    overflow-x: auto; /* Скролл фильтров на мобилках */
-    justify-content: flex-start;
+  .title {
+    font-size: 22px;
+  }
+
+  .searchWrapper {
+    max-width: 100%;
+  }
+
+  .tableWrapper {
+    box-shadow: none;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  .table {
+    display: block;
+    margin-top: 0;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tbody {
+    display: block;
+  }
+
+  .table tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    padding: 16px 16px 16px 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+    position: relative;
+    border-left: 2px solid #cbd5e1;
+    opacity: 0.85;
+    transition: all 0.2s ease;
+  }
+
+  .table tr.activeRow {
+    border-left: 2px solid #6ee7b7;
+    opacity: 1;
+  }
+
+  .table tr.overdueRow {
+    border-left: 2px solid #fda4af;
+    opacity: 1;
+  }
+
+  .table td {
+    display: block;
+    padding: 0;
+    border: none;
+    text-align: left !important;
+  }
+
+  .orderNumberCell {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: -16px -16px 12px -20px; /* Растягиваем до краев */
+    padding: 10px 16px !important;
+    background-color: rgba(0, 0, 0, 0.03); /* Легкое затемнение верхушки */
+    border-radius: 12px 12px 0 0;
+    width: calc(100% + 36px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+  }
+  /* Убираем лишние ховеры на мобилках, заменяем на легкое нажатие */
+  .table tr:active {
+    background-color: #f1f5f9;
+    transform: translateY(1px);
+  }
+  .orderNumberCell .cellInner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: auto; /* Важно для работы центрирования */
+    border-bottom: 1px solid #f3f4f6;
+  }
+
+  .orderNumberCell .primaryText {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .clientCell {
+    grid-column: 1 / 2;
+    margin-bottom: 0;
+  }
+
+  .clientCell::before {
+    content: "Клиент";
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #9ca3af;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+
+  .clientCell .cellInner {
+    gap: 2px;
+  }
+
+  .clientCell .primaryText {
+    font-size: 15px;
+  }
+
+  .toolListCell {
+    grid-column: 2 / 3;
+    margin-bottom: 0;
+  }
+
+  .toolListCell::before {
+    content: "Инструменты";
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #9ca3af;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+
+  .toolList {
+    gap: 6px;
+  }
+
+  .toolItem {
+    font-size: 14px;
+    font-weight: 600;
+    white-space: normal;
+    line-height: 1.4;
+  }
+
+  .table td:nth-child(4) {
+    margin-bottom: 12px;
+  }
+
+  .table td:nth-child(4) {
+    /* Ячейка периода */
+    grid-column: 1 / 2;
+    padding-top: 12px;
+    border-top: 1px solid #f3f4f6;
+    margin-bottom: 0;
+  }
+
+  .table td.priceCell {
+    grid-column: 2 / 3;
+    padding-top: 12px;
+    border-top: 1px solid #f3f4f6;
+    text-align: right;
+  }
+
+  .priceContainer {
+    /* justify-content: flex-end; */
+    font-size: 16px;
+  }
+
+  /* Общие настройки для меток ::before в сетке */
+  .clientCell::before,
+  .toolListCell::before,
+  .table td:nth-child(4)::before,
+  .priceCell::before {
+    font-size: 10px; /* Немного уменьшим для компактности */
+    margin-bottom: 4px;
+  }
+
+  .actionsCell {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: auto;
+    z-index: 10;
+    background: #f3f4f5;
+    border-radius: 10px;
+  }
+
+  .periodWrapper {
+    gap: 8px;
+  }
+
+  .startDateInfo {
+    gap: 6px;
+  }
+
+  .startDateInfo strong {
+    font-size: 15px;
+  }
+
+  .divider {
+    width: 20px;
+  }
+
+  .statusBadge {
+    font-size: 9px;
+    padding: 3px 8px;
+  }
+
+  .phoneLink:active {
+    color: #2563eb;
+    background-color: rgba(37, 99, 235, 0.1); /* Легкий фон вокруг номера */
+    border-radius: 4px;
+  }
+
+  .actionButton:active {
+    background-color: #e2e8f0 !important; /* Серый фон при нажатии */
+    transform: scale(0.9); /* Кнопка визуально "вдавливается" */
+    transition: transform 0.1s ease;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    margin: 0;
+  }
+
+  .titleGroup {
+    max-width: 360px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .searchWrapper {
+    max-width: 376px;
   }
 }

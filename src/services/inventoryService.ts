@@ -1,13 +1,13 @@
 import { supabase } from "@/lib/supabase";
 import { InventoryCreateInput } from "@/lib/validators/inventorySchema";
-import { Inventory } from "@/types";
+import { Inventory, OrderDetailsUI, OrderUI } from "@/types";
 
 // Загрузка инвентаря на страницу
 export async function loadInventory(): Promise<Inventory[]> {
   const { data, error } = await supabase
     .from("inventory")
     .select(
-      "id, name, category, daily_price, quantity, status, serial_number, article,purchase_price, purchase_date",
+      "id, name, category, daily_price,  status, serial_number, article,purchase_price, purchase_date",
     )
     .order("name");
 
@@ -112,4 +112,74 @@ export const updateInventoryStatus = async (id: string, status: string) => {
 
   if (error) throw error;
   return data;
+};
+
+// ТО инструмента
+export const incrementMaintenanceCounters = async (
+  inventoryId: string,
+  days: number,
+) => {
+  const { error } = await supabase.rpc("increment_work_days", {
+    item_id: inventoryId,
+    days_to_add: days,
+  });
+  if (error) throw error;
+};
+
+export const resetMaintenanceCounter = async (id: string) => {
+  const { data, error } = await supabase
+    .from("inventory")
+    .update({
+      work_days_count: 0,
+      last_maintenance_date: new Date().toISOString(),
+    })
+    .eq("id", id);
+
+  if (error) {
+    console.error("Ошибка при сбросе счетчика ТО:", error);
+    throw error;
+  }
+
+  return data;
+};
+
+export const processOrderMaintenance = async (
+  order: OrderUI | OrderDetailsUI,
+) => {
+  const items =
+    ("order_items" in order ? order.order_items : order.tools) || [];
+  if (!items.length) return;
+
+  const maintenancePromises = items.map(async (item) => {
+    // 1. Определяем ID (используем логику глубокого поиска, которую мы отладили)
+    let toolId: string | undefined;
+
+    if ("inventory" in item && item.inventory) {
+      toolId = item.inventory.id;
+    } else if ("id" in item) {
+      toolId = item.id;
+    }
+
+    if (!toolId) {
+      console.warn("⚠️ Пропущен айтем без ID инструмента:", item);
+      return;
+    }
+
+    // 2. Расчет дней (используем даты из айтема или общие из заказа)
+    const sDate = item.start_date || order.start_date;
+    const eDate = item.end_date || order.end_date;
+
+    let daysToWork = 1;
+    if (sDate && eDate) {
+      const start = new Date(sDate);
+      const end = new Date(eDate);
+      const diffMs = Math.abs(end.getTime() - start.getTime());
+      daysToWork = Math.ceil(diffMs / (1000 * 60 * 60 * 24)) || 1;
+    }
+
+    // 3. Используем ВАШ существующий сервис
+    return incrementMaintenanceCounters(toolId, daysToWork);
+  });
+
+  return Promise.all(maintenancePromises);
 };

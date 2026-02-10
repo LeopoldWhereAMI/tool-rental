@@ -1,86 +1,191 @@
 .addInventoryForm {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  max-width: 800px;
-  margin: 0 auto;
-
-  & h1 {
-    padding-bottom: 5px;
-    margin-bottom: var(--default-padding);
-    border-bottom: var(--input-border);
-    font-size: 24px;
-    font-weight: 700;
-  }
+  gap: 20px;
+  max-width: 700px;
+  margin-inline: auto;
+  margin-top: 15px;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
 }
 
-.input {
-  padding: var(--input-padding);
-  border: var(--input-border);
-  border-radius: var(--default-radius);
-  font-size: 14px;
-  transition: all 0.2s;
+.addInventoryForm h1 {
+  padding-bottom: 15px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+}
 
-  &:focus {
-    outline: none;
-    border-color: var(--input-border-focus);
-    box-shadow: var(--default-box-shadow);
-  }
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+/* Базовый стиль для всех полей */
+.select {
+  appearance: none; /* Убираем стандартную уродливую стрелку */
+  cursor: pointer;
+  /* Добавляем современную SVG иконку шеврона вниз */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px; /* Оставляем место под стрелочку */
+}
+
+.select:hover {
+  border-color: #9ca3af;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1f2937;
+  transition: all 0.2s ease;
+  background-color: #fff;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .input.error {
   border-color: #ef4444;
-
-  &:focus {
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-  }
 }
 
-.row {
+/* Контейнер для иконки внутри инпута */
+.inputWrapper {
+  position: relative;
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* Модификатор для инпута с иконкой справа */
+.inputWithIcon {
+  padding-right: 35px !important;
+}
+
+.inputIcon {
+  position: absolute;
+  right: 12px;
+  color: #9ca3af;
+  pointer-events: none;
+  transition: color 0.2s ease;
+}
+
+.inputWrapper:focus-within .inputIcon {
+  color: #2563eb;
 }
 
 .textarea {
-  padding: var(--input-padding);
-  border: var(--input-border);
-  border-radius: var(--default-radius);
-  font-size: 14px;
-  font-family: inherit;
   min-height: 100px;
-
-  &:focus {
-    outline: none;
-    border-color: var(--input-border-focus);
-    box-shadow: var(--default-box-shadow);
-  }
+  resize: vertical;
+  font-family: inherit;
 }
 
 .saveInventoryBtn {
-  padding: var(--button-padding);
-  background-color: var(--header-background);
-  color: var(--color-white);
-  border: 1px solid var(--btn-border-color);
-  border-radius: var(--default-radius);
+  margin-top: 10px;
+  padding: 12px 24px;
+  background-color: #111827;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
   font-size: 16px;
-  transition:
-    background-color 0.3s ease,
-    transform 0.1s ease;
-  box-shadow: var(--default-box-shadow);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
-  &:hover {
-    background-color: var(--btn-hover-color);
-  }
+.saveInventoryBtn:hover:not(:disabled) {
+  background-color: #374151;
+}
 
-  &:active {
-    background-color: var(--color-white);
-    color: var(--btn-text-color-active);
-    border-color: var(--btn-hover-color);
-    transform: scale(0.97);
-  }
+.saveInventoryBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
+/* Убираем стандартную иконку в Chrome, Edge и Safari */
+.input::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+}
+
+/* Для Firefox (в нем иконка обычно скрыта, пока не наведен фокус, 
+   но для надежности можно использовать это) */
+.input[type="date"] {
+  position: relative;
+  -moz-appearance: textfield;
+}
+
+/* артикул */
+/* Специальный стиль для поля артикула, которое заполняется автоматом */
+.articleInput {
+  background-color: #f9fafb !important; /* Светло-серый фон */
+  border: 1px dashed #d1d5db !important; /* Пунктирная граница подчеркивает "автоматичность" */
+  font-family:
+    "Courier New", Courier, monospace; /* Моноширинный шрифт для кодов выглядит круто */
+  font-weight: 600;
+  color: #374151;
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.articleInput:focus {
+  background-color: #ffffff !important;
+  border-style: solid !important;
+  border-color: #2563eb !important;
+  outline: none;
+}
+
+/* Ошибка в поле */
+.error {
+  border-color: #ef4444 !important;
+  background-color: #fef2f2 !important;
+}
+
+/* Отступы для скелетона */
+.skeletonForm {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Универсальный отступ между рядами */
+}
+
+.skeletonTitle {
+  margin-bottom: 12px;
+}
+
+.skeletonTextarea {
+  margin-top: 8px;
+}
+
+.skeletonButton {
+  margin-top: 12px;
+}
+
+.skeletonTitle {
+  padding-bottom: 15px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #f3f4f6;
 }

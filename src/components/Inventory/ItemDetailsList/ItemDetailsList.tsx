@@ -17,11 +17,19 @@ export default function ItemDetailsList({ item }: ItemDetailsListProps) {
     { label: "Дата приёма на склад", value: validateDate(item.created_at) },
     { label: "Стоимость аренды", value: `${item.daily_price}р` },
     { label: "ID", value: item.id },
-    { label: "Примечания", value: item.notes },
+    { label: "Примечания", value: item.notes || "—" },
     { label: "Дата покупки", value: validateDate(item.purchase_date) },
-    { label: "Закупочная цена", value: `${item.purchase_price}р` },
-    { label: "Количество на складе", value: item.quantity },
-    { label: "Серийный номер", value: item.serial_number },
+    {
+      label: "Закупочная цена",
+      value: item.purchase_price ? `${item.purchase_price}р` : "—",
+    },
+    {
+      label: "Серийный номер",
+      value:
+        item.serial_number && item.serial_number.trim() !== ""
+          ? item.serial_number
+          : "—",
+    },
     {
       label: "Статус доступности",
       value: item.status && validateStatus(item.status),
@@ -32,8 +40,9 @@ export default function ItemDetailsList({ item }: ItemDetailsListProps) {
   return (
     <ul className={styles.itemInfoList}>
       {details.map((detail, index) => (
-        <li key={index}>
-          {detail.label} <strong>{detail.value}</strong>
+        <li key={index} className={styles.itemInfoRow}>
+          <span className={styles.label}>{detail.label}</span>
+          <strong className={styles.value}>{detail.value}</strong>
         </li>
       ))}
     </ul>

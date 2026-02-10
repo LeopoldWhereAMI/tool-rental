@@ -1,0 +1,106 @@
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: #f3f4f6;
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  height: 44px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.filterBtn {
+  height: 100%;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b5563;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.filterBtn:hover:not(.activeFilter) {
+  color: #111827;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* Базовые цвета активных кнопок для Заказов */
+.activeFilter {
+  background: #ffffff;
+  color: #111827;
+  font-weight: 600;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.06);
+}
+.activeFilter.status_active {
+  color: #059669;
+  border: 1px solid rgba(5, 150, 105, 0.2);
+}
+.activeFilter.status_completed {
+  color: #475569;
+  background-color: #f1f5f9;
+  border: 1px solid rgba(71, 85, 105, 0.2);
+}
+.activeFilter.status_cancelled {
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+/* Базовые цвета активных кнопок для Инвентаря */
+.status_available.activeFilter {
+  background-color: #ecfdf5;
+  color: #065f46;
+}
+.status_rented.activeFilter {
+  background-color: #eff6ff;
+  color: #1e40af;
+}
+.status_maintenance.activeFilter {
+  background-color: #fef2f2;
+  color: #991b1b;
+}
+.status_reserved.activeFilter {
+  background-color: #f5f3ff;
+  color: #5b21b6;
+}
+
+@media (max-width: 480px) {
+  .filters {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    -ms-overflow-style: none;
+    padding: 4px 8px;
+  }
+
+  .filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filters::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+  }
+
+  .filters::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 2px;
+  }
+
+  .filterBtn {
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+}

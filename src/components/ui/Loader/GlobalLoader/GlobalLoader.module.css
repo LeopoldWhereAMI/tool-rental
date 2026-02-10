@@ -1,0 +1,54 @@
+.wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  letter-spacing: -0.5px;
+  color: #1e293b;
+}
+
+.brandIcon {
+  font-size: 32px;
+}
+
+.brandName strong {
+  color: #2563eb;
+}
+
+.spinnerWrapper {
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  color: #2563eb;
+  opacity: 0.8;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -9,61 +9,48 @@ import BackButton from "@/components/BackButton/BackButton";
 import ItemDetailsList from "@/components/Inventory/ItemDetailsList/ItemDetailsList";
 import ItemGallery from "@/components/Inventory/ItemGallery/ItemGallery";
 import { calculateDaysInWork, validateStatus } from "@/helpers";
-
-// export default function InventoryItemPage() {
-//   const params = useParams();
-//   const id = params.id as string;
-//   const { item, loading, error, mutate } = useInventoryItem(id);
-
-//   if (loading) return <div>Загрузка...</div>;
-//   if (error) return <div>Ошибка: {error}</div>;
-//   if (!item) return <div>Инструмент не найден</div>;
-
-//   return (
-//     <div className={styles.InventoryItemPage}>
-//       <PageWrapper>
-//         <header className={styles.header}>
-//           <BackButton>Назад</BackButton>
-//           <Link href={`/inventory/edit/${id}`} className={styles.editBtn}>
-//             Редактировать
-//           </Link>
-//         </header>
-//       </PageWrapper>
-//       <div className={styles.columnsBlock}>
-//         <PageWrapper>
-//           <ItemGallery id={id} imageUrl={item.image_url} onMutate={mutate} />
-//         </PageWrapper>
-//         <PageWrapper>
-//           <section>
-//             <h2>Подробная информация</h2>
-//             <ItemDetailsList item={item} />
-//           </section>
-//         </PageWrapper>
-//         <PageWrapper>
-//           <section>
-//             <h2>Информация об аренде</h2>
-//           </section>
-//         </PageWrapper>
-//       </div>
-//     </div>
-//   );
-// }
+import InventoryItemSkeleton from "./InventoryItemSkeleton";
+import ErrorBlock from "@/components/ui/ErrorBlock/ErrorBlock";
+import { toast } from "sonner";
+import { resetMaintenanceCounter } from "@/services/inventoryService";
+import MaintenanceProgress from "@/components/MaintenanceProgress/MaintenanceProgress";
+import { useState } from "react";
+import MaintenanceConfirmModal from "@/components/ui/MyModal/MaintenanceConfirmModal";
 
 export default function InventoryItemPage() {
+  const [isMaintenanceModalOpen, setIsMaintenanceModalOpen] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
   const params = useParams();
   const id = params.id as string;
   const { item, loading, error, mutate } = useInventoryItem(id);
 
-  if (loading) return <div className={styles.center}>Загрузка...</div>;
-  if (error) return <div className={styles.center}>Ошибка: {error}</div>;
-  if (!item) return <div className={styles.center}>Инструмент не найден</div>;
+  // Обработчик сброса ТО
+  const handleResetTO = async () => {
+    setIsResetting(true);
+    try {
+      await resetMaintenanceCounter(id);
+      toast.success("Техническое обслуживание зафиксировано");
+      mutate();
+      setIsMaintenanceModalOpen(false); // Закрываем модалку
+    } catch (err) {
+      toast.error("Не удалось сбросить счетчик");
+      console.error(err);
+    } finally {
+      setIsResetting(false);
+    }
+  };
+  if (loading) return <InventoryItemSkeleton />;
+
+  if (error || !item) {
+    return <ErrorBlock message="Инструмент не найден в базе данных" />;
+  }
 
   return (
     <PageWrapper>
       <div className={styles.container}>
         {/* Верхняя панель навигации */}
         <header className={styles.header}>
-          <BackButton fallback="/inventory">Назад к инвентарю</BackButton>
+          <BackButton href="/inventory">К списку инвентаря</BackButton>
           <Link href={`/inventory/edit/${id}`} className={styles.editBtn}>
             Редактировать
           </Link>
@@ -75,21 +62,6 @@ export default function InventoryItemPage() {
             {/* <div className={styles.card}> */}
             <ItemGallery id={id} imageUrl={item.image_url} onMutate={mutate} />
             {/* </div> */}
-
-            {/* Быстрая сводка под фото */}
-            {/* <div className={`${styles.card} ${styles.quickStats}`}>
-              <h2>Быстрая сводка</h2>
-              <div className={styles.stat}>
-                <span>Статус</span>
-                <span className={styles.statusBadge}>
-                  {item.status && validateStatus(item.status)}
-                </span>
-              </div>
-              <div className={styles.stat}>
-                <span>Артикул</span>
-                <strong>{item.article}</strong>
-              </div>
-            </div> */}
 
             <div className={`${styles.card} ${styles.quickStats}`}>
               {/* Статус */}
@@ -119,9 +91,32 @@ export default function InventoryItemPage() {
               <hr className={styles.divider} />
 
               {/* Новые полезные метрики */}
+
+              {/* БЛОК ТЕХНИЧЕСКОГО ОБСЛУЖИВАНИЯ */}
+              <div className={styles.maintenanceSection}>
+                <MaintenanceProgress
+                  current={item.work_days_count || 0}
+                  interval={item.maintenance_interval_days || 30}
+                  onReset={() => setIsMaintenanceModalOpen(true)}
+                />
+              </div>
+
+              <hr className={styles.divider} />
+
               <div className={styles.stat}>
-                <span>В работе</span>
+                <span>В парке</span>
                 <span>{calculateDaysInWork(item.created_at)} дн.</span>
+              </div>
+
+              <div className={styles.stat}>
+                <span>Последнее ТО</span>
+                <span className={styles.lastMaintenance}>
+                  {item.last_maintenance_date
+                    ? new Date(item.last_maintenance_date).toLocaleDateString(
+                        "ru-RU",
+                      )
+                    : "Не проводилось"}
+                </span>
               </div>
 
               <div className={styles.stat}>
@@ -157,6 +152,12 @@ export default function InventoryItemPage() {
           </main>
         </div>
       </div>
+      <MaintenanceConfirmModal
+        isOpen={isMaintenanceModalOpen}
+        onClose={() => setIsMaintenanceModalOpen(false)}
+        onConfirm={handleResetTO}
+        loading={isResetting}
+      />
     </PageWrapper>
   );
 }

@@ -10,7 +10,7 @@ type DeleteConfirmModalProps = {
   onConfirm: () => void;
   itemName?: string;
   loading?: boolean;
-  itemType?: "инструмент" | "заказ" | "объект";
+  itemType?: "инструмент" | "заказ" | "объект" | "клиент";
 };
 
 export default function DeleteConfirmModal({

@@ -1,32 +1,14 @@
-/* .searchInput {
-  width: 100%;
-  margin-top: 14px;
-  padding: var(--input-padding);
-  border: var(--input-border);
-  border-radius: var(--default-radius);
-  font-size: 14px;
-  transition: all 0.2s;
-
-  &:focus {
-    outline: none;
-    border-color: var(--input-border-focus);
-    box-shadow: var(--default-box-shadow);
-  }
-} */
-
 .searchInput {
   width: 100%;
-  /* Убираем margin-top, так как контейнер .controls уже управляет позицией */
+
   margin-top: 0;
 
-  /* Высота 44px соответствует высоте .filters в page.module.css */
   height: 44px;
 
-  /* Увеличиваем боковые отступы для красоты */
-  padding: 0 16px;
+  padding: 0 16px 0 40px;
 
   border: 1px solid #e5e7eb;
-  border-radius: 12px; /* Совпадает с радиусом .filters */
+  border-radius: 12px;
   font-size: 14px;
   background-color: #ffffff;
   color: #111827;
@@ -39,13 +21,36 @@
 
   &:focus {
     outline: none;
-    border-color: #2563eb; /* Акцентный синий */
+    border-color: #2563eb;
     background-color: #fff;
-    /* Мягкая тень при фокусе */
+
     box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
   }
 
   &:hover {
     border-color: #d1d5db;
+  }
+}
+
+.searchWrapper {
+  position: relative; /* Чтобы позиционировать иконку внутри */
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  color: #94a3b8;
+  pointer-events: none; /* Чтобы иконка не мешала клику по инпуту */
+}
+
+@media (max-width: 480px) {
+  .searchInput {
+    font-size: 12px;
+    padding: 0 12px 0 30px;
+  }
+  .searchIcon {
+    width: 12px;
   }
 }

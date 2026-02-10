@@ -1,10 +1,13 @@
 .pageWrapper {
   width: 100%;
   padding: var(--main-padding);
-
-  background-color: var(--color-white);
+  background-color: #f1f5f9;
   color: var(--color-black);
+  min-height: 100vh;
+}
 
-  border-radius: var(--default-radius);
-  box-shadow: var(--default-box-shadow);
+@media (max-width: 480px) {
+  .pageWrapper {
+    padding: 8px;
+  }
 }

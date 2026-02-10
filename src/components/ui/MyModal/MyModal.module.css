@@ -95,8 +95,9 @@
 }
 
 .closeBtn:hover {
-  background-color: #f3f4f6;
-  color: #374151;
+  background: #e2e8f0;
+  color: #1e293b;
+  transform: rotate(90deg);
 }
 
 /* Стили сообщения для специализированной модалки удаления */
@@ -140,6 +141,39 @@
   margin-top: 32px;
 }
 
+.completeBtnConfirm {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+}
+
+.completeBtnConfirm:hover:not(:disabled) {
+  background-color: #059669; /* Darker green */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.completeBtnConfirm:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.completeBtnConfirm:disabled {
+  background-color: #e2e8f0;
+  color: #94a3b8;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 .deleteBtnConfirm {
   background-color: #dc2626;
   color: #ffffff;
@@ -163,15 +197,15 @@
 }
 
 .cancelBtn {
-  background-color: #ffffff;
-  color: #374151;
-  padding: 10px 18px;
-  border-radius: 8px;
+  background-color: transparent;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 14px;
   font-weight: 600;
-  font-size: 0.875rem;
-  border: 1px solid #d1d5db;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
 }
 
 .cancelBtn:hover:not(:disabled) {

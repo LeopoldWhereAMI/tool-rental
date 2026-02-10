@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import Header from "@/components/Header/Header";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import { Toaster } from "sonner";
+import Footer from "@/components/Footer/Footer";
 
 export const metadata: Metadata = {
   title: "Главная страница",
@@ -17,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" className={fontVariables}>
-      <body>
+      <body className="root-body">
         <Toaster position="top-right" richColors closeButton />
         <Header />
 
@@ -25,6 +26,7 @@ export default function RootLayout({
           <Sidebar />
           <main className="main-content">{children}</main>
         </div>
+        <Footer />
       </body>
     </html>
   );

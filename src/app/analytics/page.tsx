@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
 import styles from "./page.module.css";
 import { getAnalyticsData } from "@/services/analyticsService";
-import { Banknote, CheckCircle2, CalendarDays } from "lucide-react";
+import { Banknote, CheckCircle2, CalendarDays, TrendingUp } from "lucide-react";
+import AnalyticsSkeleton from "./AnalyticsSkeleton";
+import { months } from "@/constants";
+import StatCard from "./components/StatCard";
 
 export default function AnalyticsPage() {
   const [data, setData] = useState<{
@@ -19,27 +22,45 @@ export default function AnalyticsPage() {
     new Date().getMonth(),
   );
 
-  const months = [
-    "Январь",
-    "Февраль",
-    "Март",
-    "Апрель",
-    "Май",
-    "Июнь",
-    "Июль",
-    "Август",
-    "Сентябрь",
-    "Октябрь",
-    "Ноябрь",
-    "Декабрь",
-  ];
+  // Оборачиваем в useCallback, чтобы функция не пересоздавалась
+  const fetchAnalytics = useCallback(
+    async (month: number) => {
+      setLoading(true);
+      try {
+        const result = await getAnalyticsData(
+          month === -1 ? null : month,
+          currentYear,
+        );
+        setData(result);
+      } catch (error) {
+        console.error("Ошибка загрузки данных:", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [currentYear],
+  );
 
   useEffect(() => {
-    setLoading(true);
-    // Передаем null, если выбран "Весь год"
-    getAnalyticsData(selectedMonth === -1 ? null : selectedMonth, currentYear)
-      .then(setData)
-      .finally(() => setLoading(false));
+    fetchAnalytics(selectedMonth);
+  }, [fetchAnalytics, selectedMonth]);
+
+  const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newMonth = Number(e.target.value);
+    setSelectedMonth(newMonth);
+    fetchAnalytics(newMonth);
+  };
+
+  // Вычисляем средний чек отдельно от рендера
+  const averageCheck = useMemo(() => {
+    if (!data || data.completedCount === 0) return 0;
+    return Math.round(data.totalRevenue / data.completedCount);
+  }, [data]);
+
+  const periodLabel = useMemo(() => {
+    return selectedMonth === -1
+      ? `за ${currentYear} год`
+      : `за ${months[selectedMonth].toLowerCase()}`;
   }, [selectedMonth, currentYear]);
 
   return (
@@ -53,8 +74,9 @@ export default function AnalyticsPage() {
 
           <select
             value={selectedMonth}
-            onChange={(e) => setSelectedMonth(Number(e.target.value))}
+            onChange={handleMonthChange}
             className={styles.select}
+            disabled={loading}
           >
             <option value={-1}>Весь {currentYear} год</option>
             <option disabled>──────────</option>
@@ -68,41 +90,32 @@ export default function AnalyticsPage() {
       </div>
 
       {loading ? (
-        <div className={styles.center}>Загрузка данных...</div>
+        <AnalyticsSkeleton />
       ) : (
         <div className={styles.statsGrid}>
-          <div className={styles.statCard}>
-            <div
-              className={styles.iconWrapper}
-              style={{ backgroundColor: "#ecfdf5" }}
-            >
-              <Banknote size={24} className={styles.iconRevenue} />
-            </div>
-            <div className={styles.statInfo}>
-              <span>
-                Выручка{" "}
-                {selectedMonth === -1
-                  ? `за ${currentYear} год`
-                  : `за ${months[selectedMonth].toLowerCase()}`}
-              </span>
-              <strong>{data?.totalRevenue.toLocaleString() || 0} ₽</strong>
-            </div>
-          </div>
+          <StatCard
+            title={`Выручка ${periodLabel}`}
+            value={`${data?.totalRevenue.toLocaleString() || 0} ₽`}
+            icon={<Banknote size={24} />}
+            iconColor="#10b981"
+            bgColor="#ecfdf5"
+          />
 
-          <div className={styles.statCard}>
-            <div
-              className={styles.iconWrapper}
-              style={{ backgroundColor: "#eff6ff" }}
-            >
-              <CheckCircle2 size={24} className={styles.iconOrders} />
-            </div>
-            <div className={styles.statInfo}>
-              <span>
-                Заказов {selectedMonth === -1 ? "всего за год" : "за месяц"}
-              </span>
-              <strong>{data?.completedCount || 0}</strong>
-            </div>
-          </div>
+          <StatCard
+            title={`Заказов ${selectedMonth === -1 ? "всего за год" : "за месяц"}`}
+            value={data?.completedCount || 0}
+            icon={<CheckCircle2 size={24} />}
+            iconColor="#3b82f6"
+            bgColor="#eff6ff"
+          />
+
+          <StatCard
+            title="Средний чек"
+            value={`${averageCheck.toLocaleString()} ₽`}
+            icon={<TrendingUp size={24} />}
+            iconColor="#d97706"
+            bgColor="#fef3c7"
+          />
         </div>
       )}
     </PageWrapper>

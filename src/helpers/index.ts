@@ -1,26 +1,25 @@
 import { DATE_LOCALE, DATE_OPTIONS } from "@/constants";
+import { calculateOrderTotal } from "@/services/orderService";
+import { OrderDetailsUI, OrderUI } from "@/types";
 
-export const inventoryListTitles = [
-  { id: "Артикул", text: "Артикул" },
-  { id: "Название", text: "Название" },
-  { id: "Все категории", text: "Все категории", filter: "select" },
-  { id: "Серийный номер", text: "Серийный номер" },
-  { id: "Количество", text: "Количество" },
-  { id: "Статус", text: "Статус" },
-  { id: "Стоимость аренды", text: "Стоимость аренды" },
-  // { id: "Дата покупки", text: "Дата покупки" },
-  { id: "", text: "" },
-];
+// export const inventoryListTitles = [
+//   { id: "Артикул", text: "Артикул" },
+//   { id: "Название", text: "инструмент" },
+//   { id: "Все категории", text: "Все категории", filter: "select" },
+//   { id: "Серийный номер", text: "Серийный номер" },
+//   { id: "Статус", text: "Статус" },
+//   { id: "Стоимость аренды", text: "Стоимость аренды" },
+// ];
 
 export const validateCategory = (value: string) => {
   let category = "";
 
   switch (value) {
     case "gas_tools":
-      category = "Бензоинструмент";
+      category = "Бензо";
       break;
     case "electric_tools":
-      category = "Электроинструмент";
+      category = "Электро";
       break;
     default:
       category = "Неизвестная категория";
@@ -52,7 +51,6 @@ export const validateStatus = (value: string) => {
 };
 
 // Функция для валидации статуса заказа
-
 export const validateOrderStatus = (status: string) => {
   switch (status) {
     case "active":
@@ -70,12 +68,12 @@ export const validateOrderStatus = (status: string) => {
 export const validateDate = (
   value: number | string | null | undefined,
 ): string => {
-  if (!value) return "-";
+  if (!value) return "—";
 
   const date = typeof value === "number" ? new Date(value) : new Date(value);
 
   return isNaN(date.getTime())
-    ? "-"
+    ? "—"
     : date.toLocaleDateString(DATE_LOCALE, DATE_OPTIONS);
 };
 
@@ -190,3 +188,139 @@ export const calculateDaysInWork = (
   // Перевод в дни
   return Math.floor(diffTime / (1000 * 60 * 60 * 24));
 };
+
+//
+export const calculateDays = (start: string, end: string) => {
+  const diff = new Date(end).getTime() - new Date(start).getTime();
+
+  return Math.max(1, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+};
+
+export const calculateItemTotal = (
+  startDate: string,
+  endDate: string,
+  pricePerDay: number,
+) => calculateDays(startDate, endDate) * pricePerDay;
+
+// ордерформхелпер
+type WatchedItem = {
+  inventory_id: string;
+  start_date?: string;
+  end_date?: string;
+};
+
+type InventoryLike = {
+  daily_price: number;
+};
+
+export function calcOrderTotalFromItems(
+  items: WatchedItem[] | undefined,
+  inventoryMap: Map<string, InventoryLike>,
+): number {
+  if (!items || items.length === 0) return 0;
+
+  return items.reduce((acc, item) => {
+    const tool = inventoryMap.get(item.inventory_id);
+
+    if (!tool || !item.start_date || !item.end_date) {
+      return acc;
+    }
+
+    const itemTotal = calculateOrderTotal(
+      item.start_date,
+      item.end_date,
+      tool.daily_price,
+    );
+
+    const validItemTotal = isNaN(itemTotal) ? 0 : Math.max(0, itemTotal);
+
+    return acc + validItemTotal;
+  }, 0);
+}
+
+export const getActualEndDate = (order: OrderUI): string => {
+  const itemDates = order.tools
+    ? order.tools.map((t) => t.end_date).filter(Boolean)
+    : [];
+
+  if (itemDates.length > 0) {
+    return itemDates.reduce((latest: string, current: string) =>
+      new Date(current) > new Date(latest) ? current : latest,
+    );
+  }
+
+  return order.end_date || "";
+};
+
+export const calculateReturnStatus = (endDate: string, status: string) => {
+  // 1. Сначала проверяем, не завершен ли заказ
+  if (status === "completed") {
+    return { text: "Заказ завершён", type: "completed" };
+  }
+
+  // 2. Если данных о дате нет или статус не активен (и не завершен)
+  if (status !== "active" || !endDate) {
+    return { text: "—", type: "" };
+  }
+
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  const end = new Date(endDate);
+  end.setHours(0, 0, 0, 0);
+
+  const diffTime = end.getTime() - now.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays < 0) {
+    return {
+      text: `Просрочено: ${Math.abs(diffDays)} дн.`,
+      type: "overdue",
+    };
+  } else if (diffDays === 0) {
+    return { text: "Сегодня возврат", type: "today" };
+  } else {
+    return { text: `Осталось: ${diffDays} дн.`, type: "onTime" };
+  }
+};
+
+//
+interface DateRangeItem {
+  start_date: string | Date;
+  end_date: string | Date;
+}
+
+export const getOrderDateRange = (items: DateRangeItem[]) => {
+  if (!items?.length) return { start: null, end: null };
+
+  const starts = items.map((i) => i.start_date).filter(Boolean);
+  const ends = items.map((i) => i.end_date).filter(Boolean);
+
+  return {
+    start: starts.length ? new Date(starts.sort()[0]) : null,
+    end: ends.length ? new Date(ends.sort().reverse()[0]) : null,
+  };
+};
+
+export function calculateFinalAmount(order: OrderDetailsUI) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Логика получения даты из твоих хелперов
+  const endDate = new Date(order.actual_end_date || order.end_date);
+  endDate.setHours(0, 0, 0, 0);
+
+  const diffTime = today.getTime() - endDate.getTime();
+  const overdueDays = Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)));
+
+  if (overdueDays > 0) {
+    const dailyRate =
+      order.order_items?.reduce(
+        (sum: number, item) => sum + (item.inventory?.daily_price || 0),
+        0,
+      ) || 0;
+
+    return order.total_price + overdueDays * dailyRate;
+  }
+
+  return order.total_price;
+}

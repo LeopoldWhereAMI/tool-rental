@@ -1,0 +1,274 @@
+.container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 32px;
+  margin-top: 24px;
+}
+
+.profileCard {
+  background: white;
+  padding: 32px 24px;
+  border-radius: 16px;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+}
+
+.avatarLarge {
+  width: 80px;
+  height: 80px;
+  background: #3b82f6;
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.name {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+  color: #1e293b;
+}
+
+.middleName {
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.statBox {
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.statValue {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-top: 4px;
+}
+
+.orderCard {
+  background: white;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  margin-bottom: 12px;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.orderCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Стили для статусов аналогичны тем, что в списке заказов */
+/* ... твой существующий код ... */
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 20px;
+}
+
+.orderMain {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.orderIcon {
+  color: #94a3b8;
+  background: #f8fafc;
+  padding: 8px;
+  border-radius: 8px;
+  box-sizing: content-box;
+}
+
+.orderNumber {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.orderDates {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.orderMeta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: #94a3b8;
+}
+
+.orderPrice {
+  font-weight: 700;
+  color: #1e293b;
+  min-width: 80px;
+  text-align: right;
+}
+
+/* Статусы (соответствуют возвращаемым значениям из validateOrderStatus) */
+.statusBadge {
+  min-width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.statusActive {
+  background: #ecfdf5;
+  color: #10b981;
+} /* Активен */
+.statusCompleted {
+  background: #f1f5f9;
+  color: #64748b;
+} /* Завершен */
+.statusPending {
+  background: #fffbeb;
+  color: #f59e0b;
+} /* Ожидает */
+.statusCancelled {
+  background: #fef2f2;
+  color: #ef4444;
+} /* Отменен */
+
+.emptyOrders {
+  background: #f8fafc;
+  border: 2px dashed #e2e8f0;
+  padding: 40px;
+  text-align: center;
+  border-radius: 16px;
+  color: #94a3b8;
+}
+
+.phoneLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.phoneLink:hover {
+  text-decoration: underline;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+  }
+}
+/*  */
+.historyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  color: #94a3b8;
+}
+
+.miniSearch {
+  padding: 8px 12px 8px 32px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  outline: none;
+  font-size: 0.875rem;
+  width: 180px;
+  transition: border-color 0.2s;
+}
+
+.miniSearch:focus {
+  border-color: #3b82f6;
+}
+
+/* Пагинация */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.pageBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  cursor: pointer;
+  color: #64748b;
+  transition: all 0.2s;
+}
+
+.pageBtn:hover:not(:disabled) {
+  background: #f8fafc;
+  color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.pageBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pageInfo {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.pageInfo strong {
+  color: #1e293b;
+}

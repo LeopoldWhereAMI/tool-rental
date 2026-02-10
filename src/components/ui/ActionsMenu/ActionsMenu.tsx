@@ -22,8 +22,8 @@ type ActionsMenuProps = {
   onClose: () => void;
   currentStatus?: string;
   onDeleteClick: () => void;
-  onStatusUpdate?: (id: string, newStatus: any) => Promise<void>;
-  type?: "inventory" | "order";
+  onStatusUpdate?: (id: string, newStatus: string) => Promise<void>;
+  type?: "inventory" | "order" | "client";
 };
 
 export default function ActionsMenu({
@@ -39,6 +39,20 @@ export default function ActionsMenu({
 
   useClickOutside(menuRef, onClose);
 
+  // Вспомогательная функция для определения базового пути
+  const getBasePath = () => {
+    switch (type) {
+      case "client":
+        return "clients";
+      case "inventory":
+        return "inventory";
+      case "order":
+        return "orders";
+      default:
+        return "inventory";
+    }
+  };
+
   // Функция смены статуса инструмента
   const handleStatusChange = async (newStatus: "maintenance" | "available") => {
     try {
@@ -49,7 +63,7 @@ export default function ActionsMenu({
           : "Инструмент готов к работе",
       );
       await refresh();
-      onClose(); // Закрываем меню после действия
+      onClose();
     } catch (error) {
       toast.error("Ошибка при обновлении статуса");
       console.error(error);
@@ -72,9 +86,7 @@ export default function ActionsMenu({
       <ul className={styles.actionsMenuList}>
         {/* Общие действия */}
         <li>
-          <Link
-            href={`/${type === "inventory" ? "inventory" : "orders"}/${id}`}
-          >
+          <Link href={`/${getBasePath()}/${id}`}>
             <ExternalLink size={16} />
             Открыть
           </Link>
@@ -131,6 +143,14 @@ export default function ActionsMenu({
               </button>
             </li>
           </>
+        )}
+
+        {type === "client" && (
+          <li>
+            <Link href={`/clients/${id}/edit`}>
+              <Pencil size={16} /> Редактировать
+            </Link>
+          </li>
         )}
 
         {/* Разделитель */}

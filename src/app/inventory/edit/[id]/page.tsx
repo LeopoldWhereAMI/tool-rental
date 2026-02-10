@@ -8,6 +8,8 @@ import { InventoryCreateInput } from "@/lib/validators/inventorySchema";
 import { updateInventory } from "@/services/inventoryService";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
+import ErrorBlock from "@/components/ui/ErrorBlock/ErrorBlock";
+import InventoryFormSkeleton from "@/components/Form/InventoryForm/InventoryFormSkeleton";
 
 export default function EditInventoryPage() {
   const router = useRouter();
@@ -29,14 +31,20 @@ export default function EditInventoryPage() {
     }
   };
 
-  if (loading || !defaultValues) return <PageWrapper>Загрузка...</PageWrapper>;
-  if (error || !defaultValues)
-    return <PageWrapper>{error || "Ошибка"}</PageWrapper>;
+  if (loading) return <InventoryFormSkeleton />;
+  if (error || !defaultValues) {
+    return (
+      <ErrorBlock
+        title="Не удалось загрузить данные"
+        message={error || "Инструмент не найден"}
+      />
+    );
+  }
 
   return (
     <div>
       <PageWrapper>
-        <BackButton>Назад</BackButton>
+        <BackButton href={`/inventory/${id}`}>Назад к инструменту</BackButton>
         <InventoryForm
           defaultValues={defaultValues}
           onSubmit={onSubmit}

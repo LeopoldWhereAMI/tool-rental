@@ -20,7 +20,6 @@ export default function useEditInventory(id?: string) {
           name: item.name,
           article: item.article,
           category: item.category,
-          quantity: item.quantity,
           daily_price: item.daily_price,
           purchase_price: item.purchase_price,
           purchase_date: item.purchase_date

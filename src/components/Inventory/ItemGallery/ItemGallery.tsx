@@ -1,5 +1,4 @@
 import { supabase } from "@/lib/supabase";
-// import styles from "./ItemGallery.module.css";
 import { toast } from "sonner";
 import ImageUploader from "@/components/ui/ImageUploader/ImageUploader";
 

@@ -1,12 +1,28 @@
 .itemInfoList {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
-  & li {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    border-bottom: var(--input-border);
-  }
+.itemInfoRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 14px;
+}
+
+.itemInfoRow:last-child {
+  border-bottom: none;
+}
+
+.label {
+  color: #6b7280; /* Серый цвет для подписей */
+}
+
+.value {
+  color: #111827; /* Темный для значений */
+  text-align: right;
+  max-width: 60%;
+  word-break: break-word;
 }

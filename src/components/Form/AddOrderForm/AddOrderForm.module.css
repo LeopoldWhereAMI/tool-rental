@@ -1,114 +1,364 @@
 .addOrderForm {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-
-  & input {
-    width: 100%;
-    padding: var(--input-padding);
-    border: var(--input-border);
-    border-radius: var(--default-radius);
-    font-size: 14px;
-    transition: all 0.2s;
-
-    &:focus {
-      outline: none;
-      border-color: var(--input-border-focus);
-      box-shadow: var(--default-box-shadow);
-    }
-  }
+  gap: 24px;
+  max-width: 900px;
+  margin-inline: auto;
+  padding: 32px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .orderFormTitle {
-  margin-bottom: var(--default-padding);
-  font-size: 24px;
-  font-weight: 700;
-}
-
-.nameInfo {
-  display: flex;
-
-  width: 100%;
-  gap: 14px;
-  justify-content: space-between;
-}
-
-.pasportInfo {
-  display: flex;
-  margin-bottom: 14px;
-  width: 100%;
-  gap: 14px;
-  justify-content: space-between;
-}
-
-.flexItem {
-  flex: 1 1 200px; /* Растягивает поле, но не дает сжиматься меньше 200px */
-  width: 100%;
+  font-size: 26px;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 8px;
 }
 
 .sectionTitle {
-  /* text-align: center; */
-  margin-bottom: 14px;
   font-size: 18px;
   font-weight: 700;
+  color: #374151;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 10px;
 }
 
-.addClientSelect {
+/* Сетки для разных секций */
+.nameGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.passportGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1.5fr; /* Серия короче, номер и дата длиннее */
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 600px) {
+  .passportGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dateGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Общие стили полей */
+.input,
+.select {
   width: 100%;
-  margin-bottom: 14px;
-  padding: var(--input-padding);
-  border: var(--input-border);
-  border-radius: var(--default-radius);
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
   font-size: 14px;
   transition: all 0.2s;
-
-  &:focus {
-    outline: none;
-    border-color: var(--input-border-focus);
-    box-shadow: var(--default-box-shadow);
-  }
+  background: #fff;
 }
 
-.dateInputs {
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+/* Контейнеры с иконками */
+.inputWrapper {
+  position: relative;
   display: flex;
-  /* justify-content: space-between; */
-  gap: 14px;
-
-  margin-top: 10px;
-
-  & div {
-    width: 100%;
-  }
+  align-items: center;
 }
 
+.inputWithIcon {
+  padding-right: 35px !important;
+}
+
+.inputIcon {
+  position: absolute;
+  right: 12px;
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+/* Итоговый блок */
 .totalAmountBlock {
-  margin-top: 20px;
-  padding: 14px;
-  background-color: #f0fdf4; /* Светло-зеленый фон (успех/деньги) */
-  border: 1px solid #bbf7d0; /* Мягкая граница */
-  border-radius: 8px;
+  margin-top: 24px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  animation: fadeIn 0.3s ease-in-out; /* Плавное появление при расчете */
-
-  & span {
-    font-size: 14px;
-    color: #166534; /* Темно-зеленый текст */
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  & strong {
-    font-size: 20px;
-    color: #15803d;
-    font-weight: 700;
-  }
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-.totalAmountError {
-  background-color: red;
+.totalLabel {
+  display: flex;
+  flex-direction: column;
+}
+
+.totalLabel span {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #166534;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.totalAmount {
+  font-size: 24px;
+  color: #15803d;
+  font-weight: 800;
+}
+
+/* Кнопка */
+.btn {
+  padding: 16px;
+  background-color: #111827;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover:not(:disabled) {
+  background-color: #1f2937;
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.addToolBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.addToolBtn:not(:disabled) {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  border: 1px dashed #16a34a;
+}
+
+.addToolBtn:not(:disabled):hover {
+  background-color: #dcfce7;
+}
+
+.addToolBtn:disabled {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  border: 1px solid #d1d5db;
+  cursor: not-allowed;
+}
+
+/* Контейнер для одного ряда выбора инструмента */
+
+.itemRow {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.itemRow:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.itemRow:focus-within {
+  border-color: #16a34a; /* Подсветка активного ряда */
+}
+
+.itemGrid {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr 1fr 44px;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+/* Кнопка удаления (корзина) */
+.removeBtnWrapper {
+  padding-top: 28px; /* Выравнивание по линии инпутов (учитываем высоту label) */
+  display: flex;
+  justify-content: center;
+}
+
+.removeBtn {
+  margin-bottom: 5px;
+  padding: 10px;
+  background-color: #fef2f2;
+  color: #ef4444;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.removeBtn:hover {
+  background-color: #fee2e2;
+}
+
+.removeBtn:active {
+  transform: scale(0.95);
+}
+
+/* Сообщение об ошибке (дубликаты и т.д.) */
+.errorBlock {
+  color: #b91c1c;
+  background-color: #fef2f2;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  margin-bottom: 15px;
+  border: 1px solid #fee2e2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: fadeIn 0.2s ease-in; /* Маленький бонус для плавности */
+}
+
+.phoneStatus {
+  position: relative;
+  margin-top: 6px;
+  font-size: 13px;
+  animation: fadeIn 0.15s ease;
+}
+
+.foundList {
+  position: absolute;
+  z-index: 20;
+  top: 4px;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  padding: 6px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.06),
+    0 4px 6px -2px rgba(0, 0, 0, 0.04);
+
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.foundListHeader {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6b7280;
+  padding: 6px 8px;
+}
+
+.foundBadge {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.foundBadge:hover {
+  background: #f3f4f6;
+  transform: translateY(-1px);
+}
+
+.foundBadge:active {
+  transform: scale(0.98);
+}
+
+.foundName {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.foundPhone {
+  font-size: 12px;
+  color: #6b7280;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.match {
+  font-weight: 600;
+  color: #2563eb;
+  background: #dbeafe;
+  border-radius: 4px;
+  padding: 0 4px;
+}
+
+.newBadge {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #065f46;
+  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+  border: 1px dashed #34d399;
 }
 
 @keyframes fadeIn {
@@ -122,61 +372,39 @@
   }
 }
 
-.btn {
-  margin: 30px 0;
-  padding: var(--button-padding);
-  background-color: var(--header-background);
-  color: var(--color-white);
-  border: 1px solid var(--btn-border-color);
-  border-radius: var(--default-radius);
-  font-size: 16px;
-  transition:
-    background-color 0.3s ease,
-    transform 0.1s ease;
-  box-shadow: var(--default-box-shadow);
-
-  &:hover {
-    background-color: var(--btn-hover-color);
-  }
-
-  &:active {
-    background-color: var(--color-white);
-    color: var(--btn-text-color-active);
-    border-color: var(--btn-hover-color);
-    transform: scale(0.97);
-  }
+.rubleIcon {
+  color: #15803d;
+  opacity: 0.2;
 }
-
-/*  */
 
 .printWrapper {
-  /* Показываем в документе обычным способом (если нужно) */
-  display: block;
+  position: absolute;
+  top: -9999px; /* Уводим за пределы видимости */
+  left: -9999px;
 }
 
-/* Правила для печати: скрыть всё кроме .printWrapper */
 @media print {
-  /* Скрыть весь документ */
-  body * {
-    visibility: hidden;
-  }
-
-  /* Показать только printWrapper и её потомков */
-  .printWrapper,
-  .printWrapper * {
-    visibility: visible;
-  }
-
-  /* Разместить печатный блок в верхнем левом углу и растянуть */
   .printWrapper {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    /* если нужно убрать отступы страницы */
-    padding: 0;
-    margin: 0;
+    position: static;
+    display: block;
   }
 }
 
-/* ...existing code... */
+@media (max-width: 480px) {
+  .addOrderForm {
+    padding: 16px; /* Уменьшаем отступы на мобилке */
+    border-radius: 0; /* Можно убрать закругления, чтобы форма была во весь экран */
+    border: none; /* Убираем границы, если форма на весь экран */
+    box-shadow: none;
+  }
+
+  .itemGrid {
+    grid-template-columns: 1fr; /* Сетка инструментов в одну колонку */
+    gap: 16px;
+  }
+
+  .removeBtnWrapper {
+    padding-top: 0;
+    justify-content: flex-end;
+  }
+}

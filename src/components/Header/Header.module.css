@@ -2,37 +2,121 @@
   position: sticky;
   top: 0;
   z-index: 1001;
-  /*  */
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0.75rem var(--default-padding);
 
-  padding: var(--default-padding);
+  background: linear-gradient(135deg, #475569 0%, #334155 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
 
+.headerLogo {
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: -0.02em;
+}
+
+.headerLogo a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.logoLink {
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.logoLink:hover {
+  opacity: 0.8;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Общий стиль для кнопок */
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Кнопка "Создать заказ" */
+.primary {
   background-color: var(--header-background);
-  color: var(--color-white);
+  color: white;
+}
 
-  & .headerLogo {
-    width: var(--sidebar-width);
+.primary:hover {
+  background-color: var(--btn-hover-color);
+
+  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.2); /* Подставь цвет своей переменной */
+}
+
+/* Кнопка "Добавить инструмент" */
+.secondary {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.secondary:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+  background-color: #2563eb;
+}
+
+.profile:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+@media (max-width: 768px) {
+  .profile {
+    font-size: 14px;
   }
 
-  & .headerContent {
-    display: flex;
-    align-items: center;
-    column-gap: var(--default-padding);
+  .btn {
+    padding: 6px 10px;
+  }
+
+  .icon {
+    width: 20px;
   }
 }
 
-.headerBtn {
-  padding: var(--button-padding);
+@media (max-width: 480px) {
+  .btn span {
+    display: none;
+  }
 
-  background-color: var(--btn-color-primary);
-  border-radius: var(--default-radius);
-
-  font-size: 14px;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background-color: var(--btn-primary-hover);
+  .profile span {
+    display: none;
   }
 }

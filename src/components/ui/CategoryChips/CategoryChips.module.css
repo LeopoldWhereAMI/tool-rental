@@ -1,0 +1,71 @@
+.chips {
+  display: inline-flex;
+  gap: 2px;
+  background: #f3f4f6;
+  padding: 2px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.chip {
+  width: 32px; /* Фиксированная ширина */
+  height: 32px; /* Фиксированная высота */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chipIcon {
+  flex-shrink: 0;
+  opacity: 0.6;
+  /*  */
+  transition: all 0.2s ease;
+  color: #6b7280;
+}
+
+/* Цвета иконок (те же, что в списке) */
+.gasIcon {
+  color: #b45309;
+}
+
+.electricIcon {
+  color: #2563eb;
+}
+
+.defaultIcon {
+  color: #111827;
+}
+
+.chip:hover .chipIcon {
+  opacity: 1;
+}
+
+.chipActive {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Цвета для активных иконок */
+
+.chipActive .chipIcon {
+  opacity: 1;
+  transform: scale(1.1); /* Легкий акцент на выбранной иконке */
+}
+
+.chip:hover:not(.chipActive) {
+  background: rgba(255, 255, 255, 0.5);
+  color: #111827;
+}

@@ -1,32 +1,107 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { getOrderById } from "@/services/orderService";
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
 import styles from "./page.module.css";
-import { OrderUI } from "@/types";
-import { validateOrderStatus } from "@/helpers";
-import { Calendar, CreditCard, Phone, ToolCase } from "lucide-react";
+import { OrderDetailsUI } from "@/types";
+import { getOrderDateRange, validateOrderStatus } from "@/helpers";
+import { Printer } from "lucide-react";
 import BackButton from "@/components/BackButton/BackButton";
+import { useReactToPrint } from "react-to-print";
+import {
+  PassportInput,
+  passportValidationSchema,
+} from "@/lib/validators/orderSchema";
+import { useForm, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import PassportModal from "@/components/ui/PassportModal/PassportModal";
+import PrintArea from "@/components/Print/PrintArea/PrintArea";
+import { mapOrderDetailsToPrint } from "@/lib/mappers/orderMapper";
+import OrderClientInfo from "./components/OrderClientInfo";
+import OrderItemsList from "./components/OrderItemsList";
+import OrderPeriod from "./components/OrderPeriod";
+import OrderFinance from "./components/OrderFinance";
+import OrderDetailsSkeleton from "./OrderDetailsSkeleton";
+import ErrorBlock from "@/components/ui/ErrorBlock/ErrorBlock";
 
 export default function OrderDetailsPage() {
   const { id } = useParams();
-
-  const [order, setOrder] = useState<OrderUI | null>(null);
+  const [order, setOrder] = useState<OrderDetailsUI | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showPassportModal, setShowPassportModal] = useState(false);
+  const [actualTotal, setActualTotal] = useState<number>(0);
+
+  const printRef = useRef<HTMLDivElement>(null);
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<PassportInput>({
+    resolver: zodResolver(passportValidationSchema),
+    mode: "onTouched",
+    defaultValues: {
+      passport_series: "",
+      passport_number: "",
+      issued_by: "",
+      issue_date: "",
+      registration_address: "",
+    },
+  });
+
+  const passportData = useWatch({
+    control,
+    name: [
+      "passport_series",
+      "passport_number",
+      "issued_by",
+      "issue_date",
+      "registration_address",
+    ],
+  });
+
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    documentTitle: `Договор_№${order?.order_number || "заказ"}`,
+  });
+
+  const onPassportSubmit = () => {
+    setShowPassportModal(false);
+
+    setTimeout(() => {
+      handlePrint();
+    }, 500);
+  };
 
   useEffect(() => {
     if (id) {
       getOrderById(id as string)
-        .then(setOrder)
+        .then((data) => {
+          setOrder(data);
+          if (data) {
+            // Инициализируем сумму сразу при получении данных
+            setActualTotal(data.total_price);
+          }
+        })
         .catch((err) => console.error("Ошибка загрузки заказа:", err))
         .finally(() => setLoading(false));
     }
   }, [id]);
 
-  if (loading) return <div>Загрузка заказа...</div>;
-  if (!order) return <div>Заказ не найден</div>;
+  const orderDates = useMemo(
+    () => getOrderDateRange(order?.order_items || []),
+    [order],
+  );
+
+  if (loading) return <OrderDetailsSkeleton />;
+
+  if (!order)
+    return (
+      <ErrorBlock message="Заказ не найден или возникла ошибка при загрузке" />
+    );
 
   const statusInfo = validateOrderStatus(order.status);
   const statusClass = styles[statusInfo.className as keyof typeof styles] || "";
@@ -34,7 +109,16 @@ export default function OrderDetailsPage() {
   return (
     <PageWrapper>
       <div className={styles.topNav}>
-        <BackButton>Назад к списку</BackButton>
+        <BackButton href="/orders">Назад к списку</BackButton>
+        {order && (
+          <button
+            onClick={() => setShowPassportModal(true)}
+            className={styles.printBtn}
+          >
+            <Printer size={18} />
+            Печать договора
+          </button>
+        )}
       </div>
       <div className={styles.container}>
         <div className={styles.mainCard}>
@@ -46,92 +130,42 @@ export default function OrderDetailsPage() {
               </span>
             </div>
             <div className={styles.dateInfo}>
-              Создан: {new Date(order.start_date).toLocaleDateString()}
+              Создан: {new Date(order.created_at).toLocaleDateString()}
             </div>
           </header>
 
           <div className={styles.infoGrid}>
-            {/* Карточка Клиента */}
-            <div className={styles.infoBlock}>
-              <div className={styles.blockTitle}>
-                <Phone size={20} /> <h3>Клиент</h3>
-              </div>
-              <div className={styles.blockContent}>
-                <p className={styles.name}>
-                  {order.client?.last_name} {order.client?.first_name}
-                </p>
-                <p className={styles.subText}>
-                  Телефон: {order.client?.phone || "не указан"}
-                </p>
-              </div>
-            </div>
-
-            {/* Карточка Инструмента */}
-            <div className={styles.infoBlock}>
-              <div className={styles.blockTitle}>
-                <ToolCase size={20} /> <h3>Инструмент</h3>
-              </div>
-              <div className={styles.blockContent}>
-                <p className={styles.name}>{order.inventory?.name}</p>
-
-                {/* Добавляем серийный номер и артикул */}
-                <div className={styles.detailRow}>
-                  <span className={styles.label}>S/N:</span>
-                  <span className={styles.value}>
-                    {order.inventory?.serial_number || "—"}
-                  </span>
-                </div>
-                {order.inventory?.article && (
-                  <div className={styles.detailRow}>
-                    <span className={styles.label}>Артикул:</span>
-                    <span className={styles.value}>
-                      {order.inventory.article}
-                    </span>
-                  </div>
-                )}
-
-                <p className={styles.subText}>
-                  Суточная цена: {order.inventory?.daily_price} руб.
-                </p>
-              </div>
-            </div>
-
-            {/* Карточка Сроков */}
-            <div className={styles.infoBlock}>
-              <div className={styles.blockTitle}>
-                <Calendar size={20} /> <h3>Период проката</h3>
-              </div>
-              <div className={styles.blockContent}>
-                <div className={styles.dates}>
-                  <div>
-                    <span>С:</span>{" "}
-                    <strong>
-                      {new Date(order.start_date).toLocaleDateString()}
-                    </strong>
-                  </div>
-                  <div>
-                    <span>По:</span>{" "}
-                    <strong>
-                      {new Date(order.end_date).toLocaleDateString()}
-                    </strong>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Финансовый блок */}
-            <div className={`${styles.infoBlock} ${styles.totalBlock}`}>
-              <div className={styles.blockTitle}>
-                <CreditCard size={20} /> <h3>Оплата</h3>
-              </div>
-              <div className={styles.blockContent}>
-                <p className={styles.totalLabel}>Итого к оплате</p>
-                <p className={styles.price}>{order.total_price} ₽</p>
-              </div>
-            </div>
+            <OrderClientInfo client={order.client} />
+            <OrderPeriod
+              start={orderDates.start}
+              end={orderDates.end}
+              order={order}
+            />
+            <OrderItemsList items={order.order_items} />
+            <OrderFinance
+              totalPrice={order.total_price}
+              order={order}
+              onFinalAmountChange={setActualTotal}
+            />
           </div>
         </div>
       </div>
+
+      {/* Модальное окно ввода паспортных данных */}
+      {showPassportModal && (
+        <PassportModal
+          onPassportSubmit={handleSubmit(onPassportSubmit)}
+          onClose={() => setShowPassportModal(false)}
+          register={register}
+          errors={errors}
+        />
+      )}
+
+      <PrintArea
+        printRef={printRef}
+        // data={mapOrderDetailsToPrint(order, passportData)}
+        data={mapOrderDetailsToPrint(order, passportData, actualTotal)}
+      />
     </PageWrapper>
   );
 }
