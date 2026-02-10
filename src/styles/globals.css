@@ -32,5 +32,30 @@ body {
 @media (max-width: 480px) {
   .main-content {
     padding: 0;
+
+    margin: 0;
+  }
+}
+
+/* Стили для мобильных устройств */
+@media (max-width: 600px) {
+  /* Обращаемся к контейнеру тоастера */
+  [data-sonner-toaster] {
+    /* Делаем так, чтобы на мобилке тоаст был по центру сверху */
+    justify-content: center !important;
+  }
+
+  /* Стили самого тоаста */
+  [data-sonner-toast] {
+    --toast-width: 320px; /* Фиксируем ширину, чтобы не был на весь экран */
+    font-size: 14px; /* Уменьшаем шрифт */
+    padding: 10px 12px; /* Уменьшаем внутренние отступы */
+    margin: 0 auto; /* Центрируем */
+  }
+
+  /* Уменьшаем иконку (Success, Error и т.д.) */
+  [data-sonner-toast] [data-icon] {
+    width: 16px;
+    height: 16px;
   }
 }

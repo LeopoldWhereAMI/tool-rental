@@ -29,9 +29,3 @@
     transform: translateX(0);
   }
 }
-
-@media (max-width: 1024px) {
-  .backButton {
-    margin-bottom: 15px;
-  }
-}

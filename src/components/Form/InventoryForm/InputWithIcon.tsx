@@ -9,6 +9,7 @@ interface InputWithIconProps extends React.InputHTMLAttributes<
   error?: boolean;
   isTextArea?: boolean;
   rows?: number;
+  inputMode?: React.HTMLAttributes<HTMLElement>["inputMode"];
 }
 
 export default function InputWithIcon({

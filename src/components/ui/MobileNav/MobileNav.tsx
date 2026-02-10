@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import styles from "../Sidebar.module.css";
 import { usePathname } from "next/navigation";
 import {
   ClipboardList,
@@ -10,6 +9,7 @@ import {
   BarChart3,
   FileText,
 } from "lucide-react";
+import styles from "./MobileNav.module.css";
 
 const navItems = [
   { href: "/orders", label: "Заказы", icon: ClipboardList },
@@ -19,25 +19,26 @@ const navItems = [
   { href: "/dogovor", label: "Договор", icon: FileText },
 ];
 
-export default function Navigation() {
+export default function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <nav className={styles.nav}>
-      <ul className={styles.asideNavList}>
+    <nav className={styles.container}>
+      <ul className={styles.list}>
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname.startsWith(item.href);
 
           return (
-            <li key={item.href} className={isActive ? styles.active : ""}>
+            <li key={item.href}>
               <Link
                 href={item.href}
-                className={styles.navLink}
-                title={item.label}
+                className={`${styles.link} ${isActive ? styles.active : ""}`}
               >
-                <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
-                <span>{item.label}</span>
+                <div className={styles.activePill}>
+                  <Icon size={20} strokeWidth={isActive ? 2 : 1.5} />
+                  <span className={styles.label}>{item.label}</span>
+                </div>
               </Link>
             </li>
           );

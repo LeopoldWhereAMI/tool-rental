@@ -5,6 +5,7 @@ import Header from "@/components/Header/Header";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import { Toaster } from "sonner";
 import Footer from "@/components/Footer/Footer";
+import MobileNav from "@/components/ui/MobileNav/MobileNav";
 
 export const metadata: Metadata = {
   title: "Главная страница",
@@ -19,13 +20,21 @@ export default function RootLayout({
   return (
     <html lang="ru" className={fontVariables}>
       <body className="root-body">
-        <Toaster position="top-right" richColors closeButton />
+        <Toaster
+          position="top-right"
+          offset="16px"
+          gap={8}
+          expand={false}
+          richColors
+          closeButton
+        />
         <Header />
 
         <div className="app-layout">
           <Sidebar />
           <main className="main-content">{children}</main>
         </div>
+        <MobileNav />
         <Footer />
       </body>
     </html>

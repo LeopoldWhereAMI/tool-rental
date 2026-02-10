@@ -102,3 +102,9 @@
     display: none;
   }
 }
+
+@media (max-width: 480px) {
+  .aside {
+    display: none; /* Полностью убираем сайдбар с экрана */
+  }
+}

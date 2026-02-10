@@ -76,6 +76,8 @@ export default function OrderClientSection({
       <div style={{ marginTop: "16px" }}>
         <FormField label="Телефон" id="phone" error={errors.phone?.message}>
           <InputWithIcon
+            type="tel"
+            inputMode="tel"
             icon={Phone}
             error={!!errors.phone}
             placeholder="8 (999) 000-00-00"
@@ -179,6 +181,7 @@ export default function OrderClientSection({
             {...register("passport_series")}
             id="passport_series"
             type="text"
+            inputMode="numeric"
             maxLength={4}
             className={styles.input}
             placeholder="0000"
@@ -193,6 +196,7 @@ export default function OrderClientSection({
             {...register("passport_number")}
             id="passport_number"
             type="text"
+            inputMode="numeric"
             maxLength={6}
             className={styles.input}
             placeholder="000000"

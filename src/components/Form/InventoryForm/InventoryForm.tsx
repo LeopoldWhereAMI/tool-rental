@@ -89,6 +89,7 @@ export default function InventoryForm({
           <InputWithIcon
             register={register("serial_number")}
             error={!!errors.serial_number}
+            inputMode="numeric"
           />
         </FormField>
 

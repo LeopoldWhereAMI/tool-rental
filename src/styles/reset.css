@@ -17,6 +17,7 @@ a,
   all: unset;
   cursor: pointer;
   display: inline-block;
+  -webkit-tap-highlight-color: transparent;
 }
 
 a,
@@ -97,6 +98,7 @@ input[type="submit"] {
   background-color: transparent;
   background: none;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 button::-moz-focus-inner {

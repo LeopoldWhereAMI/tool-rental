@@ -8,6 +8,6 @@
 
 @media (max-width: 480px) {
   .pageWrapper {
-    padding: 8px;
+    padding: 8px 15px;
   }
 }
