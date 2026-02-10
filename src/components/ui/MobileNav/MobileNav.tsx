@@ -10,6 +10,7 @@ import {
   FileText,
 } from "lucide-react";
 import styles from "./MobileNav.module.css";
+import { useEffect, useState } from "react";
 
 const navItems = [
   { href: "/orders", label: "Заказы", icon: ClipboardList },
@@ -20,7 +21,34 @@ const navItems = [
 ];
 
 export default function MobileNav() {
+  const [isVisible, setIsVisible] = useState(true);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleFocusIn = (e: FocusEvent) => {
+      // Проверяем, что фокус именно на поле ввода
+      const target = e.target as HTMLElement;
+      if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") {
+        setIsVisible(false);
+      }
+    };
+
+    const handleFocusOut = () => {
+      setIsVisible(true);
+    };
+
+    // Слушаем события фокуса на всей странице
+    window.addEventListener("focusin", handleFocusIn);
+    window.addEventListener("focusout", handleFocusOut);
+
+    return () => {
+      window.removeEventListener("focusin", handleFocusIn);
+      window.removeEventListener("focusout", handleFocusOut);
+    };
+  }, []);
+
+  // Если клавиатура открыта — не рендерим (или скрываем через CSS)
+  if (!isVisible) return null;
 
   return (
     <nav className={styles.container}>

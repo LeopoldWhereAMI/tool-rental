@@ -4,14 +4,14 @@
 
 @media (max-width: 480px) {
   .container {
-    display: block;
+    display: flex;
     position: fixed;
     bottom: 20px;
     left: 0;
     right: 0;
     margin-inline: auto;
-    width: 90%;
-    max-width: 360px;
+    width: 94%;
+    max-width: 400px;
     height: 68px;
 
     background: #ffffff;
@@ -23,6 +23,10 @@
 
     /* Чтобы не мешал нижний индикатор на iPhone */
     margin-bottom: env(safe-area-inset-bottom);
+
+    /* Добавляем эти строки: */
+    transform: translateZ(0); /* Форсирует создание отдельного слоя */
+    will-change: transform; /* Подсказывает браузеру подготовиться к отрисовке */
   }
 
   .list {
@@ -31,7 +35,7 @@
     align-items: center;
     height: 100%;
     margin: 0;
-    padding: 0 8px;
+    padding: 5px;
     list-style: none;
   }
 
@@ -57,8 +61,8 @@
     justify-content: center;
     gap: 2px;
 
-    padding: 6px 16px;
-    min-width: 64px;
+    padding: 6px 15px;
+    min-width: 58px;
 
     border-radius: 20px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -72,7 +76,7 @@
   .active .activePill {
     background-color: #f0f9ff;
     border: 1px solid #e0f2fe;
-    transform: scale(1.05);
+    transform: scale(1.02);
   }
 
   .label {

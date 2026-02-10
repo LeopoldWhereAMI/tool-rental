@@ -83,6 +83,7 @@
   letter-spacing: 0.05em;
   border-bottom: 1px solid #e5e7eb;
 }
+
 .table th:nth-child(1),
 .table th:nth-child(2) {
   text-align: left;
@@ -93,6 +94,11 @@
   padding: 14px 16px;
   vertical-align: middle;
   border-bottom: 1px solid #f3f4f6;
+}
+
+/* Выбираем последнюю ячейку в таблице инвентаря */
+.table td:last-child {
+  position: relative;
 }
 
 .table td:nth-child(3),
@@ -414,8 +420,9 @@
   }
 
   .titleGroup {
-    justify-content: space-between;
-    width: 100%;
+    margin-inline: auto;
+    /* justify-content: space-between; */
+    /* width: 100%; */
   }
 
   .title {
@@ -590,7 +597,9 @@
   }
 
   .searchWrapper {
-    max-width: 376px;
+    /* max-width: 376px; */
+    width: 100%;
+    margin-inline: auto;
   }
 
   .table tbody {

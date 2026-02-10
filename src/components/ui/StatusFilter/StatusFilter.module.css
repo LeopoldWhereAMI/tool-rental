@@ -1,6 +1,7 @@
 .filters {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 2px;
   background: #f3f4f6;
   padding: 4px;
@@ -75,11 +76,24 @@
 
 @media (max-width: 480px) {
   .filters {
-    justify-content: space-between;
+    /* justify-content: flex-start; */
+    width: 100%;
+    gap: 0;
+    padding: 3px;
+    margin-inline: auto;
+    /* max-width: fit-content; */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+
+  .filters::-webkit-scrollbar {
+    display: none;
   }
 
   .filterBtn {
-    font-size: 12px;
+    font-size: 10px;
     flex-shrink: 0;
+    letter-spacing: -0.3px;
+    word-spacing: -1px;
   }
 }

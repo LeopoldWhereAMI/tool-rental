@@ -9,7 +9,6 @@ export function usePrintAfterSubmit<T>(
   onComplete?: () => void,
 ) {
   const router = useRouter();
-  console.log(data);
 
   const handlePrint = useReactToPrint({
     contentRef: printRef,

@@ -79,6 +79,7 @@
 .actionsCell {
   width: 65px;
   text-align: center;
+  position: relative;
 }
 
 /* Шапка таблицы */
@@ -364,8 +365,9 @@
   }
 
   .titleGroup {
-    justify-content: space-between;
-    width: 100%;
+    /* justify-content: space-between;
+    width: 100%; */
+    margin-inline: auto;
   }
 
   .title {
@@ -601,6 +603,8 @@
   }
 
   .searchWrapper {
-    max-width: 376px;
+    /* max-width: 376px; */
+    width: 100%;
+    margin-inline: auto;
   }
 }

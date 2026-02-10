@@ -1,6 +1,7 @@
 .actionsMenu {
   position: absolute;
-  right: 14px;
+  top: 40px;
+  right: 0;
   min-width: 180px;
   background-color: var(--color-white);
   border: 1px solid #e5e7eb;
@@ -54,6 +55,13 @@
 .actionsMenuList li:hover button {
   background-color: #f3f4f6;
   color: var(--color-black);
+}
+
+/* Если меню открыто в одной из последних 3-х строк таблицы */
+.table tr:nth-last-child(-n + 3) .actionsMenu {
+  top: auto;
+  bottom: 100%;
+  margin-bottom: 10px;
 }
 
 /* Специфические стили для кнопок */
