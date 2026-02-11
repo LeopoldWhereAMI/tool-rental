@@ -1,6 +1,6 @@
 import styles from "./Footer.module.css";
 import Logo from "../ui/Logo/Logo";
-import packageInfo from "../../../package.json";
+import { version } from "../../../package.json";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -15,7 +15,7 @@ export default function Footer() {
           </span>
         </div>
 
-        <div className={styles.status}>v {packageInfo.version} - beta</div>
+        <div className={styles.status}>v {version} - beta</div>
       </div>
     </footer>
   );
