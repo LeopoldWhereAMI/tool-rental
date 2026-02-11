@@ -604,7 +604,7 @@
 
   .searchWrapper {
     /* max-width: 376px; */
-    width: 100%;
+    /* width: 100%; */
     margin-inline: auto;
   }
 }

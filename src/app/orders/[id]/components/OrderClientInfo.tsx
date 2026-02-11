@@ -12,7 +12,7 @@ export default function OrderClientInfo({ client }: OrderClientInfoProps) {
       <div className={styles.blockTitle}>
         <User size={20} /> <h3>Клиент</h3>
       </div>
-      <div className={styles.blockContent}>
+      <div className={`${styles.blockContent} ${styles.clientBlockContent}`}>
         <p className={styles.name}>
           {[client?.last_name, client?.first_name, client?.middle_name]
             .filter(Boolean)

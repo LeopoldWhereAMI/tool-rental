@@ -47,12 +47,6 @@
   margin-bottom: 16px;
 }
 
-@media (max-width: 600px) {
-  .passportGrid {
-    grid-template-columns: 1fr;
-  }
-}
-
 .dateGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -171,6 +165,7 @@
   margin-bottom: 20px;
   cursor: pointer;
   transition: all 0.2s ease;
+  max-width: fit-content;
 }
 
 .addToolBtn:not(:disabled) {
@@ -393,19 +388,39 @@
 
 @media (max-width: 480px) {
   .addOrderForm {
-    padding: 16px; /* Уменьшаем отступы на мобилке */
-    border-radius: 0; /* Можно убрать закругления, чтобы форма была во весь экран */
-    border: none; /* Убираем границы, если форма на весь экран */
+    padding: 20px;
     box-shadow: none;
   }
 
+  .orderFormTitle {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .sectionTitle {
+    font-size: 16px;
+    margin: 0;
+  }
+
   .itemGrid {
-    grid-template-columns: 1fr; /* Сетка инструментов в одну колонку */
+    grid-template-columns: 1fr;
     gap: 16px;
+  }
+
+  .passportGrid {
+    margin: 0;
   }
 
   .removeBtnWrapper {
     padding-top: 0;
     justify-content: flex-end;
+  }
+
+  .itemRow {
+    margin: 0;
+  }
+
+  .addToolBtn {
+    margin: 0 auto;
   }
 }

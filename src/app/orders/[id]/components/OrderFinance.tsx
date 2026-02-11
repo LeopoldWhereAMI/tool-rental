@@ -72,7 +72,7 @@ export default function OrderFinance({
       <div className={styles.blockTitle}>
         <CreditCard size={20} /> <h3>Оплата</h3>
       </div>
-      <div className={styles.blockContent}>
+      <div className={`${styles.blockContent} ${styles.financeBlockContent}`}>
         <p className={styles.totalLabel}>Итого к оплате</p>
         <p className={styles.price}>{finalAmount} ₽</p>
 

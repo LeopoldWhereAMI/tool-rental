@@ -33,10 +33,10 @@ export default function Header() {
           </Link>
         </nav>
 
-        <div className={styles.profile}>
+        {/* <div className={styles.profile}>
           <UserCircle size={24} className={styles.icon} />
           <span>Профиль</span>
-        </div>
+        </div> */}
       </div>
     </header>
   );

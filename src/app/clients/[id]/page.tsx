@@ -67,7 +67,7 @@ export default function ClientDetailsPage() {
 
   return (
     <PageWrapper>
-      <BackButton href="/clients">Назад к списку клиентов</BackButton>
+      <BackButton href="/clients" />
 
       <div className={styles.container}>
         {/* Левая колонка */}

@@ -14,12 +14,11 @@ body {
   display: flex;
   flex: 1;
   align-items: flex-start;
+  background-color: #f1f5f9;
 }
 
 .main-content {
   flex: 1;
-  background-color: #f3f3f3;
-  /* padding: var(--default-padding); */
   margin-left: var(--sidebar-width);
   min-height: 100%;
 }
@@ -33,8 +32,11 @@ body {
 @media (max-width: 480px) {
   .main-content {
     padding: 0;
-
     margin: 0;
+  }
+
+  .hideOnMobile {
+    display: none;
   }
 }
 

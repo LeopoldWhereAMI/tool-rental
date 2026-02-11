@@ -189,3 +189,15 @@
   margin-bottom: 10px;
   border-bottom: 1px solid #f3f4f6;
 }
+
+@media (max-width: 480px) {
+  .addInventoryForm {
+    padding: 20px;
+
+    & h1 {
+      font-size: 20px;
+      margin: 0;
+      padding-bottom: 5px;
+    }
+  }
+}

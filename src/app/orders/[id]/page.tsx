@@ -109,14 +109,15 @@ export default function OrderDetailsPage() {
   return (
     <PageWrapper>
       <div className={styles.topNav}>
-        <BackButton href="/orders">Назад к списку</BackButton>
+        <BackButton href="/orders" />
         {order && (
           <button
             onClick={() => setShowPassportModal(true)}
             className={styles.printBtn}
           >
             <Printer size={18} />
-            Печать договора
+            <span>Печать</span>
+            <span className="hideOnMobile"> договора</span>
           </button>
         )}
       </div>

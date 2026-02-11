@@ -20,10 +20,11 @@ export default function ClientSidebar({
           {client.last_name?.[0] || "?"}
           {client.first_name?.[0] || ""}
         </div>
-        <h1 className={styles.name}>
-          {client.last_name} <br /> {client.first_name}
-        </h1>
-        <p className={styles.middleName}>{client.middle_name}</p>
+        <div className={styles.clientName}>
+          <p className={styles.name}>
+            {`${client.last_name} ${client.first_name} ${client.middle_name}`}
+          </p>
+        </div>
         <div className={styles.contactInfo}>
           <a href={`tel:${client.phone}`} className={styles.phoneLink}>
             <Phone size={18} /> {client.phone || "Нет телефона"}

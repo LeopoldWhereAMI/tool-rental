@@ -1,12 +1,8 @@
 .searchInput {
   width: 100%;
-
   margin-top: 0;
-
   height: 44px;
-
   padding: 0 16px 0 40px;
-
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   font-size: 14px;
@@ -47,8 +43,9 @@
 
 @media (max-width: 480px) {
   .searchInput {
-    font-size: 12px;
+    font-size: 16px;
     padding: 0 12px 0 30px;
+    max-width: 79%;
   }
   .searchIcon {
     width: 12px;

@@ -73,7 +73,7 @@ export default function OrderClientSection({
         <User size={20} /> Информация о клиенте
       </h2>
 
-      <div style={{ marginTop: "16px" }}>
+      <div className={styles.clientInfoContainer}>
         <FormField label="Телефон" id="phone" error={errors.phone?.message}>
           <InputWithIcon
             type="tel"
@@ -228,21 +228,20 @@ export default function OrderClientSection({
           placeholder="УФМС по городу..."
         />
       </FormField>
-      <div style={{ marginTop: "16px" }}>
-        <FormField
-          label="Адрес регистрации"
+
+      <FormField
+        label="Адрес регистрации"
+        id="registration_address"
+        error={errors.registration_address?.message}
+      >
+        <InputWithIcon
+          type="text"
           id="registration_address"
-          error={errors.registration_address?.message}
-        >
-          <InputWithIcon
-            type="text"
-            id="registration_address"
-            placeholder="г. Москва, ул. Ленина..."
-            icon={MapPin}
-            register={register("registration_address")}
-          />
-        </FormField>
-      </div>
+          placeholder="г. Москва, ул. Ленина..."
+          icon={MapPin}
+          register={register("registration_address")}
+        />
+      </FormField>
     </>
   );
 }

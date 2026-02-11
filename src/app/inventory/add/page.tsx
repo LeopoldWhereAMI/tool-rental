@@ -40,7 +40,7 @@ export default function AddInventoryPage() {
 
   return (
     <PageWrapper>
-      <BackButton href="/inventory">Назад к списку</BackButton>
+      <BackButton href="/inventory" />
       <InventoryForm
         onSubmit={onSubmit}
         existingItems={existingItems}

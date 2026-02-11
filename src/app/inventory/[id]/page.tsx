@@ -50,7 +50,7 @@ export default function InventoryItemPage() {
       <div className={styles.container}>
         {/* Верхняя панель навигации */}
         <header className={styles.header}>
-          <BackButton href="/inventory">К списку инвентаря</BackButton>
+          <BackButton href="/inventory" />
           <Link href={`/inventory/edit/${id}`} className={styles.editBtn}>
             Редактировать
           </Link>

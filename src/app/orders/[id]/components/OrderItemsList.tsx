@@ -20,7 +20,7 @@ export default function OrderItemsList({ items }: OrderItemsListProps) {
               <div key={item.id || index} className={styles.toolItemEntry}>
                 <div className={styles.toolHeader}>
                   <p className={styles.name}>
-                    • {item.inventory?.name || "Инструмент"}
+                    {item.inventory?.name || "Инструмент"}
                   </p>
                   <span className={styles.toolPrice}>
                     {calculateItemTotal(

@@ -1,9 +1,9 @@
 .pageWrapper {
   width: 100%;
   padding: var(--main-padding);
-  background-color: #f1f5f9;
+  /* background-color: #f1f5f9; */
   color: var(--color-black);
-  min-height: 100vh;
+  /* min-height: 100vh; */
 }
 
 @media (max-width: 480px) {

@@ -85,8 +85,6 @@
 }
 
 .statusCompleted {
-  /* background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-  color: #1565c0; */
   background-color: #f9fafb;
   color: #6b7280;
   box-shadow: 0 2px 8px rgba(21, 101, 192, 0.15);
@@ -497,16 +495,6 @@
   gap: 12px;
 }
 
-/* Адаптивность для модалки */
-@media (max-width: 480px) {
-  .modalGrid {
-    grid-template-columns: 1fr;
-  }
-  .modal {
-    padding: 24px;
-  }
-}
-
 /* Отступ для "заголовков" внутри секций скелетона */
 .skeletonLabel {
   margin-bottom: 12px;
@@ -556,4 +544,130 @@
   font-size: 18px;
   color: #1a1a1a;
   font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  .modalGrid {
+    grid-template-columns: 1fr;
+  }
+  .modal {
+    padding: 24px;
+  }
+
+  .topNav {
+    margin: 0;
+    padding-bottom: 8px;
+  }
+
+  .container {
+    padding: 0px;
+  }
+
+  .printBtn {
+    font-size: 14px;
+    font-weight: 400;
+    padding: 8px 14px;
+  }
+
+  .header {
+    align-items: center;
+    padding: 12px;
+  }
+
+  .titleInfo h1 {
+    font-size: 18px;
+  }
+
+  .infoBlock {
+    padding: 12px;
+  }
+
+  .blockTitle {
+    max-width: fit-content;
+    margin-inline: auto;
+    margin-bottom: 15px;
+  }
+
+  .blockContent {
+    text-align: center;
+  }
+
+  .clientBlockContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & p,
+    .contactInfo {
+      margin: 0;
+    }
+  }
+
+  .name {
+    font-size: 16px;
+  }
+
+  .contactRow {
+    margin-inline: auto;
+  }
+
+  .periodWrapper {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .startDateInfo strong {
+    font-size: 14px;
+  }
+
+  .toolItemEntry {
+    padding: 12px;
+
+    & .name {
+      font-size: 14px;
+      flex: none;
+    }
+  }
+
+  .toolHeader {
+    align-items: center;
+    gap: 0;
+  }
+
+  .toolPrice {
+    font-size: 16px;
+  }
+
+  .toolMeta {
+    justify-content: space-between;
+  }
+
+  .totalBlock {
+    & .blockTitle {
+      margin-bottom: 12px;
+    }
+  }
+
+  .financeBlockContent {
+    display: grid;
+    grid-template-columns: 1fr auto; /* Левая часть тянется, правая по контенту */
+    align-items: center;
+    gap: 10px;
+  }
+
+  .price {
+    font-size: 20px;
+  }
+
+  .adjustmentBlock {
+    margin: 0;
+    padding: 0;
+  }
+
+  .completeOrderBtn {
+    margin-top: auto;
+    font-size: 12px;
+    padding: 8px;
+  }
 }

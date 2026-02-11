@@ -419,12 +419,6 @@
     margin-bottom: 24px;
   }
 
-  .titleGroup {
-    margin-inline: auto;
-    /* justify-content: space-between; */
-    /* width: 100%; */
-  }
-
   .title {
     font-size: 22px;
   }
@@ -441,7 +435,7 @@
 
   .table {
     display: block;
-    table-layout: auto; /* Сбрасываем фиксированную разметку */
+    table-layout: auto;
   }
 
   .table thead {
@@ -597,9 +591,8 @@
   }
 
   .searchWrapper {
-    /* max-width: 376px; */
     width: 100%;
-    margin-inline: auto;
+    /* margin-inline: auto; */
   }
 
   .table tbody {

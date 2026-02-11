@@ -6,7 +6,6 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem var(--default-padding);
-
   background: linear-gradient(135deg, #475569 0%, #334155 100%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   color: white;
@@ -97,6 +96,16 @@
   background-color: rgba(255, 255, 255, 0.05);
 }
 
+@media (max-width: 685px) {
+  .btn span {
+    display: none;
+  }
+
+  .profile span {
+    display: none;
+  }
+}
+
 @media (max-width: 768px) {
   .profile {
     font-size: 14px;
@@ -111,7 +120,7 @@
   }
 }
 
-@media (max-width: 480px) {
+/* @media (max-width: 480px) {
   .btn span {
     display: none;
   }
@@ -119,4 +128,4 @@
   .profile span {
     display: none;
   }
-}
+} */

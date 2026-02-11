@@ -34,8 +34,8 @@
 }
 
 .middleName {
-  color: #64748b;
   margin-bottom: 24px;
+  font-size: 1.5rem;
 }
 
 .statsGrid {
@@ -87,9 +87,6 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
-
-/* Стили для статусов аналогичны тем, что в списке заказов */
-/* ... твой существующий код ... */
 
 .sectionTitle {
   font-size: 1.25rem;
@@ -190,16 +187,6 @@
   text-decoration: underline;
 }
 
-/* Адаптивность для мобильных */
-@media (max-width: 900px) {
-  .container {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    position: static;
-  }
-}
 /*  */
 .historyHeader {
   display: flex;
@@ -271,4 +258,26 @@
 
 .pageInfo strong {
   color: #1e293b;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 480px) {
+  .profileCard {
+    padding: 16px 12px;
+  }
+
+  .name {
+    margin-bottom: 8px;
+    font-size: 1.3rem;
+  }
 }
