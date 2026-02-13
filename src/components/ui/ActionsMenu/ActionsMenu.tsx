@@ -5,7 +5,7 @@ import styles from "./ActionsMenu.module.css";
 import { useInventory } from "@/hooks/useInventory";
 import { updateInventoryStatus } from "@/services/inventoryService";
 import { toast } from "sonner";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import useClickOutside from "@/hooks/useClickOutside";
 
 import {
@@ -16,10 +16,12 @@ import {
   Trash2,
   XCircle,
 } from "lucide-react";
+import { Portal } from "@/components/Portal/Portal";
 
 type ActionsMenuProps = {
   id: string;
   onClose: () => void;
+  anchor: { top: number; left: number } | null;
   currentStatus?: string;
   onDeleteClick: () => void;
   onStatusUpdate?: (id: string, newStatus: string) => Promise<void>;
@@ -29,6 +31,7 @@ type ActionsMenuProps = {
 export default function ActionsMenu({
   id,
   onClose,
+  anchor,
   currentStatus,
   onDeleteClick,
   onStatusUpdate,
@@ -36,10 +39,31 @@ export default function ActionsMenu({
 }: ActionsMenuProps) {
   const { refresh } = useInventory();
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useClickOutside(menuRef, onClose);
 
-  // Вспомогательная функция для определения базового пути
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    document.body.classList.add("menu-open");
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+      document.body.classList.remove("menu-open");
+    };
+  }, []);
+
+  const desktopStyle: React.CSSProperties =
+    !isMobile && anchor
+      ? {
+          position: "absolute",
+          top: `${anchor.top + 5}px`, // Небольшой отступ от кнопки
+          left: `${anchor.left - 180}px`, // Смещение влево, чтобы не улетало за экран
+        }
+      : {};
+
   const getBasePath = () => {
     switch (type) {
       case "client":
@@ -53,7 +77,6 @@ export default function ActionsMenu({
     }
   };
 
-  // Функция смены статуса инструмента
   const handleStatusChange = async (newStatus: "maintenance" | "available") => {
     try {
       await updateInventoryStatus(id, newStatus);
@@ -78,89 +101,91 @@ export default function ActionsMenu({
   };
 
   return (
-    <div
-      ref={menuRef}
-      onClick={(e) => e.stopPropagation()}
-      className={styles.actionsMenu}
-    >
-      <ul className={styles.actionsMenuList}>
-        {/* Общие действия */}
-        <li>
-          <Link href={`/${getBasePath()}/${id}`}>
-            <ExternalLink size={16} />
-            Открыть
-          </Link>
-        </li>
+    <Portal>
+      <div className={styles.overlay} onClick={onClose} />
 
-        {/* Специфические действия для ИНВЕНТАРЯ */}
+      <div
+        ref={menuRef}
+        onClick={(e) => e.stopPropagation()}
+        className={styles.actionsMenu}
+        style={desktopStyle}
+      >
+        <ul className={styles.actionsMenuList}>
+          <li>
+            <Link href={`/${getBasePath()}/${id}`}>
+              <ExternalLink size={16} />
+              Открыть
+            </Link>
+          </li>
 
-        {type === "inventory" && (
-          <>
+          {type === "inventory" && (
+            <>
+              <li>
+                <Link href={`/inventory/edit/${id}`}>
+                  <Pencil size={16} /> Редактировать
+                </Link>
+              </li>
+
+              {currentStatus !== "maintenance" ? (
+                <li>
+                  <button
+                    onClick={() => handleStatusChange("maintenance")}
+                    className={styles.maintenanceBtn}
+                  >
+                    <Wrench size={16} /> В ремонт
+                  </button>
+                </li>
+              ) : (
+                <li>
+                  <button
+                    onClick={() => handleStatusChange("available")}
+                    className={styles.availableBtn}
+                  >
+                    <CheckCircle size={16} /> В работу
+                  </button>
+                </li>
+              )}
+            </>
+          )}
+
+          {type === "order" && currentStatus === "active" && (
+            <>
+              <li>
+                <button
+                  onClick={() => handleAction("completed")}
+                  className={styles.availableBtn}
+                >
+                  <CheckCircle size={16} /> Завершить аренду
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleAction("cancelled")}
+                  className={styles.cancelBtn}
+                >
+                  <XCircle size={16} /> Отменить заказ
+                </button>
+              </li>
+            </>
+          )}
+
+          {type === "client" && (
             <li>
-              <Link href={`/inventory/edit/${id}`}>
+              <Link href={`/clients/${id}/edit`}>
                 <Pencil size={16} /> Редактировать
               </Link>
             </li>
-            {currentStatus !== "maintenance" ? (
-              <li>
-                <button
-                  onClick={() => handleStatusChange("maintenance")}
-                  className={styles.maintenanceBtn}
-                >
-                  <Wrench size={16} /> В ремонт
-                </button>
-              </li>
-            ) : (
-              <li>
-                <button
-                  onClick={() => handleStatusChange("available")}
-                  className={styles.availableBtn}
-                >
-                  <CheckCircle size={16} /> В работу
-                </button>
-              </li>
-            )}
-          </>
-        )}
+          )}
 
-        {/* Специфические действия для ЗАКАЗОВ */}
-        {type === "order" && currentStatus === "active" && (
-          <>
-            <li>
-              <button
-                onClick={() => handleAction("completed")}
-                className={styles.availableBtn}
-              >
-                <CheckCircle size={16} /> Завершить аренду
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => handleAction("cancelled")}
-                className={styles.cancelBtn}
-              >
-                <XCircle size={16} /> Отменить заказ
-              </button>
-            </li>
-          </>
-        )}
+          <div className={styles.deleteSeparator} />
 
-        {type === "client" && (
           <li>
-            <Link href={`/clients/${id}/edit`}>
-              <Pencil size={16} /> Редактировать
-            </Link>
+            <button onClick={onDeleteClick} className={styles.deleteBtn}>
+              <Trash2 size={16} /> Удалить
+            </button>
           </li>
-        )}
-
-        {/* Разделитель */}
-        <div className={styles.deleteSeparator} />
-        <li>
-          <button onClick={onDeleteClick} className={styles.deleteBtn}>
-            <Trash2 size={16} /> Удалить
-          </button>
-        </li>
-      </ul>
-    </div>
+        </ul>
+      </div>
+    </Portal>
   );
 }

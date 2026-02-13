@@ -28,11 +28,6 @@
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.filterBtn:hover:not(.activeFilter) {
-  color: #111827;
-  background: rgba(0, 0, 0, 0.04);
-}
-
 /* Базовые цвета активных кнопок для Заказов */
 .activeFilter {
   background: #ffffff;
@@ -74,10 +69,22 @@
   color: #5b21b6;
 }
 
+@media (hover: hover) {
+  .filterBtn:hover:not(.activeFilter) {
+    color: #111827;
+    background: rgba(0, 0, 0, 0.04);
+  }
+}
+
+@media (max-width: 768px) {
+  .filters {
+    margin-inline: auto;
+  }
+}
+
 @media (max-width: 480px) {
   .filters {
     width: 100%;
-
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -100,5 +107,11 @@
     height: 36px;
     padding: 0 12px;
     font-size: 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .filters {
+    justify-content: flex-start;
   }
 }

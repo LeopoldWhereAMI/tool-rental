@@ -1,6 +1,6 @@
 import { OrderUI } from "@/types";
-
 import styles from "../page.module.css";
+
 import { validateOrderStatus } from "@/helpers";
 import { AlertCircle, EllipsisVertical } from "lucide-react";
 import ActionsMenu from "@/components/ui/ActionsMenu/ActionsMenu";
@@ -10,15 +10,21 @@ import OrderStatusInfo from "@/components/ui/OrderStatusInfo/OrderStatusInfo";
 type OrderItemProps = {
   order: OrderUI;
   isOpen: boolean;
-  onToggleMenu: (id: string) => void;
+  anchor: { top: number; left: number } | null;
+  onToggleMenu: (e: React.MouseEvent<HTMLButtonElement>, id: string) => void;
+  onClose: () => void;
   onStatusUpdate: (id: string, status: string) => Promise<void>;
   onDeleteClick: (id: string) => void;
 };
 
+/* width: calc(100% + 36px); */
+
 export default function OrderItem({
   order,
   isOpen,
+  anchor,
   onToggleMenu,
+  onClose,
   onStatusUpdate,
   onDeleteClick,
 }: OrderItemProps) {
@@ -28,7 +34,6 @@ export default function OrderItem({
   const statusInfo = validateOrderStatus(order.status);
   const statusClass = styles[statusInfo.className as keyof typeof styles] || "";
 
-  // Динамически формируем классы для строки
   const rowClass = `
   ${isActive ? styles.activeRow : ""} 
   ${isOverdue ? styles.overdueRow : ""}
@@ -46,7 +51,6 @@ export default function OrderItem({
         </div>
       </td>
 
-      {/* 2. Данные клиента */}
       <td className={styles.clientCell} data-label="Клиент">
         <div className={styles.cellInner}>
           <div className={styles.primaryText}>
@@ -79,7 +83,7 @@ export default function OrderItem({
         )}
       </td>
 
-      <td>
+      <td className={styles.statusCell} data-label="Статус">
         <OrderStatusInfo order={order} showStatusText={false} />
       </td>
 
@@ -90,12 +94,11 @@ export default function OrderItem({
         </div>
       </td>
 
-      {/* 3. Действия */}
       <td className={styles.actionsCell}>
         <button
           data-menu-trigger={order.id}
           className={styles.actionButton}
-          onClick={() => onToggleMenu(order.id)}
+          onClick={(e) => onToggleMenu(e, order.id)}
         >
           <EllipsisVertical size={16} />
         </button>
@@ -104,8 +107,9 @@ export default function OrderItem({
           <ActionsMenu
             id={order.id}
             type="order"
+            anchor={anchor}
             currentStatus={order.status}
-            onClose={() => onToggleMenu(order.id)}
+            onClose={onClose}
             onStatusUpdate={onStatusUpdate}
             onDeleteClick={() => onDeleteClick(order.id)}
           />

@@ -10,6 +10,13 @@ body {
   overflow-x: hidden;
 }
 
+body.menu-open .tabBar {
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
 .app-layout {
   display: flex;
   flex: 1;
@@ -24,7 +31,7 @@ body {
   min-width: 0;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1150px) {
   .main-content {
     margin-left: 72px;
   }

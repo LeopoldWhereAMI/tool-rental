@@ -21,7 +21,7 @@ export default function OrderPeriod({ start, order }: OrderPeriodProps) {
             <span className={styles.miniLabel}>Выдан:</span>
             <strong>{start?.toLocaleDateString() || "—"}</strong>
           </div>
-          <div className={styles.divider} />
+          <div />
           <OrderStatusInfo order={order} />
         </div>
       </div>

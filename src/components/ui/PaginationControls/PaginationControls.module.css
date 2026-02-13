@@ -33,3 +33,14 @@
   font-size: 14px;
   color: #666;
 }
+
+@media (max-width: 380px) {
+  .hideOnMobile {
+    display: none;
+  }
+
+  .pagination {
+    margin: 0;
+    padding: 12px;
+  }
+}

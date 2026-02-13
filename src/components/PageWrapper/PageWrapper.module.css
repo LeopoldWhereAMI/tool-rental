@@ -1,7 +1,8 @@
 .pageWrapper {
   width: 100%;
-  padding: var(--main-padding);
-
+  margin-inline: auto;
+  max-width: 1432px;
+  padding: 8px 16px;
   color: var(--color-black);
 }
 

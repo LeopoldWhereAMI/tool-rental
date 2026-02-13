@@ -3,7 +3,7 @@
 import styles from "../page.module.css";
 import { validateCategory, validateStatus } from "@/helpers";
 import { Box, EllipsisVertical, Fuel, Plug } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { InventoryUI } from "@/types";
 import ActionsMenu from "@/components/ui/ActionsMenu/ActionsMenu";
 import { deleteInventory } from "@/services/inventoryService";
@@ -12,11 +12,11 @@ import DeleteConfirmModal from "@/components/ui/MyModal/DeleteConfirmModal";
 import ErrorBlock from "@/components/ui/ErrorBlock/ErrorBlock";
 import EmptyBlock from "@/components/ui/EmptyBlock/EmptyBlock";
 import InventorySkeleton from "./InventorySceleton";
+import { useMenuAnchor } from "@/components/Portal/useMenuAnchor";
 
 type InventoryListProps = {
   items: InventoryUI[];
-  // selectedCategory: string;
-  // onCategoryChange: (value: string) => void;
+  viewMode: "table" | "grid";
   loading: boolean;
   error: string | null;
   refresh: () => void;
@@ -38,19 +38,14 @@ const getStatusClass = (status: string) => {
 
 export default function InventoryList({
   items,
+  viewMode,
   loading,
   error,
   refresh,
 }: InventoryListProps) {
-  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
-  // Состояние для удаления
+  const { openMenuId, anchor, toggleMenu, closeMenu } = useMenuAnchor();
   const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
-  // Находим данные выбранного для удаления элемента
   const itemToDelete = items.find((item) => item.id === deleteItemId);
-
-  const toggleMenu = (id: string) => {
-    setOpenMenuId((prevId) => (prevId === id ? null : id));
-  };
 
   // Функция подтверждения удаления
   const handleConfirmDelete = async () => {
@@ -79,6 +74,20 @@ export default function InventoryList({
     }
   };
 
+  useEffect(() => {
+    if (openMenuId) {
+      // Сохраняем текущее состояние overflow, чтобы вернуть его позже
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      document.body.style.overflow = "hidden";
+
+      return () => {
+        document.body.style.overflow = originalStyle;
+      };
+    }
+  }, [openMenuId]);
+
+  const wrapperClass = `${styles.tableWrapper} ${viewMode === "grid" ? styles.forceGrid : ""}`;
+
   if (loading) {
     return <InventorySkeleton />;
   }
@@ -89,7 +98,7 @@ export default function InventoryList({
 
   return (
     <>
-      <div className={styles.tableWrapper}>
+      <div className={wrapperClass}>
         <table className={styles.table}>
           <thead>
             <tr>
@@ -106,24 +115,27 @@ export default function InventoryList({
             {items.length > 0 ? (
               items.map((item) => (
                 <tr key={item.id}>
-                  <td>
+                  <td data-label="Артикул" className={styles.articleCell}>
                     <div className={styles.primaryText}>{item.article}</div>
                   </td>
-                  <td>
+                  <td data-label="Инструмент">
                     <div className={styles.nameCell}>
-                      <div className={styles.iconWrapper}>
+                      <div
+                        data-label="Категория"
+                        className={styles.iconWrapper}
+                      >
                         {item.category && getCategoryIcon(item.category)}
                       </div>
                       <span className={styles.itemName}>{item.name}</span>
                     </div>
                   </td>
-                  <td>
+                  <td data-label="Категория">
                     <span className={styles.secondaryText}>
                       {item.category && validateCategory(item.category)}
                     </span>
                   </td>
-                  <td>
-                    <span className={styles.primaryText}>
+                  <td data-label="Серийный номер">
+                    <span className={styles.secondaryText}>
                       {item.serial_number}
                     </span>
                   </td>
@@ -136,10 +148,9 @@ export default function InventoryList({
                       </span>
                     )}
                   </td>
-                  <td>
+                  <td data-label="Стоимость">
                     <div className={styles.priceContainer}>
-                      {item.daily_price}
-                      <span className={styles.currency}>₽/сут</span>
+                      <span>{item.daily_price} ₽/сут</span>
                     </div>
                   </td>
                   <td>
@@ -147,18 +158,19 @@ export default function InventoryList({
                       type="button"
                       data-menu-trigger={item.id}
                       className={styles.actionButton}
-                      onClick={() => toggleMenu(item.id)}
+                      onClick={(e) => toggleMenu(e, item.id)}
                     >
                       <EllipsisVertical size={18} />
                     </button>
                     {openMenuId === item.id && (
                       <ActionsMenu
                         id={item.id}
+                        anchor={anchor}
                         currentStatus={item.status}
-                        onClose={() => setOpenMenuId(null)}
+                        onClose={closeMenu}
                         onDeleteClick={() => {
                           setDeleteItemId(item.id);
-                          setOpenMenuId(null);
+                          closeMenu();
                         }}
                       />
                     )}

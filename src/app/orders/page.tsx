@@ -24,15 +24,18 @@ import { useOrderFilters } from "@/hooks/useOrderFilters";
 import OrdersList from "./components/OrdersList";
 import EmptyBlock from "@/components/ui/EmptyBlock/EmptyBlock";
 import OrdersSkeleton from "./OrdersSkeleton";
-// import { calculateFinalAmount } from "@/helpers";
-// import { processOrderMaintenance } from "@/services/inventoryService";
+import { useMenuAnchor } from "@/components/Portal/useMenuAnchor";
+import { LayoutGrid, List } from "lucide-react";
+
+type ViewMode = "table" | "grid";
 
 export default function OrdersListPage() {
   const [orders, setOrders] = useState<OrderUI[]>([]);
   const [loading, setLoading] = useState(true);
-  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const { openMenuId, anchor, toggleMenu, closeMenu } = useMenuAnchor();
   const [deleteOrderId, setDeleteOrderId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>("table");
 
   const {
     searchQuery,
@@ -50,10 +53,6 @@ export default function OrdersListPage() {
 
   // 1. Логика формирования динамического заголовка
   const pageTitle = ORDER_PAGE_TITLES[statusFilter] || "Заказы";
-
-  const toggleMenu = (id: string) => {
-    setOpenMenuId((prevId) => (prevId === id ? null : id));
-  };
 
   useEffect(() => {
     loadAllOrders()
@@ -77,49 +76,11 @@ export default function OrdersListPage() {
     }
   };
 
-  // const handleStatusUpdate = async (id: string, newStatus: string) => {
-  //   try {
-  //     const orderToUpdate = orders.find((o) => o.id === id);
-  //     if (!orderToUpdate) return;
-
-  //     let finalPrice = orderToUpdate.total_price;
-
-  //     if (newStatus === "completed") {
-  //       finalPrice = calculateFinalAmount(orderToUpdate);
-
-  //       await processOrderMaintenance(orderToUpdate);
-  //     }
-
-  //     // 2. ОБНОВЛЯЕМ СТАТУС И ЦЕНУ В БАЗЕ
-  //     await updateOrderStatus(id, newStatus, finalPrice);
-
-  //     // 3. ОБНОВЛЯЕМ ЛОКАЛЬНЫЙ СТЕЙТ
-  //     setOrders((prev) =>
-  //       prev.map((o) =>
-  //         o.id === id
-  //           ? { ...o, status: newStatus, total_price: finalPrice }
-  //           : o,
-  //       ),
-  //     );
-
-  //     toast.success(
-  //       newStatus === "completed"
-  //         ? `Заказ завершен. Пробег обновлен. Итого: ${finalPrice} ₽`
-  //         : "Статус обновлен",
-  //     );
-  //   } catch (error) {
-  //     console.error(error);
-  //     toast.error("Ошибка обновления");
-  //   }
-  // };
-
   const handleStatusUpdate = async (id: string, newStatus: string) => {
     try {
       const orderToUpdate = orders.find((o) => o.id === id);
       if (!orderToUpdate) return;
 
-      // Если статус "Выполнен", мы просто предупреждаем пользователя.
-      // Это предотвращает вызов функций расчета, которых здесь больше нет.
       if (newStatus === "completed") {
         toast.info("Завершение заказа доступно только на его странице");
         return;
@@ -140,6 +101,19 @@ export default function OrdersListPage() {
     }
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 980) {
+        setViewMode("grid");
+      }
+    };
+
+    handleResize(); // при первом рендере
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <PageWrapper>
       <div className={styles.header}>
@@ -148,17 +122,31 @@ export default function OrdersListPage() {
           {!loading && (
             <span className={styles.countBadge}>{filteredOrders.length}</span>
           )}
+          <div className={styles.searchWrapper}>
+            <SearchInput value={searchQuery} setSearch={setSearchQuery} />
+          </div>
         </div>
-
-        <div className={styles.searchWrapper}>
-          <SearchInput value={searchQuery} setSearch={setSearchQuery} />
+        <div className={styles.headerTools}>
+          <StatusFilter
+            currentFilter={statusFilter}
+            onFilterChange={setStatusFilter}
+            labels={ORDER_STATUS_LABELS}
+          />
+          <div className={styles.viewSwitcher}>
+            <button
+              onClick={() => setViewMode("table")}
+              className={`${styles.viewBtn} ${viewMode === "table" ? styles.activeView : ""}`}
+            >
+              <List size={20} />
+            </button>
+            <button
+              onClick={() => setViewMode("grid")}
+              className={`${styles.viewBtn} ${viewMode === "grid" ? styles.activeView : ""}`}
+            >
+              <LayoutGrid size={20} />
+            </button>
+          </div>
         </div>
-
-        <StatusFilter
-          currentFilter={statusFilter}
-          onFilterChange={setStatusFilter}
-          labels={ORDER_STATUS_LABELS}
-        />
       </div>
 
       {loading ? (
@@ -166,11 +154,17 @@ export default function OrdersListPage() {
       ) : filteredOrders.length > 0 ? (
         <>
           <OrdersList
+            viewMode={viewMode}
             orders={currentItems}
             openMenuId={openMenuId}
+            anchor={anchor}
             onToggleMenu={toggleMenu}
+            onClose={closeMenu}
             onStatusUpdate={handleStatusUpdate}
-            onDeleteClick={(id) => setDeleteOrderId(id)}
+            onDeleteClick={(id) => {
+              setDeleteOrderId(id);
+              closeMenu(); // Закрываем меню при открытии модалки
+            }}
           />
 
           <PaginationControls

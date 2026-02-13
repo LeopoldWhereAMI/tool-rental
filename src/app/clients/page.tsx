@@ -13,9 +13,10 @@ import usePagination from "@/hooks/usePagination";
 import PaginationControls from "@/components/ui/PaginationControls/PaginationControls";
 import { Plus } from "lucide-react";
 import CreateClientModal from "@/components/ui/MyModal/CreateClientModal/CreateClientModal";
+import { useMenuAnchor } from "@/components/Portal/useMenuAnchor";
 
 export default function ClientsPage() {
-  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const { openMenuId, anchor, toggleMenu, closeMenu } = useMenuAnchor();
   const [deleteClientId, setDeleteClientId] = useState<string | null>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const {
@@ -40,8 +41,8 @@ export default function ClientsPage() {
     return <ErrorBlock message={error} />;
   }
 
-  const toggleMenu = (id: string) =>
-    setOpenMenuId((prev) => (prev === id ? null : id));
+  // const toggleMenu = (id: string) =>
+  //   setOpenMenuId((prev) => (prev === id ? null : id));
 
   const handleConfirmDelete = async () => {
     if (!deleteClientId) return;
@@ -88,10 +89,12 @@ export default function ClientsPage() {
                   key={client.id}
                   client={client}
                   isMenuOpen={openMenuId === client.id}
+                  anchor={anchor}
                   onToggleMenu={toggleMenu}
+                  onClose={closeMenu}
                   onDelete={(id) => {
                     setDeleteClientId(id);
-                    setOpenMenuId(null);
+                    closeMenu();
                   }}
                 />
               ))

@@ -11,10 +11,37 @@
   background: #fff;
 }
 
-.categoryChipsWrapper {
-  width: fit-content;
-  margin-bottom: 10px;
-  margin-left: auto;
+.viewSwitcher {
+  display: flex;
+  background: #f3f4f6;
+  padding: 4px;
+  border-radius: 8px;
+  gap: 4px;
+}
+
+.viewBtn {
+  border: none;
+  background: transparent;
+  padding: 6px;
+  cursor: pointer;
+  border-radius: 6px;
+  color: #6b7280;
+  display: flex;
+  transition: all 0.2s;
+}
+
+.activeView {
+  background: #fff;
+  color: #111827;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.headerTools {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 16px;
 }
 
 .header {
@@ -62,7 +89,7 @@
 }
 
 .filterBox {
-  flex-shrink: 0; /* Кнопки не сжимаются */
+  flex-shrink: 0;
 }
 
 .table {
@@ -71,11 +98,10 @@
   table-layout: fixed;
 }
 
-/* Шапка таблицы */
 .table th {
   padding: 12px 16px;
   background-color: #f9fafb;
-  /* text-align: left; */
+
   font-weight: 600;
   color: #6b7280;
   font-size: 11px;
@@ -89,14 +115,12 @@
   text-align: left;
 }
 
-/* Ячейки */
 .table td {
   padding: 14px 16px;
   vertical-align: middle;
   border-bottom: 1px solid #f3f4f6;
 }
 
-/* Выбираем последнюю ячейку в таблице инвентаря */
 .table td:last-child {
   position: relative;
 }
@@ -107,25 +131,21 @@
   text-align: center;
 }
 
-/* Стоимость справа */
 .table td:nth-child(6) {
   text-align: right;
 }
 
-/* Иерархия текста */
 .itemName {
-  /* font-weight: 500; */
   font-size: 14px;
-  /* color: #111827; */
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .primaryText {
-  /* font-weight: 600; */
   font-size: 14px;
-  /* color: #111827; */
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -138,14 +158,12 @@
   display: block;
 }
 
-/* Ячейка с названием и иконкой */
 .nameCell {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* Бейджи статусов */
 .statusBadge {
   padding: 4px 10px;
   border-radius: 8px;
@@ -187,7 +205,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  /* font-weight: 700; */
+
   font-size: 15px;
   color: #111827;
   justify-content: flex-end;
@@ -230,31 +248,25 @@
 }
 
 .table th:nth-child(2) {
-  /* Инструмент */
   width: 200px;
 }
 
 .table th:nth-child(3) {
-  /* Категория */
   width: 140px;
 }
 
 .table th:nth-child(4) {
-  /* Серийный номер */
   width: 150px;
 }
 
 .table th:nth-child(5) {
-  /* Статус */
   width: 120px;
 }
 .table th:nth-child(6) {
-  /* Стоимость */
   width: 120px;
   text-align: right;
 }
 .table th:last-child {
-  /* Действия */
   width: 60px;
   text-align: center;
 }
@@ -271,7 +283,6 @@
   border-bottom: none;
 }
 
-/* Тонкий акцент строки */
 .table tbody tr td:first-child {
   border-left: 3px solid transparent;
 }
@@ -288,24 +299,22 @@
   height: 32px;
   border-radius: 8px;
   flex-shrink: 0;
-  /* Легкий фон, чтобы иконка не висела в воздухе */
+
   background: #f9fafb;
 }
 
-/* Цвета иконок */
 .gasIcon {
-  color: #b45309; /* Янтарный для бензо */
+  color: #b45309;
 }
 
 .electricIcon {
-  color: #2563eb; /* Твой синий для электро */
+  color: #2563eb;
 }
 
 .defaultIcon {
   color: #9ca3af;
 }
 
-/* При наведении на строку можно подсвечивать фон иконки */
 .table tbody tr:hover .iconWrapper {
   background: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -362,240 +371,191 @@
   }
 }
 
-@media (max-width: 1024px) {
-  .header {
-    margin-bottom: 20px;
-    padding: 10px 0;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-
-  .title {
-    font-size: 20px;
-  }
-
-  .table th,
-  .table td {
-    padding: 10px 8px;
-  }
-  .primaryText,
-  .itemName {
-    font-size: 13px;
-  }
-
-  .secondaryText {
-    font-size: 11px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (max-width: 768px) {
-  .table tr:has(.emptyRow) {
-    grid-column: 1 / -1;
-    display: block;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    padding: 40px 0;
-  }
+/*  */
+.forceGrid .table thead {
+  display: none; /* Скрываем заголовки колонок */
+}
 
-  .emptyRow {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.forceGrid .table tbody {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* 🔥 центрирует 1 карточку */
+  gap: 20px;
+  padding: 20px 0;
 
-  .table tbody tr:has(.emptyRow):hover {
-    background-color: transparent;
-  }
+  background-color: #f8fafc; /* Очень легкий серо-голубой оттенок */
+  border: 1px solid #e2e8f0; /* Тонкая рамка */
+  border-radius: 12px; /* Закругленные углы всей области */
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02); /* Внутренняя тень для глубины */
+  background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+  background-size: 20px 20px; /* Эффект мелкой сетки в точечку на фоне */
+}
 
-  .controlsRow {
-    flex-direction: column;
-    align-items: stretch;
-  }
+.forceGrid .table tr {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  max-width: 325px;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(51, 65, 85, 0.08);
+  border: 1px solid #e2e8f0;
+  position: relative;
+  height: auto;
+  animation: fadeIn 0.3s ease-in-out;
+  transition: all 0.2s ease;
+  background-color: #fff;
+}
 
+.forceGrid .table td {
+  position: relative;
+  width: 100%;
+  text-align-last: left;
+}
+
+.forceGrid .table td::before {
+  content: attr(data-label);
+  display: block;
+  font-size: 11px;
+  color: #9ca3af;
+  margin-bottom: 4px;
+}
+
+.forceGrid .itemName,
+.forceGrid .primaryText,
+.forceGrid .secondaryText {
+  white-space: normal; /* Разрешаем перенос */
+  overflow: visible; /* Показываем текст */
+  text-overflow: clip; /* Убираем многоточие */
+  word-break: break-word; /* Разбиваем длинные слова, если нужно */
+  line-height: 1.4; /* Увеличиваем межстрочный интервал для читаемости */
+}
+
+.forceGrid .articleCell {
+  width: calc(100% + 32px) !important;
+  margin: -16px -16px 12px -16px;
+  background: #f8fafc;
+  padding: 12px 16px !important;
+  border-bottom: 1px solid #eee !important;
+  border-radius: 16px 16px 0 0;
+}
+
+.forceGrid .nameCell {
+  order: -1;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.forceGrid td::before {
+  content: attr(data-label); /* Если добавите аттрибут в JSX */
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #9ca3af;
+  font-weight: 600;
+}
+
+.forceGrid .priceContainer {
+  flex-direction: column;
+  align-items: start;
+}
+
+.forceGrid .table td:last-child {
+  position: absolute !important;
+  top: 2;
+  right: 2;
+  width: auto !important;
+  height: auto;
+  padding: 0 !important;
+  border: none !important;
+  z-index: 10;
+  background: transparent;
+}
+
+.forceGrid .table td:last-child::before {
+  display: none !important;
+  content: none !important;
+}
+
+.forceGrid .actionButton {
+  margin: 0;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.forceGrid .table tbody tr td:first-child {
+  border-left: none;
+}
+
+/* Также отменяем изменение цвета при ховере, чтобы не было мерцания */
+.forceGrid .table tbody tr:hover td:first-child {
+  border-left-color: transparent;
+}
+
+@media (max-width: 1150px) {
   .header {
     flex-direction: column;
+
     align-items: stretch;
     gap: 16px;
-    margin-bottom: 24px;
+  }
+
+  .titleGroup {
+    margin-bottom: 0;
   }
 
   .title {
     font-size: 22px;
   }
 
-  .categoryChipsWrapper {
-    margin-inline: auto;
-  }
-
-  .tableWrapper {
-    box-shadow: none;
-    background: transparent;
-    border-radius: 0;
-  }
-
-  .table {
-    display: block;
-    table-layout: auto;
-  }
-
-  .table thead {
-    display: none; /* Скрываем заголовки колонок */
-  }
-
-  .table tbody {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px; /* Расстояние между карточками */
-    width: 100%;
-  }
-
-  /* Превращаем строку в карточку */
-  .table tr {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Две колонки */
-    gap: 12px 8px;
-    background: #fff;
-    border-radius: 12px;
-    margin-bottom: 0;
-    padding: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e5e7eb;
-    position: relative;
-    border-left: 2px solid #cbd5e1; /* Базовый акцент слева */
-  }
-
-  /* Цветовые акценты слева в зависимости от статуса (опционально) */
-  .table tr:has(.statusAvailable) {
-    border-left-color: #10b981;
-  }
-  .table tr:has(.statusRented) {
-    border-left-color: #3b82f6;
-  }
-  .table tr:has(.statusMaintenance) {
-    border-left-color: #ef4444;
-  }
-
-  .table td {
-    display: block;
-    padding: 0 !important;
-    border: none !important;
-    text-align: left !important;
-    width: 100% !important;
-  }
-
-  /* 1. Артикул (делаем его маленькой меткой вверху) */
-  .table td:nth-child(1) {
-    grid-column: 1 / 2;
-    order: 1;
-  }
-  .table td:nth-child(1) .primaryText {
-    font-size: 11px;
-    color: #9ca3af;
-    font-weight: 700;
-  }
-  .table td:nth-child(1) .primaryText::before {
-    content: "АРТ: ";
-  }
-
-  /* 2. Название инструмента (на всю ширину) */
-  .table td:nth-child(2) {
-    grid-column: 1 / -1;
-    order: 2;
-    margin-top: -4px;
-  }
-
-  .itemName {
-    white-space: normal;
-    max-width: 200px;
-  }
-
-  .table td:nth-child(2) {
-    font-size: 16px;
-    font-weight: 700;
-    white-space: normal;
-    color: #111827;
-  }
-
-  /* 3. Категория */
-  .table td:nth-child(3) {
-    grid-column: 1 / 2;
-    order: 3;
-  }
-  .table td:nth-child(3)::before {
-    content: "Категория";
-    display: block;
-    font-size: 10px;
-    text-transform: uppercase;
-    color: #9ca3af;
-    margin-bottom: 2px;
-  }
-
-  /* 4. Серийный номер */
-  .table td:nth-child(4) {
-    grid-column: 2 / 3;
-    order: 4;
-  }
-  .table td:nth-child(4)::before {
-    content: "Серийник";
-    display: block;
-    font-size: 10px;
-    text-transform: uppercase;
-    color: #9ca3af;
-    margin-bottom: 2px;
-  }
-
-  /* 5. Статус */
-  .table td:nth-child(5) {
-    grid-column: 1 / 2;
-    order: 5;
-    padding-top: 8px !important;
-    border-top: 1px solid #f3f4f6 !important;
-  }
-
-  /* 6. Стоимость */
-  .table td:nth-child(6) {
-    grid-column: 2 / 3;
-    order: 6;
-    padding-top: 8px !important;
-    border-top: 1px solid #f3f4f6 !important;
-  }
-  .table td:nth-child(6) .priceContainer {
-    justify-content: flex-end;
-    font-weight: 700;
-  }
-
-  /* 7. Кнопка действий (абсолютное позиционирование) */
-  .table td:nth-child(7) {
-    position: absolute;
-    top: 3px;
-    right: 3px;
-    width: auto !important;
-  }
-
-  .actionButton {
-    background: #f9fafb;
+  .forceGrid .table tr {
+    max-width: 280px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 980px) {
   .header {
-    margin: 0;
+    flex-direction: column;
+    align-items: stretch;
   }
-
-  .titleGroup {
-    max-width: 360px;
-  }
-
   .title {
     font-size: 20px;
   }
 
-  .searchWrapper {
+  .headerTools {
     width: 100%;
-    /* margin-inline: auto; */
+    min-width: 0;
+    overflow: hidden; /* Обрезаем лишнее, чтобы работал внутренний скролл фильтра */
   }
 
-  .table tbody {
-    grid-template-columns: 1fr;
+  .categoryChipsWrapper {
+    justify-content: end;
+  }
+
+  .viewSwitcher {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .headerTools {
+    flex-direction: column;
   }
 }

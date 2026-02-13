@@ -73,7 +73,7 @@
   border-radius: 0 4px 4px 0;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1150px) {
   .aside {
     width: 72px; /* Ширина только для иконок + отступы */
     padding: 20px 8px;

@@ -206,8 +206,8 @@
 }
 
 .totalBlock {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border: 2px solid #dee2e6;
+  /* background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); */
+  /* border: 2px solid #dee2e6; */
 }
 
 .totalBlock:hover {
@@ -337,8 +337,8 @@
 
 /* Стили для списка инструментов */
 .wideBlock {
-  grid-column: 1 / -1;
-  border-right: none;
+  /* grid-column: 1 / -1; */
+  /* border-right: none; */
   border-bottom: none;
 }
 
@@ -533,141 +533,136 @@
   font-weight: 500;
 }
 
-.divider {
-  width: 30px;
-  height: 2px;
-  background: #f0f0f0;
-  border-radius: 2px;
-}
-
 .startDateInfo strong {
   font-size: 18px;
   color: #1a1a1a;
   font-weight: 700;
 }
 
-@media (max-width: 480px) {
-  .modalGrid {
-    grid-template-columns: 1fr;
-  }
-  .modal {
-    padding: 24px;
-  }
-
-  .topNav {
-    margin: 0;
-    padding-bottom: 8px;
-  }
-
+/* Обновленная адаптивность */
+@media (max-width: 768px) {
   .container {
-    padding: 0px;
-  }
-
-  .printBtn {
-    font-size: 14px;
-    font-weight: 400;
-    padding: 8px 14px;
+    padding: 12px;
   }
 
   .header {
-    align-items: center;
-    padding: 12px;
+    padding: 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
   }
 
-  .titleInfo h1 {
-    font-size: 18px;
+  .actions {
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .infoGrid {
+    grid-template-columns: 1fr;
   }
 
   .infoBlock {
-    padding: 12px;
+    border-right: none;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mainCard {
+    border-radius: 16px; /* Чуть меньше скругление для мобильных */
+    border: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   }
 
-  .blockTitle {
-    max-width: fit-content;
-    margin-inline: auto;
-    margin-bottom: 15px;
+  .header {
+    padding: 16px;
   }
 
-  .blockContent {
-    text-align: center;
-  }
-
-  .clientBlockContent {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    & p,
-    .contactInfo {
-      margin: 0;
-    }
-  }
-
-  .name {
-    font-size: 16px;
-  }
-
-  .contactRow {
-    margin-inline: auto;
-  }
-
-  .periodWrapper {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .startDateInfo strong {
+  .printBtn {
+    padding: 8px 14px;
     font-size: 14px;
   }
 
-  .toolItemEntry {
-    padding: 12px;
+  .titleInfo h1 {
+    font-size: 20px;
+    line-height: 1.2;
+  }
 
-    & .name {
-      font-size: 14px;
-      flex: none;
-    }
+  .infoBlock {
+    padding: 16px;
+  }
+
+  .startDateInfo {
+    display: none;
+  }
+
+  /* Вместо text-align: center используем аккуратный левый край */
+  .blockContent,
+  .clientBlockContent {
+    text-align: left;
+    display: block;
+  }
+
+  .blockTitle {
+    margin-inline: 0;
+    margin-bottom: 12px;
+  }
+
+  /* Компактные карточки инструментов */
+  .toolItemEntry {
+    padding: 14px;
+    margin-bottom: 8px;
   }
 
   .toolHeader {
-    align-items: center;
-    gap: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin-bottom: 10px;
   }
 
   .toolPrice {
-    font-size: 16px;
+    font-size: 18px;
   }
 
+  /* Улучшаем читаемость дат и тегов */
   .toolMeta {
-    justify-content: space-between;
+    gap: 8px;
   }
 
-  .totalBlock {
-    & .blockTitle {
-      margin-bottom: 12px;
-    }
+  .toolMeta .subText,
+  .individualDates {
+    font-size: 12px;
+    padding: 4px 10px;
+    flex: 1; /* Чтобы кнопки тянулись равномерно */
+    justify-content: center;
   }
 
+  /* Финансовый блок */
   .financeBlockContent {
-    display: grid;
-    grid-template-columns: 1fr auto; /* Левая часть тянется, правая по контенту */
-    align-items: center;
-    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
   }
 
   .price {
-    font-size: 20px;
+    font-size: 26px;
+    width: 100%;
   }
 
   .adjustmentBlock {
-    margin: 0;
-    padding: 0;
+    width: 100%;
+  }
+
+  .adjInput {
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .completeOrderBtn {
-    margin-top: auto;
-    font-size: 12px;
-    padding: 8px;
+    padding: 14px;
+    font-size: 14px;
+    border-radius: 12px;
   }
 }

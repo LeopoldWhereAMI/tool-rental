@@ -9,15 +9,19 @@ import Link from "next/link";
 interface ClientRowProps {
   client: Client;
   isMenuOpen: boolean;
-  onToggleMenu: (id: string) => void;
+  onToggleMenu: (e: React.MouseEvent<HTMLElement>, id: string) => void;
+  onClose: () => void;
   onDelete: (id: string) => void;
+  anchor: { top: number; left: number } | null;
 }
 
 export default function ClientRow({
   client,
   isMenuOpen,
   onToggleMenu,
+  onClose,
   onDelete,
+  anchor,
 }: ClientRowProps) {
   return (
     <tr>
@@ -50,8 +54,9 @@ export default function ClientRow({
       <td className={styles.menuContainer}>
         <button
           type="button"
+          data-menu-trigger={client.id}
           className={styles.actionButton}
-          onClick={() => onToggleMenu(client.id)}
+          onClick={(e) => onToggleMenu(e, client.id)}
         >
           <EllipsisVertical size={18} />
         </button>
@@ -59,7 +64,8 @@ export default function ClientRow({
           <ActionsMenu
             id={client.id}
             type="client"
-            onClose={() => onToggleMenu("")}
+            anchor={anchor}
+            onClose={onClose}
             onDeleteClick={() => onDelete(client.id)}
           />
         )}

@@ -36,7 +36,7 @@ export default function OrderCard({ order }: OrderCardProps) {
           {status.text}
         </span>
         <span className={styles.orderPrice}>{order.total_price} ₽</span>
-        <ChevronRight size={18} />
+        {/* <ChevronRight size={18} /> */}
       </div>
     </Link>
   );

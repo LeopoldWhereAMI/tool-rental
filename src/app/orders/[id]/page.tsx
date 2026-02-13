@@ -164,7 +164,6 @@ export default function OrderDetailsPage() {
 
       <PrintArea
         printRef={printRef}
-        // data={mapOrderDetailsToPrint(order, passportData)}
         data={mapOrderDetailsToPrint(order, passportData, actualTotal)}
       />
     </PageWrapper>

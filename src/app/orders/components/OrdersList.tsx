@@ -3,21 +3,29 @@ import styles from "../page.module.css";
 import OrderItem from "./OrderItem";
 
 interface OrdersListProps {
+  viewMode: "table" | "grid";
   orders: OrderUI[];
   openMenuId: string | null;
-  onToggleMenu: (id: string) => void;
+  anchor: { top: number; left: number } | null;
+  onToggleMenu: (e: React.MouseEvent<HTMLElement>, id: string) => void;
+  onClose: () => void;
   onStatusUpdate: (id: string, status: string) => Promise<void>;
   onDeleteClick: (id: string) => void;
 }
 export default function OrdersList({
+  viewMode,
   orders,
   openMenuId,
+  anchor,
   onToggleMenu,
+  onClose,
   onStatusUpdate,
   onDeleteClick,
 }: OrdersListProps) {
+  const wrapperClass = `${styles.tableWrapper} ${viewMode === "grid" ? styles.forceGrid : ""}`;
+
   return (
-    <div className={styles.tableWrapper}>
+    <div className={wrapperClass}>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -37,7 +45,9 @@ export default function OrdersList({
               key={order.id}
               order={order}
               isOpen={openMenuId === order.id}
+              anchor={anchor}
               onToggleMenu={onToggleMenu}
+              onClose={onClose}
               onStatusUpdate={onStatusUpdate}
               onDeleteClick={onDeleteClick}
             />

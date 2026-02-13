@@ -83,6 +83,10 @@
     box-shadow 0.2s;
 }
 
+.orderCard:last-child {
+  margin-bottom: 0;
+}
+
 .orderCard:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -271,13 +275,44 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .profileCard {
     padding: 16px 12px;
   }
 
+  .statBox {
+    align-items: center;
+    padding: 10px;
+  }
+
+  .historyHeader {
+    flex-direction: column;
+  }
+
+  .orderMain {
+    gap: 8px;
+  }
+
+  .orderMeta {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
   .name {
     margin-bottom: 8px;
     font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .orderCard {
+    padding: 8px 14px;
+  }
+
+  .orderMain {
+    display: block;
   }
 }

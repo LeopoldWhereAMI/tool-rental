@@ -12,7 +12,7 @@ export default function PaginationControls({
   currentPage,
 }: PaginationControlsProps) {
   return (
-    <div>
+    <>
       {totalPages > 1 && (
         <div className={styles.pagination}>
           <button
@@ -23,9 +23,10 @@ export default function PaginationControls({
             Назад
           </button>
 
-          <span className={styles.pageInfo}>
-            Страница <strong>{currentPage}</strong> из {totalPages}
-          </span>
+          <div className={styles.pageInfo}>
+            <span>Страница</span> <strong>{currentPage}</strong>{" "}
+            <span className={styles.hideOnMobile}>из {totalPages}</span>
+          </div>
 
           <button
             className={styles.pageBtn}
@@ -36,6 +37,6 @@ export default function PaginationControls({
           </button>
         </div>
       )}
-    </div>
+    </>
   );
 }
