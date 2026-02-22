@@ -1,117 +1,63 @@
 .filters {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 2px;
-  background: #f3f4f6;
+  gap: 4px;
+  background: #161e2d; /* Темно-синий фон контейнера */
   padding: 4px;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  height: 44px;
+  border-radius: 10px;
+  border: 1px solid #1e293b;
+  height: 40px;
   box-sizing: border-box;
   flex-shrink: 0;
 }
 
 .filterBtn {
   height: 100%;
-  padding: 0 14px;
+  padding: 0 16px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
   background: transparent;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
-  color: #4b5563;
+  color: #94a3b8; /* Приглушенный серый для неактивных */
   white-space: nowrap;
   display: flex;
   align-items: center;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
 }
 
-/* Базовые цвета активных кнопок для Заказов */
+/* Универсальный активный стиль — ярко-синий как на макете */
 .activeFilter {
-  background: #ffffff;
-  color: #111827;
+  background: #2563eb;
+  color: #ffffff;
   font-weight: 600;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.1),
-    0 1px 2px rgba(0, 0, 0, 0.06);
-}
-.activeFilter.status_active {
-  color: #059669;
-  border: 1px solid rgba(5, 150, 105, 0.2);
-}
-.activeFilter.status_completed {
-  color: #475569;
-  background-color: #f1f5f9;
-  border: 1px solid rgba(71, 85, 105, 0.2);
-}
-.activeFilter.status_cancelled {
-  color: #dc2626;
-  border: 1px solid rgba(220, 38, 38, 0.2);
-}
-
-/* Базовые цвета активных кнопок для Инвентаря */
-.status_available.activeFilter {
-  background-color: #ecfdf5;
-  color: #065f46;
-}
-.status_rented.activeFilter {
-  background-color: #eff6ff;
-  color: #1e40af;
-}
-.status_maintenance.activeFilter {
-  background-color: #fef2f2;
-  color: #991b1b;
-}
-.status_reserved.activeFilter {
-  background-color: #f5f3ff;
-  color: #5b21b6;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
 }
 
 @media (hover: hover) {
   .filterBtn:hover:not(.activeFilter) {
-    color: #111827;
-    background: rgba(0, 0, 0, 0.04);
-  }
-}
-
-@media (max-width: 768px) {
-  .filters {
-    margin-inline: auto;
+    color: #f8fafc;
+    background: rgba(255, 255, 255, 0.05);
   }
 }
 
 @media (max-width: 480px) {
   .filters {
     width: 100%;
-    display: flex;
-    flex-wrap: nowrap;
     overflow-x: auto;
-    overflow-y: hidden;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 4px 8px;
-    border-radius: 12px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Скрываем скролл в FF */
+    justify-content: flex-start;
   }
 
-  /* Скроллбар для WebKit браузеров (Chrome, Safari, Edge) */
   .filters::-webkit-scrollbar {
-    height: 4px;
-    display: block;
+    display: none; /* Скрываем скролл в Chrome/Safari */
   }
 
   .filterBtn {
-    flex-shrink: 0; /* ВАЖНО */
-    white-space: nowrap;
-    height: 36px;
+    flex-shrink: 0;
     padding: 0 12px;
     font-size: 12px;
-  }
-}
-
-@media (max-width: 380px) {
-  .filters {
-    justify-content: flex-start;
   }
 }

@@ -8,8 +8,11 @@ export const useMenuAnchor = () => {
 
   const toggleMenu = useCallback(
     (e: React.MouseEvent<HTMLElement>, id: string) => {
+      e.stopPropagation();
+
       if (openMenuId === id) {
         setOpenMenuId(null);
+        setAnchor(null);
       } else {
         const rect = e.currentTarget.getBoundingClientRect();
         setAnchor({
@@ -24,6 +27,7 @@ export const useMenuAnchor = () => {
 
   const closeMenu = useCallback(() => {
     setOpenMenuId(null);
+    setAnchor(null);
   }, []);
 
   return { openMenuId, anchor, toggleMenu, closeMenu };

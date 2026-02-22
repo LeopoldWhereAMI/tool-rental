@@ -1,67 +1,93 @@
+/* ImageUploader.module.css */
+
 .uploaderWrapper {
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
+/* Контейнер, когда изображение уже загружено */
 .uploaderWrapper:has(img) {
-  border: var(--input-border);
-  border-radius: var(--default-radius);
-  padding: var(--default-padding);
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Тонкая граница в стиле макета */
+  border-radius: 16px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03); /* Легкая подложка */
 }
 
+/* Зона загрузки (Dropzone) */
 .dropzone {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 2px dashed #e2e8f0;
-  border-radius: 12px;
-  padding: 2rem;
+  border: 2px dashed rgba(255, 255, 255, 0.2); /* Светлые пунктирные линии */
+  border-radius: 16px;
+  padding: 3rem 1rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-  background: #f8fafc;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(15, 23, 42, 0.3); /* Глубокий темный фон (Slate 900) */
+  color: #94a3b8; /* Текст цвета Slate 400 */
 }
 
 .dropzone:hover {
-  border-color: #3b82f6;
-  background: #eff6ff;
+  border-color: #4f46e5; /* Индиго при наведении, как в кнопках макета */
+  background: rgba(79, 70, 229, 0.05);
+  color: #f8fafc;
 }
 
+/* Контейнер превью */
 .imagePreviewContainer {
   position: relative;
-  width: fit-content;
-  margin: 0 auto;
+  width: 100%;
+  aspect-ratio: 4 / 3; /* Это создаст высоту относительно ширины */
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.3); /* Видно, если фото еще грузится */
 }
 
 .previewImage {
-  max-width: 100%;
-  max-height: 250px;
-  border-radius: 8px;
-  display: block;
-  transition: transform 0.3s ease;
-  cursor: pointer;
+  object-fit: cover;
+  transition: transform 0.5s ease;
 }
 
-.previewImage:hover {
-  transform: scale(1.05); /* Легкое увеличение при наведении */
+.imagePreviewContainer:hover .previewImage {
+  transform: scale(1.03);
 }
 
+/* Кнопка удаления (X) */
 .removeBtn {
   position: absolute;
-  top: -8px;
-  right: -48px;
-  background: #ef4444;
+  top: 12px;
+  right: 12px;
+  background: rgba(239, 68, 68, 0.9); /* Насыщенный красный (Red 500) */
+  backdrop-filter: blur(4px); /* Эффект размытия фона под кнопкой */
   color: white;
   border: none;
-  border-radius: 50%;
-  padding: 4px;
+  border-radius: 8px;
+  padding: 6px;
   cursor: pointer;
   display: flex;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.removeBtn:hover {
+  background: #ef4444;
+  transform: translateY(-2px);
+}
+
+/* Состояние загрузки */
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: #6366f1; /* Indigo 500 */
 }
 
 .spinner {
   animation: spin 1s linear infinite;
-  margin-bottom: 8px;
+  color: #6366f1;
 }
 
 @keyframes spin {
@@ -73,10 +99,28 @@
   }
 }
 
+/* Текст и иконки внутри дропзоны */
 .placeholderState {
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #64748b;
-  gap: 4px;
+  text-align: center;
+  gap: 12px;
+}
+
+.placeholderState span {
+  font-size: 15px;
+  font-weight: 500;
+  color: #f1f5f9; /* Почти белый */
+}
+
+.placeholderState small {
+  font-size: 12px;
+  color: #64748b; /* Приглушенный Slate 500 */
+}
+
+/* Адаптация иконки */
+.placeholderState svg {
+  color: #4f46e5;
+  filter: drop-shadow(0 0 8px rgba(79, 70, 229, 0.3));
 }

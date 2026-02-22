@@ -26,6 +26,8 @@ export interface Client extends CreateClientInput {
   created_at: string;
   issued_by?: string;
   issue_date?: string;
+  is_blacklisted: boolean;
+  blacklist_reason: string;
 }
 
 // ***2. Интерфейсы для страниц и компонентов (UI Layer)***
@@ -46,16 +48,12 @@ export interface OrderUI {
   actual_end_date?: string | null;
   inventory_id?: string;
   client_id?: string;
-
-  client: {
-    first_name: string;
-    last_name: string;
-    middle_name?: string;
-    phone?: string;
-  };
+  security_deposit?: number | null;
+  client: Client;
   tools?: Array<{
     id: string;
     name: string;
+    image_url?: string | null;
     serial_number?: string;
     price_at_time?: number;
     start_date: string;
@@ -63,6 +61,7 @@ export interface OrderUI {
   }>;
   inventory: {
     name: string;
+    image_url?: string | null;
     daily_price?: number;
     serial_number?: string;
     article?: string;
@@ -94,7 +93,18 @@ export interface DetailedOrderResponse extends Omit<
 
 // Тип клиента, включающий список его заказов (для профиля клиента)
 export interface ClientWithOrders extends Client {
-  orders: OrderUI[];
+  orders?: OrderUI[];
+}
+
+// история заказаов для инструмента
+export interface RentalHistoryItem {
+  id: string;
+  order_id: string | undefined;
+  start_date: string;
+  end_date: string;
+  total_price: number;
+  status: string | undefined;
+  client_name: string;
 }
 
 // интерфейс для OrderDetailsPage
@@ -103,16 +113,17 @@ interface OrderItemDetailed {
   start_date: string;
   end_date: string;
   price_at_time: number;
-  inventory: {
-    id: string;
-    name: string;
-    serial_number?: string;
-    article?: string;
-    daily_price?: number;
-    category?: string;
-    status?: string;
-    purchase_price?: number;
-  };
+  // inventory: {
+  //   id: string;
+  //   name: string;
+  //   serial_number?: string;
+  //   article?: string;
+  //   daily_price?: number;
+  //   category?: string;
+  //   status?: string;
+  //   purchase_price?: number;
+  // };
+  inventory: Inventory;
 }
 
 // ***3. Типы для API и операций (DTO - Data Transfer Objects)***
@@ -148,6 +159,7 @@ export type OrderPrintBundle = {
     start_date?: string;
     end_date?: string;
     adjustment?: number;
+    security_deposit?: number;
   };
 };
 //
@@ -172,7 +184,7 @@ export type ContractOrderData = {
   total_price: number;
   order_number?: number;
   adjustment?: number;
-
+  security_deposit?: number;
   last_name: string;
   first_name: string;
   middle_name?: string;

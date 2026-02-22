@@ -11,21 +11,17 @@ export default function OrderStatusInfo({
   order,
   showStatusText = true,
 }: OrderStatusInfoProps) {
-  const { returnStatus, isActive, formattedDate, hasValidDate } =
+  const { returnStatus, formattedDate, hasValidDate } =
     useOrderStatusInfo(order);
 
   if (!hasValidDate || formattedDate === "—") return null;
-  const isCompleted = returnStatus.type === "completed";
 
   return (
     <div className={`${styles.returnStatus} ${styles[returnStatus.type]}`}>
-      <span className={styles.dateLabel}>
-        {isActive ? `до ${formattedDate}` : formattedDate}
+      {/* Если заказ активен, показываем дату. Если просрочен - текст просрочки */}
+      <span className={styles.statusText}>
+        {returnStatus.type === "overdue" ? returnStatus.text : formattedDate}
       </span>
-
-      {showStatusText && (isActive || isCompleted) && (
-        <span className={styles.statusText}>{returnStatus.text}</span>
-      )}
     </div>
   );
 }

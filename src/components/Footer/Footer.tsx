@@ -1,5 +1,4 @@
 import styles from "./Footer.module.css";
-import Logo from "../ui/Logo/Logo";
 import { version } from "../../../package.json";
 
 export default function Footer() {
@@ -8,14 +7,11 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
-        <div className={styles.left}>
-          <Logo />
-          <span className={styles.copyright}>
-            © {currentYear} Система управления прокатом.
-          </span>
-        </div>
+        <span className={styles.copyright}>
+          © {currentYear} Система управления прокатом.
+        </span>
 
-        <div className={styles.status}>v {version} - beta</div>
+        <span className={styles.status}>v {version} - beta</span>
       </div>
     </footer>
   );

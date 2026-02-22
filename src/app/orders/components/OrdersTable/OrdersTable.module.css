@@ -1,0 +1,315 @@
+/* ===========================
+   ОБЩИЕ СТИЛИ ТАБЛИЦЫ
+   =========================== */
+
+.wrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #ffffff;
+  font-size: 14px;
+  background: #0f1624;
+  overflow: hidden;
+}
+
+.table thead {
+  background: #111827;
+}
+
+.table th {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: left;
+  background-color: #0a0a0c80;
+  border-bottom: 1px solid #1f2937;
+  padding: 14px 16px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.row {
+  border-bottom: 1px solid #1f2937;
+  transition: background 0.15s ease;
+}
+
+.row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.table td {
+  padding: 14px 16px;
+  vertical-align: middle;
+}
+
+/* ===========================
+   КОЛОНКИ
+   =========================== */
+
+.orderId {
+  /* color: #9ca3af; */
+  color: #3b82f6;
+  font-size: 14px;
+  font-family: var(--font-space-grotesk);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.toolsWrapper {
+  display: flex;
+  flex-direction: column; /* Инструменты будут друг под другом */
+  gap: 4px;
+}
+
+.toolItem {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Расстояние между точкой и текстом */
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.toolDot {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.toolDot.badgeToday,
+.toolDot.badgePending,
+.toolDot.badgeOverdue,
+.toolDot.badgeCompleted,
+.toolDot.badgeCancelled {
+  background: transparent; /* Убираем фон бейджа, оставляем только цвет текста */
+  padding: 0;
+  display: inline;
+}
+
+.tools {
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #e5e7eb;
+}
+
+.client {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.phone {
+  color: #64748b;
+  font-size: 12px;
+  font-family: var(--font-space-grotesk);
+}
+
+.price {
+  color: #3b82f6;
+  font-family: var(--font-space-grotesk);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Колонка периода */
+.periodCell {
+  padding: 12px 8px;
+  vertical-align: middle;
+}
+
+.dateWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: inherit;
+}
+
+.dateBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.2;
+}
+
+.month {
+  font-size: 14px;
+  color: #64748b; /* Приглушенный серо-синий для месяца */
+  text-transform: capitalize;
+}
+
+.day {
+  font-size: 12px;
+  font-family: var(--font-space-grotesk);
+  font-weight: 500;
+  color: #94a3b8; /* Чуть светлее для самих чисел */
+}
+
+.dateSeparator {
+  color: #475569;
+  font-size: 18px;
+  font-weight: 300;
+}
+
+/* Если строка просрочена, можно подсветить числа красным */
+.dayOverdue {
+  color: #ef4444;
+  font-family: var(--font-space-grotesk);
+  font-style: italic; /* Курсив как на скриншоте */
+  font-weight: 600;
+}
+
+.monthOverdue {
+  font-style: italic; /* Курсив как на скриншоте */
+  font-weight: 600;
+  color: #ef4444;
+  opacity: 0.8;
+}
+
+/* ===========================
+   КНОПКА МЕНЮ
+   =========================== */
+
+.actions {
+  text-align: right;
+  width: 100px; /* Фиксируем ширину колонки */
+  min-width: 100px;
+}
+
+.actionsWrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+}
+
+.viewButton,
+.actionButton {
+  /* Сбрасываем дефолт */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  /* Размеры и центрирование */
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Цвет иконки (сделаем чуть светлее, чтобы была видна) */
+  color: #92a0c9;
+  border-radius: 8px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Чтобы иконка внутри не ломала размеры */
+  flex-shrink: 0;
+}
+
+.viewButton:hover,
+.actionButton:hover {
+  color: #ffffff;
+  background-color: var(--border-dark); /* #232c48 */
+}
+
+/* Иконка внутри кнопки */
+.viewButton svg,
+.actionButton svg {
+  display: block;
+}
+
+/* .dotsBtn {
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.dotsBtn:hover {
+  color: #fff;
+  background-color: #1f2937;
+} */
+
+/* ===========================
+   СТАТУСЫ СРОКОВ АРЕНДЫ
+   =========================== */
+
+.statusCell {
+  white-space: nowrap;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Сегодня возврат — зелёный */
+.badgeToday {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+.badgeToday .statusDot {
+  background: #10b981;
+}
+
+/* Осталось N дней — жёлтый */
+.badgePending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+.badgePending .statusDot {
+  background: #f59e0b;
+}
+
+/* Просрочено — красный */
+.badgeOverdue {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+.badgeOverdue .statusDot {
+  background: #ef4444;
+}
+
+/* Завершён — серый */
+.badgeCompleted {
+  background: rgba(107, 114, 128, 0.15);
+  color: #9ca3af;
+}
+.badgeCompleted .statusDot {
+  background: #9ca3af;
+}
+
+.badgeCancelled {
+  background: rgba(220, 38, 38, 0.08);
+  color: #fca5a5;
+  border: 1px solid rgba(220, 38, 38, 0.15);
+}
+
+.badgeCancelled .statusDot {
+  background: #fca5a5;
+}
+
+/* ===========================
+   ПОДСВЕТКА ПРОСРОЧЕННЫХ СТРОК
+   =========================== */
+
+.rowOverdue {
+  background: rgba(239, 68, 68, 0.05);
+}

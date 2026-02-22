@@ -32,13 +32,10 @@ export default function ItemGallery({
 
   return (
     <section>
-      <h2>Галерея</h2>
-
       <ImageUploader
         currentImageUrl={imageUrl}
         onUploadSuccess={handleImageUpdate}
       />
-      {!imageUrl && <p>Изображение отсутствует</p>}
     </section>
   );
 }

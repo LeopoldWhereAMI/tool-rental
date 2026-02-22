@@ -1,426 +1,1198 @@
-.addOrderForm {
-  display: flex;
-  flex-direction: column;
+/* =============================================
+   LAYOUT
+   ============================================= */
+.pageWrapper {
+  display: grid;
+  grid-template-columns: 1fr 320px;
   gap: 24px;
-  max-width: 900px;
-  margin-top: 10px;
-  margin-inline: auto;
-  padding: 32px;
-  background-color: #ffffff;
-  border-radius: 16px;
-  border: 1px solid #e5e7eb;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  align-items: flex-start;
+  padding: 32px 32px 64px;
+  min-height: 100vh;
+  background: #0d1117;
+  color: #e2e8f0;
+  font-family: "Geist", "Inter", sans-serif;
 }
 
-.orderFormTitle {
-  font-size: 26px;
-  font-weight: 800;
-  color: #111827;
+.pageHeader {
+  grid-column: 1 / -1;
   margin-bottom: 8px;
 }
 
-.sectionTitle {
-  font-size: 18px;
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.breadcrumbLink {
+  color: #94a3b8; /* Приглушенный цвет */
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.breadcrumbLink:hover {
+  color: #3b82f6; /* Синий при наведении */
+}
+
+.breadcrumbSeparator {
+  color: #475569;
+}
+
+.breadcrumbCurrent {
+  color: #f1f5f9; /* Яркий цвет для текущей страницы */
+  font-weight: 500;
+}
+
+.pageTitle {
+  font-size: 28px;
   font-weight: 700;
-  color: #374151;
-  margin-bottom: 20px;
+  color: #f1f5f9;
+  margin: 0 0 6px;
+  letter-spacing: -0.5px;
+}
+
+.pageSubtitle {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* =============================================
+   MAIN FORM COLUMN
+   ============================================= */
+.formColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* =============================================
+   SECTION CARDS
+   ============================================= */
+.sectionCard {
+  background: #161b27;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 28px;
+}
+
+.sectionHeader {
   display: flex;
   align-items: center;
   gap: 10px;
-  border-bottom: 1px solid #f3f4f6;
-  padding-bottom: 10px;
+  margin-bottom: 24px;
 }
 
-/* Сетки для разных секций */
-.nameGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
+.sectionNumber {
+  width: 28px;
+  height: 28px;
+  background: #1e3a5f;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #3b82f6;
+  flex-shrink: 0;
 }
 
-.passportGrid {
-  display: grid;
-  grid-template-columns: 1fr 1.5fr 1.5fr; /* Серия короче, номер и дата длиннее */
-  gap: 16px;
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sectionTitle svg {
+  color: #3b82f6;
+  opacity: 0.8;
+}
+
+/* =============================================
+   FORM FIELDS
+   ============================================= */
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   margin-bottom: 16px;
 }
 
-.dateGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+.fieldGroup:last-child {
+  margin-bottom: 0;
 }
 
-/* Общие стили полей */
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #94a3b8;
+  letter-spacing: 0.01em;
+}
+
 .input,
-.select {
+.select,
+.textarea {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
+  background: #0d1117;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 11px 14px;
   font-size: 14px;
-  transition: all 0.2s;
-  background: #fff;
+  color: #e2e8f0;
+  outline: none;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: #334155;
 }
 
 .input:focus,
-.select:focus {
-  outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+.select:focus,
+.textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+.input.hasError,
+.select.hasError {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 96px;
 }
 
 .select {
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
-  padding-right: 32px;
+  padding-right: 36px;
 }
 
-/* Контейнеры с иконками */
-.inputWrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
+/* Input with icon */
 .inputWithIcon {
-  padding-right: 35px !important;
+  position: relative;
 }
 
-.inputIcon {
+.inputWithIcon svg {
   position: absolute;
-  right: 12px;
-  color: #9ca3af;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #475569;
   pointer-events: none;
 }
 
-/* Итоговый блок */
-.totalAmountBlock {
-  margin-top: 24px;
-  padding: 20px;
-  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-  border: 1px solid #bbf7d0;
-  border-radius: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+.inputWithIcon .input {
+  padding-left: 40px;
 }
 
-.totalLabel {
-  display: flex;
-  flex-direction: column;
-}
-
-.totalLabel span {
+.errorText {
   font-size: 12px;
-  text-transform: uppercase;
-  color: #166534;
-  letter-spacing: 0.05em;
-  font-weight: 600;
-}
-
-.totalAmount {
-  font-size: 24px;
-  color: #15803d;
-  font-weight: 800;
-}
-
-/* Кнопка */
-.btn {
-  padding: 16px;
-  background-color: #111827;
-  color: #ffffff;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.btn:hover:not(:disabled) {
-  background-color: #1f2937;
-  transform: translateY(-1px);
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.addToolBtn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 15px;
-  border-radius: 8px;
-  font-weight: 500;
-  margin-bottom: 20px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  max-width: fit-content;
-}
-
-.addToolBtn:not(:disabled) {
-  background-color: #f0fdf4;
-  color: #16a34a;
-  border: 1px dashed #16a34a;
-}
-
-.addToolBtn:not(:disabled):hover {
-  background-color: #dcfce7;
-}
-
-.addToolBtn:disabled {
-  background-color: #f3f4f6;
-  color: #9ca3af;
-  border: 1px solid #d1d5db;
-  cursor: not-allowed;
-}
-
-/* Контейнер для одного ряда выбора инструмента */
-
-.itemRow {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 16px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
-}
-
-.itemRow:hover {
-  border-color: #d1d5db;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.itemRow:focus-within {
-  border-color: #16a34a; /* Подсветка активного ряда */
-}
-
-.itemGrid {
-  display: grid;
-  grid-template-columns: 2.5fr 1fr 1fr 44px;
-  gap: 12px;
-  align-items: flex-start;
-}
-
-/* Кнопка удаления (корзина) */
-.removeBtnWrapper {
-  padding-top: 28px; /* Выравнивание по линии инпутов (учитываем высоту label) */
-  display: flex;
-  justify-content: center;
-}
-
-.removeBtn {
-  margin-bottom: 5px;
-  padding: 10px;
-  background-color: #fef2f2;
   color: #ef4444;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s ease;
+  margin-top: 2px;
 }
 
-.removeBtn:hover {
-  background-color: #fee2e2;
+/* =============================================
+   GRIDS
+   ============================================= */
+.nameGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
 }
 
-.removeBtn:active {
-  transform: scale(0.95);
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
-/* Сообщение об ошибке (дубликаты и т.д.) */
-.errorBlock {
-  color: #b91c1c;
-  background-color: #fef2f2;
-  padding: 10px 15px;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  margin-bottom: 15px;
-  border: 1px solid #fee2e2;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  animation: fadeIn 0.2s ease-in; /* Маленький бонус для плавности */
-}
-
+/* =============================================
+   PHONE LOOKUP
+   ============================================= */
 .phoneStatus {
-  position: relative;
-  margin-top: 6px;
-  font-size: 13px;
-  animation: fadeIn 0.15s ease;
+  margin-top: 8px;
 }
 
 .foundList {
-  position: absolute;
-  z-index: 20;
-  top: 4px;
-  left: 0;
-  right: 0;
-
   display: flex;
   flex-direction: column;
-  gap: 4px;
-
-  padding: 6px;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-
-  box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.06),
-    0 4px 6px -2px rgba(0, 0, 0, 0.04);
-
-  max-height: 220px;
-  overflow-y: auto;
+  gap: 6px;
 }
 
 .foundListHeader {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: #6b7280;
-  padding: 6px 8px;
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 2px;
 }
 
 .foundBadge {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 18px 1fr auto;
+  display: flex;
   align-items: center;
   gap: 8px;
-
-  padding: 8px 10px;
+  background: #0d1117;
+  border: 1px solid #1e293b;
   border-radius: 8px;
-  border: none;
-  background: transparent;
-
+  padding: 8px 12px;
   cursor: pointer;
+  font-size: 13px;
+  color: #94a3b8;
   text-align: left;
-  transition: all 0.15s ease;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+  width: 100%;
 }
 
 .foundBadge:hover {
-  background: #f3f4f6;
-  transform: translateY(-1px);
-}
-
-.foundBadge:active {
-  transform: scale(0.98);
+  border-color: #3b82f6;
+  background: #1e3a5f22;
 }
 
 .foundName {
-  font-size: 13px;
-  font-weight: 600;
-  color: #111827;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-weight: 500;
+  color: #e2e8f0;
 }
 
 .foundPhone {
+  margin-left: auto;
   font-size: 12px;
-  color: #6b7280;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 .match {
+  color: #3b82f6;
   font-weight: 600;
-  color: #2563eb;
-  background: #dbeafe;
-  border-radius: 4px;
-  padding: 0 4px;
 }
 
 .newBadge {
   display: inline-block;
-  margin-top: 4px;
-  padding: 6px 10px;
-  border-radius: 8px;
   font-size: 12px;
-  color: #065f46;
-  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-  border: 1px dashed #34d399;
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: 6px;
+  padding: 4px 10px;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* =============================================
+   TOOL SELECTION
+   ============================================= */
+.toolSearchRow {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.rubleIcon {
-  color: #15803d;
-  opacity: 0.2;
+.toolSearchWrapper {
+  position: relative;
+  flex: 1;
 }
 
-.printWrapper {
+.toolSearchWrapper svg {
   position: absolute;
-  top: -9999px; /* Уводим за пределы видимости */
-  left: -9999px;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #475569;
+  pointer-events: none;
 }
 
+.toolSearchInput {
+  width: 100%;
+  background: #0d1117;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 11px 14px 11px 40px;
+  font-size: 14px;
+  color: #e2e8f0;
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.toolSearchInput:focus {
+  border-color: #3b82f6;
+}
+
+.toolSearchInput::placeholder {
+  color: #334155;
+}
+
+/* Tool items table */
+.toolTableHeader {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 12px;
+  padding: 0 0 10px;
+  border-bottom: 1px solid #1e293b;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.toolItem {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #1e293b;
+}
+
+.toolItem:last-of-type {
+  border-bottom: none;
+}
+
+.toolInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toolIcon {
+  width: 36px;
+  height: 36px;
+  background: #1e293b;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #64748b;
+}
+
+.toolName {
+  font-size: 14px;
+  font-weight: 500;
+  color: #e2e8f0;
+  display: block;
+}
+
+.toolSku {
+  font-size: 12px;
+  color: #475569;
+  display: block;
+}
+
+.qtyControl {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.qtyBtn {
+  width: 28px;
+  height: 28px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  color: #94a3b8;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+  line-height: 1;
+  padding: 0;
+}
+
+.qtyBtn:hover {
+  background: #334155;
+  color: #f1f5f9;
+}
+
+.qtyValue {
+  min-width: 24px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: #f1f5f9;
+}
+
+.toolPrice {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f1f5f9;
+  min-width: 72px;
+  text-align: right;
+}
+
+.removeToolBtn {
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #475569;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+  padding: 0;
+}
+
+.removeToolBtn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+.toolListEmpty {
+  padding: 32px;
+  text-align: center;
+  color: #475569;
+  font-size: 14px;
+}
+
+.toolFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  margin-top: 4px;
+  border-top: 1px solid #1e293b;
+}
+
+.toolCount {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.subtotal {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+/* Dropdown for tool search */
+.toolDropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #161b27;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  z-index: 50;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+.toolDropdownItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.1s;
+  border-bottom: 1px solid #1e293b;
+  font-size: 14px;
+  color: #e2e8f0;
+}
+
+.toolDropdownItem:last-child {
+  border-bottom: none;
+}
+
+.toolDropdownItem:hover {
+  background: #1e293b;
+}
+
+.toolDropdownPrice {
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* =============================================
+   SIDEBAR
+   ============================================= */
+.sidebar {
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sidebarCard {
+  background: #161b27;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.sidebarTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin: 0 0 20px;
+}
+
+.sidebarTitle svg {
+  color: #3b82f6;
+}
+
+.dateField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.dateLabel {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dateInput {
+  width: 100%;
+  background: #0d1117;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #e2e8f0;
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.dateInput:focus {
+  border-color: #3b82f6;
+}
+
+.divider {
+  height: 1px;
+  background: #1e293b;
+  margin: 16px 0;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 10px;
+}
+
+.summaryRow:last-of-type {
+  margin-bottom: 0;
+}
+
+.summaryValue {
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.summaryValueHighlight {
+  font-weight: 700;
+  color: #f59e0b;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #1e293b;
+}
+
+.totalLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.totalAmount {
+  text-align: right;
+}
+
+.totalAmountValue {
+  font-size: 32px;
+  font-weight: 800;
+  color: #3b82f6;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.totalAmountNote {
+  font-size: 10px;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 2px;
+}
+
+.submitBtn {
+  width: 100%;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition:
+    background 0.15s,
+    transform 0.1s;
+  font-family: inherit;
+  letter-spacing: -0.01em;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.submitBtn:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.submitBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.cancelBtn {
+  width: 100%;
+  background: transparent;
+  color: #94a3b8;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+  font-family: inherit;
+  margin-top: 8px;
+}
+
+.cancelBtn:hover {
+  background: #1e293b;
+  color: #f1f5f9;
+}
+
+.infoBox {
+  display: flex;
+  gap: 10px;
+  background: rgba(59, 130, 246, 0.06);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-top: 12px;
+}
+
+.infoBox svg {
+  color: #3b82f6;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.infoBoxText {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+/* =============================================
+   ADD TOOL BUTTON
+   ============================================= */
+.addToolBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: #3b82f6;
+  border: 1px dashed #1e4080;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 12px;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+  font-family: inherit;
+}
+
+.addToolBtn:hover:not(:disabled) {
+  background: rgba(59, 130, 246, 0.06);
+  border-color: #3b82f6;
+}
+
+.addToolBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* =============================================
+   PRINT HIDE
+   ============================================= */
 @media print {
-  .printWrapper {
-    position: static;
-    display: block;
+  .noPrint {
+    display: none;
   }
 }
 
-@media (max-width: 480px) {
-  .addOrderForm {
-    padding: 20px;
-    box-shadow: none;
-  }
-
-  .orderFormTitle {
-    font-size: 20px;
-    text-align: center;
-  }
-
-  .sectionTitle {
-    font-size: 16px;
-    margin: 0;
-  }
-
-  .itemGrid {
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 900px) {
+  .pageWrapper {
     grid-template-columns: 1fr;
-    gap: 16px;
+    padding: 20px;
   }
 
+  .sidebar {
+    position: static;
+    order: -1;
+  }
+
+  .nameGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .nameGrid,
+  .twoCol {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Строка инструмента — одна колонка (select) + кнопка удаления */
+.itemRow {
+  margin-bottom: 10px;
+}
+
+.itemGridSingleCol {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.itemGridSingleCol > div:first-child {
+  flex: 1;
+}
+
+.removeBtn {
+  flex-shrink: 0;
+  width: 38px;
+  height: 42px;
+  background: transparent;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  color: #475569;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+  margin-bottom: 0;
+}
+
+.removeBtn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+/* =============================================
+   СТРОКИ ИНСТРУМЕНТОВ
+   ============================================= */
+.itemRow {
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #1e293b;
+}
+
+.itemRow:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* инструмент(2fr) + начало(1fr) + возврат(1fr) + дней(56px) + удалить(38px) */
+.itemGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 56px 38px;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+/* Блок "дней" */
+.daysBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  background: #0d1117;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+}
+
+.daysBoxLabel {
+  font-size: 9px;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+.daysBoxValue {
+  font-size: 15px;
+  font-weight: 700;
+  color: #3b82f6;
+  line-height: 1.3;
+}
+
+/* Кнопка удалить */
+.removeBtn {
+  width: 38px;
+  height: 42px;
+  background: transparent;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  color: #475569;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+  flex-shrink: 0;
+}
+
+.removeBtn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+/* Паспортные данные: серия + номер + дата выдачи */
+.passportGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 600px) {
   .passportGrid {
-    margin: 0;
+    grid-template-columns: 1fr 1fr;
   }
+}
 
-  .removeBtnWrapper {
-    padding-top: 0;
-    justify-content: flex-end;
-  }
+/* Блок итоговой суммы */
+.totalAmountBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding: 16px 20px;
+  background: rgba(34, 197, 94, 0.06);
+  border: 1px solid rgba(34, 197, 94, 0.15);
+  border-radius: 12px;
+}
 
-  .itemRow {
-    margin: 0;
-  }
+.totalAmountBlock .totalLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
-  .addToolBtn {
-    margin: 0 auto;
-  }
+.totalAmountBlock .totalLabel span {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.totalAmountBlock .totalAmount {
+  font-size: 22px;
+  font-weight: 700;
+  color: #22c55e;
+}
+
+/* =============================================
+   ОБЕСПЕЧИТЕЛЬНЫЙ ПЛАТЁЖ
+   ============================================= */
+.depositField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 16px 0;
+}
+
+.depositLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.depositOptional {
+  font-size: 11px;
+  color: #334155;
+  text-transform: none;
+  font-weight: 400;
+  letter-spacing: 0;
+  font-style: italic;
+}
+
+.depositInputWrapper {
+  position: relative;
+}
+
+.depositInput {
+  width: 100%;
+  background: #0d1117;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 10px 36px 10px 14px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #f59e0b;
+  outline: none;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+  box-sizing: border-box;
+  font-family: inherit;
+  -moz-appearance: textfield;
+}
+
+.depositInput::-webkit-outer-spin-button,
+.depositInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.depositInput::placeholder {
+  color: #334155;
+  font-weight: 400;
+}
+
+.depositInput:focus {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+.depositCurrency {
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #475569;
+  pointer-events: none;
+}
+
+/* Обеспечительный платёж в OrderFinance */
+.depositInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  margin: 10px 0;
+  background: rgba(245, 158, 11, 0.06);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 8px;
+}
+
+.depositInfoLeft {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.depositInfoLeft svg {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.depositInfoAmount {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f59e0b;
+}
+
+/* =============================================
+   DATE INPUTS В СТРОКАХ ИНСТРУМЕНТОВ
+   ============================================= */
+
+/* Перебиваем стили InputWithIcon внутри itemGrid */
+.itemGrid input[type="date"] {
+  width: 100%;
+  background: #0d1117;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 10px 12px 10px 36px;
+  font-size: 13px;
+  color: #e2e8f0;
+  outline: none;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+  box-sizing: border-box;
+  font-family: inherit;
+  cursor: pointer;
+  height: 42px;
+}
+
+.itemGrid input[type="date"]:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+/* Иконка календаря внутри InputWithIcon */
+.itemGrid .inputWithIcon svg,
+.itemGrid [class*="inputWithIcon"] svg {
+  color: #334155;
+}
+
+.itemGrid input[type="date"]:focus + svg,
+.itemGrid input[type="date"]:not(:placeholder-shown) {
+  border-color: #3b82f6;
+}
+
+/* Кастомизация системного date-picker */
+.itemGrid input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.3) sepia(1) saturate(0.5) hue-rotate(190deg);
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+
+.itemGrid input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Цвет placeholder-текста даты */
+.itemGrid input[type="date"]::-webkit-datetime-edit {
+  color: #e2e8f0;
+}
+
+.itemGrid input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+
+.itemGrid input[type="date"]::-webkit-datetime-edit-text {
+  color: #475569;
+  padding: 0 2px;
+}
+
+.itemGrid input[type="date"]::-webkit-datetime-edit-month-field,
+.itemGrid input[type="date"]::-webkit-datetime-edit-day-field,
+.itemGrid input[type="date"]::-webkit-datetime-edit-year-field {
+  color: #e2e8f0;
+}
+
+.itemGrid input[type="date"]::-webkit-datetime-edit-month-field:focus,
+.itemGrid input[type="date"]::-webkit-datetime-edit-day-field:focus,
+.itemGrid input[type="date"]::-webkit-datetime-edit-year-field:focus {
+  background: rgba(59, 130, 246, 0.2);
+  border-radius: 3px;
+  color: #fff;
+  outline: none;
+}
+
+/* =============================================
+   FIX: ошибки в itemGrid не должны сдвигать строку
+   ============================================= */
+
+/* Каждый FormField внутри itemGrid — relative-контейнер */
+.itemGrid > div {
+  position: relative;
+  padding-bottom: 20px; /* резервируем место под ошибку */
+}
+
+/* Текст ошибки — абсолютный, не влияет на высоту */
+.itemGrid [class*="errorText"],
+.itemGrid [class*="error"] {
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  white-space: nowrap;
+  font-size: 11px;
+}
+
+/* daysBox и removeBtn не нуждаются в padding-bottom */
+.itemGrid .daysBox,
+.itemGrid .removeBtn {
+  padding-bottom: 20px; /* выравниваем с остальными колонками */
+  background: transparent;
+  border: none;
+}
+
+/* daysBox сам по себе имеет фон — восстанавливаем */
+.itemGrid .daysBox {
+  background: #0d1117;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  height: 42px;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.itemGrid .removeBtn {
+  height: 42px;
+  padding: 0;
+  margin-bottom: 20px;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
 }

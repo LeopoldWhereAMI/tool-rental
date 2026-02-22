@@ -4,8 +4,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px); /* Эффект размытия заднего фона */
+  background: rgba(2, 6, 17, 0.85); /* Более темный оверлей */
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,24 +14,25 @@
 }
 
 .modal {
-  background: white;
+  background: #1e293b; /* Slate 800 */
+  border: 1px solid #334155; /* Slate 700 */
   padding: 32px;
-  border-radius: 20px;
+  border-radius: 16px;
   width: 100%;
   max-width: 550px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   position: relative;
-  animation: modalAppear 0.3s ease-out;
+  animation: modalAppear 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes modalAppear {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: scale(0.95) translateY(10px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: scale(1) translateY(0);
   }
 }
 
@@ -39,103 +40,117 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
+}
+
+.titleWithIcon {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerIcon {
+  color: #3b82f6;
 }
 
 .modalHeader h3 {
   margin: 0;
-  font-size: 22px;
-  font-weight: 700;
-  color: #1a1a1a;
+  font-size: 20px;
+  font-weight: 600;
+  color: #f1f5f9; /* Slate 100 */
 }
 
 .closeBtn {
-  background: #f5f5f5;
+  background: #334155;
   border: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #666;
+  color: #94a3b8;
   transition: all 0.2s;
 }
 
 .closeBtn:hover {
-  background: #ffebee;
-  color: #c62828;
+  background: #ef4444;
+  color: white;
 }
 
 .modalGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1.2fr; /* Серия, Номер, Дата */
+  grid-template-columns: 1fr 1fr 1.2fr;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 4px;
 }
 
-/* Стилизация инпутов внутри FormField */
 .input {
   width: 100%;
-  padding: 12px 16px;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  font-size: 15px;
+  padding: 10px 14px;
+  background: #0f172a; /* Slate 900 */
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #f1f5f9;
+  font-size: 14px;
   transition: all 0.2s;
-  background: #f9f9f9;
 }
 
 .input:focus {
   outline: none;
-  border-color: #2ecc71;
-  background: #fff;
-  box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.1);
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
 .input::placeholder {
-  color: #ccc;
+  color: #475569;
 }
 
-/* Кнопки в модалке */
+/* Убираем белую иконку календаря в Chrome */
+.input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.5;
+  cursor: pointer;
+}
+
 .modalActions {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
   margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px solid #f0f0f0;
+  padding-top: 20px;
+  border-top: 1px solid #334155;
 }
 
 .cancelBtn {
-  padding: 12px 24px;
-  border-radius: 10px;
-  border: 1px solid #e0e0e0;
-  background: #fff;
-  color: #666;
-  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: transparent;
+  color: #94a3b8;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .cancelBtn:hover {
-  background: #f5f5f5;
-  border-color: #ccc;
+  background: #334155;
+  color: #f1f5f9;
 }
 
 .submitBtn {
-  padding: 12px 24px;
-  border-radius: 10px;
+  padding: 10px 24px;
+  border-radius: 8px;
   border: none;
-  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  background: #3b82f6;
   color: white;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.2);
 }
 
 .submitBtn:hover {
+  background: #2563eb;
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(46, 204, 113, 0.3);
 }

@@ -1,4 +1,10 @@
-import { Geist, Geist_Mono, Nunito } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  IBM_Plex_Sans,
+  Nunito,
+  Space_Grotesk,
+} from "next/font/google";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,4 +23,17 @@ const nunito = Nunito({
   display: "swap",
 });
 
-export const fontVariables = `${nunito.variable} ${geistSans.variable} ${geistMono.variable} `;
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"], // Обратите внимание: в Google Fonts для него обычно нет кириллицы
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const ibmPlex = IBM_Plex_Sans({
+  variable: "--font-ibm-plex",
+  subsets: ["latin", "cyrillic"],
+  weight: ["300", "400", "500", "600"],
+});
+
+export const fontVariables = `${nunito.variable} ${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} ${ibmPlex.variable}`;

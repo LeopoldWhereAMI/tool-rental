@@ -1,0 +1,19 @@
+.statTrend {
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.trendPositive {
+  color: #10b981;
+}
+
+.trendNegative {
+  color: #f59e0b;
+}
+
+.trendNeutral {
+  color: #6b7280;
+}

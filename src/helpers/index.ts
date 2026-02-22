@@ -1,6 +1,6 @@
 import { DATE_LOCALE, DATE_OPTIONS } from "@/constants";
 import { calculateOrderTotal } from "@/services/orderService";
-import { OrderDetailsUI, OrderUI } from "@/types";
+import { ClientWithOrders, OrderDetailsUI, OrderUI } from "@/types";
 
 // export const inventoryListTitles = [
 //   { id: "Артикул", text: "Артикул" },
@@ -21,8 +21,10 @@ export const validateCategory = (value: string) => {
     case "electric_tools":
       category = "Электро";
       break;
+    // default:
+    //   category = "Неизвестная категория";
     default:
-      category = "Неизвестная категория";
+      return "Инструмент";
   }
   return category;
 };
@@ -324,3 +326,98 @@ export function calculateFinalAmount(order: OrderDetailsUI) {
 
   return order.total_price;
 }
+
+// Функция для склонения (можно вынести в utils)
+export const getOrderPlural = (count: number) => {
+  const lastDigit = count % 10;
+  const lastTwoDigits = count % 100;
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 19) return "заказов";
+  if (lastDigit === 1) return "заказ";
+  if (lastDigit >= 2 && lastDigit <= 4) return "заказа";
+  return "заказов";
+};
+
+// лояльность клиентов
+
+export type LoyaltyStatus = "VIP" | "REGULAR" | "NEW";
+
+export const LOYALTY_THRESHOLDS = {
+  VIP: 10,
+  REGULAR: 3,
+};
+
+export const getLoyaltyInfo = (orderCount: number) => {
+  if (orderCount >= LOYALTY_THRESHOLDS.VIP) {
+    return {
+      text: "VIP",
+      className: "statusVip",
+      variant: "VIP" as LoyaltyStatus,
+    };
+  }
+  if (orderCount >= LOYALTY_THRESHOLDS.REGULAR) {
+    return {
+      text: "Постоянный",
+      className: "statusRegular",
+      variant: "REGULAR" as LoyaltyStatus,
+    };
+  }
+  return {
+    text: "Новый",
+    className: "statusNew",
+    variant: "NEW" as LoyaltyStatus,
+  };
+};
+
+export const calculateClientStats = (clients: ClientWithOrders[]) => {
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+
+  // Начало периодов для сравнения
+  const startOfCurrentMonth = new Date(currentYear, currentMonth, 1);
+  const startOfLastMonth = new Date(currentYear, currentMonth - 1, 1);
+
+  // 1. Фильтруем клиентов по дате регистрации
+  const currentMonthClients = clients.filter(
+    (c) => new Date(c.created_at) >= startOfCurrentMonth,
+  );
+  const lastMonthClients = clients.filter((c) => {
+    const date = new Date(c.created_at);
+    return date >= startOfLastMonth && date < startOfCurrentMonth;
+  });
+
+  // 2. Вспомогательная функция для расчета тренда (%)
+  const getTrend = (current: number, previous: number) => {
+    if (previous === 0) return current > 0 ? 100 : 0;
+    return parseFloat((((current - previous) / previous) * 100).toFixed(1));
+  };
+
+  // --- ИТОГОВЫЕ РАСЧЕТЫ ---
+
+  // Всего клиентов
+  const total = clients.length;
+  const totalAtStartOfCurrentMonth = total - currentMonthClients.length;
+  const totalTrend = getTrend(total, totalAtStartOfCurrentMonth);
+
+  // Активные (те, у кого есть активные заказы прямо сейчас)
+  const active = clients.filter((c) =>
+    c.orders?.some((order) => order.status === "active"),
+  ).length;
+
+  // Active Rate: Процент активных от общего числа клиентов (утилизация базы)
+  const activeRate = total > 0 ? Math.round((active / total) * 100) : 0;
+
+  // Новые клиенты (сравнение: текущий месяц vs прошлый)
+  const newThisMonth = currentMonthClients.length;
+  const newLastMonth = lastMonthClients.length;
+  const newTrend = getTrend(newThisMonth, newLastMonth);
+
+  return {
+    total, // Всего
+    totalTrend, // Рост базы за месяц в %
+    active, // Активные сейчас (чел)
+    activeRate, // % активных от всей базы
+    newThisMonth, // Новые в этом месяце (чел)
+    newTrend, // Динамика привлечения в %
+  };
+};

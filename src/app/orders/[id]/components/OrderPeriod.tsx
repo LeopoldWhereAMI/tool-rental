@@ -13,16 +13,25 @@ export default function OrderPeriod({ start, order }: OrderPeriodProps) {
   return (
     <div className={styles.infoBlock}>
       <div className={styles.blockTitle}>
-        <Calendar size={18} /> <h3>Срок аренды</h3>
+        <Calendar size={18} /> <h3>Период аренды</h3>
       </div>
       <div className={styles.blockContent}>
         <div className={styles.periodWrapper}>
-          <div className={styles.startDateInfo}>
+          <div className={styles.dateInfo}>
             <span className={styles.miniLabel}>Выдан:</span>
-            <strong>{start?.toLocaleDateString() || "—"}</strong>
+            <span className={styles.miniLabel}>
+              {" "}
+              {start?.toLocaleDateString() || "—"}
+            </span>
           </div>
           <div />
-          <OrderStatusInfo order={order} />
+          <div className={styles.dateInfo}>
+            <span className={styles.miniLabel}>Возврат:</span>
+            <span className={styles.miniLabel}>
+              {" "}
+              <OrderStatusInfo order={order} />
+            </span>
+          </div>
         </div>
       </div>
     </div>

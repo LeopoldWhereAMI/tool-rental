@@ -19,33 +19,29 @@ export default function StatusFilter({
     const el = ref.current;
     if (!el) return;
 
-    el.scrollTo({ left: 80, behavior: "smooth" });
-    setTimeout(() => {
+    // Мягкая подсказка пользователю о наличии скролла на мобилках
+    el.scrollTo({ left: 40, behavior: "smooth" });
+    const timer = setTimeout(() => {
       el.scrollTo({ left: 0, behavior: "smooth" });
     }, 600);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <div className={styles.filters} ref={ref}>
-      {statuses.map((status) => {
-        const isActive = currentFilter === status;
-
-        const colorClass = styles[`status_${status}`] || "";
-
-        return (
-          <button
-            key={status}
-            onClick={() => onFilterChange(status)}
-            className={`
-              ${styles.filterBtn} 
-              ${isActive ? styles.activeFilter : ""} 
-              ${isActive ? colorClass : ""}
-            `}
-          >
-            {labels[status]}
-          </button>
-        );
-      })}
+      {statuses.map((status) => (
+        <button
+          key={status}
+          onClick={() => onFilterChange(status)}
+          className={`
+            ${styles.filterBtn} 
+            ${currentFilter === status ? styles.activeFilter : ""}
+          `}
+        >
+          {labels[status]}
+        </button>
+      ))}
     </div>
   );
 }

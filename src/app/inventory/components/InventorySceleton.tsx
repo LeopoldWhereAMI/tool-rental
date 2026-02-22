@@ -1,48 +1,75 @@
+"use client";
+
 import Skeleton from "@/components/ui/Skeleton/Skeleton";
 import styles from "../page.module.css";
 
 export default function InventorySkeleton() {
-  const rows = Array.from({ length: 5 });
+  const rows = Array.from({ length: 6 });
 
   return (
-    <div className={styles.tableContainer}>
+    <div className={styles.tableWrapper}>
       <table className={styles.table}>
         <thead>
           <tr>
-            {/* Заголовки можно оставить статичными или тоже заскелетонить */}
-            <th style={{ width: "10%" }}>Артикул</th>
-            <th style={{ width: "30%" }}>Наименование</th>
-            <th style={{ width: "15%" }}>Категория</th>
-            <th style={{ width: "15%" }}>Статус</th>
-            <th style={{ width: "15%" }}>Цена</th>
-            <th style={{ width: "50px" }}></th>
+            <th style={{ width: "30%" }}>Инструмент / ID</th>
+            <th style={{ width: "15%", textAlign: "center" }}>Категория</th>
+            <th style={{ width: "15%", textAlign: "center" }}>Статус</th>
+            <th style={{ width: "15%" }}>Стоимость</th>
+            <th style={{ width: "15%" }}>Наличие</th>
+            <th style={{ width: "10%", textAlign: "right" }}></th>
           </tr>
         </thead>
         <tbody>
           {rows.map((_, index) => (
             <tr key={index}>
+              {/* Tool Name / ID */}
               <td>
-                <Skeleton width="60%" height={20} />
-              </td>
-              <td>
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                >
-                  <Skeleton width={24} height={24} borderRadius="50%" />
-                  <Skeleton width="80%" height={20} />
+                <div className={styles.productCell}>
+                  <div className={styles.productImagePlaceholder}>
+                    <Skeleton width="100%" height="100%" borderRadius="8px" />
+                  </div>
+                  <div className={styles.productInfo} style={{ gap: "6px" }}>
+                    <Skeleton width="140px" height="16px" />
+                    <Skeleton width="80px" height="12px" />
+                  </div>
                 </div>
               </td>
-              <td>
-                <Skeleton width="70%" height={20} />
+
+              {/* Category */}
+              <td style={{ textAlign: "center" }}>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <Skeleton width="80px" height="24px" borderRadius="12px" />
+                </div>
               </td>
-              <td>
-                <Skeleton width="100px" height={24} borderRadius="12px" />
+
+              {/* Status */}
+              <td style={{ textAlign: "center" }}>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <Skeleton width="90px" height="26px" borderRadius="13px" />
+                </div>
               </td>
+
+              {/* Price */}
               <td>
-                <Skeleton width="50px" height={20} />
+                <div className={styles.priceCell}>
+                  <Skeleton width="60px" height="18px" />
+                </div>
               </td>
+
+              {/* Progress Bar (Availability) */}
               <td>
-                <Skeleton width={20} height={20} />
+                <div
+                  className={styles.availabilityWrapper}
+                  style={{ gap: "8px" }}
+                >
+                  <Skeleton width="30px" height="14px" />
+                  <Skeleton width="100%" height="6px" borderRadius="3px" />
+                </div>
+              </td>
+
+              {/* Actions */}
+              <td style={{ textAlign: "right" }}>
+                <Skeleton width="32px" height="32px" borderRadius="50%" />
               </td>
             </tr>
           ))}

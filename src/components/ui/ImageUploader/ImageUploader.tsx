@@ -8,6 +8,7 @@ import { ImagePlus, Loader2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import styles from "./ImageUploader.module.css";
+import Image from "next/image";
 
 type ImageUploaderProps = {
   currentImageUrl?: string | null;
@@ -81,7 +82,14 @@ export default function ImageUploader({
     <div className={styles.uploaderWrapper}>
       {preview ? (
         <div className={styles.imagePreviewContainer}>
-          <img src={preview} alt="Инструмент" className={styles.previewImage} />
+          <Image
+            src={preview}
+            alt="Инструмент"
+            className={styles.previewImage}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority
+          />
           <button
             type="button"
             onClick={handleRemove}

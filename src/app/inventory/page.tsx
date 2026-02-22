@@ -1,104 +1,133 @@
 "use client";
 
 import styles from "./page.module.css";
-import PageWrapper from "@/components/PageWrapper/PageWrapper";
-import SearchInput from "@/components/SearchInput/SearchInput";
-import { useEffect, useMemo, useState } from "react";
+import { useState, useEffect } from "react";
 import { useInventory } from "@/hooks/useInventory";
-import { useDebounce } from "@/hooks/useDebounce";
-import StatusFilter from "@/components/ui/StatusFilter/StatusFilter";
-import { INVENTORY_STATUS_LABELS } from "@/constants";
-import InventoryList from "./components/InventoryList";
-import CategoryChips from "@/components/ui/CategoryChips/CategoryChips";
-import { LayoutGrid, List } from "lucide-react";
+import { Plus, Package, CheckCircle, ShoppingCart, Wrench } from "lucide-react";
+import { useHeaderStore } from "../store/store";
+import Link from "next/link";
+import InventoryFilters from "@/components/Inventory/InventoryFilters/InventoryFilters";
+import SearchInput from "@/components/SearchInput/SearchInput";
+import { useInventoryFilters } from "@/hooks/useInventoryFilters";
+import InventorySkeleton from "./components/InventorySceleton";
+import StatCard from "./components/StatCard";
+import InventoryTable from "./components/InventoryTable";
 
 type ViewMode = "table" | "grid";
 
 export default function InventoryPage() {
-  const [search, setSearch] = useState("");
-  const { items, loading, error, refresh } = useInventory();
+  const { query, setQuery } = useHeaderStore();
+  const { items, stats, loading, error, refresh } = useInventory();
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [viewMode, setViewMode] = useState<ViewMode>("table");
-  const debouncedSearch = useDebounce(search, 300);
-
-  // Объединенная фильтрация: Поиск + Категория + Статус
-  const filteredItems = useMemo(() => {
-    const query = debouncedSearch.toLowerCase().trim();
-
-    return items.filter((item) => {
-      const matchesSearch =
-        !query ||
-        item.name.toLowerCase().includes(query) ||
-        item.article?.toLowerCase().includes(query);
-
-      const matchesCategory =
-        categoryFilter === "all" || item.category === categoryFilter;
-
-      const matchesStatus =
-        statusFilter === "all" || item.status === statusFilter;
-
-      return matchesSearch && matchesCategory && matchesStatus;
-    });
-  }, [items, debouncedSearch, categoryFilter, statusFilter]);
+  const { filteredItems, categories } = useInventoryFilters({
+    items,
+    query,
+    categoryFilter,
+    statusFilter,
+  });
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 980) {
-        setViewMode("grid");
-      }
+      if (window.innerWidth < 980) setViewMode("grid");
     };
-
-    handleResize(); // при первом рендере
+    handleResize();
     window.addEventListener("resize", handleResize);
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
-    <PageWrapper>
+    <div className={styles.container}>
+      {/* --- Header --- */}
       <div className={styles.header}>
-        <div className={styles.titleGroup}>
-          <h1 className={styles.title}>Инвентарь</h1>
+        <div>
+          <h1 className={styles.title}>Управление инвентарем</h1>
+          <span className={styles.subtitle}>
+            Управляйте оборудованием и отслеживайте его состояние.
+          </span>
+        </div>
 
-          <span className={styles.countBadge}>{filteredItems.length}</span>
-          <div className={styles.searchWrapper}>
-            <SearchInput value={search} setSearch={setSearch} />
-          </div>
+        <div>
+          <Link href="/inventory/add" className={styles.btnAdd}>
+            <Plus size={16} />
+            <span>Инструмент</span>
+          </Link>
         </div>
       </div>
 
-      <div className={styles.inventoryListWrapper}>
-        <div className={styles.headerTools}>
-          <StatusFilter
-            currentFilter={statusFilter}
-            onFilterChange={setStatusFilter}
-            labels={INVENTORY_STATUS_LABELS}
-          />
-          <CategoryChips value={categoryFilter} onChange={setCategoryFilter} />
-          <div className={styles.viewSwitcher}>
-            <button
-              onClick={() => setViewMode("table")}
-              className={`${styles.viewBtn} ${viewMode === "table" ? styles.activeView : ""}`}
-            >
-              <List size={20} />
-            </button>
-            <button
-              onClick={() => setViewMode("grid")}
-              className={`${styles.viewBtn} ${viewMode === "grid" ? styles.activeView : ""}`}
-            >
-              <LayoutGrid size={20} />
-            </button>
-          </div>
-        </div>
-        <InventoryList
-          viewMode={viewMode}
-          items={filteredItems}
+      {/* --- Stats Cards --- */}
+      <div className={styles.statsGrid}>
+        {/* Total Card */}
+        <StatCard
+          label="Всего инструментов"
+          value={stats?.total}
+          icon={Package}
+          iconColor="#9ca3af"
+          iconBg="#2e333d"
           loading={loading}
-          error={error}
-          refresh={refresh}
+          trend={stats?.totalTrend}
+        />
+
+        {/* Available Card */}
+        <StatCard
+          label="Доступно"
+          value={stats?.available}
+          icon={CheckCircle}
+          iconColor="#10b981"
+          iconBg="rgba(16, 185, 129, 0.1)"
+          loading={loading}
+          suffix={`${stats?.availablePct}% от общего`}
+        />
+
+        {/* In Rent Card */}
+        <StatCard
+          label="В аренде"
+          value={stats?.rented}
+          icon={ShoppingCart}
+          iconColor="#3b82f6"
+          iconBg="rgba(59, 130, 246, 0.1)"
+          loading={loading}
+          trend={stats?.rentedTrend}
+        />
+
+        {/* Maintenance Card */}
+        <StatCard
+          label="В ремонте"
+          value={stats?.maintenance}
+          icon={Wrench}
+          iconColor="#f59e0b"
+          iconBg="rgba(245, 158, 11, 0.1)"
+          loading={loading}
+          trend={stats?.maintenanceTrend}
+          invertTrend={true}
         />
       </div>
-    </PageWrapper>
+
+      {/* --- Filter Bar & List --- */}
+      <div className={styles.inventoryListWrapper}>
+        <div className={styles.filterBar}>
+          <SearchInput value={query} setSearch={setQuery} />
+          <InventoryFilters
+            categoryFilter={categoryFilter}
+            setCategoryFilter={setCategoryFilter}
+            categories={categories}
+            statusFilter={statusFilter}
+            setStatusFilter={setStatusFilter}
+          />
+        </div>
+
+        {loading && items.length === 0 ? (
+          <InventorySkeleton />
+        ) : (
+          <InventoryTable
+            items={filteredItems}
+            viewMode={viewMode}
+            error={error}
+            refresh={refresh}
+          />
+        )}
+      </div>
+    </div>
   );
 }

@@ -1,0 +1,237 @@
+/* ===========================
+   ОБЩИЕ СТИЛИ ТАБЛИЦЫ
+   =========================== */
+
+.tableWrapper {
+  background-color: #161e2e;
+  border: 1px solid #1f2937;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #ffffff;
+  font-size: 14px;
+  background: #0f1624;
+  table-layout: fixed; /* ГАРАНТИРУЕТ ровные колонки */
+  overflow: hidden;
+}
+
+/* Определение ширин колонок */
+.colProduct {
+  width: 35%;
+}
+.colCategory {
+  width: 15%;
+}
+.colStatus {
+  width: 15%;
+}
+.colPrice {
+  width: 15%;
+}
+.colStock {
+  width: 12%;
+}
+.colActions {
+  width: 8%;
+  text-align: right;
+}
+
+.table th {
+  color: #64748b; /* text-muted */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: left;
+  background-color: rgba(10, 10, 12, 0.5);
+  border-bottom: 1px solid #1f2937;
+  padding: 14px 16px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.table td {
+  padding: 14px 16px;
+  vertical-align: middle;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #1f2937;
+  transition: background-color 0.2s;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(17, 24, 39, 0.4);
+}
+
+/* ===========================
+   КОНТЕНТ ЯЧЕЕК (ROW)
+   =========================== */
+
+.productCell {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.productImagePlaceholder {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  background-color: #111827;
+  border-radius: 8px;
+  border: 1px solid #1f2937;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.productInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden; /* Важно для обрезки длинных имен */
+}
+
+.productName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.productId {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.categoryBadge {
+  background: rgba(100, 116, 139, 0.1);
+  color: #94a3b8;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.statusAvailable {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+.statusAvailable .dot {
+  background-color: #10b981;
+}
+
+.statusRented {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+.statusRented .dot {
+  background-color: #3b82f6;
+}
+
+.statusMaintenance {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+.statusMaintenance .dot {
+  background-color: #f59e0b;
+}
+
+.priceCell {
+  font-family: var(--font-space-grotesk);
+  font-weight: 600;
+  color: #3b82f6;
+}
+
+.pricePeriod {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.availabilityWrapper {
+  width: 100%;
+  max-width: 100px;
+}
+
+.availabilityRatio {
+  font-family: var(--font-space-grotesk);
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.progressBarBg {
+  width: 100%;
+  height: 6px;
+  background-color: #1f2937;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  border-radius: 10px;
+}
+
+/* ДЕЙСТВИЯ */
+.actionsWrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.viewButton,
+.actionButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #92a0c9;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.viewButton:hover,
+.actionButton:hover {
+  color: #ffffff;
+  background-color: #232c48;
+}
+
+@media (max-width: 980px) {
+  .tableWrapper {
+    overflow-x: auto;
+  }
+  .table {
+    min-width: 850px;
+  }
+}

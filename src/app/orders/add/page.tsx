@@ -6,9 +6,8 @@ import PageWrapper from "@/components/PageWrapper/PageWrapper";
 
 export default function AddOrder() {
   return (
-    <PageWrapper>
-      <BackButton href="/orders" />
+    <>
       <AddOrderForm />
-    </PageWrapper>
+    </>
   );
 }

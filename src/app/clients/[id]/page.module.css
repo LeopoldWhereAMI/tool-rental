@@ -1,318 +1,758 @@
+.wrapper {
+  padding: 20px;
+}
+
 .container {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  /* Меняем колонки: Слева контент (гибкий), Справа сайдбар (фиксированный 360px) */
+  grid-template-columns: 1fr 360px;
   gap: 32px;
   margin-top: 24px;
+  max-width: 1600px;
+  margin-inline: auto; /* Центрируем на больших экранах */
 }
 
-.profileCard {
-  background: white;
-  padding: 32px 24px;
-  border-radius: 16px;
-  text-align: center;
-  border: 1px solid #e2e8f0;
+.headerWrapper {
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 0;
 }
 
-.avatarLarge {
-  width: 80px;
-  height: 80px;
-  background: #3b82f6;
-  color: white;
-  font-size: 2rem;
-  font-weight: 700;
-  border-radius: 50%;
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.breadcrumbLink {
+  color: #94a3b8; /* Slate 400 */
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumbLink:hover {
+  color: #3b82f6; /* Blue 500 */
+}
+
+.breadcrumbSeparator {
+  color: #475569; /* Slate 600 */
+  flex-shrink: 0;
+}
+
+.breadcrumbCurrent {
+  color: #f1f5f9; /* Slate 100 */
+  font-weight: 500;
+}
+
+.breadcrumbCurrent {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Отступ между дотом и текстом */
+  color: #f1f5f9;
+  font-weight: 500;
+}
+
+.breadcrumbBlacklistDot {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 20px;
+  width: 16px;
+  height: 16px;
+  /* background-color: #ef4444;  */
+  color: white;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.breadcrumbBlacklistDot svg {
+  color: #ef4444;
+}
+
+.blacklistBanner {
+  background: rgba(220, 38, 38, 0.05);
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.blacklistIconWrapper {
+  color: #ef4444;
+  margin-top: 2px;
+}
+
+.blacklistBannerTitle {
+  color: #ef4444;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.blacklistBannerText {
+  color: #94a3b8;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Левая колонка */
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  gap: 32px; /* Отступ между блоком Активные и Историей */
+}
+
+.sectionBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.sectionTitle {
+  font-size: 20px; /* text-xl */
+  font-weight: 700;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.badgeCount {
+  background: rgba(43, 91, 238, 0.1);
+  color: #2b5bee;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.editButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  color: #9aa4c3;
+
+  backdrop-filter: blur(6px);
+
+  transition: all 0.25s ease;
+  z-index: 10;
+}
+
+.editButton:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.25),
+    rgba(99, 102, 241, 0.25)
+  );
+
+  border-color: rgba(99, 102, 241, 0.6);
+
+  color: #ffffff;
+
+  box-shadow:
+    0 0 0 1px rgba(99, 102, 241, 0.4),
+    0 4px 14px rgba(59, 130, 246, 0.35);
+}
+
+/* Active (нажатие) */
+.editButton:active {
+  transform: scale(0.95);
+}
+/* Сетка для активных заказов (карточки рядом друг с другом) */
+.activeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.historyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.ordersList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.emptyOrders {
+  background: #161b2c; /* surface-dark */
+  border: 1px dashed #232c48;
+  padding: 40px;
+  text-align: center;
+  border-radius: 12px;
+  color: #92a0c9;
+}
+
+/* Правая колонка (wrapper для сайдбара) */
+.sidebarWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* --- СТИЛИ САЙДБАРА (ClientSidebar) --- */
+
+.sidebar {
+  width: 100%;
+}
+
+.profileCard {
+  background-color: #161e2e;
+  border: 1px solid #1f2937;
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+}
+
+.profileHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.loyaltyBadge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px; /* Скругленный стиль */
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.statusBlacklistedBadge {
+  background: #ef4444;
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.statusVip {
+  background-color: rgba(168, 85, 247, 0.1);
+  color: #c084fc;
+  border-color: rgba(168, 85, 247, 0.2);
+}
+
+.statusRegular {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #60a5fa;
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.statusNew {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.avatarWrapper {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 16px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  border: 2px solid rgba(43, 91, 238, 0.2);
+  overflow: hidden;
 }
 
 .name {
-  font-size: 1.5rem;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
   margin-bottom: 4px;
-  color: #1e293b;
 }
 
-.middleName {
-  margin-bottom: 24px;
-  font-size: 1.5rem;
+.roleText {
+  color: #64748b;
+  font-size: 13px;
 }
 
-.statsGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+.vipBadge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #3b82f6;
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.contactList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 20px;
+}
+
+.contactItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 0; /* Отступы сверху и снизу от линии */
+  border-bottom: 1px solid #1f2937; /* Тонкая линия (цвет как у карточки) */
+  transition: background-color 0.2s ease;
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: column; /* Складываем p и span друг под друга */
+  gap: 3px;
+}
+
+.contactInfo p {
+  margin: 0;
+  font-size: 11px; /* Меньший размер шрифта */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b; /* Приглушенный цвет (Slate 400) */
+  font-weight: 500;
+}
+
+.contactInfo span {
+  font-size: 14px;
+  color: #f1f5f9; /* Яркий цвет для значения */
+  font-weight: 500;
+  font-family: var(--font-space-grotesk); /* Если используешь для чисел */
+}
+
+.titleIcon {
+  color: #2b5bee;
+  margin-top: 2px;
+}
+
+.iconMuted {
+  color: #475569;
+}
+
+/* добавить в чс */
+.blacklistActionWrapper {
+  margin-top: 20px;
+  padding-top: 16px;
+}
+
+.blacklistBtn,
+.unblacklistBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Кнопка блокировки — агрессивная */
+.blacklistBtn {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.blacklistBtn:hover {
+  background: #ef4444;
+  color: white;
+}
+
+/* Кнопка разблокировки — нейтральная */
+.unblacklistBtn {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.unblacklistBtn:hover {
+  background: #22c55e;
+  color: white;
+}
+
+/* Блок причины в сайдбаре */
+.blockingReasonCard {
+  background: rgba(220, 38, 38, 0.05);
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  border-radius: 12px;
+  padding: 20px;
   margin-top: 16px;
 }
 
-.statBox {
-  background: white;
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
+.blockingReasonTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ef4444;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.blockingReasonText {
+  color: #fca5a5;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Блок Insights */
+.insightsCard {
+  background-color: #161e2e;
+  border: 1px solid #1f2937;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 16px;
+}
+
+.sidebarTitle {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #64748b;
+  margin-bottom: 16px;
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.miniStat {
+  background: #0f172a;
+  border: 1px solid #1f2937;
+  padding: 12px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
 }
 
 .statLabel {
-  font-size: 0.75rem;
+  font-size: 10px;
   color: #64748b;
   text-transform: uppercase;
+  margin-bottom: 4px;
 }
 
 .statValue {
-  font-size: 1.125rem;
+  font-family: var(--font-space-grotesk);
+  font-size: 16px;
   font-weight: 700;
-  color: #1e293b;
-  margin-top: 4px;
+  color: #fff;
 }
 
-.orderCard {
-  background: white;
-  padding: 16px 20px;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
+.progressGroup {
+  margin-bottom: 16px;
+}
+
+.progressLabel {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  text-decoration: none;
-  color: inherit;
-  margin-bottom: 12px;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
-}
-
-.orderCard:last-child {
-  margin-bottom: 0;
-}
-
-.orderCard:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.sectionTitle {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1e293b;
-  margin-bottom: 20px;
-}
-
-.orderMain {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.orderIcon {
+  font-size: 12px;
   color: #94a3b8;
-  background: #f8fafc;
-  padding: 8px;
-  border-radius: 8px;
-  box-sizing: content-box;
+  margin-bottom: 6px;
 }
 
-.orderNumber {
-  font-weight: 600;
-  color: #1e293b;
+.scoreValue {
+  color: #10b981; /* Зеленый текст для счета */
+  font-weight: 700;
 }
 
-.orderDates {
-  font-size: 0.875rem;
-  color: #64748b;
+.progressBarWrapper {
+  height: 6px;
+  background: #1f2937;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background: #10b981; /* Зеленый */
+  border-radius: 6px;
+}
+
+.progressBarFillBlue {
+  height: 100%;
+  background: #3b82f6; /* Синий */
+  border-radius: 6px;
+}
+
+/* --- СТИЛИ ЗАКАЗОВ (OrderCard) --- */
+
+/* 1. Активная карточка (Active Variant) */
+.activeCard {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex; /* Меняем на flex */
+  flex-direction: column;
+  justify-content: space-between;
+  text-decoration: none;
+  min-height: 120px; /* Уменьшили высоту */
+  gap: 20px; /* Расстояние между верхним и нижним блоком */
+  transition: all 0.2s;
+  position: relative;
+}
+
+.activeCard:hover {
+  transform: translateY(-2px);
+
+  border-color: #3b82f6;
+}
+
+.activeCardContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.activeCardText {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.activeCardSubtext {
+  font-size: 12px;
+  color: #94a3b8;
   margin-top: 2px;
 }
 
-.orderMeta {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  color: #94a3b8;
-}
-
-.orderPrice {
-  font-weight: 700;
-  color: #1e293b;
-  min-width: 80px;
-  text-align: right;
-}
-
-/* Статусы (соответствуют возвращаемым значениям из validateOrderStatus) */
-.statusBadge {
-  min-width: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.statusActive {
-  background: #ecfdf5;
-  color: #10b981;
-} /* Активен */
-.statusCompleted {
-  background: #f1f5f9;
-  color: #64748b;
-} /* Завершен */
-.statusPending {
-  background: #fffbeb;
-  color: #f59e0b;
-} /* Ожидает */
-.statusCancelled {
-  background: #fef2f2;
-  color: #ef4444;
-} /* Отменен */
-
-.emptyOrders {
-  background: #f8fafc;
-  border: 2px dashed #e2e8f0;
-  padding: 40px;
-  text-align: center;
-  border-radius: 16px;
-  color: #94a3b8;
-}
-
-.phoneLink {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  color: #3b82f6;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.phoneLink:hover {
-  text-decoration: underline;
-}
-
-/*  */
-.historyHeader {
+.activeCardDetails {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  padding-top: 12px;
+  border-top: 1px solid #334155; /* Разделительная линия */
 }
 
-.searchIcon {
-  position: absolute;
-  left: 10px;
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+.detailItem span {
+  font-family: var(--font-space-grotesk);
+}
+
+.activeCardPrice {
+  font-family: var(--font-space-grotesk);
+  font-size: 16px;
+  font-weight: 700;
+  color: #3b82f6;
+}
+
+.dueDate {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dueUrgent {
+  color: #f59e0b;
+} /* Оранжевый */
+.dueLate {
+  color: #ef4444;
+} /* Красный */
+.dueNormal {
+  color: #10b981;
+} /* Зеленый */
+
+.activeCardDate {
+  font-size: 11px;
+  color: #64748b;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+/* 2. Строка списка (List Variant) */
+.listCard {
+  display: grid;
+  grid-template-columns: 100px 2fr 1.5fr 1fr 120px; /* Сетка как в таблице */
+  align-items: center;
+  background: #161e2e;
+  border: 1px solid #1f2937;
+  padding: 16px 20px;
+  border-radius: 8px; /* Меньшее скругление для списка */
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.listCard:hover {
+  background: #1e293b;
+}
+
+.listValueBold {
+  font-family: var(--font-space-grotesk);
+  color: #fff;
+  font-weight: 600;
+  font-family: monospace;
+}
+
+.listToolName {
+  color: #e2e8f0;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.listCategory {
+  color: #64748b;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.colDate {
+  font-family: var(--font-space-grotesk);
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.colPrice {
+  font-family: var(--font-space-grotesk);
+  color: #fff;
+  font-weight: 700;
+}
+
+.listLabelMobile {
+  display: none; /* Скрываем лейблы на десктопе */
+}
+
+/* Статусы */
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  width: 100%;
+  text-align: center;
+}
+
+.statusActive {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+.statusCompleted {
+  background: rgba(148, 163, 184, 0.1);
   color: #94a3b8;
 }
-
-.miniSearch {
-  padding: 8px 12px 8px 32px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  outline: none;
-  font-size: 0.875rem;
-  width: 180px;
-  transition: border-color 0.2s;
+.statusPending {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
 }
-
-.miniSearch:focus {
-  border-color: #3b82f6;
+.statusCancelled {
+  background: rgba(220, 38, 38, 0.08);
+  color: #fca5a5;
+  border: 1px solid rgba(220, 38, 38, 0.15);
 }
+.statusLate {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+} /* Для Late Return */
 
-/* Пагинация */
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid #f1f5f9;
-}
+/* Мобильная адаптация для списка */
+@media (max-width: 768px) {
+  .breadcrumbs {
+    font-size: 13px;
+  }
 
-.pageBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  border: 1px solid #e2e8f0;
-  background: white;
-  cursor: pointer;
-  color: #64748b;
-  transition: all 0.2s;
-}
-
-.pageBtn:hover:not(:disabled) {
-  background: #f8fafc;
-  color: #3b82f6;
-  border-color: #3b82f6;
-}
-
-.pageBtn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.pageInfo {
-  font-size: 0.875rem;
-  color: #64748b;
-}
-
-.pageInfo strong {
-  color: #1e293b;
-}
-
-/* Адаптивность для мобильных */
-@media (max-width: 900px) {
-  .container {
+  .listCard {
     grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 16px;
   }
 
-  .sidebar {
-    position: static;
-  }
-}
-
-@media (max-width: 600px) {
-  .profileCard {
-    padding: 16px 12px;
+  .listLabelMobile {
+    display: inline-block;
+    width: 100px;
+    color: #64748b;
+    font-size: 12px;
   }
 
-  .statBox {
+  .colId,
+  .colInfo,
+  .colDate,
+  .colPrice,
+  .colStatus {
+    display: flex;
     align-items: center;
-    padding: 10px;
   }
 
-  .historyHeader {
-    flex-direction: column;
+  .colStatus {
+    justify-content: flex-start;
+    margin-top: 8px;
   }
 
-  .orderMain {
-    gap: 8px;
-  }
-
-  .orderMeta {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  .statusBadge {
+    width: auto;
   }
 }
 
-@media (max-width: 480px) {
-  .name {
-    margin-bottom: 8px;
-    font-size: 1.3rem;
-  }
-}
-
-@media (max-width: 380px) {
-  .orderCard {
-    padding: 8px 14px;
+/* Адаптивность */
+@media (max-width: 1024px) {
+  .container {
+    grid-template-columns: 1fr; /* На планшетах одна колонка */
   }
 
-  .orderMain {
-    display: block;
+  .sidebarWrapper {
+    order: -1; /* Сайдбар поднимаем наверх на мобильных (опционально) */
   }
 }

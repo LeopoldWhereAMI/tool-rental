@@ -1,45 +1,32 @@
 /* Базовый контейнер диалога */
 .modal {
-  border: none;
-  border-radius: 12px;
+  border: 1px solid #334155; /* Slate 700 */
+  border-radius: 16px;
   padding: 0;
-  box-shadow:
-    0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  max-width: 440px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  max-width: 480px;
   width: calc(100% - 32px);
   margin: auto;
   inset: 0;
-  background-color: #ffffff;
+  background-color: #1e293b; /* Slate 800 */
+  color: #f1f5f9;
 
-  /* Состояние для анимации (закрыто) */
   opacity: 0;
   transform: scale(0.95) translateY(10px);
-
-  /* Плавный переход для появления и исчезновения */
   transition:
     opacity 0.3s ease-out,
     transform 0.3s ease-out,
     display 0.3s ease-out allow-discrete;
 }
 
-/* Состояние при открытии (атрибут [open] добавляется браузером) */
 .modal[open] {
   opacity: 1;
   transform: scale(1) translateY(0);
 }
 
-/* Магия для плавного появления в современных браузерах */
-@starting-style {
-  .modal[open] {
-    opacity: 0;
-    transform: scale(0.95) translateY(10px);
-  }
-}
-
-/* Стилизация заднего фона (backdrop) */
+/* Бэкдроп (затемнение фона) */
 .modal::backdrop {
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(2, 6, 17, 0);
   backdrop-filter: blur(0px);
   transition:
     display 0.3s allow-discrete,
@@ -49,171 +36,283 @@
 }
 
 .modal[open]::backdrop {
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(2px);
+  background-color: rgba(2, 6, 17, 0.85);
+  backdrop-filter: blur(8px);
 }
 
 @starting-style {
+  .modal[open] {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
   .modal[open]::backdrop {
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(2, 6, 17, 0);
     backdrop-filter: blur(0px);
   }
 }
 
 /* Внутренняя разметка */
 .modalContent {
-  padding: 24px;
+  padding: 32px;
 }
 
 .modalHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .modalTitle {
   margin: 0;
   font-size: 1.25rem;
-  font-weight: 700;
-  color: #111827;
+  font-weight: 600;
+  color: #f1f5f9;
 }
 
 .closeBtn {
-  background: none;
+  background: #334155;
   border: none;
-  font-size: 1.25rem;
   cursor: pointer;
-  color: #9ca3af;
-  transition: color 0.2s;
+  color: #94a3b8;
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: 50%;
+  border-radius: 8px;
 }
 
 .closeBtn:hover {
-  background: #e2e8f0;
-  color: #1e293b;
-  transform: rotate(90deg);
+  background: #ef4444;
+  color: #ffffff;
 }
 
-/* Стили сообщения для специализированной модалки удаления */
+/* Контент подтверждения */
 .confirmWrapper {
   display: flex;
-  gap: 16px;
-  align-items: flex-start;
+  flex-direction: column; /* Вертикально для лучшего акцента */
+  align-items: center;
+  text-align: center;
+  gap: 20px;
 }
 
-.warningIcon {
-  color: #dc2626;
-  flex-shrink: 0;
+.successIcon {
+  color: #10b981; /* Энергичный зеленый */
+  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.2));
 }
 
 .confirmMessage {
   margin: 0;
-  color: #4b5563;
-  line-height: 1.6;
-  font-size: 0.9375rem;
-}
-
-.confirmMessage strong {
-  color: #111827;
-  display: inline-block;
-  margin-top: 4px;
+  color: #94a3b8;
+  line-height: 1.5;
   font-size: 1rem;
 }
 
-.warningText {
-  display: block;
-  font-size: 0.8125rem;
-  color: #9ca3af;
+.amountBox {
+  padding: 16px 24px;
   margin-top: 8px;
+  width: 100%;
 }
 
-/* Блок кнопок внизу */
+.finalAmountLabel {
+  display: block;
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.finalPriceText {
+  color: #10b981;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* Кнопки */
 .modalActions {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column; /* Кнопки друг под другом для мобилок и акцента */
   gap: 12px;
   margin-top: 32px;
 }
 
 .completeBtnConfirm {
-  background-color: #10b981;
+  background: #10b981;
   color: white;
   border: none;
-  padding: 12px 24px;
+  padding: 14px;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 140px;
+  width: 100%;
 }
 
 .completeBtnConfirm:hover:not(:disabled) {
-  background-color: #059669; /* Darker green */
+  background-color: #059669;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-}
-
-.completeBtnConfirm:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.completeBtnConfirm:disabled {
-  background-color: #e2e8f0;
-  color: #94a3b8;
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-.deleteBtnConfirm {
-  background-color: #dc2626;
-  color: #ffffff;
-  padding: 10px 18px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.875rem;
-  border: none;
-  cursor: pointer;
-  transition:
-    background-color 0.2s,
-    transform 0.1s;
-}
-
-.deleteBtnConfirm:hover:not(:disabled) {
-  background-color: #b91c1c;
-}
-
-.deleteBtnConfirm:active:not(:disabled) {
-  transform: scale(0.98);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
 .cancelBtn {
   background-color: transparent;
-  color: #64748b;
-  border: 1px solid #e2e8f0;
-  padding: 12px 24px;
+  color: #94a3b8;
+  border: 1px solid #334155;
+  padding: 12px;
   border-radius: 10px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
+  width: 100%;
 }
 
 .cancelBtn:hover:not(:disabled) {
-  background-color: #f9fafb;
+  background-color: #334155;
+  color: #f1f5f9;
 }
 
-/* Состояние загрузки/блокировки */
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  filter: grayscale(1);
+}
+
+.cancelIcon {
+  color: #ef4444;
+}
+
+.cancelBtnConfirm {
+  width: 100%;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+
+.cancelBtnConfirm:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.cancelBtnConfirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Стили для DeleteConfirmModal */
+.warningIcon {
+  color: #f59e0b;
+  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.2));
+  flex-shrink: 0;
+}
+
+.warningText {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: #ef4444;
+}
+
+.deleteBtnConfirm {
+  width: 100%;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.deleteBtnConfirm:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.deleteBtnConfirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(1);
+}
+
+/* blackList */
+.blacklistIcon {
+  color: #ef4444; /* red-500 */
+  margin-bottom: 1rem;
+}
+
+.inputField {
+  width: 100%;
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #94a3b8; /* slate-400 */
+  margin-bottom: 0.5rem;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 100px;
+  background: #1e293b; /* slate-800 */
+  border: 1px solid #334155; /* slate-700 */
+  border-radius: 8px;
+  padding: 12px;
+  color: #f1f5f9;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #ef4444;
+}
+
+.blacklistBtnConfirm {
+  background-color: #ef4444;
+  color: white;
+  /* padding и border-radius лучше подогнать под остальные кнопки (14px и 10px) */
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+
+  /* ИСПРАВЛЕНИЕ: Анимируем все изменяемые свойства */
+  transition: all 0.2s ease-out;
+}
+
+.blacklistBtnConfirm:hover:not(:disabled) {
+  background-color: #dc2626;
+  /* Добавляем трансформацию для полноты эффекта, как у других ваших кнопок */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.blacklistBtnConfirm:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.errorHint {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 4px;
 }

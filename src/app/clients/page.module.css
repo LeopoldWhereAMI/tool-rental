@@ -1,326 +1,421 @@
+/* Переменные из макета */
+/* :root {
+  --primary: #2b5bee;
+  --bg-dark: #0a0a0c;
+  --surface-dark: #161b2c;
+  --border-dark: #232c48;
+  --text-muted: #92a0c9;
+} */
+
+.pageContainer {
+  background-color: var(--bg-dark);
+  min-height: 100vh;
+  color: #f1f5f9;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+/* Header Section */
 .header {
+  padding: 32px;
+  border-bottom: 1px solid var(--border-dark);
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  gap: 20px;
+  align-items: flex-end;
+  gap: 16px;
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: 28px;
   font-weight: 700;
-  color: #1e293b;
+  color: #fff;
   margin: 0;
+  letter-spacing: -0.01em;
 }
 
-/* Контейнер таблицы с прокруткой */
-.tableContainer {
-  background: white;
+.subtitle {
+  color: #64748b;
+  font-size: 12px;
+  max-width: 42rem;
+}
+
+.addButton {
+  background-color: var(--primary);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px; /* rounded-lg */
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  transition: all 0.2s;
+  box-shadow: 0 10px 15px -3px rgba(43, 91, 238, 0.2);
+  transition:
+    filter 0.3s ease,
+    box-shadow 0.3s ease;
+  box-shadow: 0 4px 14px 0 rgba(43, 91, 238, 0.39);
+}
+
+.addButton:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 20px rgba(43, 91, 238, 0.5);
+}
+
+/* KPI Cards */
+.statsGrid {
+  padding: 32px 32px 0 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.statCard {
+  background-color: var(--surface-dark);
+  border: 1px solid var(--border-dark);
   border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  /* overflow: hidden; */
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(43, 91, 238, 0.15);
+}
+
+.statLabel {
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.statValue {
+  color: white;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.trendUp {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #34d399; /* emerald-400 */
+  font-weight: 600;
+}
+
+.trendWrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.trendPositive {
+  color: #10b981; /* Изумрудный зеленый */
+}
+
+.trendNegative {
+  color: #f43f5e; /* Розово-красный */
+}
+
+.trendWrapper span {
+  opacity: 0.9;
+}
+
+/* Table Card & Controls */
+.tableCard {
+  margin: 32px;
+  background-color: var(--surface-dark);
+  border: 1px solid var(--border-dark);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tableControls {
+  padding: 16px 16px 16px 32px;
+  border-bottom: 1px solid var(--border-dark);
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tableWrapper {
+  overflow-x: auto;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 0.875rem;
+  table-layout: auto;
 }
 
-/* 1. Ховер на всю строку таблицы */
-.table tbody tr {
-  transition: background-color 0.2s ease; /* Плавный переход */
-}
-
-.table tbody tr:hover {
-  background-color: #f8fafc; /* Светло-голубой/серый подтон */
-}
-
+/* Headers */
 .table th {
-  background: #f8fafc;
-  padding: 12px 16px;
-  font-weight: 600;
-  color: #64748b;
-  border-bottom: 1px solid #e2e8f0;
+  background-color: rgba(10, 10, 12, 0.5);
+  padding: 16px 24px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border-dark);
 }
 
-.table td {
-  padding: 12px 16px;
-  border-bottom: 1px solid #f1f5f9;
-  vertical-align: middle;
-  color: #334155;
+/* Rows */
+.row {
+  border-bottom: 1px solid var(--border-dark);
+  transition: background-color 0.2s;
 }
 
-/* Стили ячейки имени (как в инвентаре) */
+.row:hover {
+  background-color: rgba(43, 91, 238, 0.05); /* primary/5 */
+}
+
+.row td {
+  padding: 16px 24px;
+  white-space: nowrap;
+}
+
+.row td:last-child {
+  padding-right: 24px;
+}
+
+/* Customer Name Cell */
 .nameCell {
   display: flex;
   align-items: center;
   gap: 12px;
-  cursor: pointer;
 }
 
-.table tbody tr:hover .itemName {
-  color: #2563eb; /* Имя становится чуть ярче при наведении на строку */
+.avatarWrapper {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  border: 2px solid rgba(43, 91, 238, 0.2);
+  overflow: hidden;
+  background-color: #1a1a1a;
 }
 
-/* 3. Улучшаем ховер для иконки клиента */
-.table tbody tr:hover .iconWrapper {
-  background: #dbeafe; /* Фон иконки становится чуть насыщеннее */
-  transform: scale(1.05); /* Легкое увеличение для динамики */
-  transition: all 0.2s ease;
-}
-
-/* 5. Стиль для пустой ячейки (чтобы ховер не срабатывал на "Ничего не найдено") */
-.table tbody tr:has(.emptyCell):hover {
-  background-color: transparent;
-}
-
-.iconWrapper {
+.nameHeaderWrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: #eff6ff;
-  color: #3b82f6;
-  border-radius: 8px;
-  flex-shrink: 0;
+  gap: 5px;
 }
 
 .itemName {
-  font-weight: 500;
-  color: #1e293b;
-}
-
-/* Телефон и дата */
-.phoneLink {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #3b82f6;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.phoneLink:hover {
-  text-decoration: underline;
-  color: #1d4ed8;
-}
-
-.dateCell {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #64748b;
-}
-
-/* Кнопка действий (...) */
-.menuContainer {
-  position: relative;
-}
-
-.actionButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  border: 1px solid transparent;
-  background: transparent;
-  color: #94a3b8;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.actionButton:hover {
-  background: #f1f5f9;
-  color: #1e293b;
-  border-color: #e2e8f0;
-}
-
-/* Состояние при открытом меню */
-.actionButtonActive {
-  background: #f1f5f9;
-  color: #1e293b;
-}
-
-.emptyCell {
-  text-align: center;
-  padding: 80px 20px; /* Увеличил отступ, чтобы выглядело аккуратнее */
-  color: #6b7280;
-  font-size: 14px;
-}
-
-/*  */
-.headerActions {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex: 1;
-  justify-content: flex-end;
-}
-
-.headerActions > div:first-child {
-  flex: 1;
-  max-width: 400px; /* Чтобы поиск не растягивался на весь экран */
-}
-
-.addButton {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background-color: #3b82f6;
+  display: block;
   color: white;
-  border: none;
-  padding: 0 20px;
-  height: 44px; /* Согласуй с высотой SearchInput */
-  border-radius: 10px;
   font-weight: 600;
   font-size: 14px;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  text-decoration: none;
 }
 
-.addButton:hover {
-  background-color: #2563eb;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+.subText {
+  color: rgb(100, 116, 139);
+  opacity: 0.8;
+  font-size: 12px;
 }
 
-.count {
-  font-size: 1rem;
-  color: #94a3b8;
-  font-weight: 400;
-  margin-left: 8px;
+/* Contact Cell */
+.contactPhone {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: default;
 }
 
-.paginationWrapper {
-  margin-top: 24px;
+.contactEmail {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* Orders Cell */
+.ordersCell {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 2px;
 }
 
-@media (max-width: 480px) {
-  /* 1. Заголовок и кнопка */
-  .header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
-  }
+.totalOrders {
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+}
 
-  .headerActions {
-    flex-direction: column-reverse; /* Кнопка "Добавить" будет над поиском или под ним — по вкусу */
-    align-items: stretch;
-    width: 100%;
-  }
+.activeOrders {
+  font-size: 13px;
+  font-weight: 400;
+}
 
-  .headerActions > div:first-child {
-    max-width: 100%; /* Поиск на всю ширину */
-  }
+.hasActive {
+  color: var(--primary);
+}
 
-  .addButton {
-    justify-content: center; /* Центрируем текст в большой кнопке */
-  }
+.noActive {
+  color: #64748b;
+  opacity: 0.8;
+}
 
-  /* 2. Трансформация таблицы */
-  .tableContainer {
-    border: none;
-    background: transparent;
-    box-shadow: none;
-  }
+/* Badges */
+.statusBadge,
+.loyaltyBadge {
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  border: 1px solid transparent;
+}
 
-  .table {
-    display: block;
-  }
+.statusActive {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.2);
+}
 
-  .table thead {
-    display: none; /* Скрываем заголовки */
-  }
+.statusIdle {
+  background-color: rgba(148, 163, 184, 0.1);
+  color: #94a3b8;
+  border-color: rgba(148, 163, 184, 0.2);
+}
 
-  .table tbody {
-    display: block;
-    width: 100%;
-  }
+.statusVip {
+  background-color: rgba(168, 85, 247, 0.1);
+  color: #c084fc;
+  border-color: rgba(168, 85, 247, 0.2);
+}
 
-  /* Строка превращается в карточку */
-  .table tr {
-    display: flex;
-    flex-direction: column;
-    background: white;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 12px;
-    border: 1px solid #e2e8f0;
-    position: relative;
-    gap: 10px;
-  }
+.statusRegular {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #60a5fa;
+  border-color: rgba(59, 130, 246, 0.2);
+}
 
-  .table td {
-    display: flex;
-    padding: 0;
-    border: none;
-    width: 100%;
-  }
+.statusNew {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.2);
+}
 
-  /* 3. Детализация ячеек внутри карточки */
+/* Статус Blacklisted */
+.statusBlacklistedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  background-color: rgba(234, 88, 12, 0.15);
+  color: #f97316;
+  border: 1px solid rgba(249, 115, 22, 0.4);
+}
 
-  /* Имя клиента */
-  .table td:nth-child(1) {
-    order: 1;
-    margin-bottom: 4px;
-  }
-  .itemName {
-    font-size: 16px;
-    font-weight: 700;
-  }
+.statusBlacklistedBadge svg {
+  width: 14px;
+  height: 14px;
+  color: #f97316;
+  flex-shrink: 0;
+}
 
-  /* Телефон */
-  .table td:nth-child(2) {
-    order: 2;
-    font-size: 14px;
-  }
-  .table td:nth-child(2)::before {
-    content: "Тел:";
-    color: #94a3b8;
-    font-size: 12px;
-    width: 80px;
-    flex-shrink: 0;
-  }
+/* Actions */
+.actionsCell {
+  text-align: right;
+  width: 100px;
+  min-width: 100px;
+}
 
-  /* Дата регистрации */
-  .table td:nth-child(3) {
-    order: 3;
-    font-size: 14px;
-    padding-top: 8px;
-    border-top: 1px dashed #f1f5f9;
-  }
-  .table td:nth-child(3)::before {
-    content: "В базе с:";
-    color: #94a3b8;
-    font-size: 12px;
-    width: 80px;
-    flex-shrink: 0;
-  }
+.actionsWrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+}
 
-  /* Кнопка действий (три точки) в углу карточки */
-  .menuContainer {
-    position: absolute !important;
-    top: 12px;
-    right: 8px;
-    width: auto !important;
-  }
+.viewButton,
+.actionButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #92a0c9;
+  border-radius: 8px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+}
 
-  .actionButton {
-    background: #f8fafc;
-  }
+.viewButton:hover,
+.actionButton:hover {
+  color: #ffffff;
+  background-color: var(--border-dark);
+}
 
-  /* 4. Пустое состояние */
-  .emptyCell {
-    padding: 40px 20px;
-    background: white;
-    border-radius: 12px;
+.viewButton svg,
+.actionButton svg {
+  display: block;
+}
+
+/* Строка в черном списке */
+.rowBlacklisted {
+  opacity: 0.6;
+  background-color: rgba(245, 158, 11, 0.03);
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.rowBlacklisted:hover {
+  opacity: 1;
+  background-color: rgba(245, 158, 11, 0.05);
+}
+
+/* Аватар в черном списке */
+.avatarBlocked {
+  border-color: rgba(43, 91, 238, 0.08) !important;
+  filter: grayscale(0.7) brightness(0.85);
+}
+
+/* Иконка alert рядом с именем */
+.blacklistAlert {
+  color: #f97316;
+  flex-shrink: 0;
+}
+
+/* Имя в черном списке */
+.blockedName {
+  color: #f1f5f9;
+}
+
+@media (hover: hover) {
+  .contactPhone:hover {
+    color: #3b82f6;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 768px) {
+  .contactPhone {
+    color: #3b82f6;
+    text-decoration: none;
   }
 }

@@ -1,42 +1,59 @@
-import Link from "next/link";
+"use client";
+
+import { useHeaderStore } from "@/app/store/store";
 import styles from "./Header.module.css";
-import { PlusCircle, PackagePlus, UserCircle } from "lucide-react"; // Добавим иконки
-import Logo from "../ui/Logo/Logo";
+import { Bell } from "lucide-react";
+import Image from "next/image";
+import SearchInput from "../SearchInput/SearchInput";
 
 export default function Header() {
+  const { title, subtitle, actions, query, setQuery, customSearch } =
+    useHeaderStore();
+
   return (
     <header className={styles.header}>
-      <div className={styles.headerLogo}>
-        <Link href="/">
-          <Logo />
-        </Link>
-      </div>
-
       <div className={styles.headerContent}>
-        <nav className={styles.navActions}>
-          <Link
-            href={"/orders/add"}
-            className={`${styles.btn} ${styles.primary}`}
-            title="Создать заказ"
-          >
-            <PlusCircle size={18} />
-            <span>Создать заказ</span>
-          </Link>
+        <div className={styles.searchWrapper}>
+          {customSearch ? (
+            customSearch
+          ) : (
+            <SearchInput value={query} setSearch={setQuery} />
+          )}
+        </div>
 
-          <Link
-            href={"/inventory/add"}
-            className={`${styles.btn} ${styles.secondary}`}
-            title="Создать инструмент"
-          >
-            <PackagePlus size={18} />
-            <span>Создать инструмент</span>
-          </Link>
-        </nav>
+        <div className={styles.pageInfo}>
+          <h1 className={styles.title}>{title}</h1>
+          {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
+        </div>
 
-        {/* <div className={styles.profile}>
-          <UserCircle size={24} className={styles.icon} />
-          <span>Профиль</span>
-        </div> */}
+        {/* 2. Центр/Право: Кнопки действий */}
+        <nav className={styles.navActions}>{actions}</nav>
+
+        {/* 3. Справа: Уведомления и Профиль */}
+        <div className={styles.rightSection}>
+          <button className={styles.notificationBtn}>
+            <Bell size={22} />
+            <span className={styles.notificationBadge}></span>
+          </button>
+
+          <div className={styles.divider}></div>
+
+          <div className={styles.profileInfo}>
+            <div className={styles.profileText}>
+              <p className={styles.userName}>Максим Голубев</p>
+              <p className={styles.userRole}>Генеральный директор</p>
+            </div>
+            <div className={styles.avatarWrapper}>
+              <Image
+                src="https://api.dicebear.com/7.x/personas/svg?seed=Alex&backgroundColor=b6e3f4,c0aede,d1d4f9"
+                alt="Profile"
+                fill
+                className={styles.avatarImage}
+                unoptimized
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </header>
   );

@@ -1,4 +1,9 @@
-import { AlertCircle, CheckCircle, CreditCard } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle,
+  CreditCard,
+  ShieldCheck,
+} from "lucide-react";
 import styles from "../page.module.css";
 import { OrderDetailsUI } from "@/types";
 import { useOrderStatusInfo } from "@/hooks/useOrderStatusInfo";
@@ -8,6 +13,7 @@ import { updateOrderStatus } from "@/services/orderService";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { processOrderMaintenance } from "@/services/inventoryService";
+import { onOrderCompleted } from "@/helpers/financeIntegration";
 
 type OrderFinanceProps = {
   totalPrice: number;
@@ -29,6 +35,7 @@ export default function OrderFinance({
   const router = useRouter();
 
   const finalAmount = totalPrice + debtAmount + adjustment;
+  const securityDeposit = order.security_deposit;
 
   useEffect(() => {
     onFinalAmountChange?.(finalAmount);
@@ -43,9 +50,15 @@ export default function OrderFinance({
     if (isSubmitting) return;
     setIsSubmitting(true);
 
+    const description = order.inventory?.name
+      ? `Заказ #${order.order_number}: ${order.inventory.name}`
+      : `Заказ #${order.order_number}`;
+
     try {
       // Шаг 1: Финансы и статус заказа
       await updateOrderStatus(order.id, "completed", finalAmount);
+
+      await onOrderCompleted(order.id, finalAmount, description);
 
       // Шаг 2: Техническое обслуживание (вызываем оркестратор)
       await processOrderMaintenance(order);
@@ -88,6 +101,19 @@ export default function OrderFinance({
             </div>
           </div>
         )}
+
+        {securityDeposit ? (
+          <div className={styles.depositInfo}>
+            <div className={styles.depositInfoLeft}>
+              <ShieldCheck size={14} />
+              <span>Обеспечительный платёж</span>
+            </div>
+            <span className={styles.depositInfoAmount}>
+              {securityDeposit} ₽
+            </span>
+          </div>
+        ) : null}
+
         {currentStatus !== "completed" && (
           <>
             <div className={styles.adjustmentBlock}>

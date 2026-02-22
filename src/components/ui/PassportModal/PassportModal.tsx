@@ -1,6 +1,6 @@
 import FormField from "@/components/Form/FormField/FormField";
 import styles from "./PassportModal.module.css";
-import { X } from "lucide-react";
+import { FileText, X } from "lucide-react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { PassportInput } from "@/lib/validators/orderSchema";
 
@@ -21,6 +21,7 @@ export default function PassportModal({
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>
         <div className={styles.modalHeader}>
+          <FileText size={22} className={styles.headerIcon} />
           <h3>Данные для договора</h3>
           <button onClick={onClose} className={styles.closeBtn}>
             <X size={20} />

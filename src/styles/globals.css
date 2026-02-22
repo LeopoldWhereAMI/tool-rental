@@ -6,8 +6,10 @@ body {
   flex-direction: column;
   min-height: 100dvh;
   margin: 0;
-  font-family: var(--font-nunito), system-ui, sans-serif;
+  font-family: var(--font-ibm-plex), sans-serif;
   overflow-x: hidden;
+  background-color: #0b101b;
+  color: #ffffff;
 }
 
 body.menu-open .tabBar {
@@ -20,8 +22,8 @@ body.menu-open .tabBar {
 .app-layout {
   display: flex;
   flex: 1;
-  align-items: flex-start;
-  background-color: #f1f5f9;
+  /* align-items: flex-start; */
+  width: 100%;
 }
 
 .main-content {
@@ -29,6 +31,7 @@ body.menu-open .tabBar {
   margin-left: var(--sidebar-width);
   min-height: 100%;
   min-width: 0;
+  width: 100%;
 }
 
 @media (max-width: 1150px) {
@@ -70,4 +73,12 @@ body.menu-open .tabBar {
     width: 16px;
     height: 16px;
   }
+}
+
+:root {
+  --primary: #2b5bee;
+  --bg-dark: #0a0a0c;
+  --surface-dark: #161b2c;
+  --border-dark: #232c48;
+  --text-muted: #92a0c9;
 }

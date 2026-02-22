@@ -15,8 +15,8 @@ const navItems = [
   { href: "/orders", label: "Заказы", icon: ClipboardList },
   { href: "/inventory", label: "Инвентарь", icon: Wrench },
   { href: "/clients", label: "Клиенты", icon: Users },
-  { href: "/analytics", label: "Анализ", icon: BarChart3 },
-  { href: "/dogovor", label: "Договор", icon: FileText },
+  { href: "/finances", label: "Финансы", icon: BarChart3 },
+  { href: "/contract-sample", label: "Договор", icon: FileText },
 ];
 
 export default function Navigation() {

@@ -24,19 +24,20 @@ export default function CompleteOrderModal({
       modalTitle="Завершение заказа"
     >
       <div className={styles.confirmWrapper}>
-        <CheckCircle2
-          className={styles.successIcon}
-          size={48}
-          color="#10b981"
-        />
-        <p className={styles.confirmMessage}>
-          Вы закрываете заказ и фиксируете оплату.
-          <br />
-          <span className={styles.finalAmountLabel}>Сумма к получению:</span>
-          <strong className={styles.finalPriceText}>
-            {finalAmount.toLocaleString()} ₽
-          </strong>
-        </p>
+        <div className={styles.iconContainer}>
+          <CheckCircle2 className={styles.successIcon} size={48} />
+        </div>
+        <div className={styles.messageBlock}>
+          <p className={styles.confirmMessage}>
+            Вы закрываете заказ и фиксируете оплату.
+          </p>
+          <div className={styles.amountBox}>
+            <span className={styles.finalAmountLabel}>Сумма к получению:</span>
+            <strong className={styles.finalPriceText}>
+              {finalAmount.toLocaleString()} ₽
+            </strong>
+          </div>
+        </div>
       </div>
 
       <div className={styles.modalActions}>

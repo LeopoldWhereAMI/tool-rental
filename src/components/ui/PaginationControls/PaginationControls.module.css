@@ -1,46 +1,73 @@
 .pagination {
+  background-color: #111827; /* surface */
+  border-top: 1px solid #1f2937; /* border-color */
+  padding: 16px 24px; /* py-4 px-6 */
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 16px;
-  margin-top: 24px;
-  padding: 16px;
-  border-radius: 8px;
+  justify-content: space-between;
 }
 
-.pageBtn {
-  padding: 8px 16px;
-  border: 1px solid #ddd;
-  background: #fff;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s;
-}
-
-.pageBtn:hover:not(:disabled) {
-  border-color: #2ecc71;
-  color: #2ecc71;
-}
-
-.pageBtn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background: #f5f5f5;
-}
-
+/* Левая часть с информацией */
 .pageInfo {
-  font-size: 14px;
-  color: #666;
+  color: #64748b; /* slate-500 */
+  font-size: 14px; /* text-sm */
+  font-weight: 500; /* font-medium */
 }
 
-@media (max-width: 380px) {
-  .hideOnMobile {
-    display: none;
-  }
+/* Контейнер для кнопок (gap-2) */
+.buttonGroup {
+  display: flex;
+  gap: 8px; /* gap-2 */
+}
 
+/* Базовые стили для обеих кнопок */
+.pageBtn {
+  padding: 4px 12px; /* px-3 py-1 */
+  border-radius: 8px; /* rounded-lg */
+  font-size: 12px; /* text-xs */
+  font-weight: 700; /* font-bold */
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+/* Кнопка Previous (неактивная страница) */
+.pageBtnPrev {
+  background-color: #161e2e; /* card */
+  border-color: #1f2937; /* border-color */
+  color: #94a3b8; /* slate-400 */
+}
+
+.pageBtnPrev:hover:not(:disabled) {
+  color: #ffffff; /* text-white */
+  border-color: #2b5bee; /* primary */
+}
+
+/* Кнопка Next (активная, синяя) */
+.pageBtnNext {
+  background-color: #2b5bee; /* primary */
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 14px rgba(43, 91, 238, 0.2);
+}
+
+.pageBtnNext:hover:not(:disabled) {
+  background-color: #1e4bd1; /* hover:bg-blue-600 */
+}
+
+/* Общее состояние disabled */
+.pageBtn:disabled {
+  opacity: 0.5; /* opacity-50 */
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Адаптивность для мобильных (как в образце, но можно убрать скрытие текста, если нужно) */
+@media (max-width: 380px) {
   .pagination {
-    margin: 0;
     padding: 12px;
+  }
+  .pageInfo {
+    font-size: 12px;
   }
 }

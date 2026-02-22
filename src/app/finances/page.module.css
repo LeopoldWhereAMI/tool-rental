@@ -1,0 +1,962 @@
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  color: #1a1c1e;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.fadeIn {
+  animation: fadeIn ease 0.5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.statCard {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid #f0f1f3;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: transform 0.2s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+}
+
+.iconWrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconRevenue {
+  color: #059669;
+}
+.statCard:first-child .iconWrapper {
+  background-color: #ecfdf5;
+}
+
+.iconOrders {
+  color: #2563eb;
+}
+.statCard:last-child .iconWrapper {
+  background-color: #eff6ff;
+}
+
+.statInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.statInfo span {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.statInfo strong {
+  font-size: 28px;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.filterContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.filterIcon {
+  color: #64748b;
+}
+
+.select {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  cursor: pointer;
+  background: transparent;
+}
+
+.select:hover {
+  color: #2563eb;
+}
+
+/* Переменные */
+/* :root {
+  --primary: #2b5bee;
+  --bg-dark: #0a0a0c;
+  --surface-dark: #161b2c;
+  --border-dark: #232c48;
+  --text-muted: #92a0c9;
+} */
+
+/* Header */
+.header {
+  padding: 32px;
+  border-bottom: 1px solid var(--border-dark);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.01em;
+}
+
+.breadcrumb {
+  color: #64748b;
+  font-size: 13px;
+  margin: 0;
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex: 1;
+  min-width: 300px;
+  justify-content: flex-end;
+}
+
+.searchWrapper {
+  position: relative;
+  flex: 1;
+  max-width: 360px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  background-color: var(--surface-dark);
+  border: 1px solid var(--border-dark);
+  color: #fff;
+  padding: 10px 12px 10px 40px;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: rgba(43, 91, 238, 0.05);
+}
+
+.searchInput::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+/* Button */
+.newEntryBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(43, 91, 238, 0.3);
+}
+
+.newEntryBtn:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 20px rgba(43, 91, 238, 0.4);
+}
+
+.plusIcon {
+  font-size: 16px;
+}
+
+/* Cards Grid */
+.cardsGrid {
+  padding: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* Card */
+.card {
+  background-color: var(--surface-dark);
+  border: 1px solid var(--border-dark);
+  border-radius: 12px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(43, 91, 238, 0.15);
+}
+
+.cardIconWrapper {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.wrapperBlue {
+  background-color: rgba(59, 130, 246, 0.1); /* Фон квадрата */
+  color: #3b82f6; /* Цвет иконки */
+}
+
+/* Зеленый (Доход) */
+.wrapperGreen {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+/* Оранжевый (Прибыль) */
+.wrapperOrange {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+.cardTrend {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.trendPositive {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+/* Отрицательный (красный) */
+.trendNegative {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cardTitle {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cardValue {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.cardCurrency {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.cardSubtext {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* Main Content Layout */
+.mainContent {
+  padding: 32px;
+  display: grid;
+  grid-template-columns: 1fr 1.8fr;
+  gap: 24px;
+}
+
+@media (max-width: 1200px) {
+  .mainContent {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Withdraw Card */
+.withdrawCard {
+  background-color: var(--surface-dark);
+  border: 1px solid var(--border-dark);
+  border-radius: 12px;
+  padding: 28px;
+  height: fit-content;
+}
+
+.withdrawTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 8px 0;
+}
+
+.withdrawSubtitle {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin: 0 0 24px 0;
+}
+
+/* Form */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formLabel {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+.amountInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.currencySymbol {
+  position: absolute;
+  left: 14px;
+  color: var(--text-muted);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.amountInput {
+  width: 100%;
+  background-color: rgba(43, 91, 238, 0.05);
+  border: 1px solid var(--border-dark);
+  color: #fff;
+  padding: 14px 14px 14px 32px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: border-color 0.2s;
+}
+
+.amountInput:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.amountInput::placeholder {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.amountHint {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.select,
+.textarea {
+  background-color: var(--surface-dark);
+  border: 1px solid var(--border-dark);
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: rgba(43, 91, 238, 0.05);
+}
+
+.select option {
+  background-color: var(--surface-dark);
+  color: #fff;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.submitBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.submitBtnExpense {
+  background-color: var(--primary);
+  color: white;
+  box-shadow: 0 4px 14px rgba(43, 91, 238, 0.3);
+}
+
+.submitBtnIncome {
+  background-color: #10b981;
+  color: white;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+}
+
+.submitBtn:hover:not(:disabled) {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 20px rgba(43, 91, 238, 0.4);
+}
+
+.submitBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Transaction Card */
+.transactionCard {
+  background-color: var(--surface-dark);
+  border: 1px solid var(--border-dark);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.transactionHeader {
+  padding: 24px;
+  border-bottom: 1px solid var(--border-dark);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.transactionTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+/* Table */
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.tableHeader {
+  background-color: rgba(10, 10, 12, 0.5);
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.tableHeader th {
+  padding: 16px 20px;
+  color: var(--text-muted);
+  font-weight: 700;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 11px;
+}
+
+.tableRow {
+  border-bottom: 1px solid var(--border-dark);
+  transition: background-color 0.2s;
+}
+
+.tableRow:hover {
+  background-color: rgba(43, 91, 238, 0.05);
+}
+
+.tableCell {
+  padding: 16px 20px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.dateBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dateMain {
+  font-weight: 500;
+  color: #fff;
+}
+
+.dateTime {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.descriptionBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  white-space: normal;
+}
+
+.descriptionMain {
+  font-weight: 500;
+  color: #fff;
+}
+
+.descriptionSub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.typeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.amountText {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.statusBadge {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pageInfo {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* States */
+.loadingState,
+.emptyState {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* 
+ * Добавьте эти стили в конец вашего finance_page.module.css
+ * Это стили для сообщений успеха и ошибки в форме вывода
+ */
+
+/* Сообщение в форме вывода */
+.withdrawMessage {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Успех */
+.withdrawMessage.success {
+  background-color: rgba(16, 185, 129, 0.1);
+  border-left: 4px solid #10b981;
+  color: #10b981;
+}
+
+/* Ошибка */
+.withdrawMessage.error {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-left: 4px solid #ef4444;
+  color: #ef4444;
+}
+
+.withdrawMessage svg {
+  flex-shrink: 0;
+}
+
+.withdrawMessage p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Информационный блок */
+.withdrawInfo {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-dark);
+}
+
+.withdrawInfo-title {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0 0 8px 0;
+  font-weight: 600;
+}
+
+.withdrawInfo-list {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+  padding-left: 20px;
+}
+
+.withdrawInfo-list li {
+  margin-bottom: 4px;
+  line-height: 1.5;
+}
+.tabContainer {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-dark);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 24px;
+  position: relative; /* Важно для позиционирования */
+  z-index: 1;
+}
+
+/* Общий стиль для кнопок */
+.tabButton {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 9px;
+  transition: color 0.3s ease;
+  position: relative;
+  z-index: 2; /* Кнопки выше фона */
+}
+
+.tabButton:hover:not(.tabActiveExpense):not(.tabActiveIncome) {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.tabActiveExpense,
+.tabActiveIncome {
+  color: #fff !important;
+}
+
+.tabIndicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px); /* Половина контейнера */
+  background-color: var(--primary);
+  border-radius: 9px;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.3s ease;
+  z-index: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Сдвиг фона, если выбрано пополнение */
+.indicatorIncome {
+  transform: translateX(100%);
+  background-color: #10b981; /* Меняем цвет на зеленый при сдвиге */
+}
+
+.messageBox {
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+/* Стиль для всей строки */
+.rowCancelled {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.rowCancelled .dateMain,
+.rowCancelled .descriptionMain,
+.rowCancelled .amountText {
+  color: var(--text-muted) !important;
+  text-decoration: line-through; /* Перечеркиваем текст */
+  opacity: 0.6;
+}
+
+/* Кнопка отмены */
+.cancelBtn {
+  background: transparent;
+  border: 1px solid var(--border-dark);
+  color: var(--text-muted);
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+}
+
+.cancelBtn:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+/* Бейдж "Отменена" */
+.cancelledBadge {
+  font-size: 10px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+  width: fit-content;
+  margin-top: 4px;
+}
+
+.restoreBtn {
+  background: transparent;
+  border: 1px solid var(--border-dark);
+  color: #10b981; /* Зеленый цвет для восстановления */
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.restoreBtn:hover {
+  background-color: rgba(16, 185, 129, 0.1);
+  border-color: #10b981;
+}
+
+.restoreBtnConfirm {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* YearlyStatCard */
+
+.cardHeaderSmall {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.miniSelect {
+  background: var(--surface-dark);
+  border: 1px solid var(--border-dark);
+  color: #fff;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+}
+
+.yearToggleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.inlineYearBtn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.inlineYearBtn:hover {
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+  }
+
+  .headerActions {
+    flex-direction: column;
+    justify-content: stretch;
+  }
+
+  .searchWrapper {
+    max-width: 100%;
+  }
+
+  .cardsGrid {
+    padding: 20px;
+    grid-template-columns: 1fr;
+  }
+
+  .mainContent {
+    padding: 20px;
+    grid-template-columns: 1fr;
+  }
+
+  .tableCell {
+    padding: 12px 16px;
+    font-size: 12px;
+  }
+
+  .tableHeader th {
+    padding: 12px 16px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    margin-bottom: 18px;
+  }
+
+  .title {
+    font-size: 20px;
+    margin: 0;
+  }
+
+  .statCard {
+    padding: 12px;
+  }
+
+  .statInfo strong {
+    font-size: 22px;
+  }
+}

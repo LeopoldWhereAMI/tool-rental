@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import { Client, CreateClientInput } from "@/types";
+import { Client, ClientWithOrders, CreateClientInput } from "@/types";
 
 // Добавление клиента
 export async function createClientInSupabase(
@@ -20,10 +20,33 @@ export async function createClientInSupabase(
 }
 
 // Загрузка всех клиентов (для селекта в форме заказа)
+// export async function loadClients(): Promise<Client[]> {
+//   const { data, error } = await supabase
+//     .from("clients")
+//     .select("*")
+//     .order("last_name");
+
+//   if (error) {
+//     console.error("Ошибка при загрузке клиентов:", error);
+//     throw new Error(error.message);
+//   }
+
+//   return data as Client[];
+// }
+
 export async function loadClients(): Promise<Client[]> {
   const { data, error } = await supabase
     .from("clients")
-    .select("*")
+    .select(
+      `
+      *,
+      orders (
+        id,
+        status,
+        total_price
+      )
+    `,
+    )
     .order("last_name");
 
   if (error) {
@@ -31,7 +54,9 @@ export async function loadClients(): Promise<Client[]> {
     throw new Error(error.message);
   }
 
-  return data as Client[];
+  // Возвращаем данные. Массив orders теперь будет внутри каждого объекта клиента.
+  // return data as Client[];
+  return data as ClientWithOrders[];
 }
 
 export async function upsertClient(
@@ -74,8 +99,10 @@ export const getClientById = async (id: string) => {
         order_number,
         status,
         total_price,
-        start_date,
-        end_date
+        order_items (
+          start_date,
+            end_date
+        )
       )
     `,
     )
@@ -83,6 +110,7 @@ export const getClientById = async (id: string) => {
     .single();
 
   if (error) throw error;
+
   return data;
 };
 

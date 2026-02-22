@@ -55,14 +55,29 @@ export default function ActionsMenu({
     };
   }, []);
 
-  const desktopStyle: React.CSSProperties =
-    !isMobile && anchor
-      ? {
-          position: "absolute",
-          top: `${anchor.top + 5}px`, // Небольшой отступ от кнопки
-          left: `${anchor.left - 180}px`, // Смещение влево, чтобы не улетало за экран
-        }
-      : {};
+  // const desktopStyle: React.CSSProperties =
+  //   !isMobile && anchor
+  //     ? {
+  //         position: "absolute",
+  //         top: `${anchor.top + 5}px`,
+  //         left: `${anchor.left - 180}px`,
+  //       }
+  //     : {};
+
+  const desktopStyle: React.CSSProperties = {};
+  if (!isMobile && anchor) {
+    const menuHeight = 185;
+    const viewportHeight = window.innerHeight;
+
+    if (anchor.top + menuHeight + 10 > viewportHeight) {
+      desktopStyle.top = `${anchor.top - menuHeight}px`;
+    } else {
+      desktopStyle.top = `${anchor.top + 5}px`;
+    }
+
+    desktopStyle.left = `${anchor.left - 180}px`;
+    desktopStyle.position = "absolute";
+  }
 
   const getBasePath = () => {
     switch (type) {
@@ -112,7 +127,7 @@ export default function ActionsMenu({
       >
         <ul className={styles.actionsMenuList}>
           <li>
-            <Link href={`/${getBasePath()}/${id}`}>
+            <Link href={`/${getBasePath()}/${id}`} className={styles.openLink}>
               <ExternalLink size={16} />
               Открыть
             </Link>
@@ -121,7 +136,10 @@ export default function ActionsMenu({
           {type === "inventory" && (
             <>
               <li>
-                <Link href={`/inventory/edit/${id}`}>
+                <Link
+                  href={`/inventory/edit/${id}`}
+                  className={styles.editLink}
+                >
                   <Pencil size={16} /> Редактировать
                 </Link>
               </li>
@@ -149,29 +167,19 @@ export default function ActionsMenu({
           )}
 
           {type === "order" && currentStatus === "active" && (
-            <>
-              <li>
-                <button
-                  onClick={() => handleAction("completed")}
-                  className={styles.availableBtn}
-                >
-                  <CheckCircle size={16} /> Завершить аренду
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => handleAction("cancelled")}
-                  className={styles.cancelBtn}
-                >
-                  <XCircle size={16} /> Отменить заказ
-                </button>
-              </li>
-            </>
+            <li>
+              <button
+                onClick={() => handleAction("cancelled")}
+                className={styles.cancelBtn}
+              >
+                <XCircle size={16} /> Отменить заказ
+              </button>
+            </li>
           )}
 
           {type === "client" && (
             <li>
-              <Link href={`/clients/${id}/edit`}>
+              <Link href={`/clients/${id}/edit`} className={styles.editLink}>
                 <Pencil size={16} /> Редактировать
               </Link>
             </li>

@@ -1,0 +1,111 @@
+.confirmWrapper {
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Иконки */
+.iconContainerRed,
+.iconContainerGreen {
+  margin-bottom: 16px;
+  padding: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconContainerRed {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.iconContainerGreen {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+/* Тексты */
+.confirmMessage {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.detailsBox {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border-dark);
+  min-width: 280px;
+}
+
+.amountLabel {
+  display: block;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.amountValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Кнопки */
+.modalActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Две равные колонки */
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.confirmBtn,
+.restoreBtnConfirm,
+.backBtn {
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.confirmBtn {
+  background-color: #ef4444;
+  color: white;
+}
+
+.restoreBtnConfirm {
+  background-color: #10b981;
+  color: white;
+}
+
+.backBtn {
+  background-color: var(--surface-dark);
+  color: #fff;
+  border: 1px solid var(--border-dark);
+}
+
+/* Ховеры и состояния */
+.confirmBtn:hover:not(:disabled),
+.restoreBtnConfirm:hover:not(:disabled) {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.backBtn:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.confirmBtn:disabled,
+.restoreBtnConfirm:disabled,
+.backBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}

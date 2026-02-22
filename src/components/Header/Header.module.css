@@ -2,130 +2,167 @@
   position: sticky;
   top: 0;
   z-index: 1001;
+  height: 80px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0.75rem var(--default-padding);
-  background: linear-gradient(135deg, #475569 0%, #334155 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(16, 21, 34, 0.8); /* background-dark */
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #2d3856; /* border-dark */
   color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
 
-.headerLogo {
-  font-weight: 700;
-  font-size: 1.1rem;
-  letter-spacing: -0.02em;
-}
-
-.headerLogo a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.logoLink {
-  text-decoration: none;
-  transition: opacity 0.2s;
-}
-
-.logoLink:hover {
-  opacity: 0.8;
+  /* Отступ под сайдбар */
+  margin-left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
 }
 
 .headerContent {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  justify-content: flex-start; /* Элементы идут по порядку */
+  width: 100%;
+  padding: 0 32px;
+  gap: 24px; /* Расстояние между блоками */
+}
+
+/* --- Поиск --- */
+.searchWrapper {
+  flex: 1; /* Поиск забирает всё свободное место */
+  max-width: 500px; /* Но не более 500px, как на скрине */
 }
 
 .navActions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 12px;
+  margin-left: auto; /* Прижимает кнопки и профиль вправо, если поиск маленький */
 }
 
-/* Общий стиль для кнопок */
-.btn {
+.rightSection {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 20px;
 }
 
-/* Кнопка "Создать заказ" */
+.notificationBtn {
+  position: relative;
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.notificationBtn:hover {
+  color: #2b5bee;
+}
+
+.notificationBadge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  background-color: #ef4444;
+  border-radius: 50%;
+  border: 2px solid #101522;
+}
+
+.divider {
+  width: 1px;
+  height: 32px;
+  background-color: #2d3856;
+}
+
+/* --- Профиль --- */
+.profileInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profileText {
+  text-align: right;
+}
+
+.userName {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.userRole {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 500;
+  margin: 0;
+}
+
+.avatarWrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(43, 91, 238, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.avatarImage {
+  object-fit: cover;
+}
+
+/* --- Кнопки --- */
+.navActions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  background-color: var(--primary); /* #2b5bee */
+  color: white;
+  padding: 10px 20px; /* Немного компактнее по вертикали */
+  border-radius: 8px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  /* Тот самый эффект из макета */
+  box-shadow: 0 4px 14px 0 rgba(43, 91, 238, 0.39);
+}
+
+.btn:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 20px rgba(43, 91, 238, 0.5);
+}
+
 .primary {
-  background-color: var(--header-background);
+  background-color: #2b5bee;
   color: white;
 }
 
 .primary:hover {
-  background-color: var(--btn-hover-color);
-
-  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.2); /* Подставь цвет своей переменной */
+  background-color: #1e40af;
+  /* transform: translateY(-1px); */
 }
 
-/* Кнопка "Добавить инструмент" */
 .secondary {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
+  background-color: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
 }
 
 .secondary:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.profile {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  padding: 6px 10px;
-  border-radius: 8px;
-  transition: background-color 0.2s;
-  background-color: #2563eb;
-}
-
-.profile:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-@media (max-width: 685px) {
-  .btn span {
-    display: none;
-  }
-
-  .profile span {
+/* Скрываем текст на маленьких экранах */
+@media (max-width: 1024px) {
+  .btn span,
+  .profileText {
     display: none;
   }
 }
-
-@media (max-width: 768px) {
-  .profile {
-    font-size: 14px;
-  }
-
-  .btn {
-    padding: 6px 10px;
-  }
-
-  .icon {
-    width: 20px;
-  }
-}
-
-/* @media (max-width: 480px) {
-  .btn span {
-    display: none;
-  }
-
-  .profile span {
-    display: none;
-  }
-} */

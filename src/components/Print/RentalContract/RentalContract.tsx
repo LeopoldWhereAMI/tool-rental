@@ -10,7 +10,6 @@ interface Props {
 }
 
 const RentalContract = ({ items, orderData }: Props) => {
-  // Форматируем дату
   const now = new Date();
   const formattedDate = now.toLocaleDateString("ru-RU", {
     day: "2-digit",
@@ -42,12 +41,6 @@ const RentalContract = ({ items, orderData }: Props) => {
     0,
   );
 
-  // Считаем сумму посуточной аренды всех выбранных инструментов
-  // const totalDailyPrice = items.reduce(
-  //   (sum, item) => sum + Number(item.daily_price || 0),
-  //   0,
-  // );
-
   const maxEndDate = items.length
     ? [...items].sort(
         (a, b) =>
@@ -55,15 +48,19 @@ const RentalContract = ({ items, orderData }: Props) => {
       )[0].end_date
     : null;
 
-  const { adjustment, total_price, order_number } = orderData;
-  // Превращаем в числа, чтобы избежать NaN при расчетах
+  const { adjustment, total_price, order_number, security_deposit } = orderData;
+
   const adjValue = Number(adjustment) || 0;
   const totalValue = Number(total_price) || 0;
+
+  const totalRentalSum = items.reduce((sum, item) => {
+    const { rowTotal } = getItemDetails(item);
+    return sum + rowTotal;
+  }, 0);
 
   return (
     <div className={styles.printWrapper}>
       <article className={styles.container}>
-        {/* Заголовок и метаданные */}
         <header className={styles.header}>
           <div className={styles.flexBetween}>
             <h1 className={styles.title}>Договор № {order_number}</h1>
@@ -76,7 +73,6 @@ const RentalContract = ({ items, orderData }: Props) => {
           </div>
         </header>
 
-        {/* Стороны договора */}
         <section className={styles.section}>
           <p className={styles.textIndent}>
             Индивидуальный предприниматель Голубева Максима Анатольевича, в лице
@@ -100,7 +96,6 @@ const RentalContract = ({ items, orderData }: Props) => {
           <p>с другой стороны, заключили настоящий Договор о нижеследующем:</p>
         </section>
 
-        {/* 1. ПРЕДМЕТ ДОГОВОРА */}
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>1. ПРЕДМЕТ ДОГОВОРА</h2>
           <p>
@@ -118,12 +113,13 @@ const RentalContract = ({ items, orderData }: Props) => {
                 <th>Инв. номер</th>
                 <th>Дата и время возврата</th>
                 <th>Стоимость проката, сутки/сумма/руб.</th>
-                <th>Сумма обеспечительного платежа, руб.</th>
+                <th>Срок, сут.</th>
+                <th>Всего за прокат, руб.</th>
               </tr>
             </thead>
             <tbody>
               {items.map((item, index) => {
-                const details = getItemDetails(item); // Используем нашу функцию
+                const details = getItemDetails(item);
 
                 return (
                   <tr key={item.id || index}>
@@ -137,12 +133,97 @@ const RentalContract = ({ items, orderData }: Props) => {
                         : "—"}
                     </td>
                     <td>{details.price} руб./сутки</td>
-                    {/* ВЫВОДИМ СУММУ ЗА ВЕСЬ СРОК ДЛЯ ЭТОГО ИНСТРУМЕНТА */}
-                    <td>{details.rowTotal} руб.</td>
+
+                    <td style={{ textAlign: "center" }}>{details.days}</td>
+                    <td style={{ fontWeight: "600" }}>
+                      {details.rowTotal} руб.
+                    </td>
                   </tr>
                 );
               })}
             </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan={8} style={{ padding: 0, border: "none" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "flex-end",
+                      gap: "4px",
+                      marginTop: "8px",
+                      paddingRight: "0",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        width: "320px",
+                        padding: "6px 12px",
+                        borderTop: "1px solid #ccc",
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: "11px",
+                          color: "#444",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.03em",
+                        }}
+                      >
+                        Итого стоимость проката:
+                      </span>
+                      <strong
+                        style={{
+                          fontSize: "13px",
+                          minWidth: "90px",
+                          textAlign: "right",
+                        }}
+                      >
+                        {totalRentalSum} руб.
+                      </strong>
+                    </div>
+
+                    {security_deposit ? (
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          width: "320px",
+                          padding: "6px 12px",
+                          background: "#f5f5f5",
+                          borderTop: "1px solid #bbb",
+                          borderBottom: "2px solid #333",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: "11px",
+                            color: "#444",
+                            textTransform: "uppercase",
+                            letterSpacing: "0.03em",
+                          }}
+                        >
+                          Обеспечительный платёж (залог):
+                        </span>
+                        <strong
+                          style={{
+                            fontSize: "13px",
+                            minWidth: "90px",
+                            textAlign: "right",
+                          }}
+                        >
+                          {security_deposit} руб.
+                        </strong>
+                      </div>
+                    ) : null}
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
           </table>
 
           <p>
@@ -181,7 +262,6 @@ const RentalContract = ({ items, orderData }: Props) => {
           </ul>
         </section>
 
-        {/* 2. ОПЛАТА ПРОКАТА, ОБЕСПЕЧИТЕЛЬНЫЙ ПЛАТЕЖ */}
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>
             2. ОПЛАТА ПРОКАТА, ОБЕСПЕЧИТЕЛЬНЫЙ ПЛАТЕЖ
@@ -192,7 +272,7 @@ const RentalContract = ({ items, orderData }: Props) => {
             стоимости каждой единицы, указанной в п. 1.1 настоящего Договора) в
             соответствии с прейскурантом цен на услуги.
           </p>
-          {/* Добавляем расшифровку, если есть скидка или наценка */}
+
           {adjustment !== 0 && (
             <div className={styles.adjustmentLine}>
               <span>
@@ -228,11 +308,11 @@ const RentalContract = ({ items, orderData }: Props) => {
           <p>
             2.6. В целях обеспечения надлежащего исполнения Клиентом своих
             обязательств по настоящему договору Клиент вносит Пункту проката
-            Обеспечительный платеж в размере{" "}
-            <strong>{orderData.total_price}</strong> руб.
+            Обеспечительный платеж в размере <strong>{security_deposit}</strong>{" "}
+            руб.
             <strong>
               {" "}
-              ({priceToWords(Number(orderData.total_price))} рублей 00 копеек
+              ({priceToWords(Number(security_deposit))} рублей 00 копеек
             </strong>
             )
           </p>
@@ -262,7 +342,6 @@ const RentalContract = ({ items, orderData }: Props) => {
           </p>
         </section>
 
-        {/* 3. СРОКИ ИСПОЛНЕНИЯ ОБЯЗАТЕЛЬСТВ */}
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>
             3. СРОКИ ИСПОЛНЕНИЯ ОБЯЗАТЕЛЬСТВ
@@ -287,7 +366,6 @@ const RentalContract = ({ items, orderData }: Props) => {
           </p>
         </section>
 
-        {/* 4. ОБЯЗАННОСТИ СТОРОН */}
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>4. ОБЯЗАННОСТИ СТОРОН</h2>
           <p>4.1. Пункт проката обязан:</p>
@@ -333,7 +411,6 @@ const RentalContract = ({ items, orderData }: Props) => {
           </ul>
         </section>
 
-        {/* 5. ОТВЕТСТВЕННОСТЬ СТОРОН */}
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>5. ОТВЕТСТВЕННОСТЬ СТОРОН</h2>
           <p>
@@ -356,7 +433,6 @@ const RentalContract = ({ items, orderData }: Props) => {
           </p>
         </section>
 
-        {/* Реквизиты и подписи */}
         <section className={styles.grid}>
           <div>
             <h3>«Пункт проката Мастерская № 1»</h3>
@@ -393,7 +469,6 @@ const RentalContract = ({ items, orderData }: Props) => {
           </div>
         </section>
 
-        {/* Акт приема-передачи */}
         <section className={styles.aktSection}>
           <h2 className={styles.aktTitle}>
             АКТ ПРИЕМА-ПЕРЕДАЧИ ИМУЩЕСТВА В ПРОКАТ

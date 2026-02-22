@@ -8,12 +8,14 @@ import {
   OrderTool,
   // OrderTool,
   OrderUI,
+  RentalHistoryItem,
 } from "@/types";
 
 // Обновленная версия createOrder с использованием RPC
 interface CreateOrderParams {
   client_id: string;
   total_price: number;
+  security_deposit: number | null; // ← добавлено
   items: {
     id: string;
     daily_price: number;
@@ -28,6 +30,7 @@ export const createOrder = async (orderData: CreateOrderParams) => {
     const { data, error } = await supabase.rpc("create_order_v2", {
       p_client_id: orderData.client_id,
       p_total_price: orderData.total_price,
+      p_security_deposit: orderData.security_deposit, // ← добавлено
       p_items: orderData.items, // Теперь тут объекты с датами
     });
 
@@ -204,69 +207,10 @@ interface SupabaseAllOrdersRow {
       id: string;
       name: string;
       serial_number: string;
+      image_url: string | null;
     } | null;
   }[];
 }
-// Обновленная версия loadAllOrders с учетом цены на момент аренды и логикой названия
-// export const loadAllOrders = async (): Promise<OrderUI[]> => {
-//   const { data, error } = await supabase
-//     .from("orders")
-//     .select(
-//       `
-//       id,
-//       total_price,
-//       start_date,
-//       end_date,
-//       order_number,
-//       status,
-//       client:clients(last_name, first_name, phone),
-//       order_items(
-//         id,
-//         price_at_time,
-//         start_date,
-//         end_date,
-//         inventory(id, name, serial_number)
-//       )
-//     `,
-//     )
-//     .order("created_at", { ascending: false });
-
-//   if (error) {
-//     console.error("Error loading orders:", error);
-//     throw error;
-//   }
-
-//   return (data || []).map((order: any) => {
-//     const tools =
-//       order.order_items
-//         ?.map((item: any) => ({
-//           ...item.inventory,
-//           order_item_id: item.id,
-//           price_at_time: item.price_at_time,
-//           end_date: item.end_date,
-//         }))
-//         .filter((t: any) => t.id) || [];
-
-//     let mainInventoryName = "Не указан";
-//     if (tools.length === 1) {
-//       mainInventoryName = tools[0].name;
-//     } else if (tools.length > 1) {
-//       mainInventoryName = `${tools[0].name} +${tools.length - 1}`;
-//     }
-
-//     return {
-//       id: order.id,
-//       order_number: order.order_number,
-//       status: order.status,
-//       total_price: order.total_price,
-//       start_date: order.start_date,
-//       end_date: order.end_date,
-//       client: order.client || { last_name: "Не указан", first_name: "" },
-//       inventory: { name: mainInventoryName },
-//       tools: tools,
-//     };
-//   });
-// };
 
 export const loadAllOrders = async (): Promise<OrderUI[]> => {
   const { data, error } = await supabase
@@ -281,11 +225,11 @@ export const loadAllOrders = async (): Promise<OrderUI[]> => {
       status,
       client:clients(last_name, first_name, middle_name, phone),
       order_items(
-        id,
+       
         price_at_time, 
         start_date,
         end_date,
-        inventory(id, name, serial_number)
+        inventory( name, image_url)
       )
     `,
     )
@@ -306,7 +250,8 @@ export const loadAllOrders = async (): Promise<OrderUI[]> => {
       .map((item) => ({
         id: item.inventory!.id,
         name: item.inventory!.name,
-        serial_number: item.inventory!.serial_number,
+        // serial_number: item.inventory!.serial_number,
+        image_url: item.inventory!.image_url,
         price_at_time: item.price_at_time,
         start_date: item.start_date,
         end_date: item.end_date,
@@ -337,6 +282,69 @@ export const loadAllOrders = async (): Promise<OrderUI[]> => {
       tools: tools,
     };
   });
+};
+
+// История аренды
+
+// Внутренний тип для ответа Supabase, использующий вашу структуру Client
+interface OrderItemResponse {
+  id: string;
+  price_at_time: number;
+  start_date: string;
+  end_date: string;
+  orders: {
+    id: string;
+    status: string;
+    clients: Client | null;
+  } | null;
+}
+
+export const getItemRentalHistory = async (
+  itemId: string,
+): Promise<RentalHistoryItem[]> => {
+  const { data, error } = await supabase
+    .from("order_items")
+    .select(
+      `
+      id,
+      price_at_time,
+      start_date,
+      end_date,
+      orders (
+        id,
+        status,
+        clients (
+          id,
+          first_name,
+          last_name,
+          middle_name,
+          phone
+        )
+      )
+    `,
+    )
+    .eq("inventory_id", itemId)
+    .order("start_date", { ascending: false })
+    .limit(5);
+
+  if (error) {
+    console.error("Supabase Error:", error);
+    throw error;
+  }
+
+  const responseData = (data as unknown as OrderItemResponse[]) || [];
+
+  return responseData.map((item) => ({
+    id: item.id,
+    order_id: item.orders?.id,
+    start_date: item.start_date,
+    end_date: item.end_date,
+    total_price: item.price_at_time,
+    status: item.orders?.status,
+    client_name: item.orders?.clients
+      ? `${item.orders.clients.last_name} ${item.orders.clients.first_name}`.trim()
+      : "Клиент не указан",
+  }));
 };
 
 // Обновление статуса заказа через RPC

@@ -1,23 +1,17 @@
+/* --- 1. Основной контейнер меню --- */
 .actionsMenu {
   position: absolute;
-  top: 40px;
-  right: 0;
-  min-width: 200px;
-  max-width: fit-content;
-  background-color: #ffffff;
-  border: 1px solid rgba(229, 231, 235, 0.8);
+  min-width: 220px;
+  background-color: #1a1f2e;
+  border: 1px solid #2d3343;
   border-radius: 12px;
   box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.05),
-    0 10px 20px -5px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(0, 0, 0, 0.02);
+    0 10px 25px -5px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
   z-index: 1000;
   overflow: hidden;
-  padding: 4px;
-
-  /* 2. Применяем анимацию */
+  padding: 6px;
   animation: slideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  /* 3. Оптимизируем рендеринг */
   will-change: transform, opacity;
 }
 
@@ -27,13 +21,10 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
 }
 
-.actionsMenuList li {
-  display: flex;
-}
-
+/* --- 2. Базовые стили ссылок и кнопок --- */
 .actionsMenuList a,
 .actionsMenuList button {
   display: flex;
@@ -43,167 +34,139 @@
   padding: 10px 14px;
   font-size: 14px;
   font-weight: 500;
-  color: #4b5563;
+  color: #94a3b8; /* Стандартный серый цвет текста */
   text-decoration: none;
   background: none;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   text-align: left;
-}
-
-.actionsMenuList li:hover a,
-.actionsMenuList li:hover button {
-  background-color: #f8fafc;
-  color: #111827;
-  transform: translateX(1px);
-}
-
-/* Если меню открыто в одной из последних 3-х строк таблицы */
-.table tr:nth-last-child(-n + 3) .actionsMenu {
-  top: auto;
-  bottom: 100%;
-  margin-bottom: 10px;
-}
-
-/* Специфические стили для кнопок */
-.maintenanceBtn {
-  color: #e11d48 !important;
-}
-
-.availableBtn {
-  color: #10b981 !important;
-}
-
-.cancelBtn:hover {
-  background-color: #fff7ed !important; /* Бледно-оранжевый */
-  color: #ea580c !important; /* Насыщенный оранжевый */
-}
-
-.deleteSeparator {
-  height: 1px;
-  background-color: #f1f5f9;
-  margin: 6px 10px;
-}
-
-.deleteBtn {
-  color: #6b7280 !important;
 }
 
 .actionsMenuList a svg,
 .actionsMenuList button svg {
-  flex-shrink: 0;
-  opacity: 0.7; /* Делаем иконки чуть мягче */
+  color: #64748b; /* Стандартный цвет иконок */
+  transition: color 0.2s ease;
+}
+
+/* --- 3. Общие эффекты при наведении (Default Hover) --- */
+.actionsMenuList li:hover a,
+.actionsMenuList li:hover button {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #ffffff;
+  transform: translateX(4px);
 }
 
 .actionsMenuList li:hover svg {
-  opacity: 1;
+  color: #3b82f6; /* По умолчанию иконки синеют */
 }
 
-/* Стили для деструктивной кнопки удаления при наведении */
+/* --- 4. Индивидуальные стили кнопок (Специфические цвета) --- */
+
+/* ОТКРЫТЬ (Светлый/Белый) */
+.actionsMenuList li:hover .openLink {
+  color: #f8fafc !important;
+  background-color: rgba(248, 250, 252, 0.08) !important;
+}
+.actionsMenuList li:hover .openLink svg {
+  color: #f8fafc !important;
+}
+
+/* РЕДАКТИРОВАТЬ (Синий) */
+.actionsMenuList li:hover .editLink {
+  color: #3b82f6 !important;
+  background-color: rgba(59, 130, 246, 0.15) !important;
+}
+.actionsMenuList li:hover .editLink svg {
+  color: #3b82f6 !important;
+}
+
+/* В РАБОТУ / ДОСТУПЕН (Зеленый) */
+.actionsMenuList li:hover .availableBtn {
+  color: #10b981 !important;
+  background-color: rgba(16, 185, 129, 0.1) !important;
+}
+.actionsMenuList li:hover .availableBtn svg {
+  color: #10b981 !important;
+}
+
+/* В РЕМОНТ (Оранжевый) */
+.actionsMenuList li:hover .maintenanceBtn {
+  color: rgb(245, 158, 11) !important;
+  background-color: rgba(245, 158, 11, 0.1) !important;
+}
+.actionsMenuList li:hover .maintenanceBtn svg {
+  color: rgb(245, 158, 11) !important;
+}
+
+/* ОТМЕНИТЬ ЗАКАЗ (Светло-красный) */
+.actionsMenuList li:hover .cancelBtn {
+  color: rgb(254, 202, 202) !important;
+  background-color: rgba(252, 165, 165, 0.1) !important;
+}
+.actionsMenuList li:hover .cancelBtn svg {
+  color: rgb(254, 202, 202) !important;
+}
+
+/* УДАЛИТЬ (Критический красный) */
+.deleteSeparator {
+  height: 1px;
+  background-color: #2d3343;
+  margin: 6px 8px;
+}
+
 .deleteBtn:hover {
-  background-color: #fff1f2 !important; /* Бледно-красный фон */
-  color: #e11d48 !important; /* Насыщенный красный текст */
+  background-color: rgba(225, 29, 72, 0.15) !important;
+  color: #fb7185 !important;
+}
+.deleteBtn:hover svg {
+  color: #fb7185 !important;
 }
 
-.overlay {
-  display: none;
-}
-
-/* 1. Определяем саму анимацию */
+/* --- 5. Мобильная версия и анимации --- */
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translateY(-8px) scale(0.95);
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
-
-/* ... твои текущие стили .actionsMenu ... */
 
 @media (max-width: 768px) {
   .overlay {
     display: block;
     position: fixed;
     inset: 0;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(15, 23, 42, 0.5);
-    backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
     z-index: 9998;
-    animation: fadeIn 0.3s ease;
   }
 
   .actionsMenu {
     position: fixed;
-    top: auto;
     bottom: 0;
     left: 0;
     right: 0;
     width: 100%;
-    min-width: 100%;
-    margin: 0;
-    border-radius: 20px 20px 0 0; /* Закругляем только верх */
-    padding: 14px; /* Больше отступа снизу для айфонов */
+    background-color: #111827;
+    border-radius: 24px 24px 0 0;
     border: none;
-    z-index: 9999;
-    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-top: 1px solid #2d3343;
+    padding: 20px 16px 40px 16px;
+    animation: slideUp 0.3s ease-out;
   }
 
-  .actionsMenuList {
-    max-height: 60vh; /* Меню не займет больше 60% экрана */
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
-    padding-bottom: 20px; /* Доп. запас */
-  }
-
-  /* Делаем пункты меню крупнее для пальцев */
   .actionsMenuList a,
   .actionsMenuList button {
-    padding: 14px 16px;
-    font-size: 17px;
-    background: #f8fafc;
-    margin-bottom: 4px;
-  }
-
-  .actionsMenuList li:hover a,
-  .actionsMenuList li:hover button {
-    transform: none; /* Убираем смещение на мобилках */
-  }
-
-  /* Добавим "хваталочку" сверху шторки */
-  .actionsMenu::before {
-    content: "";
-    display: block;
-    width: 36px;
-    height: 5px;
-    background: #e5e7eb;
-    border-radius: 2px;
-    margin: 0 auto 12px auto;
-  }
-
-  /* Сбрасываем стили для последних строк таблицы */
-  .table tr:nth-last-child(-n + 3) .actionsMenu {
-    bottom: 0;
-    top: auto;
-    margin-bottom: 0;
-  }
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+    background: #1a1f2e;
+    margin-bottom: 8px;
+    padding: 16px;
+    border: 1px solid #2d3343;
+    font-size: 16px;
   }
 }
 
@@ -213,14 +176,5 @@
   }
   to {
     transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }

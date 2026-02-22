@@ -1,89 +1,38 @@
 .returnStatus {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 10px 14px;
-  /* background: #d2e8ff; */
-  background: #f9fafb;
-  border-radius: 10px;
-  border: 1px solid #f3f4f6;
-  min-width: 111px;
-  width: fit-content;
-  transition: all 0.3s ease;
+  gap: 2px;
+  /* Убрали background, border, padding, min-width */
 }
 
 .dateLabel {
-  font-size: 12px;
-  font-weight: 600;
-  color: #64748b;
+  font-size: 11px;
+  font-weight: 500;
+  color: #64748b; /* Серый цвет лейбла */
+  text-transform: uppercase;
 }
 
 .statusText {
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
 }
 
-/* Цвета состояний теперь красят и фон (опционально, для сочности) */
-.today {
-  background-color: #d2e8ff;
-  border-color: #bae1ff;
-}
-
-.today .statusText {
-  color: #0284c7; /* Глубокий синий для контраста текста */
-}
-.today .dateLabel {
-  color: #0369a1;
-}
-
-.completed {
-  background-color: #f3f4f6; /* Светло-серый */
-  border-color: #e5e7eb;
-}
-
-.completed .statusText {
-  color: #6b7280; /* Приглушенный текст */
-}
-
-.completed .dateLabel {
-  color: #94a3b8;
-}
-
-.overdue {
-  background-color: #fff1f2;
-  border-color: #fecdd3;
-  animation: pulseOpacity 2s infinite;
-}
+/* Цвета только для текста */
 .overdue .statusText {
-  color: #dc2626;
-}
-
-.onTime {
-  background-color: #f0fdf4;
-  border-color: #dcfce7;
+  color: #ef4444; /* Красный для просрочки */
 }
 
 .onTime .statusText {
-  color: #059669;
+  color: #f8fafc; /* Белый/светлый для обычного состояния в темной теме */
 }
 
-@keyframes pulseOpacity {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.02);
-    background-color: #ffe4e6;
-  }
-  100% {
-    transform: scale(1);
-  }
+.today .statusText {
+  color: #3b82f6; /* Синий для "Сегодня" */
 }
 
-@media (max-width: 768px) {
-  .onTime {
-    background-color: #dcfce7;
-    border-color: #90f7b4;
-  }
+.completed .statusText {
+  color: #94a3b8;
 }
+
+/* Удаляем анимацию pulseOpacity, она не нужна для текста */

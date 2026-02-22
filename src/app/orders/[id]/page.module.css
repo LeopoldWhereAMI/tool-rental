@@ -1,9 +1,21 @@
-.container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-}
+/**
+ * Переменные для быстрой настройки темы
+ */
+.pageContainer {
+  --primary: #2b5bee;
+  --bg-dark: #101522;
+  --card-bg: #161b2e; /* Более светлый оттенок для карточек */
+  --card-border: #1e293b;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --accent-yellow: #eab308;
 
+  min-height: 100vh;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  padding: 32px 80px; /* Соответствие lg:px-20 */
+}
+/* --- Навигация --- */
 .topNav {
   display: flex;
   justify-content: space-between;
@@ -11,658 +23,970 @@
   margin-bottom: 24px;
 }
 
-.backBtn {
+.breadcrumbs {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: none;
-  border: none;
-  color: #666;
-  cursor: pointer;
-  font-size: 15px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  transition: all 0.2s;
-}
-
-.backBtn:hover {
-  color: #000;
-  background: #f5f5f5;
-}
-
-.mainCard {
-  background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  overflow: hidden;
-  border: 1px solid #f0f0f0;
-}
-
-.header {
-  padding: 32px 40px;
-  background: linear-gradient(135deg, #fafafa 0%, #fff 100%);
-  border-bottom: 1px solid #f0f0f0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.titleInfo {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.titleInfo h1 {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 700;
-  color: #1a1a1a;
-}
-
-.dateInfo {
-  color: #888;
-  font-size: 14px;
-}
-
-.statusBadge {
-  min-width: 110px;
-  padding: 8px 16px;
-  border-radius: 24px;
-  font-size: 13px;
-  font-weight: 600;
-  text-align: center;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-}
-
-/* Статусы */
-.statusActive {
-  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-  color: #2e7d32;
-  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.15);
-}
-
-.statusCompleted {
-  background-color: #f9fafb;
-  color: #6b7280;
-  box-shadow: 0 2px 8px rgba(21, 101, 192, 0.15);
-}
-
-.statusCancelled {
-  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
-  color: #c62828;
-  box-shadow: 0 2px 8px rgba(198, 40, 40, 0.15);
-}
-
-.infoGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  background: #f8f8f8;
-}
-
-.infoBlock {
-  background: #fff;
-  padding: 32px;
-  border-right: 1px solid #f0f0f0;
-  border-bottom: 1px solid #f0f0f0;
-  transition: background-color 0.2s;
-}
-.contactInfo {
-  margin-top: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.contactRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #666;
-  font-size: 14px;
-}
-
-.contactRow svg {
-  color: #2ecc71; /* Зеленый акцент для иконок связи */
-  opacity: 0.8;
-}
-
-.name {
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.2;
-  color: #1a1a1a;
-}
-
-.name {
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0;
-  color: #1a1a1a;
-}
-
-.infoBlock:hover {
-  background: #fafafa;
-}
-
-.infoBlock:nth-child(2n) {
-  border-right: none;
-}
-
-.blockTitle {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #666;
+  gap: 8px; /* Расстояние между всеми элементами */
   margin-bottom: 20px;
 }
 
-.blockTitle svg {
-  color: #999;
+.breadcrumbLink {
+  color: #94a3b8;
+  text-decoration: none;
+  transition: color 0.2s;
 }
 
-.blockTitle h3 {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin: 0;
-  font-weight: 600;
+.breadcrumbLink:hover {
+  color: #3b82f6;
 }
 
-.blockContent {
-  position: relative;
+.breadcrumbSeparator {
+  color: #475569;
+  flex-shrink: 0;
 }
 
-.name {
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0 0 8px 0;
-  color: #1a1a1a;
+.breadcrumbCurrent {
+  color: #f1f5f9;
+  font-weight: 500;
+  margin-right: 4px; /* Небольшой зазор перед бейджем статуса */
 }
 
-.subText {
-  color: #666;
-  margin: 0;
+.navLeft {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.separator {
+  color: #444;
+}
+
+.current {
+  color: var(--text-main);
+  font-family: var(--font-space-grotesk);
+  font-weight: 500;
+}
+
+.printBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.printBtn:hover {
+  background: #1f2229;
+  border-color: #3f4451;
+}
+
+/* --- Сетка --- */
+.mainGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+}
+
+.contentArea {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* --- Hero Секция (Инструмент) --- */
+.heroSection {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  display: flex;
+  overflow: hidden;
+  margin-bottom: 32px;
+  min-height: 320px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.heroImageWrapper {
+  width: 40%; /* Уменьшили с 50% */
+
+  display: flex;
+}
+
+.heroImageContainer {
+  position: relative; /* Контрольная точка для Image fill */
+  width: 100%;
+  flex: 1;
+  height: 100%;
+}
+
+.heroImage {
+  max-width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+.heroDetails {
+  width: 60%;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  justify-content: space-between;
+}
+
+.heroPriceTag {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  display: flex;
+  gap: 5px;
+  justify-content: flex-end;
+  /* align-items: flex-end; */
+  line-height: 1;
+}
+
+.heroDaysLabel {
   font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-top: 4px;
 }
 
-.dates {
+.heroSecondaryInfo {
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-top: 8px; /* Отступ от заголовка H1 */
+  margin-bottom: 24px; /* Отступ до следующего блока (specs) */
+}
+
+.infoSeparator {
+  color: var(--card-border);
+  font-size: 18px;
+  line-height: 0;
+  user-select: none;
+}
+
+.specValue {
   font-size: 16px;
-}
-
-.dates strong {
-  color: #1a1a1a;
   font-weight: 600;
+  color: #fff;
 }
 
-.dates span {
-  color: #999;
+.heroMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  font-size: 12px;
+  color: var(--text-muted);
+  opacity: 0.6;
 }
 
-.totalBlock {
-  /* background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); */
-  /* border: 2px solid #dee2e6; */
-}
-
-.totalBlock:hover {
-  background: linear-gradient(135deg, #f1f3f5 0%, #e9ecef 100%);
-}
-
-.totalLabel {
-  color: #666;
-  margin-bottom: 8px;
-  font-size: 13px;
+.statusBadge {
+  display: inline-flex;
+  padding: 4px 12px;
+  background: rgba(43, 91, 238, 0.1);
+  color: var(--primary);
+  border: 1px solid rgba(43, 91, 238, 0.2);
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 600;
 }
 
-.debtDetails {
-  margin-top: 16px;
-  padding: 12px;
-  background-color: rgba(225, 29, 72, 0.05); /* Очень легкий красный фон */
-  border-radius: 12px;
-  border: 1px dashed rgba(225, 29, 72, 0.2);
+.heroDetails h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  line-height: 1.2;
 }
 
-.debtHeader {
+.heroSpecs {
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.specItem {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #e11d48;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.heroMeta {
+  margin-top: 24px;
   font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 8px;
+  color: var(--text-muted);
 }
 
-.debtBreakdown {
+/* --- Контентные блоки (WhiteBox) --- */
+.whiteBox {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 24px;
+  transition: transform 0.2s ease;
+}
+
+.boxHeader {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-  font-size: 12px;
-  color: #666;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--card-border);
+  padding-bottom: 16px;
 }
 
-.debtPlus {
-  color: #e11d48;
-  font-weight: 700;
-}
-
-.price {
-  font-size: 36px;
-  font-weight: 800;
-  color: #2ecc71;
+.boxHeader h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-main);
   margin: 0;
-  letter-spacing: -1px;
+  letter-spacing: -0.02em;
 }
 
-/* скидки наценки */
-.adjustmentBlock {
-  margin-top: 16px;
-  padding-top: 12px;
-  border-top: 1px solid #f0f1f3;
+.boxHeader svg {
+  color: var(--primary); /* Иконка в заголовке теперь акцентная */
 }
 
-.adjLabel {
+/* --- Сайдбар --- */
+.sidebar {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  font-size: 12px;
-  color: #64748b;
+  gap: 20px;
+  justify-content: space-between;
 }
 
-.adjInput {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
+.sidebarCard {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.sidebarCard .boxHeader {
+  border-bottom: 1px solid var(--card-border);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebarCard h3 {
   font-size: 14px;
-  font-weight: 600;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.adjInput:focus {
-  border-color: #2563eb;
-}
-
-/*  */
-.completeOrderBtn {
-  width: 100%;
-  margin-top: 20px;
-  background-color: #10b981;
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 10px;
   font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.noteBox p {
+  font-size: 12px;
+  color: #fbbf24;
+}
+
+/* --- Баннер дедлайна (Синий) --- */
+.deadlineBanner {
+  background: var(--accent-blue);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+}
+
+.deadlineIcon {
+  width: 54px;
+  height: 54px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  cursor: pointer;
-  transition: background 0.2s;
+  color: #fff;
 }
 
-.completeOrderBtn:hover {
-  background-color: #059669;
-}
-
-.finalPriceText {
-  display: block;
-  font-size: 24px;
-  color: #10b981;
-  margin-top: 8px;
-}
-
-.completedStatus {
+.deadlineText {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 16px;
-  padding: 10px;
-  background-color: #f0fdf4; /* Светло-зеленый фон */
-  border-radius: 8px;
-  color: #166534; /* Темно-зеленый текст */
-  font-size: 14px;
+  flex-direction: column;
+}
+
+.deadlineLabel {
+  font-size: 12px;
   font-weight: 600;
-  border: 1px solid #bbf7d0;
+  opacity: 0.8;
+  color: #fff;
+  margin-bottom: 4px;
 }
 
-/* Стили для списка инструментов */
-.wideBlock {
-  /* grid-column: 1 / -1; */
-  /* border-right: none; */
-  border-bottom: none;
+.deadlineDate {
+  font-size: 24px;
+  font-weight: 900;
 }
 
+/* OrderItemList */
+/* Основной контейнер блока (заменяет whiteBox для списка) */
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarCard .infoBlock {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.blockContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.infoBlock.wideBlock {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+/* Заголовок внутри списка */
+.blockTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.blockTitle h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.blockTitle svg {
+  color: var(--primary);
+}
+
+/* Списки элементов */
 .toolsListDetailed {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .toolItemEntry {
-  padding: 20px;
-  border: 1px solid #e8e8e8;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
-  background: #fafafa;
-  transition: all 0.3s ease;
+  padding: 16px;
+  transition: all 0.2s ease;
 }
 
 .toolItemEntry:hover {
-  background: #fff;
-  border-color: #2ecc71;
-  box-shadow: 0 4px 16px rgba(46, 204, 113, 0.1);
-  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(43, 91, 238, 0.4);
 }
 
+/* Верхняя строка: Имя и Цена */
 .toolHeader {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 14px;
-  gap: 16px;
+  align-items: center;
+  margin-bottom: 8px;
 }
 
-.toolHeader .name {
-  font-size: 17px;
+.name {
   font-weight: 600;
+  font-size: 15px;
+  color: var(--text-main);
   margin: 0;
-  color: #1a1a1a;
-  flex: 1;
 }
 
 .toolPrice {
   font-weight: 700;
-  color: #2ecc71;
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  font-size: 20px;
-  white-space: nowrap;
+  color: var(--primary);
+  font-size: 16px;
+  display: flex; /* Добавляем flex для удобного управления выравниванием */
+  align-items: center;
 }
 
 .toolPrice .subText {
-  font-weight: 500;
-  color: #999;
-  font-size: 0.7rem;
-  font-style: normal;
+  margin-left: 8px; /* Вот тот самый отступ */
+  font-weight: 400; /* Делаем дни менее жирными, чтобы не спорили с ценой */
+  color: var(--text-muted);
+  font-size: 13px;
 }
 
+/* Нижняя строка: S/N и Даты */
 .toolMeta {
   display: flex;
-  gap: 12px;
+  justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  margin-top: 10px;
 }
 
-.toolMeta .subText {
-  font-size: 13px;
-  color: #666;
-  font-style: normal;
-  background: #fff;
-  padding: 6px 12px;
-  border-radius: 6px;
-  border: 1px solid #e8e8e8;
-  font-weight: 500;
+.subText {
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
 .individualDates {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
-  color: #666;
-  background: #fff;
-  padding: 6px 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  background: rgba(0, 0, 0, 0.2);
+  padding: 4px 10px;
   border-radius: 6px;
-  border: 1px solid #e8e8e8;
-  font-weight: 500;
 }
 
 .individualDates svg {
-  color: #2ecc71;
+  color: var(--primary);
+  opacity: 0.8;
 }
 
-.center {
-  display: flex;
-  justify-content: center;
-  padding: 50px;
+/* OrderClientInfo */
+.clientBlockContent .name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+  line-height: 1.4;
 }
 
-/* Адаптивность */
-@media (max-width: 768px) {
-  .container {
-    padding: 16px;
-  }
-
-  .header {
-    padding: 24px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .infoGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .infoBlock {
-    border-right: none;
-  }
-
-  .titleInfo h1 {
-    font-size: 22px;
-  }
-
-  .price {
-    font-size: 28px;
-  }
-}
-
-/* Дополнительно для кнопки печати в хедере */
-.printBtn {
+.contactRow {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  padding: 10px 18px;
-  border-radius: 10px;
-  color: #1a1a1a;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
+  color: var(--text-muted);
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 8px 12px;
+  border-radius: 8px;
+  width: fit-content;
 }
 
-.printBtn:hover {
-  border-color: #2ecc71;
-  color: #2ecc71;
-  background: rgba(46, 204, 113, 0.05);
+.contactRow svg {
+  color: var(--primary);
 }
 
-.actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 12px;
-}
-
-/* Отступ для "заголовков" внутри секций скелетона */
-.skeletonLabel {
-  margin-bottom: 12px;
-}
-
-/* Контейнер для списка инструментов в скелетоне */
-.skeletonList {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* Если в оригинальном .section нет grid-column, добавим этот класс */
-.fullWidth {
-  grid-column: 1 / -1;
-}
-
-/* доп для статусов */
+/* OrderPeriod */
 .periodWrapper {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.startDateInfo {
+.blockTitle h3 {
+  color: var(--text-muted);
+}
+
+.dateInfo {
   display: flex;
-  align-items: baseline;
-  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
 }
 
 .miniLabel {
-  font-size: 11px;
+  color: var(--text-muted);
   text-transform: uppercase;
-  color: #999;
-  letter-spacing: 0.5px;
-  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.05em;
 }
 
-.startDateInfo strong {
-  font-size: 18px;
-  color: #1a1a1a;
+/* OrderFinance */
+.financeBlockContent {
+  gap: 20px;
+}
+
+.totalLabel {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.price {
+  font-family: var(--font-space-grotesk);
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--primary);
+  margin: -10px 0 0 0;
+}
+
+/* Блок долга/просрочки */
+.debtDetails {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.debtHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #ef4444;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.debtBreakdown {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.debtPlus {
+  color: #ef4444;
   font-weight: 700;
 }
 
-/* Обновленная адаптивность */
-@media (max-width: 768px) {
-  .container {
-    padding: 12px;
-  }
+/* Инпут корректировки */
+.adjustmentBlock {
+  margin-top: 8px;
+}
 
-  .header {
-    padding: 24px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
+.adjLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
 
-  .actions {
-    align-items: flex-start;
-    width: 100%;
-  }
+.adjInput {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 10px;
+  color: #fff;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
 
-  .infoGrid {
+.adjInput:focus {
+  border-color: var(--primary);
+}
+
+/* Кнопка завершения */
+.completeOrderBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.completeOrderBtn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.completeOrderBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.completedStatus {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #10b981;
+  font-weight: 600;
+  font-size: 14px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.statusCompleted {
+  color: rgb(156, 163, 175);
+  background: rgba(107, 114, 128, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.statusCancelled {
+  background: rgba(220, 38, 38, 0.08);
+  color: #fca5a5;
+  border: 1px solid rgba(220, 38, 38, 0.15);
+}
+
+/* orderItems new */
+.rentedToolsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.itemCountBadge {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.toolCard {
+  display: flex;
+  gap: 16px;
+  background: #1a1f2e; /* Темный фон карточки */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: transform 0.2s ease;
+}
+
+.toolCard:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.toolThumbWrapper {
+  width: 100px;
+  height: 100px;
+  background: #252b3b;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.toolThumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* padding: 4px; */
+}
+
+.toolMainInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+}
+
+.toolTitleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.toolName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.toolPriceLabel {
+  font-family: var(--font-space-grotesk);
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.toolMetaRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.toolSubInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.badgeBlue {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.snText {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.toolTimeline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.daysSmall {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+/* Заголовок в сайдбаре */
+.sidebarHeader {
+  margin-bottom: 20px;
+}
+
+.sidebarTitle {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Карточка профиля */
+.clientProfileCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.avatarWrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px; /* Мягкий квадрат, как на вашем референсе */
+  overflow: hidden;
+  background: #252b3b;
+  border: 1px solid var(--card-border);
+  flex-shrink: 0;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Чтобы картинка не растягивалась */
+}
+
+.clientMainInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.clientName {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.verifiedIcon {
+  color: #2b5bee; /* Синяя галочка */
+  margin-left: 4px;
+}
+
+.memberSince {
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* Контакты */
+.contactList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.contactIconBox {
+  width: 32px;
+  height: 32px;
+  background: #1e293b;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+}
+
+.contactValue {
+  font-size: 14px;
+  color: #e2e8f0;
+}
+
+/* Кнопка "Написать" */
+.contactBtn {
+  width: 100%;
+
+  padding: 14px;
+  background: rgba(43, 91, 238, 0.1);
+  border: 1px solid rgba(43, 91, 238, 0.2);
+  border-radius: 14px;
+  color: #4f75ff;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* В page.module.css */
+.contactLink {
+  color: inherit; /* Чтобы ссылка не становилась синей по умолчанию */
+  text-decoration: none;
+  font-family: var(--font-space-grotesk);
+  font-size: 14px; /* Или ваш стандартный размер */
+}
+
+.contactLink:hover {
+  text-decoration: underline; /* Чтобы пользователь понимал, что на это можно нажать */
+}
+
+.contactBtn:hover {
+  background: #2b5bee;
+  color: white;
+}
+
+/* deposit */
+.depositInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  margin: 10px 0;
+  background: rgba(245, 158, 11, 0.06);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 8px;
+}
+
+.depositInfoLeft {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.depositInfoLeft svg {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.depositInfoAmount {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f59e0b;
+}
+
+.cancelledFinance {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cancelledFinanceHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.cancelledFinanceBody {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(100, 116, 139, 0.06);
+  border: 1px solid rgba(100, 116, 139, 0.15);
+  border-radius: 10px;
+}
+
+.cancelledLabel {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.cancelledAmount {
+  font-size: 18px;
+  font-weight: 700;
+  color: #64748b;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.cancelledDeposit {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #475569;
+  padding: 0 4px;
+}
+
+/* --- Адаптивность --- */
+@media (max-width: 1200px) {
+  .mainGrid {
     grid-template-columns: 1fr;
   }
 
-  .infoBlock {
-    border-right: none;
-    padding: 20px;
+  .sidebar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
 }
 
-@media (max-width: 480px) {
-  .mainCard {
-    border-radius: 16px; /* Чуть меньше скругление для мобильных */
-    border: none;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+@media (max-width: 768px) {
+  .pageContainer {
+    padding: 20px;
   }
 
-  .header {
-    padding: 16px;
-  }
-
-  .printBtn {
-    padding: 8px 14px;
-    font-size: 14px;
-  }
-
-  .titleInfo h1 {
-    font-size: 20px;
-    line-height: 1.2;
-  }
-
-  .infoBlock {
-    padding: 16px;
-  }
-
-  .startDateInfo {
-    display: none;
-  }
-
-  /* Вместо text-align: center используем аккуратный левый край */
-  .blockContent,
-  .clientBlockContent {
-    text-align: left;
-    display: block;
-  }
-
-  .blockTitle {
-    margin-inline: 0;
-    margin-bottom: 12px;
-  }
-
-  /* Компактные карточки инструментов */
-  .toolItemEntry {
-    padding: 14px;
-    margin-bottom: 8px;
-  }
-
-  .toolHeader {
+  .heroSection {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-    margin-bottom: 10px;
   }
 
-  .toolPrice {
-    font-size: 18px;
-  }
-
-  /* Улучшаем читаемость дат и тегов */
-  .toolMeta {
-    gap: 8px;
-  }
-
-  .toolMeta .subText,
-  .individualDates {
-    font-size: 12px;
-    padding: 4px 10px;
-    flex: 1; /* Чтобы кнопки тянулись равномерно */
-    justify-content: center;
-  }
-
-  /* Финансовый блок */
-  .financeBlockContent {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .price {
-    font-size: 26px;
+  .heroImageWrapper {
     width: 100%;
+    height: 240px;
   }
 
-  .adjustmentBlock {
-    width: 100%;
-  }
-
-  .adjInput {
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .completeOrderBtn {
-    padding: 14px;
-    font-size: 14px;
-    border-radius: 12px;
+  .sidebar {
+    grid-template-columns: 1fr;
   }
 }

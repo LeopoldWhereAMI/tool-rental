@@ -1,0 +1,10 @@
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 16px 16px 16px 32px;
+  background-color: #161e2e;
+  border-bottom: 1px solid var(--border-dark);
+}

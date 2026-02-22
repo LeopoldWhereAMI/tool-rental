@@ -32,6 +32,7 @@ export function prepareOrderPayload(
     client_id: clientId,
     total_price: totalPrice,
     items: itemsForDb,
+    security_deposit: data.security_deposit ?? null, // ← добавлено
   };
 }
 
@@ -81,6 +82,7 @@ export function mapOrderToPrintBundle(
       order_number: savedOrder.order_number
         ? Number(savedOrder.order_number)
         : undefined,
+      security_deposit: data.security_deposit ?? undefined, // ← добавлено
     },
   };
 }

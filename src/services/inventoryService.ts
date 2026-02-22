@@ -7,7 +7,7 @@ export async function loadInventory(): Promise<Inventory[]> {
   const { data, error } = await supabase
     .from("inventory")
     .select(
-      "id, name, category, daily_price,  status, serial_number, article,purchase_price, purchase_date",
+      "id, name, category, daily_price,  status, serial_number,image_url, article,purchase_price, purchase_date",
     )
     .order("name");
 

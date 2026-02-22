@@ -1,4 +1,4 @@
-.formContainer {
+/* .formContainer {
   max-width: 500px;
   margin: 40px auto;
   background: white;
@@ -53,4 +53,328 @@
 
 .saveBtn:disabled {
   background: #94a3b8;
+} */
+
+/* =============================================
+   LAYOUT & WRAPPER
+   ============================================= */
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  min-height: 100vh;
+  background: #0d1117;
+  gap: 0; /* Убираем gap, чтобы контролировать всё маржинами */
+}
+
+.pageHeader {
+  margin-bottom: 24px; /* Компактный отступ от заголовка до формы */
+}
+
+/* Breadcrumbs */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.breadcrumbLink {
+  color: #94a3b8;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumbLink:hover {
+  color: #3b82f6;
+}
+
+.breadcrumbSeparator {
+  color: #475569;
+}
+
+.breadcrumbCurrent {
+  color: #f1f5f9;
+  font-weight: 500;
+}
+
+.mainContent {
+  display: flex;
+  gap: 32px; /* Расстояние между формой и сайдбаром */
+  align-items: flex-start;
+}
+
+/* Titles */
+.pageTitle {
+  font-size: 28px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 4px;
+  line-height: 1.2;
+}
+
+.pageSubtitle {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* =============================================
+   MAIN CONTENT & CARDS
+   ============================================= */
+.formColumn {
+  flex: 1; /* Занимает всё доступное пространство слева */
+}
+
+.formColumn form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Расстояние между карточками 01 и 02 */
+}
+
+.sectionCard {
+  background: #161b27;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 28px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sectionTitle svg {
+  color: #3b82f6;
+  opacity: 0.8;
+}
+
+/* =============================================
+   FORM FIELDS
+   ============================================= */
+/* Ряды инпутов */
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Ограничиваем ширину телефона, чтобы он не растягивался на всю строку, если это не нужно */
+.contactRow .fieldGroup {
+  max-width: 33.33%;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #94a3b8;
+  letter-spacing: 0.01em;
+}
+
+.input {
+  width: 100%;
+  background: #0d1117;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 14px;
+  color: #e2e8f0;
+  outline: none;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+.inputWithIcon {
+  position: relative;
+}
+
+.inputWithIcon svg {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #475569;
+  pointer-events: none;
+}
+
+.inputWithIcon .input {
+  padding-left: 40px;
+}
+
+.inputWithIcon select.input {
+  appearance: none; /* Убирает стандартную стрелку браузера */
+  background-image: url("data:image/svg+xml,..."); /* Можно добавить свою стрелочку */
+  cursor: pointer;
+}
+
+.inputWithIcon select {
+  padding-left: 36px; /* Чтобы текст не накладывался на иконку */
+}
+/* =============================================
+   GRIDS
+   ============================================= */
+.nameGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* =============================================
+   SIDEBAR
+   ============================================= */
+.sidebar {
+  width: 320px;
+  position: sticky;
+  top: 24px;
+}
+
+.sidebarCard {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: #161b27;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.sidebarTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin: 0 0 20px;
+}
+
+.sidebarTitle svg {
+  color: #3b82f6;
+}
+
+/* Buttons */
+.submitBtn {
+  width: 100%;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition:
+    background 0.15s,
+    transform 0.1s;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.submitBtn:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.submitBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.cancelBtn {
+  width: 100%;
+  background: transparent;
+  color: #94a3b8;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.15s;
+}
+
+.cancelBtn:hover {
+  background: #1e293b;
+  color: #f1f5f9;
+}
+
+/* Info Box */
+.infoBox {
+  display: flex;
+  gap: 10px;
+  background: rgba(59, 130, 246, 0.06);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-top: 12px;
+}
+
+.infoBox svg {
+  color: #3b82f6;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.infoBoxText {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 1024px) {
+  .mainContent {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    order: -1; /* Сайдбар сверху на мобилках */
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .nameRow {
+    flex-direction: column;
+  }
 }

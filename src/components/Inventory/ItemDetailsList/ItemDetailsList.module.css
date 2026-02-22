@@ -1,28 +1,66 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .itemInfoList {
-  list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .itemInfoRow {
   display: flex;
   justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #f3f4f6;
+  align-items: flex-start;
+  padding: 4px 0;
   font-size: 14px;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s;
 }
 
 .itemInfoRow:last-child {
   border-bottom: none;
 }
 
+.itemInfoRow:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
 .label {
-  color: #6b7280; /* Серый цвет для подписей */
+  color: var(--text-secondary, #94a3b8); /* Приглушенный текст */
+  font-weight: 400;
+  padding-bottom: 4px;
+  margin-right: 16px;
 }
 
 .value {
-  color: #111827; /* Темный для значений */
+  color: var(--text-main, #ffffff);
   text-align: right;
-  max-width: 60%;
+  font-weight: 500;
   word-break: break-word;
+}
+
+.specNotes {
+  margin-top: 16px;
+  padding: 12px;
+  background-color: rgba(30, 41, 59, 0.5);
+  border-radius: 8px;
+}
+
+.noteTitle {
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.noteText {
+  font-size: 12px;
+  color: #cbd5e1;
+  margin: 0;
 }
