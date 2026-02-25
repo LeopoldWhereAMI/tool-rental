@@ -204,7 +204,7 @@ export default function AddOrderForm() {
                       id="security_deposit"
                       type="number"
                       min="0"
-                      step="100"
+                      step="1"
                       className={styles.depositInput}
                       placeholder="0"
                     />

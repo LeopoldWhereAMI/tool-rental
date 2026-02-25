@@ -42,8 +42,10 @@ export async function updateInventory(
 ): Promise<Inventory> {
   const now = new Date().toISOString();
 
+  const { article: _article, ...rest } = data;
+
   const formattedData = {
-    ...data,
+    ...rest,
     purchase_date: data.purchase_date
       ? new Date(data.purchase_date).getTime()
       : null,

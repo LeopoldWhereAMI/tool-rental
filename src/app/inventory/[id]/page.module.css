@@ -14,46 +14,12 @@
   --danger: #ef4444;
 
   color: var(--text-main);
-  background-color: var(--bg-main);
+  /* background-color: var(--bg-main); */
   min-height: 100vh;
   padding: 24px;
 }
 
 /* --- Навигация (Breadcrumbs) --- */
-.breadcrumbs {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 24px; /* Увеличил отступ для карточки товара */
-  font-size: 14px;
-}
-
-.breadcrumbLink {
-  color: #94a3b8; /* Slate 400 */
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.breadcrumbLink:hover {
-  color: #3b82f6; /* Blue 500 */
-}
-
-.breadcrumbSeparator {
-  color: #475569; /* Slate 600 */
-  flex-shrink: 0;
-}
-
-.breadcrumbCategory {
-  color: #94a3b8;
-}
-
-.breadcrumbCurrent {
-  color: #f1f5f9; /* Slate 100 — яркий белый/серый */
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 
 .chevron {
   font-size: 14px;
@@ -181,10 +147,6 @@
   box-shadow: 0 6px 20px rgba(148, 163, 184, 0.3);
 }
 
-/* --- Сетка (Grid Layout) --- */
-/* ... Ваши переменные шрифтов и цветов оставляем ... */
-
-/* --- Новая Сетка Дашборда --- */
 .dashboardGrid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -192,9 +154,42 @@
   align-items: start;
 }
 
+/* image */
+.heroImageContainer {
+  min-height: 400px;
+  background: radial-gradient(circle, #2b5bee14 0%, #161b2e 70%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+.heroImage {
+  padding: 15px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.heroImageContainer:hover .heroImage {
+  transform: scale(1.02);
+}
+
+.imagePlaceholder {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
 /* 1. Колонка Галереи (4 из 12) */
 .colGallery {
-  grid-column: span 4;
+  grid-column: span 5;
 }
 
 /* 2. Колонка Метрик (3 из 12) */
@@ -207,13 +202,14 @@
 
 /* 3. Колонка Техданных (5 из 12) */
 .colDetails {
-  grid-column: span 5;
-  grid-row: span 2;
+  grid-column: span 4;
+  grid-row: span 1;
 }
 
 /* 4. Колонка Истории (на всю ширину) */
 .colHistory {
-  grid-column: span 7;
+  grid-column: span 8;
+  grid-row: 2;
   /* Она автоматически перенесется на новую строку под первые два блока */
 }
 

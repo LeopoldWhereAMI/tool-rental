@@ -120,7 +120,6 @@ export default function OrderFinance({
               <label className={styles.adjLabel}>
                 <span>Скидка (-) / Наценка (+)</span>
                 <input
-                  type="number"
                   value={adjustment || ""}
                   onChange={(e) => setAdjustment(Number(e.target.value))}
                   placeholder="0"

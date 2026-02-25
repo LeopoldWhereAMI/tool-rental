@@ -137,7 +137,7 @@ export default function ActionsMenu({
             <>
               <li>
                 <Link
-                  href={`/inventory/edit/${id}`}
+                  href={`/inventory/${id}/edit`}
                   className={styles.editLink}
                 >
                   <Pencil size={16} /> Редактировать

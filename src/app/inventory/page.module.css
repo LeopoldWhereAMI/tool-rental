@@ -1,5 +1,5 @@
 .container {
-  background-color: #0a0a0c;
+  /* background-color: #0a0a0c; */
   min-height: 100vh;
   color: #ffffff;
   padding-bottom: 40px;
@@ -73,22 +73,6 @@
   padding: 0 20px;
 }
 
-/* .statCard {
-  background-color: #161e2e;
-  border-radius: 12px; 
-  padding: 20px;
-  border: 1px solid #1f2937; 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 120px;
-  transition: background-color 0.2s ease;
-}
-
-.statCard:hover {
-  background: #1f2a40;
-} */
-
 .statCard {
   background-color: var(--surface-dark);
   border: 1px solid var(--border-dark);
@@ -143,31 +127,16 @@
   color: #f59e0b;
 }
 
-/* Тренды */
-/* .statTrend {
-  font-size: 12px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.trendPositive {
-  color: #10b981; 
-}
-
-.trendNegative {
-  color: #f59e0b; 
-}
-
-.trendNeutral {
-  color: #6b7280; 
-} */
-
 .statLabel {
   font-size: 14px;
   color: #9ca3af; /* slate-400 */
   margin-bottom: 4px;
+}
+
+.statLabelSuffix {
+  font-size: 12px;
+  color: #6b7280; /* slate-500 */
+  margin-left: 4px;
 }
 
 .statValue {
@@ -190,39 +159,6 @@
   gap: 20px;
   flex-wrap: wrap;
 }
-
-/* .filterLeft {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex: 1;
-} */
-
-/* .filterLabel {
-  color: #9ca3af; 
-  font-size: 14px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.customSelect {
-  background-color: #111827; 
-  color: #cbd5e1; 
-  border: 1px solid #1f2937; 
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  outline: none;
-  cursor: pointer;
-  min-width: 140px;
-}
-
-.customSelect:focus {
-  border-color: #2b5bee;
-  ring: 1px solid #2b5bee;
-} */
 
 .viewSwitcher {
   display: flex;
@@ -335,15 +271,7 @@
 
 .productImage {
   object-fit: cover;
-  /* width: 100%;
-  height: 100%; */
 }
-
-/* .productImagePlaceholder img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: cover;
-} */
 
 .productInfo {
   display: flex;
@@ -470,33 +398,6 @@
   border-radius: 2px;
 }
 
-/* Actions */
-/* .actionButtonsGroup {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-tr:hover .actionButtonsGroup {
-  opacity: 1;
-}
-
-.actionButton {
-  background: transparent;
-  border: none;
-  color: #6b7280; 
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 6px;
-  transition: all 0.2s;
-}
-
-.actionButton:hover {
-  color: #fff;
-  background-color: #1f2937; 
-} */
 .actions {
   text-align: right;
   width: 100px; /* Фиксируем ширину колонки */
@@ -544,57 +445,6 @@ tr:hover .actionButtonsGroup {
 .actionButton svg {
   display: block;
 }
-
-/* --- Pagination --- */
-/* .paginationContainer {
-  background-color: #111827; 
-  border-top: 1px solid #1f2937;
-  padding: 16px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.paginationInfo {
-  color: #64748b; 
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.paginationButtons {
-  display: flex;
-  gap: 8px;
-}
-
-.paginationButton {
-  padding: 4px 12px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: none;
-}
-
-.paginationButtonPrev {
-  background-color: #161e2e; 
-  border: 1px solid #1f2937;
-  color: #94a3b8; 
-}
-
-.paginationButtonPrev:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.paginationButtonNext {
-  background-color: #2b5bee; 
-  color: #fff;
-}
-
-.paginationButtonNext:hover:not(:disabled) {
-  background-color: #1e4bd1;
-} */
 
 /* --- Decorative glow elements (как в образце) --- */
 .glowTopLeft {

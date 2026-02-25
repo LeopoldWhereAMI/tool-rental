@@ -2,7 +2,6 @@
 
 import { AlertCircle } from "lucide-react";
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
-import BackButton from "@/components/BackButton/BackButton";
 import styles from "./ErrorBlock.module.css";
 
 type ErrorBlockProps = {
@@ -16,10 +15,6 @@ export default function ErrorBlock({
 }: ErrorBlockProps) {
   return (
     <PageWrapper>
-      <div className={styles.topNav}>
-        <BackButton>Назад</BackButton>
-      </div>
-
       <div className={styles.container}>
         <div className={styles.iconWrapper}>
           <AlertCircle size={48} />

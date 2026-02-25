@@ -1,0 +1,7 @@
+.pageContainer {
+  max-width: 1440px;
+  margin: 0 auto 16px;
+  padding: 0 16px;
+
+  /* background-color: #0a0a0c; */
+}

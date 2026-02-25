@@ -1,5 +1,5 @@
-.pageBackground {
-  background-color: #525659; /* Серый фон как в PDF-вьюверах */
+/* .pageBackground {
+  background-color: #525659;
   min-height: 100vh;
   padding-bottom: 50px;
 }
@@ -34,7 +34,7 @@
 }
 
 .editButton {
-  background-color: #f59e0b; /* Amber 500 */
+  background-color: #f59e0b;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -56,7 +56,7 @@
 }
 
 .saveButton {
-  background-color: #10b981; /* Emerald 500 */
+  background-color: #10b981;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -92,11 +92,8 @@
   outline: none;
 }
 
-/*  */
-/* ... твой существующий код ... */
-
 .restoreButton {
-  background-color: #6b7280; /* Gray 500 */
+  background-color: #6b7280;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -116,7 +113,7 @@
 
 .savingBadge {
   font-size: 14px;
-  color: #fbbf24; /* Amber 400 */
+  color: #fbbf24;
   font-weight: normal;
   animation: pulse 1.5s infinite;
 }
@@ -131,7 +128,6 @@
   font-size: 1.5rem;
 }
 
-/* Подсветка переменных {variable} в режиме редактирования */
 .editableActive :global(strong),
 .editableActive :global(b) {
   background-color: rgba(26, 115, 232, 0.1);
@@ -139,7 +135,6 @@
   border-bottom: 1px dashed #1a73e8;
 }
 
-/* Анимация для статуса сохранения */
 @keyframes pulse {
   0% {
     opacity: 1;
@@ -152,22 +147,18 @@
   }
 }
 
-/* Блокировка печати, если идет сохранение */
 .saveButton:disabled,
 .printButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* МАГИЯ ПЕЧАТИ (дополнение) */
 @media print {
-  /* Убираем любые тени и фоны, которые могут съесть краску картриджа */
   .pageBackground {
     background: white !important;
     min-height: auto;
   }
 
-  /* Скрываем всё, кроме самого контракта */
   body * {
     visibility: hidden;
   }
@@ -187,7 +178,6 @@
   }
 }
 
-/* МАГИЯ ПЕЧАТИ */
 @media print {
   .pageBackground :global([contentEditable="true"]) {
     outline: none !important;
@@ -208,4 +198,152 @@
   .contractScale > div {
     box-shadow: none;
   }
+} */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 1.5rem;
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.title h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: #0f172a;
+}
+
+.title p {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.message {
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+}
+
+.messageSuccess {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.messageError {
+  background-color: #fff1f2;
+  color: #e11d48;
+}
+
+.btn {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.btnRestore {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  color: #475569;
+}
+
+.btnRestore:hover {
+  background-color: #f1f5f9;
+}
+
+.btnSave {
+  background-color: #4f46e5;
+  color: #ffffff;
+  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+}
+
+.btnSave:hover {
+  background-color: #4338ca;
+}
+
+.btnSave:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.editorWrapper {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  background: #ffffff;
+  padding: 1.25rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.footerSection h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  margin-bottom: 0.75rem;
+}
+
+.variableTag {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #475569;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.codeExample {
+  font-size: 0.8125rem;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.codeExample code {
+  background: #f8fafc;
+  padding: 0.125rem 0.25rem;
+  border-radius: 4px;
+  font-weight: 600;
 }

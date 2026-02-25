@@ -1,12 +1,10 @@
-import BackButton from "@/components/BackButton/BackButton";
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
 import Skeleton from "@/components/ui/Skeleton/Skeleton";
-import styles from "./Form.module.css";
+import styles from "../InputWithIcon/InputWithIcon.module.css";
 
 export default function InventoryFormSkeleton() {
   return (
     <PageWrapper>
-      <BackButton>Назад</BackButton>
       {/* Используем тот же класс, что и у реальной формы */}
       <div className={styles.addInventoryForm}>
         <div className={styles.skeletonTitle}>

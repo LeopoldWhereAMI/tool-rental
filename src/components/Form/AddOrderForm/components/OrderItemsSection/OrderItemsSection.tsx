@@ -155,7 +155,7 @@ import {
 import { Calendar, Plus, RussianRuble, Trash2, Wrench } from "lucide-react";
 import FormField from "@/components/Form/FormField/FormField";
 import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
-import InputWithIcon from "@/components/Form/InventoryForm/InputWithIcon";
+import InputWithIcon from "@/components/Form/InputWithIcon/InputWithIcon";
 
 type OrderItemsSectionProps = {
   control: Control<OrderInput>;

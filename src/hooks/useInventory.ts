@@ -1,34 +1,6 @@
-// import { loadInventory } from "@/services/inventoryService";
-// import { InventoryUI } from "@/types";
-// import useSWR from "swr";
-
-// const fetcher = async (): Promise<InventoryUI[]> => {
-//   const data = await loadInventory();
-
-//   return data.map((item) => ({
-//     ...item,
-//     purchase_date: item.purchase_date
-//       ? new Date(item.purchase_date).toISOString().split("T")[0]
-//       : null,
-//   }));
-// };
-
-// export const useInventory = () => {
-//   const { data, error, isLoading, mutate } = useSWR("inventory", fetcher, {
-//     revalidateOnFocus: false,
-//   });
-
-//   return {
-//     items: data ?? [],
-//     loading: isLoading,
-//     error: error?.message ?? null,
-//     refresh: mutate,
-//   };
-// };
-// hooks/useInventory.ts
 import { loadInventory } from "@/services/inventoryService";
 import { InventoryUI } from "@/types";
-import { useMemo } from "react"; // Добавьте useMemo для оптимизации
+import { useMemo } from "react";
 import useSWR from "swr";
 
 // 1. Описываем интерфейс статистики
@@ -58,7 +30,6 @@ export const useInventory = () => {
     revalidateOnFocus: false,
   });
 
-  // 2. Оборачиваем в useMemo и явно указываем тип InventoryStats
   const stats: InventoryStats = useMemo(() => {
     if (!data || data.length === 0)
       return {
@@ -109,7 +80,7 @@ export const useInventory = () => {
       rentedTrend: calcTrend(rented, prevRented),
       maintenanceTrend: calcTrend(maintenance, prevMaintenance),
     };
-  }, [data]); // Пересчитываем только когда меняются данные
+  }, [data]);
 
   return {
     items: data ?? [],

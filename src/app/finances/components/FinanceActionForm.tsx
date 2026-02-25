@@ -164,6 +164,7 @@ export default function FinanceActionForm({
           <div className={styles.amountInputWrapper}>
             <span className={styles.currencySymbol}>₽</span>
             <input
+              type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="0"
@@ -171,11 +172,17 @@ export default function FinanceActionForm({
               disabled={isLoading || loading}
             />
           </div>
-          {type === "expense" && (
-            <div className={styles.amountHint}>
-              {loading ? (
+
+          <div className={styles.amountHint}>
+            {/* Оставляем условие только внутри, чтобы текст пропадал, а блок оставался */}
+            {type === "expense" &&
+              (loading ? (
                 <div
-                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
                 >
                   Доступно:{" "}
                   <Skeleton width={60} height={14} borderRadius="4px" />
@@ -184,9 +191,8 @@ export default function FinanceActionForm({
                 <span>
                   Доступно: {currentBalance.toLocaleString("ru-RU")} ₽
                 </span>
-              )}
-            </div>
-          )}
+              ))}
+          </div>
         </div>
 
         <div className={styles.formGroup}>

@@ -1,5 +1,5 @@
 import { UseFormRegisterReturn } from "react-hook-form";
-import styles from "./Form.module.css";
+import styles from "./InputWithIcon.module.css";
 
 interface InputWithIconProps extends React.InputHTMLAttributes<
   HTMLInputElement | HTMLTextAreaElement

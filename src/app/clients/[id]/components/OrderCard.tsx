@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Box, Calendar } from "lucide-react";
+import { Box, Calendar, ExternalLink } from "lucide-react";
 import { validateOrderStatus } from "@/helpers";
 import styles from "../page.module.css";
 
@@ -37,7 +37,11 @@ export default function OrderCard({ order, variant = "list" }: OrderCardProps) {
   // --- ВАРИАНТ 1: Активная карточка (Крупная) ---
   if (variant === "active") {
     return (
-      <Link href={`/orders/${order.id}`} className={styles.activeCard}>
+      <Link
+        href={`/orders/${order.id}`}
+        className={styles.activeCard}
+        title="Открыть заказ"
+      >
         <div className={styles.activeCardContent}>
           {/* Верхний ряд: Основная инфа */}
           <div className={styles.activeCardMain}>
@@ -78,7 +82,8 @@ export default function OrderCard({ order, variant = "list" }: OrderCardProps) {
 
   // --- ВАРИАНТ 2: Список истории (Компактный) ---
   return (
-    <Link href={`/orders/${order.id}`} className={styles.listCard}>
+    // <Link href={`/orders/${order.id}`} className={styles.listCard}>
+    <section className={styles.listCard}>
       <div className={styles.colId}>
         <span className={styles.listValueBold}>#{order.order_number}</span>
       </div>
@@ -100,6 +105,12 @@ export default function OrderCard({ order, variant = "list" }: OrderCardProps) {
           {status.text}
         </span>
       </div>
-    </Link>
+      <div>
+        <Link href={`/orders/${order.id}`} className={styles.detailsLink}>
+          Детали <ExternalLink size={12} />
+        </Link>
+      </div>
+    </section>
+    // </Link>
   );
 }

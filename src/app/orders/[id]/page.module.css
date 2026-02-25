@@ -4,16 +4,16 @@
 .pageContainer {
   --primary: #2b5bee;
   --bg-dark: #101522;
-  --card-bg: #161b2e; /* Более светлый оттенок для карточек */
+  --card-bg: #161b2e;
   --card-border: #1e293b;
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --accent-yellow: #eab308;
 
   min-height: 100vh;
-  background-color: var(--bg-dark);
+  /* background-color: var(--bg-dark); */
   color: var(--text-main);
-  padding: 32px 80px; /* Соответствие lg:px-20 */
+  padding: 32px 80px;
 }
 /* --- Навигация --- */
 .topNav {
@@ -21,50 +21,6 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
-}
-
-.breadcrumbs {
-  display: flex;
-  align-items: center;
-  gap: 8px; /* Расстояние между всеми элементами */
-  margin-bottom: 20px;
-}
-
-.breadcrumbLink {
-  color: #94a3b8;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.breadcrumbLink:hover {
-  color: #3b82f6;
-}
-
-.breadcrumbSeparator {
-  color: #475569;
-  flex-shrink: 0;
-}
-
-.breadcrumbCurrent {
-  color: #f1f5f9;
-  font-weight: 500;
-  margin-right: 4px; /* Небольшой зазор перед бейджем статуса */
-}
-
-.navLeft {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.separator {
-  color: #444;
-}
-
-.current {
-  color: var(--text-main);
-  font-family: var(--font-space-grotesk);
-  font-weight: 500;
 }
 
 .printBtn {
@@ -118,17 +74,93 @@
 }
 
 .heroImageContainer {
-  position: relative; /* Контрольная точка для Image fill */
+  position: relative;
   width: 100%;
   flex: 1;
-  height: 100%;
+  min-height: 320px;
+
+  /* Внутренние отступы, чтобы картинка не касалась краев */
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Эффект витрины: темный центр, уходящий в основной цвет карты */
+  background: radial-gradient(
+    circle at center,
+    rgba(43, 91, 238, 0.08) 0%,
+    rgba(22, 27, 46, 1) 70%
+  );
+
+  /* Отделяем левую часть от правой тонкой линией */
+  border-right: 1px solid var(--card-border);
+  overflow: hidden;
+}
+
+.heroImageContainer::after {
+  content: "";
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background: var(--primary);
+  filter: blur(80px);
+  opacity: 0.15;
+  pointer-events: none;
 }
 
 .heroImage {
-  max-width: 100%;
-  height: 100%;
+  /* 3. Вместо fill-адаптации используем эти свойства: */
+  position: relative !important; /* Перебиваем абсолют от fill, если нужно */
+  width: 100% !important;
+  height: 100% !important;
 
-  object-fit: contain;
+  /* 4. ГЛАВНОЕ: contain сохраняет пропорции и не дает выйти за рамки padding */
+  object-fit: contain !important;
+
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.5));
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.heroSection:hover .heroImage {
+  transform: scale(1.03);
+}
+
+.imagePlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.imagePlaceholder span {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.productImagePlaceholder {
+  position: relative;
+  width: 72px; /* Увеличили с 44px */
+  height: 72px; /* Увеличили с 44px */
+  border-radius: 12px; /* Чуть мягче углы для большего размера */
+  background: #252b3b; /* Цвет подложки, если картинка прозрачная */
+
+  display: flex; /* Центрирование для иконки-заглушки */
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+  flex-shrink: 0; /* Чтобы картинку не сжимало при длинных названиях */
+  border: 1px solid var(--card-border);
+}
+
+.productImage {
+  object-fit: cover;
 }
 
 .heroDetails {
@@ -680,6 +712,15 @@
   overflow: hidden;
   flex-shrink: 0;
   position: relative;
+}
+
+.toolThumbPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8; /* Цвет иконки slate-400 */
 }
 
 .toolThumb {

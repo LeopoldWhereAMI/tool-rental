@@ -20,39 +20,10 @@
   padding: 8px 0;
 }
 
-.breadcrumbs {
-  display: flex;
+.breadcrumbLabelWithIcon {
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
-}
-
-.breadcrumbLink {
-  color: #94a3b8; /* Slate 400 */
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.breadcrumbLink:hover {
-  color: #3b82f6; /* Blue 500 */
-}
-
-.breadcrumbSeparator {
-  color: #475569; /* Slate 600 */
-  flex-shrink: 0;
-}
-
-.breadcrumbCurrent {
-  color: #f1f5f9; /* Slate 100 */
-  font-weight: 500;
-}
-
-.breadcrumbCurrent {
-  display: flex;
-  align-items: center;
-  gap: 8px; /* Отступ между дотом и текстом */
-  color: #f1f5f9;
-  font-weight: 500;
+  gap: 6px; /* Отступ между иконкой и именем */
 }
 
 .breadcrumbBlacklistDot {
@@ -205,6 +176,24 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.detailsLink {
+  color: #3b82f6;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  text-decoration: none;
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+  transition: all 0.3s ease;
+}
+
+.detailsLink:hover {
+  text-decoration: underline;
+  filter: brightness(1.1);
+  color: #5392f7;
 }
 
 .emptyOrders {

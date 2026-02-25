@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./FormField.module.css";
 
 type FormFieldProps = {
-  label: string;
+  label?: string;
   id: string;
   error?: string;
   children: React.ReactNode;

@@ -8,7 +8,7 @@
 } */
 
 .pageContainer {
-  background-color: var(--bg-dark);
+  /* background-color: var(--bg-dark); */
   min-height: 100vh;
   color: #f1f5f9;
   font-family: "Space Grotesk", sans-serif;

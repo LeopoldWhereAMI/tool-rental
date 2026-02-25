@@ -1,0 +1,122 @@
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.inputWithIcon {
+  padding-right: 35px !important;
+}
+
+.inputIcon {
+  position: absolute;
+  right: 12px;
+  color: #9ca3af;
+  pointer-events: none;
+  transition: color 0.2s ease;
+}
+
+.inputWrapper:focus-within .inputIcon {
+  color: #2563eb;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: var(--accent-dark);
+  color: var(--text-main);
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px #3b82f61f;
+}
+
+.textarea {
+  min-height: 100px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.input::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+}
+
+.input[type="date"] {
+  position: relative;
+  appearance: none;
+}
+
+.articleInput {
+  background-color: #f9fafb !important;
+  border: 1px dashed #d1d5db !important;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 600;
+  color: #374151;
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.articleInput:focus {
+  background-color: #ffffff !important;
+  border-style: solid !important;
+  border-color: #2563eb !important;
+  outline: none;
+}
+
+.error {
+  border-color: #ef4444 !important;
+}
+
+.skeletonForm {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.skeletonTitle {
+  margin-bottom: 12px;
+}
+
+.skeletonTextarea {
+  margin-top: 8px;
+}
+
+.skeletonButton {
+  margin-top: 12px;
+}
+
+.skeletonTitle {
+  padding-bottom: 15px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+@media (max-width: 480px) {
+  .addInventoryForm {
+    padding: 20px;
+
+    & h1 {
+      font-size: 20px;
+      margin: 0;
+      padding-bottom: 5px;
+    }
+  }
+}

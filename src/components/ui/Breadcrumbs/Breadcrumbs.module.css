@@ -1,0 +1,48 @@
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+}
+
+.link {
+  color: #94a3b8; /* Slate 400 */
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-size: 12px;
+}
+
+.link:hover {
+  color: #2b5bee; /* primary */
+}
+
+.current {
+  color: #f1f5f9; /* text-main */
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.separator {
+  margin: 0 8px;
+  color: #475569;
+  flex-shrink: 0;
+}
+
+.extra {
+  display: flex;
+  align-items: center;
+}

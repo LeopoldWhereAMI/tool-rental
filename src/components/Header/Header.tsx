@@ -4,22 +4,20 @@ import { useHeaderStore } from "@/app/store/store";
 import styles from "./Header.module.css";
 import { Bell } from "lucide-react";
 import Image from "next/image";
-import SearchInput from "../SearchInput/SearchInput";
 
 export default function Header() {
-  const { title, subtitle, actions, query, setQuery, customSearch } =
-    useHeaderStore();
+  const { title, subtitle, actions } = useHeaderStore();
 
   return (
     <header className={styles.header}>
       <div className={styles.headerContent}>
-        <div className={styles.searchWrapper}>
+        {/* <div className={styles.searchWrapper}>
           {customSearch ? (
             customSearch
           ) : (
             <SearchInput value={query} setSearch={setQuery} />
           )}
-        </div>
+        </div> */}
 
         <div className={styles.pageInfo}>
           <h1 className={styles.title}>{title}</h1>

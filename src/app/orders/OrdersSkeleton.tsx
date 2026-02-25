@@ -1,8 +1,6 @@
 "use client";
 
 import Skeleton from "@/components/ui/Skeleton/Skeleton";
-import styles from "./page.module.css";
-// Импортируем стили таблицы, если они в отдельном модуле
 import tableStyles from "./components/OrdersTable/OrdersTable.module.css";
 
 export default function OrdersSkeleton() {

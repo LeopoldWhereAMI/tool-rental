@@ -27,24 +27,24 @@ export const saveContractTemplate = async (
   htmlContent: string,
 ): Promise<void> => {
   try {
-    // 1. Получаем текущий шаблон (для архива)
+    // 1. Пытаемся получить текущие данные (может вернуть null, если таблица пуста)
     const { data: currentData } = await supabase
       .from("contract_templates")
       .select("html_content, updated_at")
-      // .limit(1)
-      .eq("id", 1) // Используем eq вместо limit
-      .single();
+      .eq("id", 1)
+      .maybeSingle(); // Используем maybeSingle, чтобы не падать с ошибкой на пустой таблице
 
-    // 2. Обновляем с сохранением предыдущей версии
-    const { error } = await supabase
-      .from("contract_templates")
-      .update({
+    // 2. Используем UPSERT вместо UPDATE
+    const { error } = await supabase.from("contract_templates").upsert(
+      {
+        id: 1, // Обязательно указываем ID для корректной работы upsert
         html_content: htmlContent,
-        previous_html: currentData?.html_content,
-        previous_updated_at: currentData?.updated_at,
-      })
-      // .limit(1);
-      .eq("id", 1); // ИСПРАВЛЕНО: Теперь база знает, какую строку обновлять
+        previous_html: currentData?.html_content || null,
+        previous_updated_at: currentData?.updated_at || null,
+        updated_at: new Date().toISOString(), // Обновляем дату
+      },
+      { onConflict: "id" },
+    ); // Указываем, по какому полю проверять конфликт
 
     if (error) throw error;
   } catch (error) {

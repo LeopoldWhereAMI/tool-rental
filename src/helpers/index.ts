@@ -1,7 +1,7 @@
 import { DATE_LOCALE, DATE_OPTIONS } from "@/constants";
 import { calculateOrderTotal } from "@/services/orderService";
 import { ClientWithOrders, OrderDetailsUI, OrderUI } from "@/types";
-
+import { Fuel, PackageSearch, Package, Zap } from "lucide-react";
 // export const inventoryListTitles = [
 //   { id: "Артикул", text: "Артикул" },
 //   { id: "Название", text: "инструмент" },

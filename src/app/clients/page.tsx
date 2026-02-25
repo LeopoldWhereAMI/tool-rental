@@ -19,6 +19,7 @@ import ClientsTable from "./components/ClientsTable";
 import { calculateClientStats } from "@/helpers";
 import ClientsPageSkeleton from "./ClientsSkeleton";
 import { useHeaderStore } from "../store/store";
+import PageContainer from "@/components/PageContainer/PageContainer";
 
 export default function ClientsPage() {
   const { openMenuId, anchor, toggleMenu, closeMenu } = useMenuAnchor();
@@ -54,86 +55,88 @@ export default function ClientsPage() {
   }
 
   return (
-    <div className={styles.pageContainer}>
-      {/* HEADER SECTION */}
-      <header className={styles.header}>
-        <div className={styles.titleBlock}>
-          <h1 className={styles.title}>Клиенты</h1>
-          <p className={styles.subtitle}>
-            Управление базой арендаторов, историей и уровнями лояльности.
-          </p>
-        </div>
-        <div className={styles.headerActions}>
-          <button
-            className={styles.addButton}
-            onClick={() => setIsCreateModalOpen(true)}
-          >
-            <UserPlus size={18} />
-            <span>Добавить клиента</span>
-          </button>
-        </div>
-      </header>
+    <PageContainer>
+      <div className={styles.pageContainer}>
+        {/* HEADER SECTION */}
+        <header className={styles.header}>
+          <div className={styles.titleBlock}>
+            <h1 className={styles.title}>Клиенты</h1>
+            <p className={styles.subtitle}>
+              Управление базой арендаторов, историей и уровнями лояльности.
+            </p>
+          </div>
+          <div className={styles.headerActions}>
+            <button
+              className={styles.addButton}
+              onClick={() => setIsCreateModalOpen(true)}
+            >
+              <UserPlus size={18} />
+              <span>Добавить клиента</span>
+            </button>
+          </div>
+        </header>
 
-      <ClientsStats stats={stats} loading={loading && !clients.length} />
+        <ClientsStats stats={stats} loading={loading && !clients.length} />
 
-      {/* TABLE SECTION */}
-      <div className={styles.tableCard}>
-        <div className={styles.tableControls}>
-          <SearchInput value={query} setSearch={setQuery} />
+        {/* TABLE SECTION */}
+        <div className={styles.tableCard}>
+          <div className={styles.tableControls}>
+            <SearchInput value={query} setSearch={setQuery} />
 
-          <ClientsFilters
-            status={statusFilter}
-            loyalty={loyaltyFilter}
-            onStatusChange={setStatusFilter}
-            onLoyaltyChange={setLoyaltyFilter}
-            onReset={() => {
-              setStatusFilter("all");
-              setLoyaltyFilter("all");
-              setQuery("");
-            }}
-          />
-        </div>
-        {loading && !clients.length ? (
-          <ClientsPageSkeleton />
-        ) : (
-          <ClientsTable
-            clients={pagedClients}
-            loading={loading}
-            openMenuId={openMenuId}
-            anchor={anchor}
-            onToggleMenu={toggleMenu}
-            onCloseMenu={closeMenu}
-            onDelete={(id) => {
-              setDeleteClientId(id);
-              closeMenu();
-            }}
-          />
-        )}
-
-        {totalPages > 1 && (
-          <div className={styles.paginationFooter}>
-            <PaginationControls
-              currentPage={currentPage}
-              totalPages={totalPages}
-              clickHandler={setCurrentPage}
+            <ClientsFilters
+              status={statusFilter}
+              loyalty={loyaltyFilter}
+              onStatusChange={setStatusFilter}
+              onLoyaltyChange={setLoyaltyFilter}
+              onReset={() => {
+                setStatusFilter("all");
+                setLoyaltyFilter("all");
+                setQuery("");
+              }}
             />
           </div>
-        )}
+          {loading && !clients.length ? (
+            <ClientsPageSkeleton />
+          ) : (
+            <ClientsTable
+              clients={pagedClients}
+              loading={loading}
+              openMenuId={openMenuId}
+              anchor={anchor}
+              onToggleMenu={toggleMenu}
+              onCloseMenu={closeMenu}
+              onDelete={(id) => {
+                setDeleteClientId(id);
+                closeMenu();
+              }}
+            />
+          )}
+
+          {totalPages > 1 && (
+            <div className={styles.paginationFooter}>
+              <PaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+                clickHandler={setCurrentPage}
+              />
+            </div>
+          )}
+        </div>
+
+        <CreateClientModal
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+          onSave={addClient}
+        />
+
+        <DeleteConfirmModal
+          isOpen={!!deleteClientId}
+          onClose={() => setDeleteClientId(null)}
+          onConfirm={handleConfirmDelete}
+          itemName={clients.find((c) => c.id === deleteClientId)?.last_name}
+          itemType="клиент"
+        />
       </div>
-
-      <CreateClientModal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-        onSave={addClient}
-      />
-
-      <DeleteConfirmModal
-        isOpen={!!deleteClientId}
-        onClose={() => setDeleteClientId(null)}
-        onConfirm={handleConfirmDelete}
-        itemName={clients.find((c) => c.id === deleteClientId)?.last_name}
-        itemType="клиент"
-      />
-    </div>
+    </PageContainer>
   );
 }

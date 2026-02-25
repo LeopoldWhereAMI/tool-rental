@@ -183,6 +183,7 @@ import { calculateReturnStatus, getActualEndDate } from "@/helpers";
 import CancelOrderModal from "@/components/ui/MyModal/CancelOrderModal";
 import { onOrderRefunded } from "@/helpers/financeIntegration";
 import { useHeaderStore } from "../store/store";
+import PageContainer from "@/components/PageContainer/PageContainer";
 
 export default function OrdersListPage() {
   const [orders, setOrders] = useState<OrderUI[]>([]);
@@ -323,95 +324,93 @@ export default function OrdersListPage() {
   };
 
   return (
-    <div className={styles.container}>
-      {/* Заголовок */}
-      <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Заказы и бронирования</h1>
-          <span className={styles.subtitle}>
-            Управляйте новыми заявками, контролируйте сроки и статус оплаты.
-          </span>
+    <PageContainer>
+      <div className={styles.container}>
+        {/* Заголовок */}
+        <div className={styles.header}>
+          <div>
+            <h1 className={styles.title}>Заказы и бронирования</h1>
+            <span className={styles.subtitle}>
+              Управляйте новыми заявками, контролируйте сроки и статус оплаты.
+            </span>
+          </div>
+          <div>
+            <Link
+              href="/orders/add"
+              className={`${styles.btn} ${styles.primary}`}
+            >
+              <PlusCircle size={18} />
+              <span>Создать заказ</span>
+            </Link>
+          </div>
         </div>
-        <div>
-          <Link
-            href="/orders/add"
-            className={`${styles.btn} ${styles.primary}`}
-          >
-            <PlusCircle size={18} />
-            <span>Создать заказ</span>
-          </Link>
-        </div>
+
+        <OrdersKPI
+          total={total}
+          active={active}
+          overdue={overdue}
+          cancelled={cancelled}
+          loading={loading}
+        />
+
+        {/* Панель инструментов */}
+        <OrdersToolbar
+          currentFilter={statusFilter}
+          onFilterChange={setStatusFilter}
+          labels={ORDER_STATUS_LABELS}
+        />
+
+        {/* Скелетон */}
+        {loading && <OrdersSkeleton />}
+
+        {/* Пусто */}
+        {!loading && filteredOrders.length === 0 && (
+          <div className={styles.emptyWrapper}>
+            <EmptyBlock message="Заказы не найдены" isSearch={!!query} />
+          </div>
+        )}
+
+        {/* Таблица */}
+        {!loading && filteredOrders.length > 0 && (
+          <>
+            <OrdersTable
+              orders={currentItems}
+              openMenuId={openMenuId}
+              anchor={anchor}
+              onToggleMenu={toggleMenu}
+              onClose={closeMenu}
+              onStatusUpdate={handleStatusUpdate}
+              onDeleteClick={(id) => {
+                setDeleteOrderId(id);
+                closeMenu();
+              }}
+            />
+
+            <PaginationControls
+              totalPages={totalPages}
+              clickHandler={setCurrentPage}
+              currentPage={currentPage}
+            />
+          </>
+        )}
+
+        <CancelOrderModal
+          isOpen={!!cancelModal}
+          onClose={() => setCancelModal(null)}
+          onConfirm={handleCancelConfirm}
+          orderNumber={cancelModal?.orderNumber}
+          loading={isCancelling}
+        />
+
+        <DeleteConfirmModal
+          isOpen={!!deleteOrderId}
+          onClose={() => setDeleteOrderId(null)}
+          onConfirm={handleConfirmDelete}
+          itemName={orderToDelete ? `Заказ №${orderToDelete.order_number}` : ""}
+          itemType="заказ"
+          loading={isDeleting}
+        />
       </div>
-
-      {/* KPI */}
-      {/* {!loading && (
-       
-      )} */}
-      <OrdersKPI
-        total={total}
-        active={active}
-        overdue={overdue}
-        cancelled={cancelled}
-        loading={loading}
-      />
-
-      {/* Панель инструментов */}
-      <OrdersToolbar
-        currentFilter={statusFilter}
-        onFilterChange={setStatusFilter}
-        labels={ORDER_STATUS_LABELS}
-      />
-
-      {/* Скелетон */}
-      {loading && <OrdersSkeleton />}
-
-      {/* Пусто */}
-      {!loading && filteredOrders.length === 0 && (
-        <div className={styles.emptyWrapper}>
-          <EmptyBlock message="Заказы не найдены" isSearch={!!query} />
-        </div>
-      )}
-
-      {/* Таблица */}
-      {!loading && filteredOrders.length > 0 && (
-        <>
-          <OrdersTable
-            orders={currentItems}
-            openMenuId={openMenuId}
-            anchor={anchor}
-            onToggleMenu={toggleMenu}
-            onClose={closeMenu}
-            onStatusUpdate={handleStatusUpdate}
-            onDeleteClick={(id) => {
-              setDeleteOrderId(id);
-              closeMenu();
-            }}
-          />
-
-          <PaginationControls
-            totalPages={totalPages}
-            clickHandler={setCurrentPage}
-            currentPage={currentPage}
-          />
-        </>
-      )}
-
-      <CancelOrderModal
-        isOpen={!!cancelModal}
-        onClose={() => setCancelModal(null)}
-        onConfirm={handleCancelConfirm}
-        orderNumber={cancelModal?.orderNumber}
-        loading={isCancelling}
-      />
-
-      <DeleteConfirmModal
-        isOpen={!!deleteOrderId}
-        onClose={() => setDeleteOrderId(null)}
-        onConfirm={handleConfirmDelete}
-        itemName={orderToDelete ? `Заказ №${orderToDelete.order_number}` : ""}
-        itemType="заказ"
-        loading={isDeleting}
-      />
-    </div>
+    </PageContainer>
   );
 }

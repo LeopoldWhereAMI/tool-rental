@@ -1,13 +1,11 @@
-.container {
+/* .container {
   background-color: #0a0a0c;
   min-height: 100vh;
   color: #ffffff;
-  /* font-family: "Space Grotesk", sans-serif;  */
-
   padding: 0 20px 40px 20px;
   position: relative;
   overflow: hidden;
-}
+} */
 
 .header {
   border-bottom: 1px solid var(--border-dark);

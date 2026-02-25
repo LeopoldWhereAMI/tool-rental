@@ -8,7 +8,6 @@ import { UseFormReturn, useWatch } from "react-hook-form";
 export default function useInventoryForm(
   methods: UseFormReturn<InventoryFormValues>,
   existingItems: InventoryItemBase[],
-  isEditMode: boolean,
   defaultId?: string,
 ) {
   const { setValue, setError, clearErrors, control } = methods;
@@ -17,9 +16,6 @@ export default function useInventoryForm(
 
   // Автогенерация артикула
   useEffect(() => {
-    // if (isEditMode || !existingItems.length) return;
-    if (isEditMode) return;
-
     if (selectedCategory) {
       const prefix = selectedCategory === "electric_tools" ? "Et-" : "Gt-";
 
@@ -37,7 +33,7 @@ export default function useInventoryForm(
 
       setValue("article", `${prefix}${nextNumber}`, { shouldValidate: true });
     }
-  }, [selectedCategory, existingItems, setValue, isEditMode]);
+  }, [selectedCategory, existingItems, setValue]);
 
   // Валидация уникальности
   useEffect(() => {
