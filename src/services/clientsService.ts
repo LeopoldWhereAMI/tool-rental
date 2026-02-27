@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/supabase";
 import { Client, ClientWithOrders, CreateClientInput } from "@/types";
 
 // Добавление клиента

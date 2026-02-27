@@ -16,8 +16,8 @@ const navItems = [
   { href: "/orders", label: "Заказы", icon: ClipboardList },
   { href: "/inventory", label: "Инвентарь", icon: Wrench },
   { href: "/clients", label: "Клиенты", icon: Users },
-  { href: "/analytics", label: "Анализ", icon: BarChart3 },
-  { href: "/dogovor", label: "Договор", icon: FileText },
+  { href: "/finances", label: "Финансы", icon: BarChart3 },
+  { href: "/contract-sample", label: "Договор", icon: FileText },
 ];
 
 export default function MobileNav() {
@@ -64,7 +64,7 @@ export default function MobileNav() {
                 className={`${styles.link} ${isActive ? styles.active : ""}`}
               >
                 <div className={styles.activePill}>
-                  <Icon size={20} strokeWidth={isActive ? 2 : 1.5} />
+                  <Icon size={18} strokeWidth={isActive ? 2 : 1.5} />
                   <span className={styles.label}>{item.label}</span>
                 </div>
               </Link>

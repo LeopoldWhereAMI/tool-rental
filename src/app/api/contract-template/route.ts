@@ -5,10 +5,6 @@ import {
   restoreContractTemplate,
 } from "@/services/contractService";
 
-/**
- * GET /api/contract-template
- * Получить текущий HTML шаблон договора
- */
 export async function GET() {
   try {
     const template = await getContractTemplate();
@@ -28,12 +24,6 @@ export async function GET() {
   }
 }
 
-/**
- * POST /api/contract-template
- * Сохранить новый HTML шаблон договора
- *
- * Body: { "html_content": "..." }
- */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -49,7 +39,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Откат к предыдущей версии
     if (action === "restore") {
       await restoreContractTemplate();
       return NextResponse.json({
@@ -58,7 +47,6 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Сохранение нового шаблона
     await saveContractTemplate(html_content);
 
     return NextResponse.json({

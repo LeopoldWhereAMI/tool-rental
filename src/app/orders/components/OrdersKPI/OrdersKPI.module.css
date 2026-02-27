@@ -53,14 +53,24 @@
   color: #ef4444;
 }
 
-/* .cancelled {
-  border-color: rgba(220, 38, 38, 0.2);
-} */
-
 .cancelled .iconWrapper {
   color: #fca5a5;
 }
 
 .cancelled .value {
   color: #fca5a5;
+}
+
+@media (max-width: 561px) {
+  .kpiGrid {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .value {
+    font-size: 22px;
+  }
 }

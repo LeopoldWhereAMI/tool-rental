@@ -37,6 +37,11 @@ export type InventoryUI = Omit<Inventory, "purchase_date"> & {
   purchase_date: string | null;
 };
 
+export type ClientPreview = Pick<
+  Client,
+  "id" | "last_name" | "first_name" | "middle_name" | "phone"
+>;
+
 // Краткая информация о заказе для списков и таблиц
 export interface OrderUI {
   id: string;
@@ -49,7 +54,8 @@ export interface OrderUI {
   inventory_id?: string;
   client_id?: string;
   security_deposit?: number | null;
-  client: Client;
+  // client: Client;
+  client: ClientPreview;
   tools?: Array<{
     id: string;
     name: string;
@@ -69,10 +75,11 @@ export interface OrderUI {
 }
 
 // Расширенная информация для страницы "Детали заказа"
-export interface OrderDetailsUI extends OrderUI {
+export interface OrderDetailsUI extends Omit<OrderUI, "client"> {
   created_at: string;
   order_items: OrderItemDetailed[];
-  tools: OrderTool[]; // 🔥 переопределяем более полным типом
+  tools: OrderTool[];
+  client: Client; // ← вот тут возвращаем полный тип
 }
 
 // Вспомогательный тип: Инструмент внутри заказа со всеми данными + условиями аренды
@@ -113,16 +120,6 @@ interface OrderItemDetailed {
   start_date: string;
   end_date: string;
   price_at_time: number;
-  // inventory: {
-  //   id: string;
-  //   name: string;
-  //   serial_number?: string;
-  //   article?: string;
-  //   daily_price?: number;
-  //   category?: string;
-  //   status?: string;
-  //   purchase_price?: number;
-  // };
   inventory: Inventory;
 }
 
@@ -197,3 +194,32 @@ export type ContractOrderData = {
   issue_date?: string;
   registration_address?: string;
 };
+
+// user
+
+export interface AuthUser {
+  id: string;
+  email: string | undefined;
+  user_metadata: Record<string, unknown>;
+  aud: string;
+  created_at: string;
+  updated_at?: string;
+  last_sign_in_at?: string;
+  is_super_admin?: boolean;
+  role?: string;
+  factors?: unknown[];
+  identities?: unknown[];
+  phone?: string;
+  confirmed_at?: string;
+  email_confirmed_at?: string;
+}
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  createdAt: string;
+  role: "admin" | "user";
+  status: "active" | "inactive";
+}
+
+export type ViewMode = "table" | "cards";

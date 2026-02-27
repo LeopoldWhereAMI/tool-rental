@@ -1002,32 +1002,145 @@
 }
 
 /* --- Адаптивность --- */
+/* --- Адаптивность --- */
+
+/* 1. Планшеты и небольшие ноутбуки */
 @media (max-width: 1200px) {
+  .pageContainer {
+    padding: 24px 40px; /* Уменьшаем гигантские боковые отступы */
+  }
+
   .mainGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Сайдбар падает вниз */
+    gap: 24px;
   }
 
   .sidebar {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .sidebarCard {
+    margin-bottom: 0; /* Убираем лишние отступы в сетке */
   }
 }
 
+/* 2. Мобильные устройства (стандартные) */
 @media (max-width: 768px) {
   .pageContainer {
+    padding: 16px; /* Минимум отступов для контента */
+  }
+
+  .topNav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .navActions {
+    width: 100%;
+  }
+
+  .printBtn {
+    width: 100%; /* Кнопка печати на всю ширину */
+    justify-content: center;
+  }
+
+  /* Перестраиваем Hero-секцию (один инструмент) */
+  .heroSection {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .heroImageContainer {
+    width: 100%;
+    height: 250px;
+    min-height: 250px;
+    border-right: none;
+    border-bottom: 1px solid var(--card-border);
     padding: 20px;
   }
 
-  .heroSection {
-    flex-direction: column;
-  }
-
-  .heroImageWrapper {
+  .heroDetails {
     width: 100%;
-    height: 240px;
+    padding: 20px;
   }
 
+  .heroDetails h1 {
+    font-size: 24px; /* Уменьшаем заголовок */
+  }
+
+  /* Сайдбар снова в одну колонку */
   .sidebar {
     grid-template-columns: 1fr;
+  }
+}
+
+/* 3. Маленькие мобильные (380px и ниже) */
+@media (max-width: 480px) {
+  .heroSecondaryInfo {
+    flex-wrap: wrap; /* Чтобы артикул и серийник не вылезали */
+    gap: 8px;
+  }
+
+  .infoSeparator {
+    display: none; /* Убираем точку, используем перенос */
+  }
+
+  .heroPriceTag {
+    font-size: 20px;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .heroMeta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  /* Карточки в списке инструментов (когда их много) */
+  .toolCard {
+    flex-direction: column; /* Картинка сверху, текст снизу */
+    align-items: center;
+    text-align: center;
+  }
+
+  .toolThumbWrapper {
+    width: 100%;
+    height: 180px;
+  }
+
+  .toolTitleRow,
+  .toolMetaRow {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .toolPriceLabel {
+    order: -1; /* Цена сверху названия для акцента */
+  }
+
+  .sidebarCard {
+    padding: 16px;
+  }
+
+  .dateInfo {
+    gap: 12px;
+  }
+
+  .deadlineDate {
+    font-size: 18px; /* Уменьшаем дату, чтобы не рвала баннер */
+  }
+
+  .whiteBox {
+    padding: 16px;
+  }
+
+  /* Блок финансов */
+  .price {
+    font-size: 24px;
   }
 }

@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/supabase";
 import { toast } from "sonner";
 import ImageUploader from "@/components/ui/ImageUploader/ImageUploader";
 

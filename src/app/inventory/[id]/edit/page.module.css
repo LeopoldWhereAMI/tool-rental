@@ -106,3 +106,28 @@
     position: static;
   }
 }
+
+@media (max-width: 795px) {
+  .headerWrapper {
+    gap: 12px;
+  }
+
+  .subtitle {
+    display: none;
+  }
+
+  .submitBtn,
+  .cancelBtn {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 530px) {
+  .contentBody {
+    gap: 0;
+  }
+
+  .headerWrapper {
+    flex-direction: column;
+  }
+}

@@ -70,3 +70,9 @@
   background: rgba(244, 63, 94, 0.2);
   border-color: #f43f5e;
 }
+
+@media (max-width: 590px) {
+  .filterLabel {
+    display: none;
+  }
+}

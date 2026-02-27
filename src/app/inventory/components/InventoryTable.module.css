@@ -1,6 +1,16 @@
 /* ===========================
    ОБЩИЕ СТИЛИ ТАБЛИЦЫ
    =========================== */
+.tableContainer {
+  display: block;
+}
+
+.cardsContainer {
+  display: grid; /* для контейнера карточек */
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
 
 .tableWrapper {
   background-color: #161e2e;
@@ -227,11 +237,348 @@
   background-color: #232c48;
 }
 
-@media (max-width: 980px) {
-  .tableWrapper {
-    overflow-x: auto;
+/* ===================================
+   КАРТОЧКА ИНВЕНТАРЯ - ВАРИАНТ 1 (РЕКОМЕНДУЕМЫЙ)
+   Компактное изображение в шапке справа
+   =================================== */
+
+.card {
+  background: #1a2236;
+  border: 1px solid #2d3748;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.card:active {
+  border-color: #3b82f6;
+}
+
+/* Card Header - Image + Article + Actions */
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #2d3748;
+}
+
+/* Image Thumbnail - Left */
+.cardImageThumbnail {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0f1624;
+  border: 1px solid #2d3748;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardImageThumb {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transition: transform 0.3s ease;
+}
+
+.cardImageThumbPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a2236 0%, #0f1624 100%);
+}
+
+/* Article Block - Center */
+.cardArticleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.cardArticleLabel {
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cardProductId {
+  color: #e5e7eb;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-space-grotesk);
+  margin: 0;
+  word-break: break-all;
+}
+
+/* Card Actions */
+.cardActions {
+  display: flex;
+  gap: 8px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.cardViewBtn,
+.cardMenuBtn {
+  background: transparent;
+  border: 1px solid #2d3748;
+  color: #92a0c9;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cardViewBtn:active,
+.cardMenuBtn:active {
+  color: #ffffff;
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Product Name - Below Header */
+.cardProductName {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Card Sections */
+.cardSection {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 0;
+}
+
+.cardSectionLabel {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Badges */
+.cardBadges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cardCategoryBadge {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.cardStatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* Status Colors */
+.statusAvailable {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.statusAvailable .statusDot {
+  background: #10b981;
+}
+
+.statusRented {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.statusRented .statusDot {
+  background: #3b82f6;
+}
+
+.statusMaintenance {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.statusMaintenance .statusDot {
+  background: #f59e0b;
+}
+
+/* Price */
+.cardPrice {
+  color: #3b82f6;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-space-grotesk);
+}
+
+.cardPricePeriod {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* Availability */
+.cardAvailability {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cardAvailabilityRatio {
+  color: #e5e7eb;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-space-grotesk);
+  min-width: 28px;
+}
+
+.cardProgressBar {
+  width: 80px;
+  height: 4px;
+  background: #2d3748;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.cardProgressBarFill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+/* Hover Effects */
+@media (hover: hover) {
+  .card:hover {
+    background: #1e2943;
+    border-color: #3b82f6;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(43, 91, 238, 0.15);
   }
-  .table {
-    min-width: 850px;
+
+  .card:hover .cardImageThumbnail {
+    border-color: #3b82f6;
+  }
+
+  .card:hover .cardImageThumb {
+    transform: scale(1.12);
+  }
+
+  .card:hover .cardProductName {
+    color: #60a5fa;
+  }
+
+  .card:hover .cardProductId {
+    color: #60a5fa;
+  }
+
+  .card:hover .cardPrice {
+    color: #60a5fa;
+  }
+
+  .card:hover .cardStatusBadge,
+  .card:hover .cardCategoryBadge {
+    filter: brightness(1.2);
+  }
+
+  .card:hover .cardProgressBar {
+    background: #3b4955;
+  }
+
+  .card:hover .cardProgressBarFill {
+    filter: saturate(1.3) brightness(1.2);
+  }
+
+  .cardViewBtn:hover,
+  .cardMenuBtn:hover {
+    color: #ffffff;
+    border-color: #475569;
+    transform: scale(1.05);
+  }
+}
+
+/* Responsive */
+@media (max-width: 1300px) {
+}
+
+@media (max-width: 780px) {
+  .cardsContainer {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .cardImageThumbnail {
+    width: 48px;
+    height: 48px;
+  }
+
+  .cardProductName {
+    font-size: 12px;
+  }
+
+  .cardProductId {
+    font-size: 11px;
+  }
+
+  .cardPrice {
+    font-size: 12px;
+  }
+
+  .cardAvailabilityRatio {
+    font-size: 11px;
+  }
+
+  .cardProgressBar {
+    width: 60px;
   }
 }

@@ -84,7 +84,7 @@ export default function EditInventoryPage() {
               form="edit-tool-form" /* Связка с ID формы */
               className={styles.submitBtn}
             >
-              Сохранить изменения
+              Сохранить
             </button>
           </div>
         </div>

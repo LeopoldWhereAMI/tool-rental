@@ -21,3 +21,47 @@
     background-position: 200% 0;
   }
 }
+
+/*main скелетон */
+.skeletonWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.skeletonFilterBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.skeletonSearch {
+  flex: 1;
+  max-width: 400px;
+}
+
+.skeletonActions {
+  display: flex;
+  gap: 12px;
+}
+
+.skeletonContentArea {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skeletonGhostRow {
+  width: 100%;
+  opacity: 0.6; /* Делаем чуть бледнее, чтобы не перетягивало внимание */
+}
+
+/* На мобилках скрываем часть экшенов в скелетоне, чтобы не ломать верстку */
+@media (max-width: 768px) {
+  .skeletonActions {
+    display: none;
+  }
+}

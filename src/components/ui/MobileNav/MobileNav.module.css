@@ -10,13 +10,14 @@
     left: 0;
     right: 0;
     margin-inline: auto;
-    width: 94%;
+    /* width: 94%; */
     max-width: 400px;
     height: 68px;
-    background: #ffffff;
-    border-radius: 30px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-    border: 1px solid #f1f5f9;
+    background: rgba(13, 17, 28, 0.95);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     z-index: 1000;
     margin-bottom: env(safe-area-inset-bottom);
     transform: translateZ(0);
@@ -45,7 +46,7 @@
     justify-content: center;
     gap: 4px;
     text-decoration: none;
-    /* color: #94a3b8; */
+    color: #64748b;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
@@ -55,29 +56,27 @@
     align-items: center;
     justify-content: center;
     gap: 2px;
-
-    padding: 6px 15px;
-    min-width: 58px;
-
+    padding: 6px 10px;
+    /* min-width: 58px; */
     border-radius: 20px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .active {
-    color: #0ea5e9;
+    color: #3b82f6;
     transform: translateY(-2px);
   }
 
   .active .activePill {
-    background-color: #f0f9ff;
-    border: 1px solid #e0f2fe;
-    transform: scale(1.02);
+    background-color: #161e2d;
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
   }
 
   .label {
-    font-size: 10px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 500;
     white-space: nowrap;
+    letter-spacing: 0.02em;
   }
 
   .link:active {
@@ -87,6 +86,7 @@
 
 @media (max-width: 380px) {
   .label {
-    display: none;
+    /* display: none; */
+    font-size: 9px;
   }
 }

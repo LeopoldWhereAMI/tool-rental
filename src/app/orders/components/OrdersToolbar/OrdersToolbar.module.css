@@ -8,3 +8,26 @@
   background-color: #161e2e;
   border-bottom: 1px solid var(--border-dark);
 }
+
+.left {
+  max-width: 448px;
+  width: 100%;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+@media (max-width: 1150px) {
+  .toolbar {
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 780px) {
+  .toolbar {
+    padding: 8px;
+  }
+}

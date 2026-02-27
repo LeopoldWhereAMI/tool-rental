@@ -1,12 +1,9 @@
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/supabase";
 import {
   Client,
-  // CreateOrderDTO,
-  // DetailedOrderResponse,
   Inventory,
   OrderDetailsUI,
   OrderTool,
-  // OrderTool,
   OrderUI,
   RentalHistoryItem,
 } from "@/types";
@@ -193,6 +190,7 @@ interface SupabaseAllOrdersRow {
   order_number: string;
   status: string;
   client: {
+    id: string;
     last_name: string;
     first_name: string;
     middle_name?: string;
@@ -223,7 +221,7 @@ export const loadAllOrders = async (): Promise<OrderUI[]> => {
       end_date,
       order_number,
       status,
-      client:clients(last_name, first_name, middle_name, phone),
+      client:clients(id, last_name, first_name, middle_name, phone),
       order_items(
        
         price_at_time, 
@@ -240,24 +238,20 @@ export const loadAllOrders = async (): Promise<OrderUI[]> => {
     throw error;
   }
 
-  // Приведение типа к нашему интерфейсу массива
   const rawData = data as unknown as SupabaseAllOrdersRow[];
 
   return rawData.map((order) => {
-    // Безопасно формируем список инструментов
     const tools = (order.order_items || [])
-      .filter((item) => item.inventory) // Убираем пустые записи
+      .filter((item) => item.inventory)
       .map((item) => ({
         id: item.inventory!.id,
         name: item.inventory!.name,
-        // serial_number: item.inventory!.serial_number,
         image_url: item.inventory!.image_url,
         price_at_time: item.price_at_time,
         start_date: item.start_date,
         end_date: item.end_date,
       }));
 
-    // Логика формирования названия для списка
     let mainInventoryName = "Не указан";
     if (tools.length === 1) {
       mainInventoryName = tools[0].name;
@@ -272,8 +266,9 @@ export const loadAllOrders = async (): Promise<OrderUI[]> => {
       total_price: order.total_price,
       start_date: order.start_date,
       end_date: order.end_date,
-      // Гарантируем обязательные поля клиента (включая middle_name)
+
       client: order.client || {
+        id: "",
         last_name: "Не указан",
         first_name: "",
         middle_name: undefined,
@@ -283,8 +278,6 @@ export const loadAllOrders = async (): Promise<OrderUI[]> => {
     };
   });
 };
-
-// История аренды
 
 // Внутренний тип для ответа Supabase, использующий вашу структуру Client
 interface OrderItemResponse {

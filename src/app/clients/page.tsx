@@ -12,21 +12,24 @@ import CreateClientModal from "@/components/ui/MyModal/CreateClientModal/CreateC
 import { useMenuAnchor } from "@/components/Portal/useMenuAnchor";
 import SearchInput from "@/components/SearchInput/SearchInput";
 import ClientsFilters from "@/components/ClientsFilters/ClientsFilters";
-
 import { useFilteredClients } from "@/hooks/useFilteredClients";
 import { ClientsStats } from "./components/ClientsStats";
 import ClientsTable from "./components/ClientsTable";
 import { calculateClientStats } from "@/helpers";
-import ClientsPageSkeleton from "./ClientsSkeleton";
-import { useHeaderStore } from "../store/store";
-import PageContainer from "@/components/PageContainer/PageContainer";
+
+import { useSearchStore } from "../store/store";
+import ViewToggle from "@/components/ui/ViewToggle/ViewToggle";
+import { useAdaptiveView } from "@/hooks/useAdaptiveView";
+import MainSceleton from "@/components/ui/Skeleton/MainSceleton";
 
 export default function ClientsPage() {
   const { openMenuId, anchor, toggleMenu, closeMenu } = useMenuAnchor();
   const [deleteClientId, setDeleteClientId] = useState<string | null>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const { clients, loading, error, addClient, removeClient } = useClients();
-  const { query, setQuery } = useHeaderStore();
+  const { query, setQuery } = useSearchStore();
+
+  const { viewMode, setViewMode, isMobile } = useAdaptiveView("clients");
   const {
     filtered,
     statusFilter,
@@ -55,34 +58,37 @@ export default function ClientsPage() {
   }
 
   return (
-    <PageContainer>
-      <div className={styles.pageContainer}>
-        {/* HEADER SECTION */}
-        <header className={styles.header}>
-          <div className={styles.titleBlock}>
-            <h1 className={styles.title}>Клиенты</h1>
-            <p className={styles.subtitle}>
-              Управление базой арендаторов, историей и уровнями лояльности.
-            </p>
-          </div>
-          <div className={styles.headerActions}>
-            <button
-              className={styles.addButton}
-              onClick={() => setIsCreateModalOpen(true)}
-            >
-              <UserPlus size={18} />
-              <span>Добавить клиента</span>
-            </button>
-          </div>
-        </header>
+    <div className={styles.pageContainer}>
+      {/* HEADER SECTION */}
+      <header className={styles.header}>
+        <div className={styles.titleBlock}>
+          <h1 className={styles.title}>Клиенты</h1>
+          <p className={styles.subtitle}>
+            Управление базой арендаторов, историей и уровнями лояльности.
+          </p>
+        </div>
+        <div className={styles.headerActions}>
+          <button
+            className={styles.addButton}
+            onClick={() => setIsCreateModalOpen(true)}
+          >
+            <UserPlus size={18} />
+            <span className={styles.btnText}>
+              Добавить <span className={styles.btnTextHidden}>клиента</span>
+            </span>
+          </button>
+        </div>
+      </header>
 
-        <ClientsStats stats={stats} loading={loading && !clients.length} />
+      <ClientsStats stats={stats} loading={loading && !clients.length} />
 
-        {/* TABLE SECTION */}
-        <div className={styles.tableCard}>
-          <div className={styles.tableControls}>
+      {/* TABLE SECTION */}
+      <div className={styles.tableCard}>
+        <div className={styles.tableControls}>
+          <div className={styles.left}>
             <SearchInput value={query} setSearch={setQuery} />
-
+          </div>
+          <div className={styles.right}>
             <ClientsFilters
               status={statusFilter}
               loyalty={loyaltyFilter}
@@ -94,49 +100,53 @@ export default function ClientsPage() {
                 setQuery("");
               }}
             />
+            {!isMobile && (
+              <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
+            )}
           </div>
-          {loading && !clients.length ? (
-            <ClientsPageSkeleton />
-          ) : (
-            <ClientsTable
-              clients={pagedClients}
-              loading={loading}
-              openMenuId={openMenuId}
-              anchor={anchor}
-              onToggleMenu={toggleMenu}
-              onCloseMenu={closeMenu}
-              onDelete={(id) => {
-                setDeleteClientId(id);
-                closeMenu();
-              }}
-            />
-          )}
-
-          {totalPages > 1 && (
-            <div className={styles.paginationFooter}>
-              <PaginationControls
-                currentPage={currentPage}
-                totalPages={totalPages}
-                clickHandler={setCurrentPage}
-              />
-            </div>
-          )}
         </div>
+        {loading && !clients.length ? (
+          <MainSceleton />
+        ) : (
+          <ClientsTable
+            clients={pagedClients}
+            loading={loading}
+            openMenuId={openMenuId}
+            anchor={anchor}
+            onToggleMenu={toggleMenu}
+            onCloseMenu={closeMenu}
+            onDelete={(id) => {
+              setDeleteClientId(id);
+              closeMenu();
+            }}
+            viewMode={viewMode}
+          />
+        )}
 
-        <CreateClientModal
-          isOpen={isCreateModalOpen}
-          onClose={() => setIsCreateModalOpen(false)}
-          onSave={addClient}
-        />
-
-        <DeleteConfirmModal
-          isOpen={!!deleteClientId}
-          onClose={() => setDeleteClientId(null)}
-          onConfirm={handleConfirmDelete}
-          itemName={clients.find((c) => c.id === deleteClientId)?.last_name}
-          itemType="клиент"
-        />
+        {totalPages > 1 && (
+          <div className={styles.paginationFooter}>
+            <PaginationControls
+              currentPage={currentPage}
+              totalPages={totalPages}
+              clickHandler={setCurrentPage}
+            />
+          </div>
+        )}
       </div>
-    </PageContainer>
+
+      <CreateClientModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSave={addClient}
+      />
+
+      <DeleteConfirmModal
+        isOpen={!!deleteClientId}
+        onClose={() => setDeleteClientId(null)}
+        onConfirm={handleConfirmDelete}
+        itemName={clients.find((c) => c.id === deleteClientId)?.last_name}
+        itemType="клиент"
+      />
+    </div>
   );
 }

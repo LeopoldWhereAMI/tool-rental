@@ -2,8 +2,20 @@
    ОБЩИЕ СТИЛИ ТАБЛИЦЫ
    =========================== */
 
+.tableContainer {
+  display: block;
+}
+
+.cardsContainer {
+  display: grid; /* для контейнера карточек */
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
 .wrapper {
   overflow-x: auto;
+  border: 1px solid #1f2937;
 }
 
 .table {
@@ -220,21 +232,6 @@
   display: block;
 }
 
-/* .dotsBtn {
-  background: transparent;
-  border: none;
-  color: #6b7280;
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 6px;
-  transition: all 0.2s;
-}
-
-.dotsBtn:hover {
-  color: #fff;
-  background-color: #1f2937;
-} */
-
 /* ===========================
    СТАТУСЫ СРОКОВ АРЕНДЫ
    =========================== */
@@ -312,4 +309,312 @@
 
 .rowOverdue {
   background: rgba(239, 68, 68, 0.05);
+}
+
+/* ===== КАРТОЧКИ ДЛЯ МОБИЛЬНЫХ ===== */
+
+/* ===========================
+   КАРТОЧКА ДЛЯ МОБИЛЬНЫХ
+   =========================== */
+
+.card {
+  background: #1a2236;
+  border: 1px solid #2d3748;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.card:active {
+  border-color: #3b82f6;
+}
+
+/* Card Header */
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #2d3748;
+}
+
+.cardOrderInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.cardOrderNumber {
+  color: #3b82f6;
+  font-weight: 600;
+  font-size: 13px;
+  font-family: var(--font-space-grotesk);
+  line-height: 1.3;
+}
+
+.cardClientName {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.cardClientPhone {
+  color: #3b82f6;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  font-family: var(--font-space-grotesk);
+  transition: color 0.2s;
+}
+
+.cardClientPhone:active {
+  color: #60a5fa;
+}
+
+/* Card Actions */
+.cardActions {
+  display: flex;
+  gap: 8px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.cardViewBtn,
+.cardMenuBtn {
+  background: transparent;
+  border: 1px solid #2d3748;
+  color: #92a0c9;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cardViewBtn:active,
+.cardMenuBtn:active {
+  color: #ffffff;
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Card Sections */
+.cardSection {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 0;
+}
+
+.cardSectionLabel {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cardTools {
+  color: #e5e7eb;
+  font-size: 13px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+/* Card Info Rows */
+.cardInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cardInfoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.cardLabel {
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.cardValue {
+  color: #e5e7eb;
+  text-align: right;
+  word-break: break-word;
+}
+
+.cardPrice {
+  color: #3b82f6;
+  font-weight: 600;
+  font-family: var(--font-space-grotesk);
+}
+
+/* Card Footer */
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #2d3748;
+}
+
+/* Status Badges */
+.cardStatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* Status Colors */
+.badgeToday {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.badgeToday .statusDot {
+  background: #10b981;
+}
+
+.badgePending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.badgePending .statusDot {
+  background: #f59e0b;
+}
+
+.badgeOverdue {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.badgeOverdue .statusDot {
+  background: #ef4444;
+}
+
+.badgeCompleted {
+  background: rgba(107, 114, 128, 0.15);
+  color: #9ca3af;
+}
+
+.badgeCompleted .statusDot {
+  background: #9ca3af;
+}
+
+.badgeCancelled {
+  background: rgba(220, 38, 38, 0.08);
+  color: #fca5a5;
+  border: 1px solid rgba(220, 38, 38, 0.15);
+}
+
+.badgeCancelled .statusDot {
+  background: #fca5a5;
+}
+
+/* Hover Effects */
+@media (hover: hover) {
+  .card:hover {
+    background: #1e2943;
+    border-color: #3b82f6;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(43, 91, 238, 0.15);
+  }
+
+  .card:hover .cardOrderNumber {
+    color: #60a5fa;
+  }
+
+  .card:hover .cardClientPhone {
+    color: #60a5fa;
+  }
+
+  .cardClientPhone:hover {
+    text-decoration: underline !important;
+  }
+
+  .card:hover .cardPrice {
+    color: #60a5fa;
+  }
+
+  .card:hover .cardStatusBadge {
+    filter: brightness(1.15);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .cardViewBtn:hover,
+  .cardMenuBtn:hover {
+    color: #ffffff;
+    border-color: #475569;
+    transform: scale(1.05);
+  }
+}
+
+@media (max-width: 780px) {
+  .cardsContainer {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .card {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .cardOrderNumber {
+    font-size: 12px;
+  }
+
+  .cardClientName {
+    font-size: 12px;
+  }
+
+  .cardClientPhone {
+    font-size: 11px;
+  }
+
+  .cardTools {
+    font-size: 12px;
+  }
+
+  .cardInfoRow {
+    font-size: 12px;
+  }
+
+  .cardStatusBadge {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
 }

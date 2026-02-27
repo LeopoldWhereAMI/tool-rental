@@ -42,7 +42,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 561px) {
   .filters {
     width: 100%;
     overflow-x: auto;

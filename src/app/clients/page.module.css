@@ -1,16 +1,27 @@
-/* Переменные из макета */
-/* :root {
-  --primary: #2b5bee;
-  --bg-dark: #0a0a0c;
-  --surface-dark: #161b2c;
-  --border-dark: #232c48;
-  --text-muted: #92a0c9;
-} */
+.tableContainer {
+  display: block;
+}
+
+.cardsContainer {
+  display: grid; /* для контейнера карточек */
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.left {
+  max-width: 448px;
+  width: 100%;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
 
 .pageContainer {
-  /* background-color: var(--bg-dark); */
   min-height: 100vh;
-  color: #f1f5f9;
   font-family: "Space Grotesk", sans-serif;
 }
 
@@ -405,17 +416,454 @@
   color: #f1f5f9;
 }
 
+/* ===================================
+   КАРТОЧКА ДЛЯ МОБИЛЬНЫХ
+   =================================== */
+
+.card {
+  background: #1a2236;
+  border: 1px solid #2d3748;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.card:active {
+  border-color: #3b82f6;
+}
+
+.cardBlacklisted {
+  background: rgba(239, 68, 68, 0.05);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+/* Card Header */
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #2d3748;
+}
+
+.cardAvatarBlock {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.cardAvatarWrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0f1624;
+  border: 1px solid #2d3748;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.cardAvatarBlocked {
+  opacity: 0.5;
+}
+
+.cardAvatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardNameBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.cardNameHeaderWrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cardBlacklistAlert {
+  color: #ef4444;
+  flex-shrink: 0;
+}
+
+.cardItemName {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  line-height: 1.3;
+  word-break: break-word;
+  transition: color 0.2s;
+}
+
+.cardItemName:active {
+  color: #3b82f6;
+}
+
+.cardBlockedName {
+  color: #64748b;
+  text-decoration: line-through;
+}
+
+.cardSubText {
+  color: #64748b;
+  font-size: 11px;
+  margin: 0;
+}
+
+/* Card Actions */
+.cardActions {
+  display: flex;
+  gap: 8px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.cardViewBtn,
+.cardMenuBtn {
+  background: transparent;
+  border: 1px solid #2d3748;
+  color: #92a0c9;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cardViewBtn:active,
+.cardMenuBtn:active {
+  color: #ffffff;
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Card Sections */
+.cardSection {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 0;
+}
+
+.cardSectionLabel {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cardContactPhone {
+  color: #3b82f6;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  font-family: var(--font-space-grotesk);
+  transition: color 0.2s;
+}
+
+.cardContactPhone:active {
+  color: #60a5fa;
+}
+
+/* Orders Info */
+.cardOrdersInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cardTotalOrders {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.cardActiveOrders {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.cardHasActive {
+  color: #10b981;
+}
+
+.cardNoActive {
+  color: #64748b;
+}
+
+/* Card Footer */
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #2d3748;
+}
+
+.cardStatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cardStatusActive {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.cardStatusIdle {
+  background: rgba(148, 163, 184, 0.1);
+  color: #94a3b8;
+}
+
+.cardStatusBlacklistedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  white-space: nowrap;
+}
+
+.cardLoyaltyBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Loyalty Badge Colors */
+.cardLoyaltyBadge.bronze {
+  background: rgba(180, 83, 9, 0.15);
+  color: #b45309;
+}
+
+.cardLoyaltyBadge.silver {
+  background: rgba(100, 116, 139, 0.15);
+  color: #94a3b8;
+}
+
+.cardLoyaltyBadge.gold {
+  background: rgba(217, 119, 6, 0.15);
+  color: #d97706;
+}
+
+.cardLoyaltyBadge.platinum {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
 @media (hover: hover) {
   .contactPhone:hover {
     color: #3b82f6;
     text-decoration: underline;
     cursor: pointer;
   }
+
+  .card:hover {
+    background: #1e2943; /* Чуть светлее текущего #1a2236 */
+    border-color: #3b82f6;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(43, 91, 238, 0.15);
+  }
+
+  /* Эффект для аватара при ховере на всю карточку */
+  .card:hover .cardAvatarWrapper {
+    border-color: #3b82f6;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+  }
+
+  .card:hover .cardItemName {
+    color: #60a5fa;
+  }
+
+  /* Телефон «загорается» при наведении на карту, а при наведении прямо на него — подчеркивается */
+  .card:hover .cardContactPhone {
+    color: #60a5fa;
+  }
+
+  .cardContactPhone:hover {
+    text-decoration: underline !important;
+  }
+
+  .card:hover .cardStatusBadge,
+  .card:hover .cardLoyaltyBadge,
+  .card:hover .cardStatusBlacklistedBadge {
+    filter: brightness(1.15);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Выделяем количество активных заказов */
+  .card:hover .cardHasActive {
+    color: #34d399; /* emerald-400 */
+    text-shadow: 0 0 8px rgba(52, 211, 153, 0.3);
+  }
+
+  .cardBlacklisted:hover {
+    background: rgba(239, 68, 68, 0.08); /* Чуть больше красного подтона */
+    border-color: #ef4444;
+  }
+
+  .cardBlacklisted:hover .cardBlacklistAlert {
+    transform: scale(1.2);
+    transition: transform 0.2s ease;
+  }
+
+  .cardViewBtn:hover,
+  .cardMenuBtn:hover {
+    color: #ffffff;
+    border-color: #475569;
+    transform: scale(1.05);
+  }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1300px) {
+  .tableContainer {
+    display: none;
+  }
+
+  .tableControls {
+    margin-bottom: 16px;
+  }
+
+  .cardsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    padding: 0;
+  }
+
+  .cardsEmpty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 20px;
+    color: #64748b;
+    font-size: 14px;
+  }
+
+  .cardsLoading {
+    grid-column: 1 / -1;
+  }
+
   .contactPhone {
     color: #3b82f6;
     text-decoration: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .tableControls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 780px) {
+  .header {
+    padding: 16px;
+    gap: 5px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .addButton {
+    justify-content: center;
+    min-width: 50px;
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .btnTextHidden {
+    display: none;
+  }
+
+  .cardsContainer {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 671px) {
+  .statsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 20px;
+  }
+
+  .statCard {
+    padding: 16px;
+  }
+
+  .statValue {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 640px) {
+  .subtitle {
+    display: none;
+  }
+
+  .cardsContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .cardItemName {
+    font-size: 12px;
+  }
+
+  .cardContactPhone {
+    font-size: 12px;
+  }
+
+  .cardTotalOrders {
+    font-size: 12px;
+  }
+
+  .cardStatusBadge,
+  .cardStatusBlacklistedBadge,
+  .cardLoyaltyBadge {
+    font-size: 11px;
+    padding: 4px 8px;
   }
 }

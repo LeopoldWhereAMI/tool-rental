@@ -82,7 +82,6 @@ export default function OrderCard({ order, variant = "list" }: OrderCardProps) {
 
   // --- ВАРИАНТ 2: Список истории (Компактный) ---
   return (
-    // <Link href={`/orders/${order.id}`} className={styles.listCard}>
     <section className={styles.listCard}>
       <div className={styles.colId}>
         <span className={styles.listValueBold}>#{order.order_number}</span>
@@ -111,6 +110,5 @@ export default function OrderCard({ order, variant = "list" }: OrderCardProps) {
         </Link>
       </div>
     </section>
-    // </Link>
   );
 }

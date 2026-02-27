@@ -2,7 +2,7 @@
 
 import styles from "./InventoryTable.module.css";
 import { useState } from "react";
-import { InventoryUI } from "@/types";
+import { InventoryUI, ViewMode } from "@/types";
 import { deleteInventory } from "@/services/inventoryService";
 import { toast } from "sonner";
 import DeleteConfirmModal from "@/components/ui/MyModal/DeleteConfirmModal";
@@ -10,10 +10,11 @@ import ErrorBlock from "@/components/ui/ErrorBlock/ErrorBlock";
 import EmptyBlock from "@/components/ui/EmptyBlock/EmptyBlock";
 import { useMenuAnchor } from "@/components/Portal/useMenuAnchor";
 import InventoryRow from "./InventoryRow";
+import InventoryCard from "./InventoryCard";
 
 type InventoryTableProps = {
   items: InventoryUI[];
-  viewMode: "table" | "grid";
+  viewMode: ViewMode;
   loading?: boolean;
   error: string | null;
   refresh: () => void;
@@ -45,59 +46,59 @@ export default function InventoryTable({
 
   if (error) return <ErrorBlock message={error} />;
 
-  if (viewMode === "grid") {
+  const commonProps = {
+    openMenuId,
+    anchor,
+    toggleMenu: (e: React.MouseEvent, id: string) =>
+      toggleMenu(e as React.MouseEvent<HTMLElement>, id),
+    closeMenu,
+    setDeleteItemId,
+  };
+
+  // Выносим рендер контента, чтобы основной return был читаемым
+  const renderContent = () => {
+    if (items.length === 0) {
+      return <EmptyBlock isSearch={true} message="Инструменты не найдены" />;
+    }
+
+    if (viewMode === "table") {
+      return (
+        <div className={styles.tableWrapper}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th className={styles.colProduct}>Инструмент / Арт</th>
+                <th className={styles.colCategory}>Категория</th>
+                <th className={styles.colStatus}>Статус</th>
+                <th className={styles.colPrice}>Стоимость</th>
+                <th className={styles.colStock}>Наличие</th>
+                <th className={styles.colActions}>Действия</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item) => (
+                <InventoryRow key={item.id} item={item} {...commonProps} />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    }
+
+    // Режим карточек
     return (
-      <div className={styles.inventoryListWrapper}>
-        <EmptyBlock
-          message="Grid view is under construction"
-          isSearch={false}
-        />
+      <div className={styles.cardsContainer}>
+        {items.map((item) => (
+          <InventoryCard key={item.id} item={item} {...commonProps} />
+        ))}
       </div>
     );
-  }
+  };
 
+  // Тот самый единственный правильный return компонента
   return (
-    <>
-      <div className={styles.tableWrapper}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th className={styles.colProduct}>Инструмент / Арт</th>
-              <th className={styles.colCategory}>Категория</th>
-              <th className={styles.colStatus}>Статус</th>
-              <th className={styles.colPrice}>Стоимость</th>
-              <th className={styles.colStock}>Наличие</th>
-              <th className={styles.colActions}>Действия</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.length > 0 ? (
-              items.map((item) => (
-                <InventoryRow
-                  key={item.id}
-                  item={item}
-                  openMenuId={openMenuId}
-                  anchor={anchor}
-                  toggleMenu={(e, id) =>
-                    toggleMenu(e as React.MouseEvent<HTMLElement>, id)
-                  }
-                  closeMenu={closeMenu}
-                  setDeleteItemId={setDeleteItemId}
-                />
-              ))
-            ) : (
-              <tr>
-                <td colSpan={6}>
-                  <EmptyBlock
-                    isSearch={true}
-                    message="Инструменты не найдены"
-                  />
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+    <div className={styles.mainWrapper}>
+      {renderContent()}
 
       <DeleteConfirmModal
         isOpen={!!deleteItemId}
@@ -106,6 +107,6 @@ export default function InventoryTable({
         itemName={itemToDelete?.name}
         itemType="инструмент"
       />
-    </>
+    </div>
   );
 }

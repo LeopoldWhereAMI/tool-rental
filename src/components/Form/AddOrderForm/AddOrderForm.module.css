@@ -1196,3 +1196,83 @@
   border: 1px solid #1e293b;
   border-radius: 10px;
 }
+
+/* adaptive */
+/* Внесите изменения в медиа-запрос 600px и добавьте новый для 380px */
+
+@media (max-width: 600px) {
+  /* Переводим строку инструмента в стековый режим */
+  .itemGrid {
+    grid-template-columns: 1fr 1fr; /* Две колонки для дат */
+    gap: 8px;
+  }
+
+  /* Название инструмента занимает всю верхнюю строку */
+  .itemGrid > div:first-child {
+    grid-column: 1 / -1;
+  }
+
+  /* Блок с днями и кнопка удаления внизу */
+  .daysBox,
+  .removeBtn {
+    margin-bottom: 10px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 400px) {
+  .pageWrapper {
+    padding: 12px; /* Уменьшаем отступы страницы */
+  }
+
+  .sectionCard {
+    padding: 16px; /* Экономим место внутри карточек */
+  }
+
+  .pageTitle {
+    font-size: 22px; /* Уменьшаем заголовок */
+  }
+
+  /* На самых узких экранах (до 380px) ставим даты друг под друга */
+  .itemGrid {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+
+  .itemGrid > div {
+    padding-bottom: 16px; /* Место для ошибок */
+  }
+
+  /* Горизонтальный блок для служебной информации внизу строки */
+  .itemRowControls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: -8px;
+  }
+
+  /* Адаптация сайдбара с ценой */
+  .totalAmountValue {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 380px) {
+  .input,
+  .select,
+  .dateInput {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .sectionTitle {
+    font-size: 14px;
+  }
+
+  /* Чтобы иконки в инпутах не мешали тексту */
+  .inputWithIcon .input {
+    padding-left: 34px;
+  }
+}

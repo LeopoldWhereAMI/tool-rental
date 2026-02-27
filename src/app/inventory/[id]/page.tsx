@@ -153,9 +153,7 @@ export default function InventoryItemPage() {
             {/* 1. Окупаемость */}
             <div className={styles.metricCardSmall}>
               <div className={styles.metricHeader}>
-                <span className={styles.metricTitle}>
-                  Окупаемость (на основе тарифа)
-                </span>
+                <span className={styles.metricTitle}>Окупаемость</span>
                 <div className={`${styles.iconBox} ${styles.iconGreen}`}>
                   <TrendingUp size={16} />
                 </div>

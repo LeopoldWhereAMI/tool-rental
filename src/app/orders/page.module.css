@@ -1,12 +1,3 @@
-/* .container {
-  background-color: #0a0a0c;
-  min-height: 100vh;
-  color: #ffffff;
-  padding: 0 20px 40px 20px;
-  position: relative;
-  overflow: hidden;
-} */
-
 .header {
   border-bottom: 1px solid var(--border-dark);
   justify-content: space-between;
@@ -14,6 +5,13 @@
   margin-bottom: 24px;
   padding: 32px;
   display: flex;
+}
+
+.tableCard {
+  background-color: var(--surface-dark);
+  border: 1px solid var(--border-dark);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .btn {
@@ -241,4 +239,37 @@
   border-radius: 6px;
   height: 100%;
   cursor: pointer;
+}
+
+@media (max-width: 780px) {
+  .header {
+    padding: 16px;
+    gap: 5px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .btn {
+    font-size: 14px;
+    text-transform: capitalize;
+    padding: 8px 16px;
+    min-width: 50px;
+    justify-content: center;
+  }
+
+  .btnTextHidden {
+    display: none;
+  }
+}
+
+@media (max-width: 561px) {
+  .subtitle {
+    display: none;
+  }
+
+  .btnText {
+    display: none;
+  }
 }

@@ -142,3 +142,20 @@
     transform: rotate(360deg);
   }
 }
+@media (max-width: 480px) {
+  .journeyContainer {
+    /* padding: 20px 0 10px; */
+  }
+
+  .steps {
+    gap: 10px;
+  }
+
+  .label {
+    font-size: 11px;
+  }
+
+  .dateText {
+    font-size: 10px;
+  }
+}

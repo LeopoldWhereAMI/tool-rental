@@ -1,0 +1,27 @@
+.viewToggle {
+  display: flex;
+  gap: 8px;
+  background: #111827;
+  padding: 4px;
+  border-radius: 8px;
+  width: fit-content;
+}
+
+.viewToggle button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.viewToggle button.activeToggle {
+  background-color: #2b5bee;
+  color: #fff;
+}

@@ -1,82 +1,3 @@
-// "use client";
-
-// import RentalContract from "@/components/Print/RentalContract/RentalContract";
-// import styles from "./ContractSample.module.css";
-// import { ContractItem, ContractOrderData } from "@/types";
-// import { useState } from "react";
-
-// export default function ContractSamplePage() {
-//   const [isEditable, setIsEditable] = useState(false);
-
-//   const sampleOrderData: ContractOrderData = {
-//     order_number: 0,
-//     last_name: "____________________",
-//     first_name: "____________________",
-//     middle_name: "____________________",
-//     phone: "+7 (___) ___-__-__",
-//     passport_series: "____",
-//     passport_number: "______",
-//     issued_by: "________________________________________",
-//     issue_date: "____________________",
-//     registration_address: "________________________________________________",
-//     total_price: 0,
-//     adjustment: 0,
-//     security_deposit: 0,
-//   };
-
-//   const sampleItems: ContractItem[] = [
-//     {
-//       id: "sample-1",
-//       name: "________________________________",
-//       purchase_price: 0,
-//       article: "________",
-//       serial_number: "________",
-//       daily_price: 0,
-//       price_at_time: 0,
-//       start_date: new Date().toISOString(),
-//       end_date: new Date().toISOString(),
-//     },
-//   ];
-
-//   return (
-//     <div className={styles.pageBackground}>
-//       <nav className={styles.noPrintNav}>
-//         <div className={styles.navContent}>
-//           <h1>
-//             {isEditable ? "📝 Редактирование образца" : "📄 Просмотр образца"}
-//           </h1>
-//           <div className={styles.navActions}>
-//             <button
-//               onClick={() => setIsEditable(!isEditable)}
-//               className={isEditable ? styles.saveButton : styles.editButton}
-//             >
-//               {isEditable ? "Зафиксировать текст" : "Редактировать текст"}
-//             </button>
-//             <button
-//               onClick={() => window.print()}
-//               className={styles.printButton}
-//             >
-//               Распечатать
-//             </button>
-//           </div>
-//         </div>
-//       </nav>
-
-//       <div
-//         className={`${styles.contractScale} ${isEditable ? styles.editableActive : ""}`}
-//         contentEditable={isEditable}
-//         suppressContentEditableWarning={true}
-//         onKeyDown={(e) => {
-//           if (e.key === "Enter" && !e.shiftKey) {
-//           }
-//         }}
-//       >
-//         <RentalContract items={sampleItems} orderData={sampleOrderData} />
-//       </div>
-//     </div>
-//   );
-// }
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -119,6 +40,7 @@ export default function ContractEditorPage() {
         setMessage("❌ Ошибка: " + data.error);
       }
     } catch (error) {
+      console.error(error);
       setMessage("❌ Ошибка сети");
     } finally {
       setIsSaving(false);
@@ -146,6 +68,7 @@ export default function ContractEditorPage() {
         setMessage("❌ Ошибка: " + data.error);
       }
     } catch (error) {
+      console.error(error);
       setMessage("❌ Ошибка сети");
     } finally {
       setIsSaving(false);
@@ -154,54 +77,6 @@ export default function ContractEditorPage() {
 
   if (isLoading) return <div className="p-8">Загрузка редактора...</div>;
 
-  // return (
-  //   <div className="flex flex-col h-screen p-4 max-w-6xl mx-auto gap-4">
-  //     <div className="flex justify-between items-center">
-  //       <h1 className="text-2xl font-bold">Редактор шаблона договора</h1>
-  //       <div className="flex gap-4 items-center">
-  //         <span className="text-sm font-medium">{message}</span>
-  //         <button
-  //           onClick={handleRestore}
-  //           className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition"
-  //           disabled={isSaving}
-  //         >
-  //           Откатить версию
-  //         </button>
-  //         <button
-  //           onClick={handleSave}
-  //           className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-  //           disabled={isSaving}
-  //         >
-  //           {isSaving ? "Сохранение..." : "Сохранить шаблон"}
-  //         </button>
-  //       </div>
-  //     </div>
-
-  //     <div className="flex-1 border border-gray-300 rounded overflow-hidden">
-  //       <Editor
-  //         height="100%"
-  //         defaultLanguage="html"
-  //         value={htmlContent}
-  //         onChange={(value) => setHtmlContent(value || "")}
-  //         options={{
-  //           wordWrap: "on",
-  //           minimap: { enabled: false },
-  //           fontSize: 14,
-  //         }}
-  //       />
-  //     </div>
-
-  //     <div className="bg-gray-50 p-4 rounded text-sm text-gray-600">
-  //       <strong>Доступные переменные:</strong> {`{{order_number}}`},{" "}
-  //       {`{{last_name}}`}, {`{{first_name}}`}, {`{{total_price}}`},{" "}
-  //       {`{{formattedDate}}`} и другие. Для вывода списка инструментов
-  //       используйте конструкцию: <br />
-  //       <code>
-  //         {`{{#each items}}`} ... {`{{this.name}}`} ... {`{{/each}}`}
-  //       </code>
-  //     </div>
-  //   </div>
-  // );
   return (
     <div className={styles.container}>
       <header className={styles.header}>

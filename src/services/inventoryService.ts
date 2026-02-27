@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/supabase";
 import { InventoryCreateInput } from "@/lib/validators/inventorySchema";
 import { Inventory, OrderDetailsUI, OrderUI } from "@/types";
 

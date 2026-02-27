@@ -11,7 +11,6 @@ import FinanceActionForm from "./components/FinanceActionForm";
 import CancelTransactionModal from "@/components/ui/MyModal/CancelTransactionModal";
 import YearlyStatCard from "./components/YearlyStatCard";
 import { useFinanceData } from "@/hooks/useFinanceData";
-import PageContainer from "@/components/PageContainer/PageContainer";
 
 const ITEMS_PER_PAGE = 4;
 
@@ -51,7 +50,7 @@ export default function FinancePage() {
   const totalPages = Math.ceil(totalTransactions / ITEMS_PER_PAGE);
 
   return (
-    <PageContainer>
+    <>
       {/* Шапка страницы */}
       <div className={styles.header}>
         <h1 className={styles.title}>Управление финансами</h1>
@@ -150,6 +149,6 @@ export default function FinancePage() {
           loading={modal.processing}
         />
       </>
-    </PageContainer>
+    </>
   );
 }

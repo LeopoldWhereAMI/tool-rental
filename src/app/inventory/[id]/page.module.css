@@ -156,7 +156,9 @@
 
 /* image */
 .heroImageContainer {
-  min-height: 400px;
+  width: 100%;
+  /* Вместо фиксированного min-height используем aspect-ratio для стабильности */
+  aspect-ratio: 4 / 3;
   background: radial-gradient(circle, #2b5bee14 0%, #161b2e 70%);
   display: flex;
   justify-content: center;
@@ -169,7 +171,12 @@
 
 .heroImage {
   padding: 15px;
-  object-fit: contain;
+  object-fit: contain !important;
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  top: 0;
+  left: 0;
   transition: transform 0.3s ease;
 }
 
@@ -339,33 +346,112 @@
 
 /* --- Адаптив (Responsive) --- */
 
-/* Планшеты (меньше 1200px): перестраиваем в 2 этажа */
 @media (max-width: 1200px) {
-  /* На планшете делаем классический дашборд: верх и низ */
+  .dashboardGrid {
+    gap: 20px;
+  }
+
+  /* .heroImageContainer {
+    min-height: 320px;
+  } */
+}
+
+/* 2. Планшеты (до 992px) */
+@media (max-width: 992px) {
   .colGallery {
-    grid-column: span 6;
-  }
-  .colMetrics {
-    grid-column: span 6;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
+    grid-column: span 12;
+  } /* Фото на всю ширину */
   .colDetails {
     grid-column: span 12;
-    grid-row: auto;
-  } /* Детали падают вниз */
-  .colHistory {
-    grid-column: span 12;
+  } /* Детали под фото */
+  .colMetrics {
+    grid-template-columns: 1fr;
+    grid-column: span 4;
   }
 }
 
+@media (max-width: 875px) {
+  .titleBlock h1 {
+    font-size: 22px;
+  }
+
+  .btn {
+    font-size: 12px;
+    padding: 8px 16px;
+  }
+
+  .metricCardSmall {
+    padding: 8px;
+  }
+
+  .bigNumber {
+    font-size: 18px;
+  }
+}
+
+/* 3. Мобильные устройства (до 768px) */
 @media (max-width: 768px) {
-  .dashboardGrid {
-    display: flex;
-    flex-direction: column;
+  .pageContainer {
+    padding: 16px; /* Меньше падинги страницы */
+  }
+  .headerSection {
+    margin-bottom: 24px;
+  }
+
+  .btn {
+    justify-content: center;
   }
   .colMetrics {
-    display: flex;
-    flex-direction: column;
+    grid-template-columns: 1fr;
+  }
+
+  .metricHeader {
+    gap: 5px;
+  }
+
+  .heroImageContainer {
+    /* На мобильных можно сделать картинку чуть более вытянутой или квадратной */
+    aspect-ratio: 1 / 1;
+    max-height: 350px;
+  }
+}
+
+@media (max-width: 610px) {
+  .colHistory {
+    grid-column: span 12;
+  }
+
+  .colMetrics {
+    display: none;
+  }
+}
+
+/* 4. Маленькие смартфоны (до 480px) */
+@media (max-width: 480px) {
+  .statusBadge {
+    width: fit-content;
+  }
+
+  /* Оптимизация карточек для узких экранов */
+  .metricCardSmall {
+    padding: 12px;
+    min-height: auto;
+  }
+  .bigNumber {
+    font-size: 20px;
+  }
+
+  .colDetails .cardContent {
+    padding: 16px; /* Меньше падинги в списках характеристик */
+  }
+}
+
+/* Специальная правка для экстремально узких экранов (380px) */
+@media (max-width: 380px) {
+  .pageContainer {
+    padding: 12px;
+  }
+  .cardTitle {
+    font-size: 14px;
   }
 }
