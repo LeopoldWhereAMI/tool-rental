@@ -782,28 +782,6 @@
 /* =============================================
    RESPONSIVE
    ============================================= */
-@media (max-width: 900px) {
-  .pageWrapper {
-    grid-template-columns: 1fr;
-    padding: 20px;
-  }
-
-  .sidebar {
-    position: static;
-    order: -1;
-  }
-
-  .nameGrid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 600px) {
-  .nameGrid,
-  .twoCol {
-    grid-template-columns: 1fr;
-  }
-}
 
 /* Строка инструмента — одна колонка (select) + кнопка удаления */
 .itemRow {
@@ -926,12 +904,6 @@
   grid-template-columns: 1fr 1fr 1fr;
   gap: 12px;
   margin-bottom: 16px;
-}
-
-@media (max-width: 600px) {
-  .passportGrid {
-    grid-template-columns: 1fr 1fr;
-  }
 }
 
 /* Блок итоговой суммы */
@@ -1198,7 +1170,31 @@
 }
 
 /* adaptive */
-/* Внесите изменения в медиа-запрос 600px и добавьте новый для 380px */
+@media (max-width: 900px) {
+  .pageWrapper {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .sidebar {
+    position: static;
+    /* order: -1; */
+  }
+
+  .nameGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .nameGrid,
+  .twoCol {
+    grid-template-columns: 1fr;
+  }
+  .passportGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
 
 @media (max-width: 600px) {
   /* Переводим строку инструмента в стековый режим */

@@ -2,13 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  ClipboardList,
-  Wrench,
-  Users,
-  BarChart3,
-  FileText,
-} from "lucide-react";
+import { ClipboardList, Wrench, Users, BarChart3 } from "lucide-react";
 import styles from "./MobileNav.module.css";
 import { useEffect, useState } from "react";
 
@@ -17,7 +11,6 @@ const navItems = [
   { href: "/inventory", label: "Инвентарь", icon: Wrench },
   { href: "/clients", label: "Клиенты", icon: Users },
   { href: "/finances", label: "Финансы", icon: BarChart3 },
-  { href: "/contract-sample", label: "Договор", icon: FileText },
 ];
 
 export default function MobileNav() {

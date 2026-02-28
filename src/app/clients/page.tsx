@@ -67,15 +67,13 @@ export default function ClientsPage() {
             Управление базой арендаторов, историей и уровнями лояльности.
           </p>
         </div>
-        <div className={styles.headerActions}>
+        <div className={styles.btnWrapper}>
           <button
             className={styles.addButton}
             onClick={() => setIsCreateModalOpen(true)}
           >
             <UserPlus size={18} />
-            <span className={styles.btnText}>
-              Добавить <span className={styles.btnTextHidden}>клиента</span>
-            </span>
+            <span className={styles.btnText}>Добавить клиента</span>
           </button>
         </div>
       </header>

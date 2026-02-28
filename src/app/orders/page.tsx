@@ -166,15 +166,13 @@ export default function OrdersListPage() {
             Управляйте новыми заявками, контролируйте сроки и статус оплаты.
           </span>
         </div>
-        <div>
+        <div className={styles.btnWrapper}>
           <Link
             href="/orders/add"
             className={`${styles.btn} ${styles.primary}`}
           >
-            <PlusCircle size={18} />
-            <span className={styles.btnText}>
-              <span className={styles.btnTextHidden}>Создать</span> заказ
-            </span>
+            <PlusCircle size={18} className={styles.btnIcon} />
+            <span className={styles.btnText}>Создать заказ</span>
           </Link>
         </div>
       </div>

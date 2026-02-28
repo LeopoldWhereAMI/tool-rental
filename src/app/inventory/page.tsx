@@ -48,7 +48,7 @@ export default function InventoryPage() {
           </span>
         </div>
 
-        <div>
+        <div className={styles.btnWrapper}>
           <Link href="/inventory/add" className={styles.btnAdd}>
             <PlusCircle size={16} />
             <span className={styles.btnText}>Инструмент</span>
@@ -77,7 +77,7 @@ export default function InventoryPage() {
           iconColor="#10b981"
           iconBg="rgba(16, 185, 129, 0.1)"
           loading={loading}
-          suffix={`${stats?.availablePct}% от общего`}
+          suffix={`${stats?.availablePct}%`}
         />
 
         {/* In Rent Card */}

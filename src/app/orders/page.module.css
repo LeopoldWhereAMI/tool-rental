@@ -244,32 +244,27 @@
 @media (max-width: 780px) {
   .header {
     padding: 16px;
-    gap: 5px;
+    gap: 8px;
+    align-items: center;
+    flex-direction: column;
   }
 
   .title {
     font-size: 22px;
   }
 
-  .btn {
-    font-size: 14px;
-    text-transform: capitalize;
-    padding: 8px 16px;
-    min-width: 50px;
-    justify-content: center;
+  .btnWrapper {
+    width: 100%;
   }
 
-  .btnTextHidden {
-    display: none;
+  .btn {
+    padding: 10px 16px;
+    justify-content: center;
   }
 }
 
 @media (max-width: 561px) {
   .subtitle {
-    display: none;
-  }
-
-  .btnText {
     display: none;
   }
 }
