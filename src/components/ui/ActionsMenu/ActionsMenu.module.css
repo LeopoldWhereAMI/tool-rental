@@ -1,4 +1,3 @@
-/* --- 1. Основной контейнер меню --- */
 .actionsMenu {
   position: absolute;
   min-width: 220px;
@@ -16,7 +15,7 @@
 }
 
 .overlay {
-  display: none; /* По умолчанию спрячем */
+  display: none;
 }
 
 .actionsMenuList {
@@ -28,7 +27,6 @@
   gap: 2px;
 }
 
-/* --- 2. Базовые стили ссылок и кнопок --- */
 .actionsMenuList a,
 .actionsMenuList button {
   box-sizing: border-box;
@@ -51,25 +49,14 @@
 
 .actionsMenuList a svg,
 .actionsMenuList button svg {
-  color: #64748b; /* Стандартный цвет иконок */
+  color: #64748b;
   transition: color 0.2s ease;
 }
-
-/* --- 3. Общие эффекты при наведении (Default Hover) --- */
-/* .actionsMenuList li:hover a,
-.actionsMenuList li:hover button {
-  background-color: rgba(59, 130, 246, 0.1);
-  color: #ffffff;
-  transform: translateX(4px);
-} */
 
 .actionsMenuList li:hover svg {
   color: #3b82f6;
 }
 
-/* --- 4. Индивидуальные стили кнопок (Специфические цвета) --- */
-
-/* ОТКРЫТЬ (Светлый/Белый) */
 .actionsMenuList li:hover .openLink {
   color: var(--text-main);
   background-color: var(--nav-hover-bg);
@@ -78,7 +65,6 @@
   color: var(--text-main);
 }
 
-/* РЕДАКТИРОВАТЬ (Синий) */
 .actionsMenuList li:hover .editLink {
   color: #3b82f6 !important;
   background-color: rgba(59, 130, 246, 0.15) !important;
@@ -87,7 +73,6 @@
   color: #3b82f6 !important;
 }
 
-/* В РАБОТУ / ДОСТУПЕН (Зеленый) */
 .actionsMenuList li:hover .availableBtn {
   color: #10b981 !important;
   background-color: rgba(16, 185, 129, 0.1) !important;
@@ -96,7 +81,6 @@
   color: #10b981 !important;
 }
 
-/* В РЕМОНТ (Оранжевый) */
 .actionsMenuList li:hover .maintenanceBtn {
   color: rgb(245, 158, 11) !important;
   background-color: rgba(245, 158, 11, 0.1) !important;
@@ -105,7 +89,6 @@
   color: rgb(245, 158, 11) !important;
 }
 
-/* ОТМЕНИТЬ ЗАКАЗ (Светло-красный) */
 .actionsMenuList li:hover .cancelBtn {
   color: rgb(252, 144, 144);
   background-color: rgba(252, 165, 165, 0.1) !important;
@@ -114,7 +97,6 @@
   color: rgb(252, 144, 144);
 }
 
-/* УДАЛИТЬ (Критический красный) */
 .deleteSeparator {
   height: 1px;
   background-color: var(--border);
@@ -129,7 +111,6 @@
   color: #fb7185 !important;
 }
 
-/* --- 5. Мобильная версия и анимации --- */
 @keyframes slideIn {
   from {
     opacity: 0;
@@ -146,9 +127,6 @@
     display: block;
     position: fixed;
     inset: 0;
-    /* background: rgba(0, 0, 0, 0.7); */
-
-    /* backdrop-filter: blur(4px); */
     backdrop-filter: blur(1px);
     z-index: 9998;
   }

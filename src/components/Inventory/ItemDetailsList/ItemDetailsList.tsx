@@ -38,10 +38,6 @@ export default function ItemDetailsList({ item }: ItemDetailsListProps) {
       label: "Последнее обновление",
       value: validateDate(item.updated_at),
     },
-    // {
-    //   label: "Системный ID",
-    //   value: item.id,
-    // },
   ];
 
   return (

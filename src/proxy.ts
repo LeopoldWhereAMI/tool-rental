@@ -4,15 +4,22 @@ import { updateSession } from "@/lib/supabase/supabase-middleware";
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Пропускаем проверку для страницы логина и auth callback
-  if (pathname === "/login" || pathname === "/auth/callback") {
+  if (
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/api") ||
+    pathname === "/login" ||
+    pathname === "/auth/callback" ||
+    pathname === "/favicon.ico"
+  ) {
     return NextResponse.next();
   }
 
   const { response, user } = await updateSession(request);
 
   if (!user) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
   }
 
   return response;

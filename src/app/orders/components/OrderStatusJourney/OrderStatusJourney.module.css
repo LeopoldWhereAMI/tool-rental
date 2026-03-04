@@ -56,14 +56,12 @@
   background: #334155;
 }
 
-/* Выполнено */
 .completed .node {
   background: var(--primary);
   border-color: #2b5bee;
   color: white;
 }
 
-/* Текущий статус */
 .current .node {
   background: var(--primary);
   border-color: #2b5bee;
@@ -85,7 +83,6 @@
   min-height: 40px;
 }
 
-/* Тексты */
 .label {
   font-size: 14px;
   font-weight: 600;
@@ -109,7 +106,7 @@
   background-color: #fca5a5;
   border-color: #dc262614;
   color: white;
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); /* Легкое свечение для акцента */
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
 }
 
 .cancelled .label {
@@ -117,7 +114,6 @@
   font-weight: 700;
 }
 
-/* Анимации */
 @keyframes pulse {
   0% {
     box-shadow: 0 0 0 0 rgba(43, 91, 238, 0.6);

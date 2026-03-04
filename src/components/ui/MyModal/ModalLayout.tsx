@@ -34,7 +34,7 @@ export default function ModalLayout({
       onClose={onClose}
       onClick={(e) => {
         if (e.target === dialogRef.current) {
-          onClose(); // клик по backdrop
+          onClose();
         }
       }}
     >

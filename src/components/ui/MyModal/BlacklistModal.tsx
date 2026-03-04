@@ -22,7 +22,6 @@ export default function BlacklistModal({
 }: BlacklistModalProps) {
   const [reason, setReason] = useState("");
 
-  // Очищаем локально и закрываем
   const handleCancel = () => {
     setReason("");
     onClose();
@@ -30,13 +29,13 @@ export default function BlacklistModal({
 
   const handleConfirm = () => {
     onConfirm(reason.trim());
-    setReason(""); // Очищаем после успешного вызова
+    setReason("");
   };
 
   return (
     <ModalLayout
       isOpen={isOpen}
-      onClose={handleCancel} // Используем нашу функцию сброса
+      onClose={handleCancel}
       modalTitle="Блокировка клиента"
     >
       <div className={styles.confirmWrapper}>
@@ -70,7 +69,7 @@ export default function BlacklistModal({
           {loading ? "Блокировка..." : "Заблокировать"}
         </button>
         <button
-          onClick={handleCancel} // Используем нашу функцию сброса
+          onClick={handleCancel}
           className={styles.cancelBtn}
           disabled={loading}
         >

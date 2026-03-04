@@ -6,7 +6,6 @@ import styles from "./page.module.css";
 export default function ClientDetailsSkeleton() {
   return (
     <div className={styles.wrapper}>
-      {/* 1. Хлебные крошки */}
       <div className={styles.headerWrapper}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <Skeleton width="60px" height="14px" />
@@ -17,7 +16,6 @@ export default function ClientDetailsSkeleton() {
 
       <div className={styles.container}>
         <main className={styles.mainContent}>
-          {/* 2. Активные аренды */}
           <section className={styles.sectionBlock}>
             <div
               className={styles.sectionHeader}
@@ -41,7 +39,6 @@ export default function ClientDetailsSkeleton() {
                 >
                   <div className={styles.activeCardContent}>
                     <div className={styles.activeCardMain}>
-                      {/* Иконка в боксе */}
                       <div
                         className={styles.toolIconBox}
                         style={{
@@ -79,7 +76,6 @@ export default function ClientDetailsSkeleton() {
             </div>
           </section>
 
-          {/* 3. История заказов */}
           <section className={styles.sectionBlock}>
             <div
               className={styles.historyHeader}
@@ -119,7 +115,6 @@ export default function ClientDetailsSkeleton() {
           </section>
         </main>
 
-        {/* 4. Сайдбар */}
         <aside className={styles.sidebar}>
           <div className={styles.profileCard}>
             <div className={styles.profileHeader}>

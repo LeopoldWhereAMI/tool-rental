@@ -25,7 +25,6 @@ export default function TransactionTableSkeleton({
         <tbody>
           {skeletonRows.map((_, index) => (
             <tr key={`table-skeleton-${index}`} className={styles.tableRow}>
-              {/* Дата и время */}
               <td className={styles.tableCell}>
                 <div className={styles.dateBlock}>
                   <Skeleton width={90} height={16} />
@@ -37,24 +36,20 @@ export default function TransactionTableSkeleton({
                 </div>
               </td>
 
-              {/* Описание */}
               <td className={styles.tableCell}>
                 <div className={styles.descriptionBlock}>
                   <Skeleton width="70%" height={18} />
                 </div>
               </td>
 
-              {/* Тип (Badge) */}
               <td className={styles.tableCell}>
                 <Skeleton width={75} height={24} borderRadius="20px" />
               </td>
 
-              {/* Сумма */}
               <td className={styles.tableCell}>
                 <Skeleton width={85} height={18} />
               </td>
 
-              {/* Кнопка действия */}
               <td className={styles.tableCell} style={{ textAlign: "right" }}>
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                   <Skeleton width={32} height={32} borderRadius="8px" />

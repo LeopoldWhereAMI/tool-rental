@@ -20,14 +20,12 @@ interface OrdersTableProps {
 export default function OrdersTable({
   orders,
   viewMode,
-  ...menuProps // Собираем все пропсы меню (anchor, onToggleMenu и т.д.)
+  ...menuProps
 }: OrdersTableProps) {
-  // 1. Обработка пустого состояния
   if (orders.length === 0) {
     return <EmptyBlock isSearch={true} message="Заказы не найдены" />;
   }
 
-  // 2. Функция для рендеринга нужного вида
   const renderContent = () => {
     if (viewMode === "table") {
       return (
@@ -56,7 +54,6 @@ export default function OrdersTable({
       );
     }
 
-    // Режим карточек
     return (
       <div className={styles.cardsContainer}>
         {orders.map((order) => (

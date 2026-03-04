@@ -19,7 +19,6 @@ export default function EditInventoryPage() {
   const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
-
   const { defaultValues, loading, error } = useEditInventory(id);
   const { item, mutate } = useInventoryItem(id);
 

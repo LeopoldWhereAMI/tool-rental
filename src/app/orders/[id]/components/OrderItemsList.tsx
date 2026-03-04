@@ -21,7 +21,6 @@ export default function OrderItemsList({ items }: OrderItemsListProps) {
         {items && items.length > 0 ? (
           items.map((item, index) => (
             <div key={item.id || index} className={styles.toolCard}>
-              {/* Левая часть: Изображение */}
               <div className={styles.productImagePlaceholder}>
                 {item.inventory?.image_url ? (
                   <Image
@@ -38,7 +37,6 @@ export default function OrderItemsList({ items }: OrderItemsListProps) {
                 )}
               </div>
 
-              {/* Правая часть: Информация */}
               <div className={styles.toolMainInfo}>
                 <div className={styles.toolTitleRow}>
                   <p className={styles.toolName}>

@@ -24,11 +24,7 @@ export default function MaintenanceConfirmModal({
       modalTitle="Техническое обслуживание"
     >
       <div className={styles.confirmWrapper}>
-        <Wrench
-          className={styles.successIcon} // Используем ваш стиль для иконок
-          size={48}
-          color="#3b82f6" // Синий цвет для обслуживания
-        />
+        <Wrench className={styles.successIcon} size={48} color="#3b82f6" />
         <p className={styles.confirmMessage}>
           Вы подтверждаете выполнение работ по ТО?
           <br />
@@ -41,9 +37,9 @@ export default function MaintenanceConfirmModal({
       <div className={styles.modalActions}>
         <button
           onClick={onConfirm}
-          className={styles.completeBtnConfirm} // Используем ваш стиль зеленой кнопки
+          className={styles.completeBtnConfirm}
           disabled={loading}
-          style={{ backgroundColor: "#3b82f6" }} // Перекрасим в синий для отличия от оплаты
+          style={{ backgroundColor: "#3b82f6" }}
         >
           {loading ? "Сохранение..." : "Обнулить счетчик и зафиксировать ТО"}
         </button>

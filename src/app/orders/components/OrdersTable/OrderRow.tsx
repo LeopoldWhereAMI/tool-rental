@@ -39,7 +39,6 @@ export default function OrderRow({
   const clientName = `${order.client.last_name} ${order.client.first_name}`;
   const clientPhone = order.client.phone || "";
 
-  // Определяем какой бейдж показывать
   let statusClass = "";
   let statusText = "";
 
@@ -66,7 +65,6 @@ export default function OrderRow({
     <div className={styles.toolsWrapper}>
       {order.tools.map((t, idx) => (
         <div key={idx} className={styles.toolItem}>
-          {/* Применяем statusClass напрямую к точке */}
           <span className={`${styles.toolDot} ${dotColorClass}`}>•</span>
           {t.name}
         </div>
@@ -80,7 +78,6 @@ export default function OrderRow({
   );
   return (
     <tr className={`${styles.row} ${isOverdue ? styles.rowOverdue : ""}`}>
-      {/* № заказа */}
       <td className={styles.orderId}>#{order.order_number}</td>
 
       <td className={styles.tools}>{toolsList}</td>
@@ -90,7 +87,6 @@ export default function OrderRow({
         {clientPhone && <span className={styles.phone}>{clientPhone}</span>}
       </td>
 
-      {/* <td className={styles.period}>{period}</td> */}
       <td className={styles.periodCell}>
         <div className={styles.dateWrapper}>
           <div className={styles.dateBlock}>
@@ -121,7 +117,6 @@ export default function OrderRow({
 
       <td className={styles.price}>{order.total_price} ₽</td>
 
-      {/* ЕДИНСТВЕННАЯ КОЛОНКА СО СТАТУСОМ */}
       <td className={styles.statusCell}>
         {statusText && (
           <span className={`${styles.statusBadge} ${statusClass}`}>

@@ -7,10 +7,7 @@ type OrderStatusInfoProps = {
   showStatusText?: boolean;
 };
 
-export default function OrderStatusInfo({
-  order,
-  showStatusText = true,
-}: OrderStatusInfoProps) {
+export default function OrderStatusInfo({ order }: OrderStatusInfoProps) {
   const { returnStatus, formattedDate, hasValidDate } =
     useOrderStatusInfo(order);
 
@@ -18,7 +15,6 @@ export default function OrderStatusInfo({
 
   return (
     <div className={`${styles.returnStatus} ${styles[returnStatus.type]}`}>
-      {/* Если заказ активен, показываем дату. Если просрочен - текст просрочки */}
       <span className={styles.statusText}>
         {returnStatus.type === "overdue" ? returnStatus.text : formattedDate}
       </span>

@@ -27,7 +27,7 @@ export default function FinanceActionForm({
   onActionComplete,
   loading = false,
 }: FinanceActionFormProps) {
-  const [type, setType] = useState<ActionType>("expense"); // По умолчанию "Вывод"
+  const [type, setType] = useState<ActionType>("expense");
   const [amount, setAmount] = useState("");
   const [remarks, setRemarks] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -40,7 +40,6 @@ export default function FinanceActionForm({
     e.preventDefault();
     const actionAmount = parseFloat(amount);
 
-    // Валидация
     if (!actionAmount || actionAmount <= 0) {
       setMessage({ type: "error", text: "Введите сумму больше нуля" });
       return;
@@ -61,7 +60,6 @@ export default function FinanceActionForm({
       if (type === "expense") {
         await createWithdrawRequest(actionAmount, remarks.trim() || undefined);
       } else {
-        // Ручное пополнение
         await createTransaction({
           type: "income",
           amount: actionAmount,
@@ -92,9 +90,7 @@ export default function FinanceActionForm({
 
   return (
     <div className={styles.withdrawCard}>
-      {/* Переключатель вкладок */}
       <div className={styles.tabContainer}>
-        {/* Скользящий фон */}
         <div
           className={`
     ${styles.tabIndicator} 
@@ -131,7 +127,6 @@ export default function FinanceActionForm({
           : "Внесение наличных или корректировка баланса."}
       </p>
 
-      {/* Уведомление (ваш существующий блок) */}
       {message.type && (
         <div
           className={styles.messageBox}
@@ -174,7 +169,6 @@ export default function FinanceActionForm({
           </div>
 
           <div className={styles.amountHint}>
-            {/* Оставляем условие только внутри, чтобы текст пропадал, а блок оставался */}
             {type === "expense" &&
               (loading ? (
                 <div

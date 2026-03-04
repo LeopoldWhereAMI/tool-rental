@@ -55,7 +55,6 @@ export default function InventoryTable({
     setDeleteItemId,
   };
 
-  // Выносим рендер контента, чтобы основной return был читаемым
   const renderContent = () => {
     if (items.length === 0) {
       return <EmptyBlock isSearch={true} message="Инструменты не найдены" />;
@@ -85,7 +84,6 @@ export default function InventoryTable({
       );
     }
 
-    // Режим карточек
     return (
       <div className={styles.cardsContainer}>
         {items.map((item) => (
@@ -95,7 +93,6 @@ export default function InventoryTable({
     );
   };
 
-  // Тот самый единственный правильный return компонента
   return (
     <div className={styles.mainWrapper}>
       {renderContent()}

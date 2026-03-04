@@ -19,7 +19,6 @@ export default function StatusFilter({
     const el = ref.current;
     if (!el) return;
 
-    // Мягкая подсказка пользователю о наличии скролла на мобилках
     el.scrollTo({ left: 40, behavior: "smooth" });
     const timer = setTimeout(() => {
       el.scrollTo({ left: 0, behavior: "smooth" });

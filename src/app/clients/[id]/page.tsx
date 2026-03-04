@@ -15,7 +15,6 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 
 export default function ClientDetailsPage() {
   const { id } = useParams();
-
   const { client, loading, insights, activeOrders, historyOrders } =
     useClientDetails(id as string);
 
@@ -79,7 +78,6 @@ export default function ClientDetailsPage() {
             />
           </div>
 
-          {/* ПРАВАЯ КОЛОНКА: Сайдбар (Профиль + Инсайты) */}
           <div className={styles.sidebarWrapper}>
             <ClientSidebar
               client={client}

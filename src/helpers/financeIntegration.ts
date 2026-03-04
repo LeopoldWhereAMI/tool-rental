@@ -12,8 +12,6 @@ export async function onOrderCompleted(
   itemDescription: string,
 ) {
   try {
-    console.log(`📊 Добавляем транзакцию для заказа ${orderId}`);
-
     const transaction = await createTransaction({
       type: "income",
       amount: totalPrice,
@@ -23,7 +21,6 @@ export async function onOrderCompleted(
       order_id: orderId,
     });
 
-    console.log("✅ Транзакция добавлена успешно:", transaction);
     return transaction;
   } catch (error) {
     console.error("❌ Ошибка при добавлении транзакции:", error);
@@ -38,10 +35,6 @@ export async function onOrderCompleted(
  */
 export async function onOrderRefunded(orderId: string, refundAmount: number) {
   try {
-    console.log(
-      `💰 Добавляем возврат для заказа ${orderId} на сумму $${refundAmount}`,
-    );
-
     const transaction = await createTransaction({
       type: "expense",
       amount: refundAmount,
@@ -51,7 +44,6 @@ export async function onOrderRefunded(orderId: string, refundAmount: number) {
       order_id: orderId,
     });
 
-    console.log("✅ Возврат зафиксирован:", transaction);
     return transaction;
   } catch (error) {
     console.error("❌ Ошибка при добавлении возврата:", error);
@@ -69,10 +61,6 @@ export async function onAdvancePaymentReceived(
   advanceAmount: number,
 ) {
   try {
-    console.log(
-      `💵 Добавляем предоплату для заказа ${orderId} на сумму $${advanceAmount}`,
-    );
-
     const transaction = await createTransaction({
       type: "income",
       amount: advanceAmount,
@@ -82,7 +70,6 @@ export async function onAdvancePaymentReceived(
       order_id: orderId,
     });
 
-    console.log("✅ Предоплата зафиксирована:", transaction);
     return transaction;
   } catch (error) {
     console.error("❌ Ошибка при добавлении предоплаты:", error);

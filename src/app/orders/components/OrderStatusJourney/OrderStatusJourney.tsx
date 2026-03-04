@@ -37,16 +37,13 @@ export const OrderStatusJourney = ({ status, dates }: JourneyProps) => {
   ];
 
   const getStepStatus = (stepId: string) => {
-    // Если заказ завершен нормально
     if (status === "completed") return "completed";
 
     if (isCancelled) {
-      // Для отмененного заказа: первые два шага синие (completed), последний — красный
       if (stepId === "completed") return "cancelled";
       return "completed";
     }
 
-    // Обычная логика для активного/забронированного
     if (status === "active") {
       if (stepId === "reserved") return "completed";
       if (stepId === "active") return "current";
@@ -60,9 +57,7 @@ export const OrderStatusJourney = ({ status, dates }: JourneyProps) => {
     <div
       className={`${styles.journeyContainer} ${isCancelled ? styles.isCancelled : ""}`}
     >
-      {/* Линия-трек */}
       <div className={styles.lineTrack}>
-        {/* Прогресс линии: 0% для reserved, 50% для active, 100% для completed */}
         <div
           className={styles.lineProgress}
           style={{

@@ -99,6 +99,12 @@ export async function addInventory(item: InventoryCreateInput) {
 
   if (error) {
     console.error("Ошибка при добавлении инструмента:", error);
+    console.error("--- ДЕТАЛИ ОШИБКИ SUPABASE ---");
+    console.error("Сообщение:", error.message);
+    console.error("Детали:", error.details);
+    console.error("Подсказка:", error.hint);
+    console.error("Код ошибки:", error.code);
+    console.error("------------------------------");
     throw new Error(error.message);
   }
 

@@ -37,12 +37,10 @@ export default function FinanceCard({
 
   return (
     <div className={styles.card}>
-      {/* Icon Wrapper */}
       <div className={`${styles.cardIconWrapper} ${variantClasses[variant]}`}>
         <div style={{ color: iconColor, display: "flex" }}>{icon}</div>
       </div>
 
-      {/* Trend */}
       {trend && !loading && (
         <div className={`${styles.cardTrend} ${trendClass}`}>{trend}</div>
       )}
@@ -52,7 +50,6 @@ export default function FinanceCard({
         </div>
       )}
 
-      {/* Content */}
       <div className={styles.cardContent}>
         <h3 className={styles.cardTitle}>{title}</h3>
 

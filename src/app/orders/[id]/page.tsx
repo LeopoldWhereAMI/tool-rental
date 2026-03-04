@@ -12,7 +12,6 @@ import {
   validateOrderStatus,
 } from "@/helpers";
 import { Calendar, CreditCard, ImageIcon, Printer, Timer } from "lucide-react";
-
 import { useReactToPrint } from "react-to-print";
 import {
   PassportInput,
@@ -147,12 +146,8 @@ export default function OrderDetailsPage() {
         </div>
 
         <div className={styles.mainGrid}>
-          {/* ЛЕВАЯ ЧАСТЬ: ИНСТРУМЕНТ И ПРОЦЕСС */}
           <div className={styles.contentArea}>
-            {/* Главная карточка с фото */}
-
             {isSingleItem ? (
-              /* ВАРИАНТ 1: ОДИН ИНСТРУМЕНТ (HERO) */
               <section className={styles.heroSection}>
                 <div className={styles.heroImageContainer}>
                   {mainItem?.inventory?.image_url ? (
@@ -193,7 +188,6 @@ export default function OrderDetailsPage() {
                       order={order}
                     />
                   </section>
-                  {/* </div> */}
 
                   <div className={styles.heroMeta}>
                     <span>
@@ -224,7 +218,6 @@ export default function OrderDetailsPage() {
               </div>
             )}
 
-            {/* Статус выполнения идет ниже в обоих случаях */}
             <section className={styles.whiteBox}>
               <div className={styles.boxHeader}>
                 <Timer size={18} />
@@ -242,7 +235,6 @@ export default function OrderDetailsPage() {
             </section>
           </div>
 
-          {/* ПРАВАЯ ЧАСТЬ: САЙДБАР С ДЕТАЛЯМИ */}
           <aside className={styles.sidebar}>
             <div className={styles.deadlineBanner}>
               <div className={styles.deadlineIcon}>
@@ -260,12 +252,11 @@ export default function OrderDetailsPage() {
                 </span>
               </div>
             </div>
-            {/* Блок клиента */}
+
             <section className={styles.sidebarCard}>
               <OrderClientInfo client={order.client} />
             </section>
 
-            {/* Блок финансов */}
             {order.status === "cancelled" ? (
               <section className={styles.sidebarCard}>
                 <div className={styles.cancelledFinance}>
@@ -296,12 +287,9 @@ export default function OrderDetailsPage() {
                 />
               </section>
             )}
-
-            {/* Дедлайн */}
           </aside>
         </div>
 
-        {/* Модалки (вне сетки) */}
         {showPassportModal && (
           <PassportModal
             onPassportSubmit={handleSubmit(onPassportSubmit)}

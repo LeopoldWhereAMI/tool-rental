@@ -12,7 +12,6 @@
   border-right: 1px solid var(--border);
 }
 
-/* Настройка скроллбара внутри сайдбара (сделаем его аккуратным) */
 .aside::-webkit-scrollbar {
   width: 4px;
 }
@@ -29,9 +28,9 @@
 .asideNavList {
   display: flex;
   flex-direction: column;
-  gap: 2px; /* Более плотное расположение как на фото */
+  gap: 2px;
   list-style: none;
-  padding: 0; /* Убираем падинг, чтобы активная полоска прилегала к краю */
+  padding: 0;
 }
 
 .asideNavList li {
@@ -43,7 +42,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 24px; /* Увеличили боковой отступ */
+  padding: 12px 24px;
   color: var(--text-secondary);
   text-decoration: none;
   font-size: 14px;
@@ -79,7 +78,7 @@
 
 @media (max-width: 1150px) {
   .aside {
-    width: 72px; /* Ширина только для иконок + отступы */
+    width: 72px;
     padding: 20px 8px;
   }
 
@@ -96,12 +95,11 @@
   }
 
   .navLink {
-    justify-content: center; /* Центрируем иконку */
+    justify-content: center;
     padding: 12px 0;
     gap: 0;
   }
 
-  /* Скрываем текст */
   .navLink span {
     display: none;
   }
@@ -109,6 +107,6 @@
 
 @media (max-width: 480px) {
   .aside {
-    display: none; /* Полностью убираем сайдбар с экрана */
+    display: none;
   }
 }

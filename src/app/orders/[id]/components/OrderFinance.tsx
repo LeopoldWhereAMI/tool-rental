@@ -30,7 +30,6 @@ export default function OrderFinance({
   const [adjustment, setAdjustment] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // Создаем локальный статус для мгновенной реакции UI
   const [currentStatus, setCurrentStatus] = useState(order.status);
   const router = useRouter();
 
@@ -55,12 +54,10 @@ export default function OrderFinance({
       : `Заказ #${order.order_number}`;
 
     try {
-      // Шаг 1: Финансы и статус заказа
       await updateOrderStatus(order.id, "completed", finalAmount);
 
       await onOrderCompleted(order.id, finalAmount, description);
 
-      // Шаг 2: Техническое обслуживание (вызываем оркестратор)
       await processOrderMaintenance(order);
 
       toast.success("Заказ завершен. Пробег обновлен.");

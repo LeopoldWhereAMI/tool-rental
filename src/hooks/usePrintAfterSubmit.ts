@@ -23,7 +23,7 @@ export function usePrintAfterSubmit<T>(
         handlePrint();
 
         setTimeout(() => {
-          if (onComplete) onComplete(); // Очищаем стейт в родителе
+          if (onComplete) onComplete();
           router.push("/orders");
         }, 1000);
       } else {

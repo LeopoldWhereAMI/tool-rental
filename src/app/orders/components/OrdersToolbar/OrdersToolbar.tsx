@@ -3,7 +3,6 @@
 import styles from "./OrdersToolbar.module.css";
 import StatusFilter from "@/components/ui/StatusFilter/StatusFilter";
 import SearchInput from "@/components/SearchInput/SearchInput";
-
 import ViewToggle from "@/components/ui/ViewToggle/ViewToggle";
 import { ViewMode } from "@/types";
 import { useSearchStore } from "@/app/store/store";

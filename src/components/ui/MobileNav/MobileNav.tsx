@@ -19,7 +19,6 @@ export default function MobileNav() {
 
   useEffect(() => {
     const handleFocusIn = (e: FocusEvent) => {
-      // Проверяем, что фокус именно на поле ввода
       const target = e.target as HTMLElement;
       if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") {
         setIsVisible(false);
@@ -30,7 +29,6 @@ export default function MobileNav() {
       setIsVisible(true);
     };
 
-    // Слушаем события фокуса на всей странице
     window.addEventListener("focusin", handleFocusIn);
     window.addEventListener("focusout", handleFocusOut);
 
@@ -40,7 +38,6 @@ export default function MobileNav() {
     };
   }, []);
 
-  // Если клавиатура открыта — не рендерим (или скрываем через CSS)
   if (!isVisible) return null;
 
   return (

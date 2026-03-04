@@ -9,10 +9,9 @@
 }
 
 .crumbActive {
-  color: #cbd5e1; /* slate-300 */
+  color: #cbd5e1;
 }
 
-/* --- Верхняя панель (Header) --- */
 .headerSection {
   display: flex;
   flex-direction: column;
@@ -44,7 +43,6 @@
   margin-bottom: 8px;
 }
 
-/* Бейджи статусов */
 .statusBadge {
   padding: 8px 12px;
   border-radius: 10px;
@@ -91,7 +89,6 @@
   user-select: none;
 }
 
-/* Кнопки действий */
 .actionsBar {
   display: flex;
   gap: 8px;
@@ -129,7 +126,6 @@
   align-items: start;
 }
 
-/* image */
 .heroImageContainer {
   width: 100%;
   aspect-ratio: 4 / 3;
@@ -166,26 +162,22 @@
   display: flex;
 }
 
-/* 1. Колонка Галереи (4 из 12) */
 .colGallery {
   grid-column: span 5;
 }
 
-/* 2. Колонка Метрик (3 из 12) */
 .colMetrics {
   grid-column: span 3;
   display: flex;
   flex-direction: column;
-  gap: 16px; /* Расстояние между маленькими карточками */
+  gap: 16px;
 }
 
-/* 3. Колонка Техданных (5 из 12) */
 .colDetails {
   grid-column: span 4;
   grid-row: span 1;
 }
 
-/* 4. Колонка Истории (на всю ширину) */
 .colHistory {
   grid-column: span 8;
   grid-row: 2;
@@ -223,7 +215,6 @@
   flex-grow: 1;
 }
 
-/* --- Стили для маленьких карточек метрик --- */
 .metricCardSmall {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -301,7 +292,6 @@
   font-weight: 500;
 }
 
-/* Прогресс бар */
 .miniProgress {
   width: 100%;
   height: 8px;
@@ -391,10 +381,9 @@
   }
 }
 
-/* 3. Мобильные устройства (до 768px) */
 @media (max-width: 768px) {
   .pageContainer {
-    padding: 16px; /* Меньше падинги страницы */
+    padding: 16px;
   }
   .headerSection {
     margin-bottom: 24px;
@@ -412,7 +401,6 @@
   }
 
   .heroImageContainer {
-    /* На мобильных можно сделать картинку чуть более вытянутой или квадратной */
     aspect-ratio: 1 / 1;
     max-height: 350px;
   }
@@ -428,13 +416,11 @@
   }
 }
 
-/* 4. Маленькие смартфоны (до 480px) */
 @media (max-width: 480px) {
   .statusBadge {
     width: fit-content;
   }
 
-  /* Оптимизация карточек для узких экранов */
   .metricCardSmall {
     padding: 12px;
     min-height: auto;
@@ -444,11 +430,10 @@
   }
 
   .colDetails .cardContent {
-    padding: 16px; /* Меньше падинги в списках характеристик */
+    padding: 16px;
   }
 }
 
-/* Специальная правка для экстремально узких экранов (380px) */
 @media (max-width: 380px) {
   .pageContainer {
     padding: 12px;

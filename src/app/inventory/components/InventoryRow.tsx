@@ -40,7 +40,6 @@ export default function InventoryRow({
 }: InventoryRowProps) {
   return (
     <tr>
-      {/* Tool Name / ID */}
       <td>
         <div className={styles.productCell}>
           <div className={styles.productImagePlaceholder}>
@@ -67,14 +66,12 @@ export default function InventoryRow({
         </div>
       </td>
 
-      {/* Category */}
       <td className={styles.colCategory}>
         <span className={styles.categoryBadge}>
           {item.category && validateCategory(item.category)}
         </span>
       </td>
 
-      {/* Status */}
       <td className={styles.colStatus}>
         {item.status && (
           <span
@@ -86,14 +83,12 @@ export default function InventoryRow({
         )}
       </td>
 
-      {/* Daily Rate */}
       <td>
         <div className={styles.priceCell}>
           {item.daily_price} ₽ <span className={styles.pricePeriod}>/ сут</span>
         </div>
       </td>
 
-      {/* Availability Visual */}
       <td>
         <div className={styles.availabilityWrapper}>
           <span className={styles.availabilityRatio}>
@@ -114,7 +109,6 @@ export default function InventoryRow({
         </div>
       </td>
 
-      {/* Actions */}
       <td className={styles.actions}>
         <div className={styles.actionsWrapper}>
           <Link href={`/inventory/${item.id}`} className={styles.viewButton}>

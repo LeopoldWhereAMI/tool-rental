@@ -24,11 +24,6 @@ export const getAnalyticsData = async (month: number | null, year: number) => {
 
     if (error) throw error;
 
-    // const totalRevenue = orders.reduce(
-    //   (sum, order) => sum + (order.total_price || 0),
-    //   0,
-    // );
-    // const completedCount = orders.length;
     const totalRevenue =
       orders?.reduce((sum, order) => sum + (order.total_price || 0), 0) || 0;
     const completedCount = orders?.length || 0;

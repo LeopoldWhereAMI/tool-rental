@@ -43,13 +43,11 @@ export default function OrdersListPage() {
   } | null>(null);
   const [isCancelling, setIsCancelling] = useState(false);
 
-  // фильтры
   const { statusFilter, setStatusFilter, filteredOrders } = useOrderFilters(
     orders,
     query,
   );
 
-  // пагинация
   const { currentPage, setCurrentPage, totalPages, currentItems } =
     usePagination({
       items: filteredOrders,
@@ -68,7 +66,6 @@ export default function OrdersListPage() {
     };
   });
 
-  // 2. ИТОГОВЫЕ KPI
   const total = orders.length;
   const active = orders.filter((o) => o.status === "active").length;
   const overdue = ordersWithComputedStatus.filter(
@@ -158,7 +155,6 @@ export default function OrdersListPage() {
 
   return (
     <div className={styles.container}>
-      {/* Заголовок */}
       <div className={styles.header}>
         <div>
           <h1 className={styles.title}>Заказы и бронирования</h1>
@@ -185,7 +181,6 @@ export default function OrdersListPage() {
         loading={loading}
       />
       <div className={styles.tableCard}>
-        {/* Панель инструментов */}
         <OrdersToolbar
           currentFilter={statusFilter}
           onFilterChange={setStatusFilter}
@@ -195,17 +190,14 @@ export default function OrdersListPage() {
           isMobile={isMobile}
         />
 
-        {/* Скелетон */}
         {loading && <MainSceleton />}
 
-        {/* Пусто */}
         {!loading && filteredOrders.length === 0 && (
           <div className={styles.emptyWrapper}>
             <EmptyBlock message="Заказы не найдены" isSearch={!!query} />
           </div>
         )}
 
-        {/* Таблица */}
         {!loading && filteredOrders.length > 0 && (
           <>
             <OrdersTable

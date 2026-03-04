@@ -5,7 +5,7 @@ interface SkeletonProps {
   width?: string | number;
   height?: string | number;
   borderRadius?: string;
-  className?: string; // Добавляем поддержку классов
+  className?: string;
   style?: CSSProperties;
 }
 
@@ -13,12 +13,11 @@ export default function Skeleton({
   width,
   height,
   borderRadius = "4px",
-  className = "", // По умолчанию пустая строка
+  className = "",
   style,
 }: SkeletonProps) {
   return (
     <div
-      // Объединяем базовый класс с переданным извне
       className={`${styles.skeleton} ${className}`}
       style={{
         width,

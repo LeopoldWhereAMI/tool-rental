@@ -28,7 +28,6 @@ export default function ClientsTable({
   onCloseMenu,
   onDelete,
 }: ClientsTableProps) {
-  // Общие пропсы для строк и карточек
   const commonProps = {
     anchor,
     onClose: onCloseMenu,
@@ -37,7 +36,6 @@ export default function ClientsTable({
       onToggleMenu(e, id),
   };
 
-  // 1. Обработка загрузки (скелетон на весь контент)
   if (loading && clients.length === 0) {
     return (
       <div
@@ -50,12 +48,10 @@ export default function ClientsTable({
     );
   }
 
-  // 2. Обработка пустого состояния
   if (clients.length === 0) {
     return <EmptyBlock isSearch={true} message="Клиенты не найдены" />;
   }
 
-  // 3. Основная логика рендеринга
   const renderContent = () => {
     if (viewMode === "table") {
       return (

@@ -8,8 +8,8 @@
 }
 
 .chip {
-  width: 32px; /* Фиксированная ширина */
-  height: 32px; /* Фиксированная высота */
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,12 +24,11 @@
 .chipIcon {
   flex-shrink: 0;
   opacity: 0.6;
-  /*  */
+
   transition: all 0.2s ease;
   color: #6b7280;
 }
 
-/* Цвета иконок (те же, что в списке) */
 .gasIcon {
   color: #b45309;
 }
@@ -58,11 +57,9 @@
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* Цвета для активных иконок */
-
 .chipActive .chipIcon {
   opacity: 1;
-  transform: scale(1.1); /* Легкий акцент на выбранной иконке */
+  transform: scale(1.1);
 }
 
 .chip:hover:not(.chipActive) {

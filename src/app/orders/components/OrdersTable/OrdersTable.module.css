@@ -1,13 +1,9 @@
-/* ===========================
-   ОБЩИЕ СТИЛИ ТАБЛИЦЫ
-   =========================== */
-
 .tableContainer {
   display: block;
 }
 
 .cardsContainer {
-  display: grid; /* для контейнера карточек */
+  display: grid;
   background-color: var(--surface);
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 16px;
@@ -66,12 +62,7 @@
   vertical-align: middle;
 }
 
-/* ===========================
-   КОЛОНКИ
-   =========================== */
-
 .orderId {
-  /* color: #9ca3af; */
   color: #3b82f6;
   font-size: 14px;
   font-family: var(--font-space-grotesk);
@@ -81,14 +72,14 @@
 
 .toolsWrapper {
   display: flex;
-  flex-direction: column; /* Инструменты будут друг под другом */
+  flex-direction: column;
   gap: 4px;
 }
 
 .toolItem {
   display: flex;
   align-items: center;
-  gap: 8px; /* Расстояние между точкой и текстом */
+  gap: 8px;
   font-size: 14px;
   line-height: 1.2;
 }
@@ -103,7 +94,7 @@
 .toolDot.badgeOverdue,
 .toolDot.badgeCompleted,
 .toolDot.badgeCancelled {
-  background: transparent; /* Убираем фон бейджа, оставляем только цвет текста */
+  background: transparent;
   padding: 0;
   display: inline;
 }
@@ -138,7 +129,6 @@
   white-space: nowrap;
 }
 
-/* Колонка периода */
 .periodCell {
   padding: 12px 8px;
   vertical-align: middle;
@@ -177,28 +167,23 @@
   font-weight: 300;
 }
 
-/* Если строка просрочена, можно подсветить числа красным */
 .dayOverdue {
   color: #ef4444;
   font-family: var(--font-space-grotesk);
-  font-style: italic; /* Курсив как на скриншоте */
+  font-style: italic;
   font-weight: 600;
 }
 
 .monthOverdue {
-  font-style: italic; /* Курсив как на скриншоте */
+  font-style: italic;
   font-weight: 600;
   color: #ef4444;
   opacity: 0.8;
 }
 
-/* ===========================
-   КНОПКА МЕНЮ
-   =========================== */
-
 .actions {
   text-align: right;
-  width: 100px; /* Фиксируем ширину колонки */
+  width: 100px;
   min-width: 100px;
 }
 
@@ -211,24 +196,20 @@
 
 .viewButton,
 .actionButton {
-  /* Сбрасываем дефолт */
   background: transparent;
   border: none;
   cursor: pointer;
 
-  /* Размеры и центрирование */
   width: 38px;
   height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  /* Цвет иконки (сделаем чуть светлее, чтобы была видна) */
   color: var(--text-muted);
   border-radius: 8px;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Чтобы иконка внутри не ломала размеры */
   flex-shrink: 0;
 }
 
@@ -238,15 +219,10 @@
   background-color: var(--border);
 }
 
-/* Иконка внутри кнопки */
 .viewButton svg,
 .actionButton svg {
   display: block;
 }
-
-/* ===========================
-   СТАТУСЫ СРОКОВ АРЕНДЫ
-   =========================== */
 
 .statusCell {
   white-space: nowrap;
@@ -269,7 +245,6 @@
   border-radius: 50%;
 }
 
-/* Сегодня возврат — зелёный */
 .badgeToday {
   background: rgba(16, 185, 129, 0.15);
   color: #10b981;
@@ -278,7 +253,6 @@
   background: #10b981;
 }
 
-/* Осталось N дней — жёлтый */
 .badgePending {
   background: rgba(245, 158, 11, 0.15);
   color: #f59e0b;
@@ -287,7 +261,6 @@
   background: #f59e0b;
 }
 
-/* Просрочено — красный */
 .badgeOverdue {
   background: rgba(239, 68, 68, 0.15);
   color: #ef4444;
@@ -296,7 +269,6 @@
   background: #ef4444;
 }
 
-/* Завершён — серый */
 .badgeCompleted {
   background: rgba(107, 114, 128, 0.15);
   color: #9ca3af;
@@ -315,17 +287,9 @@
   background: #fca5a5;
 }
 
-/* ===========================
-   ПОДСВЕТКА ПРОСРОЧЕННЫХ СТРОК
-   =========================== */
-
 .rowOverdue {
   background: rgba(239, 68, 68, 0.05);
 }
-
-/* ===========================
-   КАРТОЧКА 
-   =========================== */
 
 .card {
   background-color: var(--table-thead);
@@ -342,7 +306,6 @@
   border-color: #3b82f6;
 }
 
-/* Card Header */
 .cardHeader {
   display: flex;
   justify-content: space-between;
@@ -388,7 +351,6 @@
   color: #60a5fa;
 }
 
-/* Card Actions */
 .cardActions {
   display: flex;
   gap: 8px;
@@ -419,7 +381,6 @@
   background: rgba(59, 130, 246, 0.1);
 }
 
-/* Card Sections */
 .cardSection {
   display: flex;
   flex-direction: column;
@@ -442,7 +403,6 @@
   word-break: break-word;
 }
 
-/* Card Info Rows */
 .cardInfo {
   display: flex;
   flex-direction: column;
@@ -475,7 +435,6 @@
   font-family: var(--font-space-grotesk);
 }
 
-/* Card Footer */
 .cardFooter {
   display: flex;
   justify-content: space-between;
@@ -485,7 +444,6 @@
   border-top: 1px solid var(--border);
 }
 
-/* Status Badges */
 .cardStatusBadge {
   display: inline-flex;
   align-items: center;
@@ -505,7 +463,6 @@
   flex-shrink: 0;
 }
 
-/* Status Colors */
 .badgeToday {
   background: rgba(16, 185, 129, 0.15);
   color: #10b981;
@@ -552,7 +509,6 @@
   background: #fca5a5;
 }
 
-/* Hover Effects */
 @media (hover: hover) {
   .card:hover {
     background: var(--card-hover-bg);
@@ -564,7 +520,7 @@
   .card:hover .cardOrderNumber,
   .card:hover .cardPrice,
   .card:hover .cardClientPhone {
-    color: var(--nav-active-text); /* Используем наш яркий синий */
+    color: var(--nav-active-text);
   }
 
   .cardClientPhone:hover {
@@ -584,7 +540,6 @@
     transform: translateY(-1px);
   }
 
-  /* Если хочешь, чтобы кнопка "Глаз" при ховере становилась синей */
   .cardViewBtn:hover {
     border-color: var(--primary);
     color: var(--primary);
@@ -604,7 +559,6 @@
   }
 }
 
-/* Responsive */
 @media (max-width: 640px) {
   .card {
     padding: 14px;

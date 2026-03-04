@@ -10,7 +10,6 @@ export default function ContractEditorPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState("");
 
-  // Загрузка текущего шаблона
   useEffect(() => {
     fetch("/api/contract-template")
       .then((res) => res.json())
@@ -23,7 +22,6 @@ export default function ContractEditorPage() {
       .finally(() => setIsLoading(false));
   }, []);
 
-  // Сохранение шаблона
   const handleSave = async () => {
     setIsSaving(true);
     setMessage("");
@@ -47,7 +45,6 @@ export default function ContractEditorPage() {
     }
   };
 
-  // Откат к предыдущей версии
   const handleRestore = async () => {
     if (!confirm("Вы уверены, что хотите откатиться к предыдущей версии?"))
       return;
@@ -63,7 +60,7 @@ export default function ContractEditorPage() {
       const data = await res.json();
       if (data.success) {
         setMessage("✅ Шаблон восстановлен! Обновляю страницу...");
-        window.location.reload(); // Простой способ подтянуть восстановленный шаблон
+        window.location.reload();
       } else {
         setMessage("❌ Ошибка: " + data.error);
       }

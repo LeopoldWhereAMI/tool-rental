@@ -23,7 +23,6 @@ export default function CancelTransactionModal({
   const isIncome = transaction.type === "income";
   const isRestoring = transaction.status === "cancelled";
 
-  // Используем вынесенную логику текста
   const labelText = isRestoring
     ? isIncome
       ? "Сумма вернется в доход:"
@@ -55,7 +54,6 @@ export default function CancelTransactionModal({
           </p>
 
           <div className={styles.detailsBox}>
-            {/* ТЕПЕРЬ МЫ ИСПОЛЬЗУЕМ labelText ЗДЕСЬ */}
             <span className={styles.amountLabel}>{labelText}</span>
             <strong className={styles.amountValue}>
               {transaction.amount.toLocaleString("ru-RU")} ₽

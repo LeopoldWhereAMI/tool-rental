@@ -17,7 +17,6 @@ export default function FormField({
   className,
 }: FormFieldProps) {
   return (
-    // <div className={styles.inputField}>
     <div className={`${styles.inputField} ${className || ""}`}>
       <label htmlFor={id}>{label}</label>
       {children}

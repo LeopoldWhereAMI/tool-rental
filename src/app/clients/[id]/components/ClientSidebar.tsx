@@ -56,7 +56,6 @@ export default function ClientSidebar({
 
   return (
     <aside className={styles.sidebar}>
-      {/* --- Карточка профиля --- */}
       <div className={styles.profileCard}>
         <div>
           <Link
@@ -147,7 +146,6 @@ export default function ClientSidebar({
         </div>
       )}
 
-      {/* --- Блок Аналитики (Insights) --- */}
       <div className={styles.insightsCard}>
         <h3 className={styles.sidebarTitle}>Аналитика</h3>
 

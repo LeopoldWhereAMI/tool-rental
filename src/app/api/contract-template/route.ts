@@ -1,24 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  getContractTemplate,
-  saveContractTemplate,
-  restoreContractTemplate,
-} from "@/services/contractService";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { DEFAULT_TEMPLATE } from "@/constants/defaultContract";
 
 export async function GET() {
   try {
-    const template = await getContractTemplate();
+    const supabase = await createSupabaseServerClient();
+
+    const { data, error } = await supabase
+      .from("contract_templates")
+      .select("html_content")
+      .maybeSingle();
+
+    if (error) throw error;
+
+    const content = data?.html_content || DEFAULT_TEMPLATE;
+
     return NextResponse.json({
       success: true,
-      data: template,
+      data: content,
     });
   } catch (error) {
-    console.error("API ошибка:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Неизвестная ошибка";
+
+    console.error("API ошибка [GET]:", errorMessage);
+
     return NextResponse.json(
-      {
-        success: false,
-        error: "Не удалось получить шаблон договора",
-      },
+      { success: false, error: "Не удалось получить шаблон" },
       { status: 500 },
     );
   }
@@ -26,43 +34,33 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = await createSupabaseServerClient();
     const body = await request.json();
     const { html_content, action } = body;
 
-    if (!html_content && action !== "restore") {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "html_content обязателен",
-        },
-        { status: 400 },
-      );
-    }
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     if (action === "restore") {
-      await restoreContractTemplate();
-      return NextResponse.json({
-        success: true,
-        message: "Шаблон восстановлен",
-      });
+      return NextResponse.json({ success: true, message: "Восстановлено" });
     }
 
-    await saveContractTemplate(html_content);
-
-    return NextResponse.json({
-      success: true,
-      message: "Шаблон договора сохранён",
+    const { error } = await supabase.from("contract_templates").upsert({
+      html_content,
+      user_id: user.id,
+      updated_at: new Date().toISOString(),
     });
+
+    if (error) throw error;
+
+    return NextResponse.json({ success: true, message: "Сохранено" });
   } catch (error) {
     console.error("API ошибка:", error);
     return NextResponse.json(
-      {
-        success: false,
-        error:
-          error instanceof Error
-            ? error.message
-            : "Ошибка при сохранении шаблона",
-      },
+      { success: false, error: "Ошибка сохранения" },
       { status: 500 },
     );
   }

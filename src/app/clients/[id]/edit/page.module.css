@@ -10,41 +10,12 @@
   margin-bottom: 24px;
 }
 
-/* Breadcrumbs */
-/* .breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-  font-size: 14px;
-}
-
-.breadcrumbLink {
-  color: #94a3b8;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.breadcrumbLink:hover {
-  color: #3b82f6;
-}
-
-.breadcrumbSeparator {
-  color: #475569;
-}
-
-.breadcrumbCurrent {
-  color: #f1f5f9;
-  font-weight: 500;
-} */
-
 .mainContent {
   display: flex;
-  gap: 32px; /* Расстояние между формой и сайдбаром */
+  gap: 32px;
   align-items: flex-start;
 }
 
-/* Titles */
 .pageTitle {
   font-size: 28px;
   font-weight: 700;
@@ -105,7 +76,6 @@
   gap: 16px;
 }
 
-/* Ограничиваем ширину телефона, чтобы он не растягивался на всю строку, если это не нужно */
 .contactRow .fieldGroup {
   max-width: 33.33%;
 }
@@ -160,12 +130,6 @@
   padding-left: 40px;
 }
 
-/* .inputWithIcon select.input {
-  appearance: none; 
-  background-image: url("data:image/svg+xml,..."); 
-  cursor: pointer;
-} */
-
 .inputWithIcon select {
   padding-left: 36px;
 }
@@ -213,7 +177,6 @@
   color: #3b82f6;
 }
 
-/* Buttons */
 .submitBtn {
   width: 100%;
   background: #2563eb;
@@ -254,7 +217,6 @@
   transition: all 0.3s ease;
 }
 
-/* Info Box */
 .infoBox {
   display: flex;
   gap: 10px;
@@ -303,7 +265,7 @@
   }
   .sidebar {
     width: 100%;
-    order: -1; /* Сайдбар сверху на мобилках */
+    order: -1;
     position: static;
   }
 }

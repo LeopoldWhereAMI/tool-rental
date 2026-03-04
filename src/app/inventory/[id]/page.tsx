@@ -78,7 +78,6 @@ export default function InventoryItemPage() {
   const roiPercentage =
     purchasePrice > 0 ? Math.round((totalEarned / purchasePrice) * 100) : 0;
 
-  // Расчет загрузки (Utilization)
   const daysDisplay = calculateDaysInWork(item.created_at);
 
   const utilizationRate = Math.min(
@@ -89,10 +88,8 @@ export default function InventoryItemPage() {
   return (
     <PageContainer>
       <div className={styles.pageContainer}>
-        {/* Хлебные крошки */}
         <Breadcrumbs items={breadcrumbItems} />
 
-        {/* Заголовок и кнопки */}
         <div className={styles.headerSection}>
           <div className={styles.titleBlock}>
             <div className={styles.titleRow}>
@@ -124,11 +121,8 @@ export default function InventoryItemPage() {
           </div>
         </div>
 
-        {/* --- ОСНОВНАЯ СЕТКА --- */}
         <div className={styles.dashboardGrid}>
-          {/* КОЛОНКА 1: Фото (Галерея) */}
           <div className={styles.colGallery}>
-            {/* <ItemGallery id={id} imageUrl={item.image_url} onMutate={mutate} /> */}
             <div className={styles.heroImageContainer}>
               {item?.image_url ? (
                 <Image
@@ -148,9 +142,7 @@ export default function InventoryItemPage() {
             </div>
           </div>
 
-          {/* КОЛОНКА 2: Метрики (Стек из 3 карточек) */}
           <div className={styles.colMetrics}>
-            {/* 1. Окупаемость */}
             <div className={styles.metricCardSmall}>
               <div className={styles.metricHeader}>
                 <span className={styles.metricTitle}>Окупаемость</span>
@@ -166,7 +158,6 @@ export default function InventoryItemPage() {
               </div>
             </div>
 
-            {/* 2. Загрузка */}
             <div className={styles.metricCardSmall}>
               <div className={styles.metricHeader}>
                 <span className={styles.metricTitle}>Загрузка</span>
@@ -185,7 +176,6 @@ export default function InventoryItemPage() {
               </div>
             </div>
 
-            {/* 3. Тех. обслуживание */}
             <div className={styles.metricCardSmall}>
               <div className={styles.metricHeader}>
                 <span className={styles.metricTitle}>До следующего ТО</span>
@@ -202,7 +192,6 @@ export default function InventoryItemPage() {
             </div>
           </div>
 
-          {/* КОЛОНКА 3: Технические данные */}
           <div className={styles.colDetails}>
             <div className={styles.card}>
               <div className={styles.cardHeader}>
@@ -217,7 +206,6 @@ export default function InventoryItemPage() {
             </div>
           </div>
 
-          {/* НИЖНИЙ РЯД: История аренды */}
           <div className={styles.colHistory}>
             <ItemRentalHistory itemId={id} />
           </div>

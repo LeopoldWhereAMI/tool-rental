@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes";
 import styles from "./ThemeToggle.module.css";
-import { Moon, Sun } from "lucide-react"; // Используем lucide, как и в Header
+import { Moon, Sun } from "lucide-react";
 
 export default function ThemeToggle() {
   const { setTheme, resolvedTheme } = useTheme();

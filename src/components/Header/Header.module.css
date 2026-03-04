@@ -75,7 +75,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 6px 6px 6px 12px; /* Меньше паддинг со стороны аватара */
+  padding: 6px 6px 6px 12px;
   border: 1px solid transparent;
   border-radius: 8px;
   transition: all 0.3s;
@@ -132,7 +132,6 @@
   object-fit: cover;
 }
 
-/* Dropdown Menu */
 .chevron {
   color: var(--text-muted);
   transition:
@@ -221,7 +220,6 @@
   cursor: not-allowed;
 }
 
-/* Responsive */
 @media (max-width: 1150px) {
   .header {
     margin-left: 72px;

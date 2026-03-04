@@ -3,43 +3,40 @@
   margin-bottom: 1.5rem;
 }
 
-/* Контейнер, когда изображение уже загружено */
 .uploaderWrapper:has(img) {
-  border: 1px solid var(--border); /* Тонкая граница в стиле макета */
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 12px;
-  background: rgba(255, 255, 255, 0.03); /* Легкая подложка */
+  background: rgba(255, 255, 255, 0.03);
 }
 
-/* Зона загрузки (Dropzone) */
 .dropzone {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 2px dashed rgba(255, 255, 255, 0.2); /* Светлые пунктирные линии */
+  border: 2px dashed rgba(255, 255, 255, 0.2);
   border-radius: 16px;
   padding: 3rem 1rem;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background: rgba(15, 23, 42, 0.3); /* Глубокий темный фон (Slate 900) */
-  color: #94a3b8; /* Текст цвета Slate 400 */
+  background: rgba(15, 23, 42, 0.3);
+  color: #94a3b8;
 }
 
 .dropzone:hover {
-  border-color: #4f46e5; /* Индиго при наведении, как в кнопках макета */
+  border-color: #4f46e5;
   background: rgba(79, 70, 229, 0.05);
   color: #f8fafc;
 }
 
-/* Контейнер превью */
 .imagePreviewContainer {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3; /* Это создаст высоту относительно ширины */
+  aspect-ratio: 4 / 3;
   border-radius: 12px;
   overflow: hidden;
-  background: rgba(15, 23, 42, 0.3); /* Видно, если фото еще грузится */
+  background: rgba(15, 23, 42, 0.3);
 }
 
 .previewImage {
@@ -51,13 +48,12 @@
   transform: scale(1.03);
 }
 
-/* Кнопка удаления (X) */
 .removeBtn {
   position: absolute;
   top: 12px;
   right: 12px;
-  background: rgba(239, 68, 68, 0.9); /* Насыщенный красный (Red 500) */
-  backdrop-filter: blur(4px); /* Эффект размытия фона под кнопкой */
+  background: rgba(239, 68, 68, 0.9);
+  backdrop-filter: blur(4px);
   color: white;
   border: none;
   border-radius: 8px;
@@ -74,13 +70,12 @@
   transform: translateY(-2px);
 }
 
-/* Состояние загрузки */
 .loadingState {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  color: #6366f1; /* Indigo 500 */
+  color: #6366f1;
 }
 
 .spinner {
@@ -97,7 +92,6 @@
   }
 }
 
-/* Текст и иконки внутри дропзоны */
 .placeholderState {
   display: flex;
   flex-direction: column;
@@ -109,15 +103,14 @@
 .placeholderState span {
   font-size: 15px;
   font-weight: 500;
-  color: #f1f5f9; /* Почти белый */
+  color: #f1f5f9;
 }
 
 .placeholderState small {
   font-size: 12px;
-  color: #64748b; /* Приглушенный Slate 500 */
+  color: #64748b;
 }
 
-/* Адаптация иконки */
 .placeholderState svg {
   color: #4f46e5;
   filter: drop-shadow(0 0 8px rgba(79, 70, 229, 0.3));

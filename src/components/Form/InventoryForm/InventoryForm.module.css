@@ -6,7 +6,6 @@
   color: var(--text-main);
 }
 
-/* Контейнер для секций — теперь просто колонка */
 .mainLayout {
   display: flex;
   flex-direction: column;
@@ -46,16 +45,14 @@
   margin: 0;
 }
 
-/* Флекс-сетка для полей */
 .fieldsFlex {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
 }
 
-/* Чтобы поля занимали равное место и переносились */
 .fieldsFlex > * {
-  flex: 1 1 280px; /* Минимальная ширина поля 280px */
+  flex: 1 1 280px;
 }
 
 .divider {
@@ -64,7 +61,6 @@
   margin: 32px 0;
 }
 
-/* Стили элементов управления */
 .select {
   width: 100%;
   background-color: var(--surface);
@@ -85,7 +81,6 @@
   border-color: #ef4444 !important;
 }
 
-/* Убираем стрелки number */
 .form input[type="number"]::-webkit-outer-spin-button,
 .form input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;

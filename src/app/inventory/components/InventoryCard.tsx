@@ -40,9 +40,7 @@ export default function InventoryCard({
 }: InventoryCardProps) {
   return (
     <div className={styles.card}>
-      {/* Header: Image + Article + Actions */}
       <div className={styles.cardHeader}>
-        {/* Image Thumbnail - Left */}
         <div className={styles.cardImageThumbnail}>
           {item.image_url ? (
             <Image
@@ -60,7 +58,6 @@ export default function InventoryCard({
           )}
         </div>
 
-        {/* Article - Center */}
         <div className={styles.cardArticleBlock}>
           <span className={styles.cardArticleLabel}>Артикул</span>
           <p className={styles.cardProductId}>
@@ -68,7 +65,6 @@ export default function InventoryCard({
           </p>
         </div>
 
-        {/* Actions - Right */}
         <div className={styles.cardActions}>
           <Link href={`/inventory/${item.id}`} className={styles.cardViewBtn}>
             <Eye size={18} />
@@ -96,10 +92,8 @@ export default function InventoryCard({
         </div>
       </div>
 
-      {/* Product Name - Below Header */}
       <h3 className={styles.cardProductName}>{item.name}</h3>
 
-      {/* Category & Status Section */}
       <div className={styles.cardSection}>
         <div className={styles.cardBadges}>
           <span className={styles.cardCategoryBadge}>
@@ -118,7 +112,6 @@ export default function InventoryCard({
         </div>
       </div>
 
-      {/* Price Section */}
       <div className={styles.cardSection}>
         <span className={styles.cardSectionLabel}>Цена</span>
         <div className={styles.cardPrice}>
@@ -127,7 +120,6 @@ export default function InventoryCard({
         </div>
       </div>
 
-      {/* Availability Section */}
       <div className={styles.cardSection}>
         <span className={styles.cardSectionLabel}>Наличие</span>
         <div className={styles.cardAvailability}>

@@ -149,7 +149,7 @@ export default function AddOrderForm() {
                   register={register}
                   errors={errors}
                   inventory={inventory}
-                  totalAmount={totalAmount}
+                  // totalAmount={totalAmount}
                 />
               </div>
             </div>

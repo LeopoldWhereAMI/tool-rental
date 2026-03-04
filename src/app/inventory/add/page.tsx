@@ -10,7 +10,6 @@ import { PostgrestError } from "@supabase/supabase-js";
 import AddInventoryForm from "@/components/Form/InventoryForm/AddInventoryForm";
 import PageContainer from "@/components/PageContainer/PageContainer";
 import styles from "./page.module.css";
-
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 
 export default function AddInventoryPage() {
@@ -66,7 +65,7 @@ export default function AddInventoryPage() {
             </button>
             <button
               type="submit"
-              form="add-inventory-form" // Связка с ID формы
+              form="add-inventory-form"
               className={styles.submitBtn}
             >
               Добавить инструмент

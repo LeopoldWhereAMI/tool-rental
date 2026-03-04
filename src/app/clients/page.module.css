@@ -1,8 +1,4 @@
 .cardsContainer {
-  /* display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 16px;
-  padding: 16px; */
   background-color: var(--surface);
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 16px;
@@ -27,10 +23,8 @@
 
 .pageContainer {
   min-height: 100vh;
-  /* font-family: "Space Grotesk", sans-serif; */
 }
 
-/* Header Section */
 .header {
   padding: 32px;
   border-bottom: 1px solid var(--border);
@@ -67,7 +61,6 @@
   transition: all 0.3s ease;
 }
 
-/* KPI Cards */
 .statsGrid {
   padding: 32px 32px 0 32px;
   display: grid;
@@ -112,7 +105,7 @@
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #34d399; /* emerald-400 */
+  color: #34d399;
   font-weight: 600;
 }
 
@@ -126,24 +119,19 @@
 }
 
 .trendPositive {
-  color: #10b981; /* Изумрудный зеленый */
+  color: #10b981;
 }
 
 .trendNegative {
-  color: #f43f5e; /* Розово-красный */
+  color: #f43f5e;
 }
 
 .trendWrapper span {
   opacity: 0.9;
 }
 
-/* Table Card & Controls */
 .tableCard {
   margin: 32px;
-  /* background-color: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden; */
 }
 
 .tableControls {
@@ -167,7 +155,6 @@
   border: 1px solid var(--border);
   border-radius: 12px;
   background-color: var(--surface);
-  /* overflow: hidden; */
   box-shadow:
     0 0 1px #0000001a,
     0 0 20px #0000000d,
@@ -181,7 +168,6 @@
   table-layout: auto;
 }
 
-/* Headers */
 .table th {
   background-color: var(--table-thead);
   padding: 16px 24px;
@@ -193,7 +179,6 @@
   border-bottom: 1px solid var(--border);
 }
 
-/* Rows */
 .row {
   border-bottom: 1px solid var(--border);
   transition: background-color 0.2s;
@@ -212,7 +197,6 @@
   padding-right: 24px;
 }
 
-/* Customer Name Cell */
 .nameCell {
   display: flex;
   align-items: center;
@@ -226,7 +210,6 @@
   border-radius: 9999px;
   border: 2px solid var(--border);
   overflow: hidden;
-  /* background-color: #1a1a1a; */
 }
 
 .nameHeaderWrapper {
@@ -249,7 +232,6 @@
   font-size: 12px;
 }
 
-/* Contact Cell */
 .contactPhone {
   color: var(--text-muted);
   text-decoration: none;
@@ -258,7 +240,6 @@
   cursor: default;
 }
 
-/* Orders Cell */
 .ordersCell {
   display: flex;
   flex-direction: column;
@@ -285,7 +266,6 @@
   opacity: 0.8;
 }
 
-/* Badges */
 .statusBadge,
 .loyaltyBadge {
   padding: 4px 10px;
@@ -327,7 +307,6 @@
   border-color: rgba(245, 158, 11, 0.2);
 }
 
-/* Статус Blacklisted */
 .statusBlacklistedBadge {
   display: inline-flex;
   align-items: center;
@@ -350,7 +329,6 @@
   flex-shrink: 0;
 }
 
-/* Actions */
 .actionsCell {
   text-align: right;
   width: 100px;
@@ -391,7 +369,6 @@
   display: block;
 }
 
-/* Строка в черном списке */
 .rowBlacklisted {
   opacity: 0.6;
   background-color: rgba(245, 158, 11, 0.03);
@@ -405,26 +382,19 @@
   background-color: rgba(245, 158, 11, 0.05);
 }
 
-/* Аватар в черном списке */
 .avatarBlocked {
   border-color: rgba(43, 91, 238, 0.08) !important;
   filter: grayscale(0.7) brightness(0.85);
 }
 
-/* Иконка alert рядом с именем */
 .blacklistAlert {
   color: #f97316;
   flex-shrink: 0;
 }
 
-/* Имя в черном списке */
 .blockedName {
   color: #f1f5f9;
 }
-
-/* ===================================
-   КАРТОЧКА ДЛЯ МОБИЛЬНЫХ
-   =================================== */
 
 .card {
   background: var(--surface);
@@ -442,7 +412,6 @@
   border-color: rgba(239, 68, 68, 0.2);
 }
 
-/* Card Header */
 .cardHeader {
   display: flex;
   justify-content: space-between;
@@ -465,7 +434,6 @@
   height: 48px;
   border-radius: 8px;
   overflow: hidden;
-  /* background: var(--border); */
   border: 1px solid var(--border);
   flex-shrink: 0;
   display: flex;
@@ -528,7 +496,6 @@
   margin: 0;
 }
 
-/* Card Actions */
 .cardActions {
   display: flex;
   gap: 8px;
@@ -559,7 +526,6 @@
   background: rgba(59, 130, 246, 0.1);
 }
 
-/* Card Sections */
 .cardSection {
   display: flex;
   flex-direction: column;
@@ -588,7 +554,6 @@
   color: #60a5fa;
 }
 
-/* Orders Info */
 .cardOrdersInfo {
   display: flex;
   flex-direction: column;
@@ -614,7 +579,6 @@
   color: #64748b;
 }
 
-/* Card Footer */
 .cardFooter {
   display: flex;
   justify-content: space-between;
@@ -668,7 +632,6 @@
   white-space: nowrap;
 }
 
-/* Loyalty Badge Colors */
 .cardLoyaltyBadge.bronze {
   background: rgba(180, 83, 9, 0.15);
   color: #b45309;
@@ -738,14 +701,13 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   }
 
-  /* Выделяем количество активных заказов */
   .card:hover .cardHasActive {
-    color: #34d399; /* emerald-400 */
+    color: #34d399;
     text-shadow: 0 0 8px rgba(52, 211, 153, 0.3);
   }
 
   .cardBlacklisted:hover {
-    background: rgba(239, 68, 68, 0.08); /* Чуть больше красного подтона */
+    background: rgba(239, 68, 68, 0.08);
     border-color: #ef4444;
   }
 

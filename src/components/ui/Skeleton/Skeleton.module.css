@@ -1,5 +1,4 @@
 .skeleton {
-  /* Базовый цвет для темной темы */
   background-color: var(--border);
   background-image: linear-gradient(
     90deg,
@@ -22,7 +21,6 @@
   }
 }
 
-/*main скелетон */
 .skeletonWrapper {
   width: 100%;
   display: flex;
@@ -56,10 +54,9 @@
 
 .skeletonGhostRow {
   width: 100%;
-  opacity: 0.6; /* Делаем чуть бледнее, чтобы не перетягивало внимание */
+  opacity: 0.6;
 }
 
-/* На мобилках скрываем часть экшенов в скелетоне, чтобы не ломать верстку */
 @media (max-width: 768px) {
   .skeletonActions {
     display: none;

@@ -16,7 +16,6 @@ import { useFilteredClients } from "@/hooks/useFilteredClients";
 import { ClientsStats } from "./components/ClientsStats";
 import ClientsTable from "./components/ClientsTable";
 import { calculateClientStats } from "@/helpers";
-
 import { useSearchStore } from "../store/store";
 import ViewToggle from "@/components/ui/ViewToggle/ViewToggle";
 import { useAdaptiveView } from "@/hooks/useAdaptiveView";
@@ -59,7 +58,6 @@ export default function ClientsPage() {
 
   return (
     <div className={styles.pageContainer}>
-      {/* HEADER SECTION */}
       <header className={styles.header}>
         <div className={styles.titleBlock}>
           <h1 className={styles.title}>Клиенты</h1>
@@ -80,7 +78,6 @@ export default function ClientsPage() {
 
       <ClientsStats stats={stats} loading={loading && !clients.length} />
 
-      {/* TABLE SECTION */}
       <div className={styles.tableCard}>
         <div className={styles.tableControls}>
           <div className={styles.left}>

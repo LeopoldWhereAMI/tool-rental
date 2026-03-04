@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./MyModal.module.css";
-import { AlertTriangle } from "lucide-react"; // Добавим иконку для акцента
+import { AlertTriangle } from "lucide-react";
 import ModalLayout from "./ModalLayout";
 
 type DeleteConfirmModalProps = {

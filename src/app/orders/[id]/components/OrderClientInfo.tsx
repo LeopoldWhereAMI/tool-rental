@@ -22,10 +22,10 @@ export default function OrderClientInfo({ client }: OrderClientInfoProps) {
           <Image
             src={avatarUrl}
             alt="Avatar"
-            width={52} // Обязательно указываем размер для Next/Image
+            width={52}
             height={52}
             className={styles.avatarImage}
-            unoptimized // Для SVG из внешних API оптимизация растром не нужна
+            unoptimized
           />
         </div>
 

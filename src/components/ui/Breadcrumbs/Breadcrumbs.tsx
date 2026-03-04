@@ -10,7 +10,7 @@ interface BreadcrumbItem {
 
 interface BreadcrumbsProps {
   items: BreadcrumbItem[];
-  extra?: React.ReactNode; // Для статусов, бейджей и т.д.
+  extra?: React.ReactNode;
   className?: string;
 }
 

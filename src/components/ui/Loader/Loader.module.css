@@ -1,4 +1,4 @@
-.loaderContainer {
+/* .loaderContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,7 +9,7 @@
 
 .spinner {
   animation: spin 1s linear infinite;
-  color: #2563eb; /* Твой основной синий цвет */
+  color: #2563eb;
 }
 
 .label {
@@ -35,4 +35,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */

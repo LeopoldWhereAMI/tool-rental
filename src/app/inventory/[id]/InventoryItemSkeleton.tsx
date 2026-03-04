@@ -9,7 +9,6 @@ export default function InventoryItemSkeleton() {
       </header>
 
       <div className={styles.mainGrid}>
-        {/* Левая колонка */}
         <aside className={styles.leftCol}>
           <div className={styles.card}>
             <Skeleton width="100%" height={300} borderRadius="12px" />
@@ -27,7 +26,6 @@ export default function InventoryItemSkeleton() {
           </div>
         </aside>
 
-        {/* Правая колонка */}
         <main className={styles.rightCol}>
           <section className={styles.card}>
             <div className={styles.cardHeader}>

@@ -17,7 +17,6 @@ interface ClientsStatsProps {
 }
 
 export const ClientsStats = ({ stats, loading }: ClientsStatsProps) => {
-  // Вспомогательная функция для рендеринга строки тренда (для 1-й и 3-й карточки)
   const renderTrend = (value: number) => {
     if (loading)
       return <Skeleton width="100px" height="16px" borderRadius="4px" />;
@@ -36,7 +35,6 @@ export const ClientsStats = ({ stats, loading }: ClientsStatsProps) => {
 
   return (
     <div className={styles.statsGrid}>
-      {/* Всего клиентов */}
       <div className={styles.statCard}>
         <div>
           <p className={styles.statLabel}>Всего клиентов</p>
@@ -49,7 +47,6 @@ export const ClientsStats = ({ stats, loading }: ClientsStatsProps) => {
         {renderTrend(stats.totalTrend)}
       </div>
 
-      {/* Активные арендаторы */}
       <div className={styles.statCard}>
         <div>
           <p className={styles.statLabel}>Активные арендаторы</p>
@@ -66,14 +63,12 @@ export const ClientsStats = ({ stats, loading }: ClientsStatsProps) => {
             className={styles.trendWrapper}
             style={{ color: stats.activeRate < 10 ? "#ef4444" : "#10b981" }}
           >
-            {/* Иконка Activity для индикации активности базы */}
             <Activity size={14} />
             <span>{stats.activeRate}% от всей базы</span>
           </div>
         )}
       </div>
 
-      {/* Новые в этом месяце */}
       <div className={styles.statCard}>
         <div>
           <p className={styles.statLabel}>Новые в этом месяце</p>

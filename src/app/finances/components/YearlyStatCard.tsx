@@ -4,11 +4,6 @@ import styles from "../page.module.css";
 import { YearlyData } from "@/services/financeService";
 import Skeleton from "@/components/ui/Skeleton/Skeleton";
 
-// export interface YearlyData {
-//   month_index: number;
-//   income: number;
-// }
-
 interface YearlyStatCardProps {
   data: YearlyData[];
   selectedYear: number;
@@ -37,7 +32,7 @@ export default function YearlyStatCard({
         <div
           className={styles.cardIconWrapper}
           style={{
-            backgroundColor: "rgba(139, 92, 246, 0.1)", // Светло-фиолетовый фон
+            backgroundColor: "rgba(139, 92, 246, 0.1)",
             color: "#8b5cf6",
           }}
         >

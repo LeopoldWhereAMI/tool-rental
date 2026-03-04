@@ -1,7 +1,6 @@
 import { supabase } from "@/lib/supabase/supabase";
 import { Client, ClientWithOrders, CreateClientInput } from "@/types";
 
-// Добавление клиента
 export async function createClientInSupabase(
   data: CreateClientInput,
 ): Promise<Client> {
@@ -19,20 +18,39 @@ export async function createClientInSupabase(
   return newClient as Client;
 }
 
-// Загрузка всех клиентов (для селекта в форме заказа)
-// export async function loadClients(): Promise<Client[]> {
-//   const { data, error } = await supabase
-//     .from("clients")
-//     .select("*")
-//     .order("last_name");
+export async function upsertClient(
+  data: Partial<CreateClientInput>,
+): Promise<Client> {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-//   if (error) {
-//     console.error("Ошибка при загрузке клиентов:", error);
-//     throw new Error(error.message);
-//   }
+  if (!user) throw new Error("Пользователь не авторизован");
 
-//   return data as Client[];
-// }
+  const safeData = {
+    first_name: data.first_name,
+    last_name: data.last_name,
+    middle_name: data.middle_name,
+    phone: data.phone,
+    user_id: user.id,
+  };
+
+  const { data: client, error } = await supabase
+    .from("clients")
+    .upsert(safeData, {
+      onConflict: "user_id,phone",
+      ignoreDuplicates: false,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Ошибка при работе с клиентом:", error);
+    throw new Error(error.message);
+  }
+
+  return client as Client;
+}
 
 export async function loadClients(): Promise<Client[]> {
   const { data, error } = await supabase
@@ -54,40 +72,9 @@ export async function loadClients(): Promise<Client[]> {
     throw new Error(error.message);
   }
 
-  // Возвращаем данные. Массив orders теперь будет внутри каждого объекта клиента.
-  // return data as Client[];
   return data as ClientWithOrders[];
 }
 
-export async function upsertClient(
-  data: Partial<CreateClientInput>,
-): Promise<Client> {
-  // Вырезаем только те поля, которые разрешено хранить по закону
-  const safeData = {
-    first_name: data.first_name,
-    last_name: data.last_name,
-    middle_name: data.middle_name,
-    phone: data.phone,
-  };
-
-  const { data: client, error } = await supabase
-    .from("clients")
-    .upsert(safeData, {
-      onConflict: "phone", // Убедись, что в Supabase на колонке phone стоит Unique constraint
-      ignoreDuplicates: false,
-    })
-    .select()
-    .single();
-
-  if (error) {
-    console.error("Ошибка при работе с клиентом:", error);
-    throw new Error(error.message);
-  }
-
-  return client as Client;
-}
-
-// Загрузка клиента по ID вместе с его заказами
 export const getClientById = async (id: string) => {
   const { data, error } = await supabase
     .from("clients")
@@ -114,7 +101,6 @@ export const getClientById = async (id: string) => {
   return data;
 };
 
-// Обновление данных клиента
 export async function updateClient(
   id: string,
   data: Partial<CreateClientInput>,
@@ -134,7 +120,6 @@ export async function updateClient(
   return updatedClient as Client;
 }
 
-// Удаление клиента
 export async function deleteClient(id: string): Promise<void> {
   const { error } = await supabase.from("clients").delete().eq("id", id);
 

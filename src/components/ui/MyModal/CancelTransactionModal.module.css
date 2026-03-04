@@ -6,7 +6,6 @@
   text-align: center;
 }
 
-/* Иконки */
 .iconContainerRed,
 .iconContainerGreen {
   margin-bottom: 16px;
@@ -27,7 +26,6 @@
   background: rgba(16, 185, 129, 0.1);
 }
 
-/* Тексты */
 .confirmMessage {
   font-size: 18px;
   font-weight: 600;
@@ -56,10 +54,9 @@
   color: var(--text-secondary);
 }
 
-/* Кнопки */
 .modalActions {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Две равные колонки */
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
   margin-top: 20px;
 }
@@ -92,7 +89,6 @@
   border: 1px solid var(--border);
 }
 
-/* Ховеры и состояния */
 .confirmBtn:hover:not(:disabled),
 .restoreBtnConfirm:hover:not(:disabled) {
   opacity: 0.85;

@@ -11,16 +11,15 @@ export default function MaintenanceProgress({
   current,
   interval,
 }: MaintenanceProgressProps) {
-  // Вычисляем процент (защита от деления на 0 и переполнения)
   const maxInterval = interval > 0 ? interval : 1;
   const percentage = Math.min(Math.round((current / maxInterval) * 100), 100);
 
   // Логика выбора цвета
-  let color = "#4caf50"; // Зеленый (ОК)
+  let color = "#4caf50";
   if (percentage >= 90) {
-    color = "#ef4444"; // Красный (Критично)
+    color = "#ef4444";
   } else if (percentage >= 70) {
-    color = "#f59e0b"; // Оранжевый (Внимание)
+    color = "#f59e0b";
   }
 
   return (

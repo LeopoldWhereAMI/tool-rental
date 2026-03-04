@@ -2,13 +2,12 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  /* Убрали background, border, padding, min-width */
 }
 
 .dateLabel {
   font-size: 11px;
   font-weight: 500;
-  color: #64748b; /* Серый цвет лейбла */
+  color: #64748b;
   text-transform: uppercase;
 }
 
@@ -18,21 +17,18 @@
   line-height: 1.2;
 }
 
-/* Цвета только для текста */
 .overdue .statusText {
-  color: #ef4444; /* Красный для просрочки */
+  color: #ef4444;
 }
 
 .onTime .statusText {
-  color: #f8fafc; /* Белый/светлый для обычного состояния в темной теме */
+  color: #f8fafc;
 }
 
 .today .statusText {
-  color: #3b82f6; /* Синий для "Сегодня" */
+  color: #3b82f6;
 }
 
 .completed .statusText {
   color: #94a3b8;
 }
-
-/* Удаляем анимацию pulseOpacity, она не нужна для текста */

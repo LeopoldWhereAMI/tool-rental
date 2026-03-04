@@ -9,62 +9,55 @@
   justify-content: space-between;
 }
 
-/* Левая часть с информацией */
 .pageInfo {
-  color: var(--text-muted); /* slate-500 */
-  font-size: 14px; /* text-sm */
-  font-weight: 500; /* font-medium */
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
 }
 
-/* Контейнер для кнопок (gap-2) */
 .buttonGroup {
   display: flex;
-  gap: 8px; /* gap-2 */
+  gap: 8px;
 }
 
-/* Базовые стили для обеих кнопок */
 .pageBtn {
-  padding: 4px 12px; /* px-3 py-1 */
-  border-radius: 8px; /* rounded-lg */
-  font-size: 12px; /* text-xs */
-  font-weight: 700; /* font-bold */
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
   border: 1px solid transparent;
 }
 
-/* Кнопка Previous (неактивная страница) */
 .pageBtnPrev {
-  background-color: #161e2e; /* card */
-  border-color: #1f2937; /* border-color */
-  color: #94a3b8; /* slate-400 */
+  background-color: #161e2e;
+  border-color: #1f2937;
+  color: #94a3b8;
 }
 
 .pageBtnPrev:hover:not(:disabled) {
-  color: #ffffff; /* text-white */
-  border-color: #2b5bee; /* primary */
+  color: #ffffff;
+  border-color: #2b5bee;
 }
 
-/* Кнопка Next (активная, синяя) */
 .pageBtnNext {
-  background-color: #2b5bee; /* primary */
+  background-color: #2b5bee;
   color: #ffffff;
   border: none;
   box-shadow: 0 4px 14px rgba(43, 91, 238, 0.2);
 }
 
 .pageBtnNext:hover:not(:disabled) {
-  background-color: #1e4bd1; /* hover:bg-blue-600 */
+  background-color: #1e4bd1;
 }
 
-/* Общее состояние disabled */
 .pageBtn:disabled {
-  opacity: 0.5; /* opacity-50 */
+  opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
 }
 
-/* Адаптивность для мобильных (как в образце, но можно убрать скрытие текста, если нужно) */
 @media (max-width: 380px) {
   .pagination {
     padding: 12px;

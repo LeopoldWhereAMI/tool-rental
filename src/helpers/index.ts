@@ -403,9 +403,9 @@ export const calculateClientStats = (clients: ClientWithOrders[]) => {
   const newTrend = getTrend(newThisMonth, newLastMonth);
 
   return {
-    total, // Всего
-    totalTrend, // Рост базы за месяц в %
-    active, // Активные сейчас (чел)
+    total,
+    totalTrend,
+    active,
     activeRate, // % активных от всей базы
     newThisMonth, // Новые в этом месяце (чел)
     newTrend, // Динамика привлечения в %

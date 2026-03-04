@@ -43,7 +43,6 @@ export default function ClientRow({
 
   return (
     <tr className={`${styles.row} ${isBlocked ? styles.rowBlacklisted : ""}`}>
-      {/* 1. Имя клиента */}
       <td>
         <div className={styles.nameCell}>
           <div
@@ -83,7 +82,6 @@ export default function ClientRow({
         </div>
       </td>
 
-      {/* 2. Контактные данные */}
       <td>
         <div className={styles.contactCell}>
           <a href={`tel:${client.phone}`} className={styles.contactPhone}>
@@ -92,7 +90,6 @@ export default function ClientRow({
         </div>
       </td>
 
-      {/* 3. Заказы */}
       <td>
         <div className={styles.ordersCell}>
           <div className={styles.totalOrders}>
@@ -110,7 +107,6 @@ export default function ClientRow({
         </div>
       </td>
 
-      {/* 4. Статус */}
       <td>
         {isBlocked ? (
           <span className={styles.statusBlacklistedBadge}>
@@ -128,14 +124,12 @@ export default function ClientRow({
         )}
       </td>
 
-      {/* 5. Лояльность */}
       <td>
         <span className={`${styles.loyaltyBadge} ${styles[loyalty.className]}`}>
           {loyalty.text}
         </span>
       </td>
 
-      {/* 6. Действия */}
       <td className={styles.actionsCell}>
         <div className={styles.actionsWrapper}>
           <Link href={`/clients/${client.id}`} className={styles.viewButton}>

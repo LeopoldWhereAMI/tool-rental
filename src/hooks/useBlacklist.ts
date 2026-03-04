@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabase/supabase";
 import { useRouter } from "next/navigation";
-import { useSWRConfig } from "swr"; // 1. Импортируем конфиг
+import { useSWRConfig } from "swr";
 
 export function useBlacklist() {
   const [loading, setLoading] = useState(false);
@@ -9,7 +9,7 @@ export function useBlacklist() {
   const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
 
   const router = useRouter();
-  const { mutate } = useSWRConfig(); // 2. Получаем глобальный mutate
+  const { mutate } = useSWRConfig();
 
   const openBlacklistModal = (id: string) => {
     setSelectedClientId(id);
@@ -34,10 +34,8 @@ export function useBlacklist() {
 
       if (error) throw error;
 
-      // 3. Сбрасываем кеш SWR по ключам
-      // Очищаем список всех клиентов
       mutate("clients");
-      // Очищаем детали конкретного клиента (если ключ в useClientDetails выглядит так)
+
       mutate(`client-${id}`);
 
       router.refresh();
@@ -62,7 +60,6 @@ export function useBlacklist() {
 
       if (error) throw error;
 
-      // 4. Те же действия для разблокировки
       mutate("clients");
       mutate(`client-${id}`);
 

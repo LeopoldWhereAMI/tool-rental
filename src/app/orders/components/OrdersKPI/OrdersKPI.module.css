@@ -21,23 +21,16 @@
   box-shadow: 0 12px 24px rgba(43, 91, 238, 0.15);
 }
 
-/* Стили для иконки */
 .iconWrapper {
-  color: var(--primary); /* Основной синий цвет для иконок */
+  color: var(--primary);
   margin-bottom: 4px;
   display: flex;
   align-items: center;
 }
 
-/* Если карточка критическая, иконка тоже красится в красный */
 .critical .iconWrapper {
   color: #ef4444;
 }
-
-/* .critical:hover {
-  border-color: #ef4444;
-  box-shadow: 0 20px 25px -5px rgba(239, 68, 68, 0.15);
-} */
 
 .title {
   color: var(--text-main);
@@ -64,11 +57,6 @@
 .cancelled .value {
   color: #fca5a5;
 }
-
-/* .cancelled:hover {
-  border-color: #fca5a5;
-  box-shadow: 0 20px 25px -5px rgba(252, 165, 165, 0.2);
-} */
 
 @media (max-width: 561px) {
   .kpiGrid {

@@ -15,7 +15,6 @@ import Link from "next/link";
 import InventoryFilters from "@/components/Inventory/InventoryFilters/InventoryFilters";
 import SearchInput from "@/components/SearchInput/SearchInput";
 import { useInventoryFilters } from "@/hooks/useInventoryFilters";
-
 import StatCard from "./components/StatCard";
 import InventoryTable from "./components/InventoryTable";
 import ViewToggle from "@/components/ui/ViewToggle/ViewToggle";
@@ -37,7 +36,6 @@ export default function InventoryPage() {
 
   return (
     <div className={styles.container}>
-      {/* --- Header --- */}
       <div className={styles.header}>
         <div>
           <h1 className={styles.title}>Управление инвентарем</h1>
@@ -54,9 +52,7 @@ export default function InventoryPage() {
         </div>
       </div>
 
-      {/* --- Stats Cards --- */}
       <div className={styles.statsGrid}>
-        {/* Total Card */}
         <StatCard
           label="Всего инструментов"
           value={stats?.total}
@@ -66,7 +62,6 @@ export default function InventoryPage() {
           loading={loading}
         />
 
-        {/* Available Card */}
         <StatCard
           label="Доступно"
           value={stats?.available}
@@ -76,7 +71,6 @@ export default function InventoryPage() {
           loading={loading}
         />
 
-        {/* In Rent Card */}
         <StatCard
           label="В аренде"
           value={stats?.rented}
@@ -86,7 +80,6 @@ export default function InventoryPage() {
           loading={loading}
         />
 
-        {/* Maintenance Card */}
         <StatCard
           label="В ремонте"
           value={stats?.maintenance}
@@ -97,7 +90,6 @@ export default function InventoryPage() {
         />
       </div>
 
-      {/* --- Filter Bar & List --- */}
       <>
         <div className={styles.filterBar}>
           <div className={styles.left}>

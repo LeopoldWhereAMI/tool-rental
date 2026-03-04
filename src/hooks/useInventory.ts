@@ -1,6 +1,7 @@
+import { supabase } from "@/lib/supabase/supabase";
 import { loadInventory } from "@/services/inventoryService";
 import { InventoryUI } from "@/types";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 
 export interface InventoryStats {
@@ -21,9 +22,26 @@ const fetcher = async (): Promise<InventoryUI[]> => {
 };
 
 export const useInventory = () => {
-  const { data, error, isLoading, mutate } = useSWR("inventory", fetcher, {
-    revalidateOnFocus: false,
-  });
+  const [userId, setUserId] = useState<string | null>(null);
+
+  // 1. Получаем ID пользователя для ключа SWR
+  useEffect(() => {
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUserId(user?.id ?? null);
+    };
+    getUser();
+  }, []);
+
+  const { data, error, isLoading, mutate } = useSWR(
+    userId ? ["inventory", userId] : null,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+    },
+  );
 
   const stats: InventoryStats = useMemo(() => {
     if (!data || data.length === 0)
@@ -50,7 +68,7 @@ export const useInventory = () => {
   return {
     items: data ?? [],
     stats,
-    loading: isLoading,
+    loading: isLoading || (userId === null && !error),
     error: error?.message ?? null,
     refresh: mutate,
   };

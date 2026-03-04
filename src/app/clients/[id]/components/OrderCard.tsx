@@ -20,7 +20,6 @@ interface OrderCardProps {
 
 export default function OrderCard({ order, variant = "list" }: OrderCardProps) {
   const status = validateOrderStatus(order.status);
-
   const firstItem = order.order_items?.[0];
   const startDate = firstItem?.start_date || order.start_date;
   const endDate = firstItem?.end_date || order.end_date;
@@ -43,7 +42,6 @@ export default function OrderCard({ order, variant = "list" }: OrderCardProps) {
         title="Открыть заказ"
       >
         <div className={styles.activeCardContent}>
-          {/* Верхний ряд: Основная инфа */}
           <div className={styles.activeCardMain}>
             <div className={styles.toolIconBox}>
               <Box size={22} strokeWidth={2.5} />
@@ -64,7 +62,6 @@ export default function OrderCard({ order, variant = "list" }: OrderCardProps) {
           </div>
         </div>
 
-        {/* Нижний ряд: Даты и Цена */}
         <div className={styles.activeCardDetails}>
           <div className={styles.detailItem}>
             <Calendar size={14} />

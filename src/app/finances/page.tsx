@@ -51,13 +51,11 @@ export default function FinancePage() {
 
   return (
     <>
-      {/* Шапка страницы */}
       <div className={styles.header}>
         <h1 className={styles.title}>Управление финансами</h1>
       </div>
 
       <>
-        {/* Верхние карточки с показателями */}
         <div className={styles.cardsGrid}>
           <FinanceCard
             title="Текущий баланс"
@@ -103,14 +101,12 @@ export default function FinancePage() {
         </div>
 
         <div className={styles.mainContent}>
-          {/* Форма вывода средств (передаем функцию обновления) */}
           <FinanceActionForm
             currentBalance={stats?.currentBalance || 0}
             onActionComplete={actions.refresh}
             loading={loading}
           />
 
-          {/* Секция истории транзакций */}
           <div className={styles.transactionCard}>
             <div className={styles.transactionHeader}>
               <h2 className={styles.transactionTitle}>История транзакций</h2>

@@ -66,21 +66,19 @@
 
 .contentBody {
   display: flex;
-  gap: 32px; /* Расстояние между галереей и формой */
+  gap: 32px;
   align-items: flex-start;
 }
 
-/* Левая колонка (Галерея) */
 .leftColumn {
-  flex: 0 0 300px; /* Фиксированная ширина галереи 300px */
-  position: sticky; /* Чтобы галерея не улетала при скролле формы */
+  flex: 0 0 300px;
+  position: sticky;
   top: 24px;
 }
 
-/* Правая колонка (Форма) */
 .rightColumn {
-  flex: 1; /* Занимает всё оставшееся пространство */
-  min-width: 0; /* Важно для корректной работы flex внутри */
+  flex: 1;
+  min-width: 0;
 }
 
 @media (hover: hover) {

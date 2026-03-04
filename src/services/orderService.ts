@@ -95,49 +95,6 @@ interface SupabaseOrderRow {
   }[];
 }
 
-// Получение заказа по ID с детализацией инструментов
-// export const getOrderById = async (
-//   id: string,
-// ): Promise<DetailedOrderResponse> => {
-//   const { data, error } = await supabase
-//     .from("orders")
-//     .select(
-//       `
-//       *,
-//       client:clients(*),
-//       order_items(
-//         id,
-//         price_at_time,
-//         start_date,
-//         end_date,
-//         inventory(*)
-//       )
-//     `,
-//     )
-//     .eq("id", id)
-//     .single();
-
-//   if (error) throw error;
-
-//   const orderData = data as unknown as SupabaseOrderRow;
-
-//   if (!orderData) throw new Error("Order not found");
-
-//   const tools: OrderTool[] = (orderData.order_items || []).map((item) => ({
-//     ...item.inventory,
-//     price_at_time: item.price_at_time,
-//     start_date: item.start_date,
-//     end_date: item.end_date,
-//   }));
-
-//   return {
-//     ...orderData,
-
-//     inventory: orderData.order_items?.[0]?.inventory || null,
-//     tools: tools,
-//   };
-// };
-
 export const getOrderById = async (id: string): Promise<OrderDetailsUI> => {
   const { data, error } = await supabase
     .from("orders")

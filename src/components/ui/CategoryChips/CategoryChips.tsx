@@ -21,7 +21,6 @@ export default function CategoryChips({ value, onChange }: CategoryChipsProps) {
         const isActive = value === category.value;
         const IconComponent = category.icon;
 
-        // Формируем класс для иконки: общая база + специфичный цвет
         const iconClassName = `${styles.chipIcon} ${
           category.value === "gas_tools"
             ? styles.gasIcon

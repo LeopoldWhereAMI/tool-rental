@@ -46,7 +46,6 @@ export default function TransactionTable({
                 key={transaction.id}
                 className={`${styles.tableRow} ${isCancelled ? styles.rowCancelled : ""}`}
               >
-                {/* Дата и время */}
                 <td className={styles.tableCell}>
                   <div className={styles.dateBlock}>
                     <div className={styles.dateMain}>
@@ -71,7 +70,6 @@ export default function TransactionTable({
                   </div>
                 </td>
 
-                {/* Описание (номер заказа) */}
                 <td className={styles.tableCell}>
                   <div className={styles.descriptionBlock}>
                     <div className={styles.descriptionMain}>
@@ -85,7 +83,6 @@ export default function TransactionTable({
                   </div>
                 </td>
 
-                {/* Тип */}
                 <td className={styles.tableCell}>
                   <span
                     className={styles.typeBadge}
@@ -96,7 +93,6 @@ export default function TransactionTable({
                   </span>
                 </td>
 
-                {/* Сумма */}
                 <td className={styles.tableCell}>
                   <span
                     className={styles.amountText}
@@ -112,16 +108,14 @@ export default function TransactionTable({
 
                 <td className={styles.tableCell} style={{ textAlign: "right" }}>
                   {isCancelled ? (
-                    /* Кнопка ВОССТАНОВЛЕНИЯ */
                     <button
-                      onClick={() => onCancel(transaction.id)} // Механика та же — открываем модалку
+                      onClick={() => onCancel(transaction.id)}
                       className={styles.restoreBtn}
                       title="Восстановить операцию"
                     >
                       <RotateCw size={16} />
                     </button>
                   ) : (
-                    /* Кнопка ОТМЕНЫ */
                     <button
                       onClick={() => onCancel(transaction.id)}
                       className={styles.cancelBtn}

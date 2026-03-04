@@ -32,7 +32,6 @@ type ActionsMenuProps = {
 export default function ActionsMenu({
   id,
   onClose,
-  isMaintenanceDisabled,
   anchor,
   currentStatus,
   onDeleteClick,

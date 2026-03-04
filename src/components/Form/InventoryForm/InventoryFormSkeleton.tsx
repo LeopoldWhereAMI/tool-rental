@@ -5,10 +5,8 @@ import styles from "../InputWithIcon/InputWithIcon.module.css";
 export default function InventoryFormSkeleton() {
   return (
     <PageWrapper>
-      {/* Используем тот же класс, что и у реальной формы */}
       <div className={styles.addInventoryForm}>
         <div className={styles.skeletonTitle}>
-          {/* Имитируем заголовок h1 с его нижней границей */}
           <Skeleton width="100%" height={32} />
         </div>
 
@@ -27,7 +25,6 @@ export default function InventoryFormSkeleton() {
           <Skeleton width="100%" height={120} borderRadius="8px" />
         </div>
 
-        {/* Кнопка сохранения */}
         <div className={styles.skeletonButton}>
           <Skeleton width="220px" height={48} borderRadius="8px" />
         </div>

@@ -45,7 +45,6 @@ export default function ClientCard({
     <div
       className={`${styles.card} ${isBlocked ? styles.cardBlacklisted : ""}`}
     >
-      {/* Header */}
       <div className={styles.cardHeader}>
         <div className={styles.cardAvatarBlock}>
           <div
@@ -107,7 +106,6 @@ export default function ClientCard({
         </div>
       </div>
 
-      {/* Contact */}
       <div className={styles.cardSection}>
         <span className={styles.cardSectionLabel}>Контакт</span>
         <a href={`tel:${client.phone}`} className={styles.cardContactPhone}>
@@ -115,7 +113,6 @@ export default function ClientCard({
         </a>
       </div>
 
-      {/* Orders */}
       <div className={styles.cardSection}>
         <span className={styles.cardSectionLabel}>Заказы</span>
         <div className={styles.cardOrdersInfo}>
@@ -134,7 +131,6 @@ export default function ClientCard({
         </div>
       </div>
 
-      {/* Status & Loyalty */}
       <div className={styles.cardFooter}>
         <div>
           {isBlocked ? (

@@ -1,9 +1,8 @@
 .footer {
-  /* width: 100%; */
   background-color: var(--bg-header);
   backdrop-filter: blur(12px);
   color: var(--text-muted);
-  padding: 1rem var(--default-padding); /* Маленькие отступы */
+  padding: 1rem var(--default-padding);
   border-top: 1px solid var(--border);
   margin-top: auto;
   margin-left: var(--sidebar-width);
@@ -81,8 +80,7 @@
 
 @media (max-width: 400px) {
   .footer {
-    padding: 12px 16px; /* Чуть больше воздуха по бокам, меньше по вертикали */
-    /* Убедись, что футер не перекрывается MobileNav, если он фиксирован */
+    padding: 12px 16px;
     padding-bottom: calc(12px + var(--mobile-nav-height, 0px));
     margin-top: 0;
   }
@@ -90,21 +88,21 @@
   .container {
     flex-direction: column;
     align-items: center;
-    gap: 8px; /* Расстояние между лого/копирайтом и версией */
+    gap: 8px;
     text-align: center;
   }
 
   .copyright {
-    border-left: none; /* Убираем вертикальную черту, она мешает при колонке */
+    border-left: none;
     padding-left: 0;
     font-size: 0.7rem;
     line-height: 1.4;
-    max-width: 200px; /* Чтобы текст красиво переносился */
+    max-width: 200px;
   }
 
   .status {
     font-size: 0.7rem;
     padding: 2px 8px;
-    opacity: 0.8; /* Делаем версию менее заметной, чтобы не отвлекала */
+    opacity: 0.8;
   }
 }
