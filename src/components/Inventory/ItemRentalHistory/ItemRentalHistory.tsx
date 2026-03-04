@@ -4,6 +4,7 @@ import { useItemHistory } from "@/hooks/useItemHistory";
 import { Clock, User, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import styles from "./ItemRentalHistory.module.css";
+import { validateOrderStatus } from "@/helpers";
 
 interface ItemRentalHistoryProps {
   itemId: string;
@@ -37,7 +38,6 @@ export default function ItemRentalHistory({ itemId }: ItemRentalHistoryProps) {
                 <div className={styles.historyMain}>
                   <div className={styles.clientInfo}>
                     <User size={14} className={styles.iconSecondary} />
-                    {/* ОБНОВЛЕНО: Используем плоское поле client_name */}
                     <span>{rental.client_name}</span>
                   </div>
                   <span className={styles.historyPrice}>
@@ -53,15 +53,7 @@ export default function ItemRentalHistory({ itemId }: ItemRentalHistoryProps) {
                 </div>
 
                 <div className={styles.historyActions}>
-                  <span
-                    className={`${styles.miniStatus} ${
-                      rental.status
-                        ? styles[rental.status as keyof typeof styles]
-                        : ""
-                    }`}
-                  >
-                    {rental.status === "completed" ? "Завершено" : "В работе"}
-                  </span>
+                  <StatusBadge status={rental.status || "unknown"} />
                   <Link
                     href={`/orders/${rental.order_id}`}
                     className={styles.detailsLink}
@@ -81,3 +73,11 @@ export default function ItemRentalHistory({ itemId }: ItemRentalHistoryProps) {
     </div>
   );
 }
+
+// Вспомогательный компонент для статусов
+const StatusBadge = ({ status }: { status: string }) => {
+  const { text, className } = validateOrderStatus(status);
+  const badgeClass = `${styles.miniStatus} ${styles[className] || ""}`;
+
+  return <span className={badgeClass}>{text}</span>;
+};

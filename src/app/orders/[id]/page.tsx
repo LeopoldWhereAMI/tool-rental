@@ -11,7 +11,7 @@ import {
   getOrderDateRange,
   validateOrderStatus,
 } from "@/helpers";
-import { Calendar, CreditCard, ImageIcon, Printer } from "lucide-react";
+import { Calendar, CreditCard, ImageIcon, Printer, Timer } from "lucide-react";
 
 import { useReactToPrint } from "react-to-print";
 import {
@@ -89,7 +89,6 @@ export default function OrderDetailsPage() {
         .then((data) => {
           setOrder(data);
           if (data) {
-            // Инициализируем сумму сразу при получении данных
             setActualTotal(data.total_price);
           }
         })
@@ -125,7 +124,6 @@ export default function OrderDetailsPage() {
   return (
     <PageContainer>
       <div className={styles.pageContainer}>
-        {/* Верхняя панель навигации */}
         <div className={styles.topNav}>
           <div className={styles.navLeft}>
             <Breadcrumbs
@@ -204,12 +202,14 @@ export default function OrderDetailsPage() {
                     </span>
 
                     <div className={styles.heroPriceTag}>
-                      {calculateItemTotal(
-                        mainItem.start_date,
-                        mainItem.end_date,
-                        mainItem.price_at_time,
-                      )}{" "}
-                      ₽
+                      <span className={styles.heroPrice}>
+                        {calculateItemTotal(
+                          mainItem.start_date,
+                          mainItem.end_date,
+                          mainItem.price_at_time,
+                        )}{" "}
+                        ₽
+                      </span>
                       <span className={styles.heroDaysLabel}>
                         ({calculateDays(mainItem.start_date, mainItem.end_date)}{" "}
                         дн.)
@@ -227,6 +227,7 @@ export default function OrderDetailsPage() {
             {/* Статус выполнения идет ниже в обоих случаях */}
             <section className={styles.whiteBox}>
               <div className={styles.boxHeader}>
+                <Timer size={18} />
                 <h3>Статус выполнения</h3>
               </div>
               <OrderStatusJourney
@@ -243,6 +244,22 @@ export default function OrderDetailsPage() {
 
           {/* ПРАВАЯ ЧАСТЬ: САЙДБАР С ДЕТАЛЯМИ */}
           <aside className={styles.sidebar}>
+            <div className={styles.deadlineBanner}>
+              <div className={styles.deadlineIcon}>
+                <Calendar size={24} />
+              </div>
+              <div className={styles.deadlineText}>
+                <span className={styles.deadlineLabel}>СРОК ВОЗВРАТА</span>
+                <span className={styles.deadlineDate}>
+                  {orderDates.end
+                    ? new Date(orderDates.end).toLocaleDateString("ru-RU", {
+                        day: "numeric",
+                        month: "long",
+                      })
+                    : "—"}
+                </span>
+              </div>
+            </div>
             {/* Блок клиента */}
             <section className={styles.sidebarCard}>
               <OrderClientInfo client={order.client} />
@@ -281,22 +298,6 @@ export default function OrderDetailsPage() {
             )}
 
             {/* Дедлайн */}
-            <div className={styles.deadlineBanner}>
-              <div className={styles.deadlineIcon}>
-                <Calendar size={24} />
-              </div>
-              <div className={styles.deadlineText}>
-                <span className={styles.deadlineLabel}>СРОК ВОЗВРАТА</span>
-                <span className={styles.deadlineDate}>
-                  {orderDates.end
-                    ? new Date(orderDates.end).toLocaleDateString("ru-RU", {
-                        day: "numeric",
-                        month: "long",
-                      })
-                    : "—"}
-                </span>
-              </div>
-            </div>
           </aside>
         </div>
 

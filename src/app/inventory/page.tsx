@@ -24,10 +24,8 @@ import MainSceleton from "@/components/ui/Skeleton/MainSceleton";
 
 export default function InventoryPage() {
   const { query, setQuery } = useSearchStore();
-
   const { items, stats, loading, error, refresh } = useInventory();
   const { viewMode, setViewMode } = useAdaptiveView("inventory");
-
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const { filteredItems, categories } = useInventoryFilters({
@@ -66,7 +64,6 @@ export default function InventoryPage() {
           iconColor="#9ca3af"
           iconBg="#2e333d"
           loading={loading}
-          trend={stats?.totalTrend}
         />
 
         {/* Available Card */}
@@ -77,7 +74,6 @@ export default function InventoryPage() {
           iconColor="#10b981"
           iconBg="rgba(16, 185, 129, 0.1)"
           loading={loading}
-          suffix={`${stats?.availablePct}%`}
         />
 
         {/* In Rent Card */}
@@ -88,7 +84,6 @@ export default function InventoryPage() {
           iconColor="#3b82f6"
           iconBg="rgba(59, 130, 246, 0.1)"
           loading={loading}
-          trend={stats?.rentedTrend}
         />
 
         {/* Maintenance Card */}
@@ -99,13 +94,11 @@ export default function InventoryPage() {
           iconColor="#f59e0b"
           iconBg="rgba(245, 158, 11, 0.1)"
           loading={loading}
-          trend={stats?.maintenanceTrend}
-          invertTrend={true}
         />
       </div>
 
       {/* --- Filter Bar & List --- */}
-      <div className={styles.inventoryListWrapper}>
+      <>
         <div className={styles.filterBar}>
           <div className={styles.left}>
             <SearchInput value={query} setSearch={setQuery} />
@@ -134,7 +127,7 @@ export default function InventoryPage() {
             refresh={refresh}
           />
         )}
-      </div>
+      </>
     </div>
   );
 }

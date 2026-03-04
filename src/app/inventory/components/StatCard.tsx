@@ -3,7 +3,6 @@
 import { LucideIcon } from "lucide-react";
 import styles from "../page.module.css";
 import Skeleton from "@/components/ui/Skeleton/Skeleton";
-import TrendBadge from "@/components/ui/TrendBadge/TrendBadge";
 
 interface StatCardProps {
   label: string;
@@ -12,9 +11,6 @@ interface StatCardProps {
   iconColor: string;
   iconBg: string;
   loading: boolean;
-  trend?: number;
-  invertTrend?: boolean;
-  suffix?: string; // Например, "% от общего"
 }
 
 export default function StatCard({
@@ -24,9 +20,6 @@ export default function StatCard({
   iconColor,
   iconBg,
   loading,
-  trend,
-  invertTrend,
-  suffix,
 }: StatCardProps) {
   return (
     <div className={styles.statCard}>
@@ -37,19 +30,6 @@ export default function StatCard({
         >
           <Icon size={20} color={iconColor} />
         </div>
-
-        {loading ? (
-          <Skeleton width="42px" height="20px" borderRadius="4px" />
-        ) : (
-          <>
-            {trend !== undefined && (
-              <TrendBadge value={trend} invert={invertTrend} />
-            )}
-            {suffix && !trend && (
-              <span className={styles.statLabelSuffix}>{suffix}</span>
-            )}
-          </>
-        )}
       </div>
 
       <div className={styles.statContent}>

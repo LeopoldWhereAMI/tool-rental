@@ -1,15 +1,6 @@
 import { DATE_LOCALE, DATE_OPTIONS } from "@/constants";
 import { calculateOrderTotal } from "@/services/orderService";
 import { ClientWithOrders, OrderDetailsUI, OrderUI } from "@/types";
-import { Fuel, PackageSearch, Package, Zap } from "lucide-react";
-// export const inventoryListTitles = [
-//   { id: "Артикул", text: "Артикул" },
-//   { id: "Название", text: "инструмент" },
-//   { id: "Все категории", text: "Все категории", filter: "select" },
-//   { id: "Серийный номер", text: "Серийный номер" },
-//   { id: "Статус", text: "Статус" },
-//   { id: "Стоимость аренды", text: "Стоимость аренды" },
-// ];
 
 export const validateCategory = (value: string) => {
   let category = "";
@@ -21,8 +12,7 @@ export const validateCategory = (value: string) => {
     case "electric_tools":
       category = "Электро";
       break;
-    // default:
-    //   category = "Неизвестная категория";
+
     default:
       return "Инструмент";
   }

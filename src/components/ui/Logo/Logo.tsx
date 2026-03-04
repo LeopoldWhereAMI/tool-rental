@@ -5,7 +5,7 @@ export default function Logo({ className = "" }: { className?: string }) {
     <div className={`${styles.logo} ${className}`}>
       <div className={styles.brandIcon}>🛠️</div>
       <span className={styles.brandName}>
-        RENT<strong>App</strong>
+        RENT<strong>APP</strong>
       </span>
     </div>
   );

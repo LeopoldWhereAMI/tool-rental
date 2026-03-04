@@ -2,10 +2,10 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background: #161e2d; /* Темно-синий фон контейнера */
+  background: var(--surface);
   padding: 4px;
   border-radius: 10px;
-  border: 1px solid #1e293b;
+  border: 1px solid var(--border);
   height: 40px;
   box-sizing: border-box;
   flex-shrink: 0;
@@ -14,22 +14,21 @@
 .filterBtn {
   height: 100%;
   padding: 0 16px;
-  border-radius: 8px;
+  border-radius: 6px;
   border: none;
   cursor: pointer;
   background: transparent;
   font-size: 13px;
   font-weight: 500;
-  color: #94a3b8; /* Приглушенный серый для неактивных */
+  color: var(--text-muted);
   white-space: nowrap;
   display: flex;
   align-items: center;
   transition: all 0.2s ease;
 }
 
-/* Универсальный активный стиль — ярко-синий как на макете */
 .activeFilter {
-  background: #2563eb;
+  background: var(--primary);
   color: #ffffff;
   font-weight: 600;
   box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
@@ -37,8 +36,12 @@
 
 @media (hover: hover) {
   .filterBtn:hover:not(.activeFilter) {
-    color: #f8fafc;
-    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+    background: color-mix(in srgb, var(--text-main), transparent 92%);
+  }
+
+  .filterBtn:active:not(.activeFilter) {
+    transform: scale(0.96);
   }
 }
 
@@ -47,12 +50,12 @@
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Скрываем скролл в FF */
+    scrollbar-width: none;
     justify-content: flex-start;
   }
 
   .filters::-webkit-scrollbar {
-    display: none; /* Скрываем скролл в Chrome/Safari */
+    display: none;
   }
 
   .filterBtn {

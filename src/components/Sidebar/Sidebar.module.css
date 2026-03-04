@@ -4,13 +4,12 @@
   position: fixed;
   top: 0;
   left: 0;
-  overflow-y: auto;
-  background-color: #0b0f1a;
-  border-right: 1px solid #1e293b;
-  padding: 1rem 0;
   display: flex;
   flex-direction: column;
-  box-shadow: inset -1px 0 0 0 rgba(255, 255, 255, 0.05);
+  padding: 1rem 0;
+  overflow-y: auto;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
 }
 
 /* Настройка скроллбара внутри сайдбара (сделаем его аккуратным) */
@@ -45,29 +44,26 @@
   align-items: center;
   gap: 12px;
   padding: 12px 24px; /* Увеличили боковой отступ */
-  color: #94a3b8; /* Приглушенный текст */
+  color: var(--text-secondary);
   text-decoration: none;
   font-size: 14px;
-  font-weight: 500;
   transition: all 0.2s;
 }
 
 .asideNavList li:hover .navLink {
-  color: #f8fafc;
-  background-color: #161e2d; /* Тонкий намек на синий в фоне */
+  color: var(--text-main);
 }
 
 .asideNavList li:hover:not(.active) {
-  background-color: #1f2937;
-  color: var(--color-white);
+  background-color: var(--nav-hover-bg);
 }
 
 .asideNavList li.active {
-  background-color: #161e2d; /* Фон как у ховера или чуть темнее */
+  background-color: var(--nav-active-bg);
 }
 
 .asideNavList li.active .navLink {
-  color: #3b82f6; /* Текст становится синим */
+  color: var(--nav-active-text);
 }
 
 .asideNavList li.active::before {
@@ -77,8 +73,8 @@
   top: 0;
   bottom: 0;
   width: 3px;
-  background-color: #2563eb;
-  box-shadow: 0 0 10px rgba(37, 99, 235, 0.5); /* Легкое свечение */
+  background-color: var(--primary);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--primary), transparent 50%);
 }
 
 @media (max-width: 1150px) {
@@ -96,7 +92,7 @@
   }
 
   .active .navLink {
-    color: #2563eb;
+    color: var(--nav-active-text);
   }
 
   .navLink {

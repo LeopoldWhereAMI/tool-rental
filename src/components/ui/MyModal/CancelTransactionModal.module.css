@@ -31,15 +31,15 @@
 .confirmMessage {
   font-size: 18px;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-secondary);
   margin-bottom: 16px;
 }
 
 .detailsBox {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--nav-hover-bg);
   padding: 16px;
   border-radius: 12px;
-  border: 1px solid var(--border-dark);
+  border: 1px solid var(--border);
   min-width: 280px;
 }
 
@@ -53,7 +53,7 @@
 .amountValue {
   font-size: 24px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-secondary);
 }
 
 /* Кнопки */
@@ -73,6 +73,7 @@
   cursor: pointer;
   transition: all 0.2s;
   border: none;
+  transition: all 0.3s ease;
 }
 
 .confirmBtn {
@@ -86,9 +87,9 @@
 }
 
 .backBtn {
-  background-color: var(--surface-dark);
-  color: #fff;
-  border: 1px solid var(--border-dark);
+  background-color: var(--nav-hover-bg);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
 }
 
 /* Ховеры и состояния */
@@ -99,7 +100,8 @@
 }
 
 .backBtn:hover:not(:disabled) {
-  background-color: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
+  color: var(--text-main);
 }
 
 .confirmBtn:disabled,

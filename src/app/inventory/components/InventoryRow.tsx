@@ -135,6 +135,7 @@ export default function InventoryRow({
             anchor={anchor}
             currentStatus={item.status}
             onClose={closeMenu}
+            isMaintenanceDisabled={item.status === "rented"}
             onDeleteClick={() => {
               setDeleteItemId(item.id);
               closeMenu();

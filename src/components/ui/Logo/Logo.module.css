@@ -2,9 +2,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 20px; /* Чуть меньше для хедера */
+  font-size: 20px;
   letter-spacing: -0.5px;
-  color: #1e293b;
+  color: #768eaf;
   user-select: none;
 }
 

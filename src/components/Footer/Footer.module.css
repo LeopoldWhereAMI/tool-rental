@@ -1,9 +1,10 @@
 .footer {
   /* width: 100%; */
-  background-color: rgba(16, 21, 34, 0.8);
-  color: #94a3b8;
+  background-color: var(--bg-header);
+  backdrop-filter: blur(12px);
+  color: var(--text-muted);
   padding: 1rem var(--default-padding); /* Маленькие отступы */
-  border-top: 1px solid #2d3856;
+  border-top: 1px solid var(--border);
   margin-top: auto;
   margin-left: var(--sidebar-width);
   width: calc(100% - var(--sidebar-width));
@@ -27,11 +28,11 @@
   align-items: center;
   gap: 8px;
   font-size: 0.8rem;
-  color: #94a3b8;
+  color: var(--text-muted);
   background: rgba(255, 255, 255, 0.03);
   padding: 4px 12px;
   border-radius: 100px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
 }
 
 @media (max-width: 1150px) {

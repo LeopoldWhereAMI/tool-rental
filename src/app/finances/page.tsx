@@ -131,14 +131,13 @@ export default function FinancePage() {
                     })
                   }
                 />
-
-                <PaginationControls
-                  totalPages={totalPages}
-                  currentPage={currentPage}
-                  clickHandler={actions.setCurrentPage}
-                />
               </>
             )}
+            <PaginationControls
+              totalPages={totalPages}
+              currentPage={currentPage}
+              clickHandler={actions.setCurrentPage}
+            />
           </div>
         </div>
         <CancelTransactionModal

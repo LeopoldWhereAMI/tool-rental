@@ -1,5 +1,3 @@
-/* ImageUploader.module.css */
-
 .uploaderWrapper {
   width: 100%;
   margin-bottom: 1.5rem;
@@ -7,7 +5,7 @@
 
 /* Контейнер, когда изображение уже загружено */
 .uploaderWrapper:has(img) {
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Тонкая граница в стиле макета */
+  border: 1px solid var(--border); /* Тонкая граница в стиле макета */
   border-radius: 16px;
   padding: 12px;
   background: rgba(255, 255, 255, 0.03); /* Легкая подложка */

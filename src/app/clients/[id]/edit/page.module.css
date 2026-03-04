@@ -1,21 +1,17 @@
-/* =============================================
-   LAYOUT & WRAPPER
-   ============================================= */
 .pageContainer {
   display: flex;
   flex-direction: column;
   padding: 32px;
   min-height: 100vh;
-  /* background: #0d1117; */
-  gap: 0; /* Убираем gap, чтобы контролировать всё маржинами */
+  gap: 0;
 }
 
 .pageHeader {
-  margin-bottom: 24px; /* Компактный отступ от заголовка до формы */
+  margin-bottom: 24px;
 }
 
 /* Breadcrumbs */
-.breadcrumb {
+/* .breadcrumb {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -40,7 +36,7 @@
 .breadcrumbCurrent {
   color: #f1f5f9;
   font-weight: 500;
-}
+} */
 
 .mainContent {
   display: flex;
@@ -52,33 +48,31 @@
 .pageTitle {
   font-size: 28px;
   font-weight: 700;
-  color: #f1f5f9;
+  color: var(--text-main);
   margin: 0 0 4px;
   line-height: 1.2;
 }
 
 .pageSubtitle {
-  font-size: 14px;
-  color: #64748b;
+  font-size: 12px;
+  color: var(--text-secondary);
   margin: 0;
 }
 
-/* =============================================
-   MAIN CONTENT & CARDS
-   ============================================= */
 .formColumn {
-  flex: 1; /* Занимает всё доступное пространство слева */
+  flex: 1;
 }
 
 .formColumn form {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Расстояние между карточками 01 и 02 */
+  gap: 20px;
 }
 
 .sectionCard {
-  background: #161b27;
-  border: 1px solid #1e293b;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--table-shadow);
   border-radius: 16px;
   padding: 28px;
 }
@@ -93,7 +87,7 @@
 .sectionTitle {
   font-size: 16px;
   font-weight: 600;
-  color: #f1f5f9;
+  color: var(--text-secondary);
   margin: 0;
   display: flex;
   align-items: center;
@@ -101,14 +95,10 @@
 }
 
 .sectionTitle svg {
-  color: #3b82f6;
+  color: var(--primary);
   opacity: 0.8;
 }
 
-/* =============================================
-   FORM FIELDS
-   ============================================= */
-/* Ряды инпутов */
 .row {
   display: flex;
   flex-direction: column;
@@ -129,18 +119,18 @@
 .label {
   font-size: 13px;
   font-weight: 500;
-  color: #94a3b8;
+  color: var(--text-muted);
   letter-spacing: 0.01em;
 }
 
 .input {
   width: 100%;
-  background: #0d1117;
-  border: 1px solid #1e293b;
+  background-color: var(--table-thead);
+  border: 1px solid var(--border);
   border-radius: 10px;
   padding: 11px 14px;
   font-size: 14px;
-  color: #e2e8f0;
+  color: var(--text-muted);
   outline: none;
   transition:
     border-color 0.15s,
@@ -170,18 +160,16 @@
   padding-left: 40px;
 }
 
-.inputWithIcon select.input {
-  appearance: none; /* Убирает стандартную стрелку браузера */
-  background-image: url("data:image/svg+xml,..."); /* Можно добавить свою стрелочку */
+/* .inputWithIcon select.input {
+  appearance: none; 
+  background-image: url("data:image/svg+xml,..."); 
   cursor: pointer;
-}
+} */
 
 .inputWithIcon select {
-  padding-left: 36px; /* Чтобы текст не накладывался на иконку */
+  padding-left: 36px;
 }
-/* =============================================
-   GRIDS
-   ============================================= */
+
 .nameGrid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -194,9 +182,6 @@
   gap: 12px;
 }
 
-/* =============================================
-   SIDEBAR
-   ============================================= */
 .sidebar {
   width: 320px;
   position: sticky;
@@ -207,8 +192,9 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  background: #161b27;
-  border: 1px solid #1e293b;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--table-shadow);
   border-radius: 16px;
   padding: 24px;
 }
@@ -219,7 +205,7 @@
   gap: 10px;
   font-size: 16px;
   font-weight: 600;
-  color: #f1f5f9;
+  color: var(--text-secondary);
   margin: 0 0 20px;
 }
 
@@ -242,13 +228,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition:
-    background 0.15s,
-    transform 0.1s;
-}
-
-.submitBtn:hover:not(:disabled) {
-  background: #1d4ed8;
+  transition: all 0.3s ease;
 }
 
 .submitBtn:active:not(:disabled) {
@@ -262,29 +242,25 @@
 
 .cancelBtn {
   width: 100%;
-  background: transparent;
-  color: #94a3b8;
-  border: 1px solid #1e293b;
+  background: var(--surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 12px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   margin-top: 8px;
-  transition: all 0.15s;
-}
-
-.cancelBtn:hover {
-  background: #1e293b;
-  color: #f1f5f9;
+  transition: all 0.3s ease;
 }
 
 /* Info Box */
 .infoBox {
   display: flex;
   gap: 10px;
-  background: rgba(59, 130, 246, 0.06);
-  border: 1px solid rgba(59, 130, 246, 0.15);
+  background-color: var(--table-thead);
+  border: 1px solid var(--border);
+  box-shadow: var(--table-shadow);
   border-radius: 10px;
   padding: 12px 14px;
   margin-top: 12px;
@@ -298,13 +274,29 @@
 
 .infoBoxText {
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-muted);
   line-height: 1.5;
 }
 
-/* =============================================
-   RESPONSIVE
-   ============================================= */
+@media (hover: hover) {
+  .submitBtn:hover:not(:disabled) {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px #2b5bee80;
+  }
+
+  .cancelBtn:hover {
+    background: var(--nav-hover-bg);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  .submitBtn:active,
+  .cancelBtn:active {
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 1024px) {
   .mainContent {
     flex-direction: column;

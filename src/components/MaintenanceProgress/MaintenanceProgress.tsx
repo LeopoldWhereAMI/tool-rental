@@ -5,15 +5,11 @@ import styles from "./MaintenanceProgress.module.css";
 type MaintenanceProgressProps = {
   current: number;
   interval: number;
-  // onReset: () => void;
-  // lastMaintenanceDate?: string | null;
 };
 
 export default function MaintenanceProgress({
   current,
   interval,
-  // onReset,
-  // lastMaintenanceDate,
 }: MaintenanceProgressProps) {
   // Вычисляем процент (защита от деления на 0 и переполнения)
   const maxInterval = interval > 0 ? interval : 1;
@@ -29,19 +25,7 @@ export default function MaintenanceProgress({
 
   return (
     <div className={styles.maintenanceWrapper}>
-      <div className={styles.maintenanceHeader}>
-        {/* <span className={styles.label}>До следующего ТО</span> */}
-        {/* <button
-          onClick={(e) => {
-            e.preventDefault();
-            onReset();
-          }}
-          className={styles.resetBtn}
-          title="Сбросить счетчик после проведения работ"
-        >
-          Обнулить
-        </button> */}
-      </div>
+      <div className={styles.maintenanceHeader}></div>
 
       <div className={styles.progressBarBg}>
         <div
@@ -61,20 +45,6 @@ export default function MaintenanceProgress({
           {percentage}%
         </span>
       </div>
-      {/* <div className={styles.lastMaintenanceInfo}>
-        <span className={styles.lastMaintenanceLabel}>
-          Последнее обслуживание:
-        </span>
-        <span className={styles.lastMaintenanceDate}>
-          {lastMaintenanceDate
-            ? new Date(lastMaintenanceDate).toLocaleDateString("ru-RU", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })
-            : "Не проводилось"}
-        </span>
-      </div> */}
     </div>
   );
 }

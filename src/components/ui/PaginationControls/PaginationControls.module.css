@@ -1,7 +1,9 @@
 .pagination {
-  background-color: #111827; /* surface */
-  border-top: 1px solid #1f2937; /* border-color */
-  padding: 16px 24px; /* py-4 px-6 */
+  margin-top: 8px;
+  background-color: var(--table-thead);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -9,7 +11,7 @@
 
 /* Левая часть с информацией */
 .pageInfo {
-  color: #64748b; /* slate-500 */
+  color: var(--text-muted); /* slate-500 */
   font-size: 14px; /* text-sm */
   font-weight: 500; /* font-medium */
 }

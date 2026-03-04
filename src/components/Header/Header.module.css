@@ -2,13 +2,12 @@
   position: sticky;
   top: 0;
   z-index: 1001;
-  /* height: 80px; */
   display: flex;
   align-items: center;
-  background-color: rgba(16, 21, 34, 0.8);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid #2d3856;
-  color: white;
+  background-color: var(--bg-header);
+  backdrop-filter: blur(0px);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-main);
   margin-left: var(--sidebar-width);
   width: calc(100% - var(--sidebar-width));
 }
@@ -31,19 +30,6 @@
   min-width: 0;
 }
 
-.title {
-  font-size: 24px;
-  font-weight: 700;
-  color: white;
-  margin: 0 0 4px 0;
-}
-
-.subtitle {
-  font-size: 13px;
-  color: #94a3b8;
-  margin: 0;
-}
-
 .navActions {
   display: flex;
   align-items: center;
@@ -62,7 +48,7 @@
   position: relative;
   background: none;
   border: none;
-  color: #94a3b8;
+  color: var(--text-muted);
   cursor: pointer;
   padding: 4px;
   transition: color 0.2s;
@@ -75,21 +61,10 @@
   color: #2b5bee;
 }
 
-.notificationBadge {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 8px;
-  height: 8px;
-  background-color: #ef4444;
-  border-radius: 50%;
-  border: 2px solid #101522;
-}
-
 .divider {
   width: 1px;
   height: 32px;
-  background-color: #2d3856;
+  background-color: var(--border);
 }
 
 .profileSection {
@@ -126,7 +101,7 @@
 .userName {
   font-size: 14px;
   font-weight: 700;
-  color: white;
+  color: var(--text-main);
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -135,7 +110,7 @@
 
 .userRole {
   font-size: 12px;
-  color: #94a3b8;
+  color: var(--text-muted);
   font-weight: 500;
   margin: 0;
   white-space: nowrap;
@@ -159,7 +134,7 @@
 
 /* Dropdown Menu */
 .chevron {
-  color: #94a3b8;
+  color: var(--text-muted);
   transition:
     transform 0.3s ease,
     color 0.2s ease;
@@ -167,15 +142,16 @@
 
 .chevronActive {
   transform: rotate(180deg);
-  color: #2b5bee;
+  color: var(--primary);
 }
 
 .dropdown {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  background: rgba(16, 21, 34, 0.95);
-  border: 1px solid #2d3856;
+  background: var(--dropdown-bg);
+  border-left: 1px solid var(--border);
+  border-top: 1px solid var(--border);
   border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   min-width: 200px;
@@ -183,7 +159,6 @@
   z-index: 1000;
   animation: slideDown 0.2s ease;
   backdrop-filter: blur(12px);
-
   transform-origin: top right;
   animation: growIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -199,28 +174,15 @@
   }
 }
 
-.dropdown::before {
-  content: "";
-  position: absolute;
-  top: -6px;
-  right: 24px;
-  width: 10px;
-  height: 10px;
-  background: #1a2235; /* Цвет шапки дропдауна */
-  border-left: 1px solid #2d3856;
-  border-top: 1px solid #2d3856;
-  transform: rotate(45deg);
-}
-
 .dropdownHeader {
   padding: 12px 16px;
-  background: rgba(45, 56, 86, 0.5);
-  border-bottom: 1px solid #2d3856;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
 }
 
 .dropdownEmail {
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--text-muted);
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -230,34 +192,14 @@
 
 .dropdownDivider {
   height: 1px;
-  background: #2d3856;
+  background: var(--border);
   margin: 0;
-}
-
-.dropdownItem {
-  width: 100%;
-  padding: 12px 16px;
-  background: none;
-  border: none;
-  text-align: left;
-  cursor: pointer;
-  color: #cbd5e1;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: all 0.2s;
-}
-
-.dropdownItem:hover {
-  background: rgba(43, 91, 238, 0.1);
-  color: #2b5bee;
 }
 
 .dropdownItemLogout {
   width: 100%;
   padding: 12px 16px;
-  background: none;
+  background: var(--surface);
   border: none;
   text-align: left;
   cursor: pointer;
@@ -270,7 +212,7 @@
 }
 
 .dropdownItemLogout:hover:not(:disabled) {
-  background: rgba(239, 68, 68, 0.1);
+  background: var(--nav-hover-bg);
   color: #ff6b6b;
 }
 

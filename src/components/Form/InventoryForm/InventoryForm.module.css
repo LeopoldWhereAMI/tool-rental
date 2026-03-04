@@ -1,12 +1,4 @@
 .form {
-  --primary: #2b5bee;
-  --bg-dark: #0b101b;
-  --surface-dark: #111827;
-  --accent-dark: #1f2937;
-  --border-color: #1e293b;
-  --text-main: #f1f5f9;
-  --text-muted: #94a3b8;
-
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -23,18 +15,18 @@
 
 .twoColumnLayout .mainLayout {
   display: grid;
-  /* 1.5fr для базы, 0.5fr для примечаний */
   grid-template-columns: 1.5fr 0.5fr;
   align-items: start;
 }
 
 .section {
-  background-color: var(--surface-dark);
-  border: 1px solid var(--border-color);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 24px;
   display: flex;
   flex-direction: column;
+  box-shadow: var(--table-shadow);
 }
 
 .sectionTitle {
@@ -68,17 +60,17 @@
 
 .divider {
   height: 1px;
-  background-color: var(--border-color);
+  background-color: var(--border);
   margin: 32px 0;
 }
 
 /* Стили элементов управления */
 .select {
   width: 100%;
-  background-color: var(--accent-dark);
-  border: 1px solid transparent;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  color: var(--text-main);
+  color: var(--text-secondary);
   padding: 11px 12px;
   font-size: 14px;
   outline: none;

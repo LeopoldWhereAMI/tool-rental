@@ -6,12 +6,12 @@
 }
 
 .filterLabel {
-  color: #9ca3af; /* slate-400 */
+  color: var(--text-secondary);
+  align-items: center;
+  gap: 8px;
   font-size: 14px;
   font-weight: 500;
   display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .selectGroup {
@@ -21,9 +21,9 @@
 
 .select {
   appearance: none;
-  background-color: #111827; /* surface */
-  color: #cbd5e1; /* slate-300 */
-  border: 1px solid #1f2937; /* border-color */
+  background-color: var(----surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
   padding: 8px 32px 8px 12px;
   border-radius: 6px;
   font-size: 14px;

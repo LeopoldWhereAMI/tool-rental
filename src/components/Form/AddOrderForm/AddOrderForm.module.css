@@ -1,6 +1,3 @@
-/* =============================================
-   LAYOUT
-   ============================================= */
 .pageWrapper {
   display: grid;
   grid-template-columns: 1fr 320px;
@@ -8,9 +5,6 @@
   align-items: flex-start;
   padding: 32px 32px 64px;
   min-height: 100vh;
-  background: #0d1117;
-  color: #e2e8f0;
-  font-family: "Geist", "Inter", sans-serif;
 }
 
 .pageHeader {
@@ -18,62 +12,30 @@
   margin-bottom: 8px;
 }
 
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-  font-size: 14px;
-}
-
-.breadcrumbLink {
-  color: #94a3b8; /* Приглушенный цвет */
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.breadcrumbLink:hover {
-  color: #3b82f6; /* Синий при наведении */
-}
-
-.breadcrumbSeparator {
-  color: #475569;
-}
-
-.breadcrumbCurrent {
-  color: #f1f5f9; /* Яркий цвет для текущей страницы */
-  font-weight: 500;
-}
-
 .pageTitle {
   font-size: 28px;
   font-weight: 700;
-  color: #f1f5f9;
+  color: var(--text-main);
   margin: 0 0 6px;
   letter-spacing: -0.5px;
 }
 
 .pageSubtitle {
-  font-size: 14px;
-  color: #64748b;
+  font-size: 12px;
+  color: var(--text-secondary);
   margin: 0;
 }
 
-/* =============================================
-   MAIN FORM COLUMN
-   ============================================= */
 .formColumn {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* =============================================
-   SECTION CARDS
-   ============================================= */
 .sectionCard {
-  background: #161b27;
-  border: 1px solid #1e293b;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--table-shadow);
   border-radius: 16px;
   padding: 28px;
 }
@@ -88,21 +50,21 @@
 .sectionNumber {
   width: 28px;
   height: 28px;
-  background: #1e3a5f;
+  background: var(--nav-hover-bg);
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 13px;
   font-weight: 700;
-  color: #3b82f6;
+  color: var(--primary);
   flex-shrink: 0;
 }
 
 .sectionTitle {
   font-size: 16px;
   font-weight: 600;
-  color: #f1f5f9;
+  color: var(--text-secondary);
   margin: 0;
   display: flex;
   align-items: center;
@@ -110,13 +72,10 @@
 }
 
 .sectionTitle svg {
-  color: #3b82f6;
+  color: var(--primary);
   opacity: 0.8;
 }
 
-/* =============================================
-   FORM FIELDS
-   ============================================= */
 .fieldGroup {
   display: flex;
   flex-direction: column;
@@ -131,7 +90,7 @@
 .label {
   font-size: 13px;
   font-weight: 500;
-  color: #94a3b8;
+  color: var(--text-muted);
   letter-spacing: 0.01em;
 }
 
@@ -139,12 +98,12 @@
 .select,
 .textarea {
   width: 100%;
-  background: #0d1117;
-  border: 1px solid #1e293b;
+  background: var(--table-thead);
+  border: 1px solid var(--border);
   border-radius: 10px;
   padding: 11px 14px;
   font-size: 14px;
-  color: #e2e8f0;
+  color: var(--text-muted);
   outline: none;
   transition:
     border-color 0.15s,
@@ -153,10 +112,10 @@
   font-family: inherit;
 }
 
-.input::placeholder,
+/* .input::placeholder,
 .textarea::placeholder {
   color: #334155;
-}
+} */
 
 .input:focus,
 .select:focus,
@@ -209,9 +168,6 @@
   margin-top: 2px;
 }
 
-/* =============================================
-   GRIDS
-   ============================================= */
 .nameGrid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -224,9 +180,6 @@
   gap: 12px;
 }
 
-/* =============================================
-   PHONE LOOKUP
-   ============================================= */
 .phoneStatus {
   margin-top: 8px;
 }
@@ -239,7 +192,7 @@
 
 .foundListHeader {
   font-size: 12px;
-  color: #64748b;
+  color: var(--primary);
   margin-bottom: 2px;
 }
 
@@ -247,17 +200,17 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #0d1117;
-  border: 1px solid #1e293b;
+  background: var(--table-thead);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 8px 12px;
   cursor: pointer;
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--text-secondary);
   text-align: left;
   transition:
     border-color 0.15s,
-    background 0.15s;
+    background-color 0.15s;
   width: 100%;
 }
 
@@ -268,7 +221,7 @@
 
 .foundName {
   font-weight: 500;
-  color: #e2e8f0;
+  color: var(--text-muted);
 }
 
 .foundPhone {
@@ -277,7 +230,7 @@
 }
 
 .match {
-  color: #3b82f6;
+  color: var(--primary);
   font-weight: 600;
 }
 
@@ -291,9 +244,6 @@
   padding: 4px 10px;
 }
 
-/* =============================================
-   TOOL SELECTION
-   ============================================= */
 .toolSearchRow {
   display: flex;
   gap: 10px;
@@ -313,10 +263,10 @@
   color: #475569;
   pointer-events: none;
 }
-
+/* 
 .toolSearchInput {
   width: 100%;
-  background: #0d1117;
+  background: var(--table-thead);
   border: 1px solid #1e293b;
   border-radius: 10px;
   padding: 11px 14px 11px 40px;
@@ -326,18 +276,18 @@
   transition: border-color 0.15s;
   box-sizing: border-box;
   font-family: inherit;
-}
+} */
 
-.toolSearchInput:focus {
+/* .toolSearchInput:focus {
   border-color: #3b82f6;
 }
 
 .toolSearchInput::placeholder {
   color: #334155;
-}
+} */
 
 /* Tool items table */
-.toolTableHeader {
+/* .toolTableHeader {
   display: grid;
   grid-template-columns: 1fr auto auto auto;
   gap: 12px;
@@ -348,22 +298,22 @@
   color: #475569;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-}
+} */
 
-.toolItem {
+/* .toolItem {
   display: grid;
   grid-template-columns: 1fr auto auto auto;
   gap: 12px;
   align-items: center;
   padding: 14px 0;
   border-bottom: 1px solid #1e293b;
-}
+} */
 
-.toolItem:last-of-type {
+/* .toolItem:last-of-type {
   border-bottom: none;
-}
+} */
 
-.toolInfo {
+/* .toolInfo {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -392,9 +342,9 @@
   font-size: 12px;
   color: #475569;
   display: block;
-}
+} */
 
-.qtyControl {
+/* .qtyControl {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -430,17 +380,17 @@
   font-size: 14px;
   font-weight: 500;
   color: #f1f5f9;
-}
+} */
 
-.toolPrice {
+/* .toolPrice {
   font-size: 14px;
   font-weight: 600;
   color: #f1f5f9;
   min-width: 72px;
   text-align: right;
-}
+} */
 
-.removeToolBtn {
+/* .removeToolBtn {
   width: 28px;
   height: 28px;
   background: transparent;
@@ -462,9 +412,9 @@
   background: rgba(239, 68, 68, 0.1);
   border-color: rgba(239, 68, 68, 0.3);
   color: #ef4444;
-}
+} */
 
-.toolListEmpty {
+/* .toolListEmpty {
   padding: 32px;
   text-align: center;
   color: #475569;
@@ -489,16 +439,16 @@
   font-size: 14px;
   font-weight: 600;
   color: #f1f5f9;
-}
+} */
 
 /* Dropdown for tool search */
-.toolDropdown {
+/* .toolDropdown {
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
   right: 0;
   background: #161b27;
-  border: 1px solid #1e293b;
+  border: 1px solid var(--border);
   border-radius: 10px;
   z-index: 50;
   overflow: hidden;
@@ -528,11 +478,8 @@
 .toolDropdownPrice {
   font-size: 13px;
   color: #64748b;
-}
+} */
 
-/* =============================================
-   SIDEBAR
-   ============================================= */
 .sidebar {
   position: sticky;
   top: 24px;
@@ -542,8 +489,9 @@
 }
 
 .sidebarCard {
-  background: #161b27;
-  border: 1px solid #1e293b;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--table-shadow);
   border-radius: 16px;
   padding: 24px;
 }
@@ -554,12 +502,12 @@
   gap: 10px;
   font-size: 16px;
   font-weight: 600;
-  color: #f1f5f9;
+  color: var(--text-secondary);
   margin: 0 0 20px;
 }
 
 .sidebarTitle svg {
-  color: #3b82f6;
+  color: var(--primary);
 }
 
 .dateField {
@@ -569,15 +517,15 @@
   margin-bottom: 14px;
 }
 
-.dateLabel {
+/* .dateLabel {
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-muted);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-}
+} */
 
-.dateInput {
+/* .dateInput {
   width: 100%;
   background: #0d1117;
   border: 1px solid #1e293b;
@@ -593,11 +541,11 @@
 
 .dateInput:focus {
   border-color: #3b82f6;
-}
+} */
 
 .divider {
   height: 1px;
-  background: #1e293b;
+  background: var(--border);
   margin: 16px 0;
 }
 
@@ -606,7 +554,7 @@
   justify-content: space-between;
   align-items: center;
   font-size: 13px;
-  color: #64748b;
+  color: var(--text-muted);
   margin-bottom: 10px;
 }
 
@@ -616,7 +564,7 @@
 
 .summaryValue {
   font-weight: 600;
-  color: #e2e8f0;
+  color: var(--text-muted);
 }
 
 .summaryValueHighlight {
@@ -627,57 +575,64 @@
 .totalRow {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid #1e293b;
+  align-items: center;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+  padding: 16px;
+  background: rgba(34, 197, 94, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 12px;
 }
 
 .totalLabel {
   font-size: 14px;
   font-weight: 600;
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
 .totalAmount {
-  text-align: right;
+  display: flex;
+  flex-direction: column;
+  /* align-items: flex-end; */
+  /* text-align: right; */
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
 }
 
 .totalAmountValue {
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 800;
-  color: #3b82f6;
+  color: var(--price-color);
   line-height: 1;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
 }
 
 .totalAmountNote {
-  font-size: 10px;
-  color: #475569;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-top: 2px;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: none;
+  letter-spacing: 0;
+  margin-top: 4px;
+  font-weight: 400;
 }
 
 .submitBtn {
   width: 100%;
-  background: #2563eb;
+  background-color: var(--primary);
   color: #fff;
-  border: none;
-  border-radius: 12px;
-  padding: 14px;
-  font-size: 15px;
-  font-weight: 600;
   cursor: pointer;
-  display: flex;
+  border: none;
+  border-radius: 8px;
   align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  font-weight: 700;
+  transition: all 0.3s;
+  display: flex;
   justify-content: center;
-  gap: 8px;
-  transition:
-    background 0.15s,
-    transform 0.1s;
-  font-family: inherit;
-  letter-spacing: -0.01em;
 }
 
 .submitBtn:hover:not(:disabled) {
@@ -685,7 +640,9 @@
 }
 
 .submitBtn:active:not(:disabled) {
-  transform: scale(0.99);
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px #2b5bee80;
 }
 
 .submitBtn:disabled {
@@ -695,25 +652,26 @@
 
 .cancelBtn {
   width: 100%;
-  background: transparent;
-  color: #94a3b8;
-  border: 1px solid #1e293b;
-  border-radius: 12px;
-  padding: 12px;
-  font-size: 14px;
-  font-weight: 500;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
   cursor: pointer;
-  transition:
-    background 0.15s,
-    border-color 0.15s,
-    color 0.15s;
-  font-family: inherit;
+  box-shadow: var(--table-shadow);
+  border-radius: 10px;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  font-weight: 500;
+  transition: all 0.3s;
+  display: flex;
+  justify-content: center;
   margin-top: 8px;
 }
 
 .cancelBtn:hover {
-  background: #1e293b;
-  color: #f1f5f9;
+  background: var(--nav-hover-bg);
+  border-color: var(--primary);
+  transform: translateY(-2px);
 }
 
 .infoBox {
@@ -727,20 +685,17 @@
 }
 
 .infoBox svg {
-  color: #3b82f6;
+  color: var(--primary);
   flex-shrink: 0;
   margin-top: 1px;
 }
 
 .infoBoxText {
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-muted);
   line-height: 1.5;
 }
 
-/* =============================================
-   ADD TOOL BUTTON
-   ============================================= */
 .addToolBtn {
   display: flex;
   align-items: center;
@@ -762,7 +717,7 @@
 
 .addToolBtn:hover:not(:disabled) {
   background: rgba(59, 130, 246, 0.06);
-  border-color: #3b82f6;
+  border-color: var(--primary);
 }
 
 .addToolBtn:disabled {
@@ -770,18 +725,11 @@
   cursor: not-allowed;
 }
 
-/* =============================================
-   PRINT HIDE
-   ============================================= */
 @media print {
   .noPrint {
     display: none;
   }
 }
-
-/* =============================================
-   RESPONSIVE
-   ============================================= */
 
 /* Строка инструмента — одна колонка (select) + кнопка удаления */
 .itemRow {
@@ -798,12 +746,12 @@
   flex: 1;
 }
 
-.removeBtn {
+/* .removeBtn {
   flex-shrink: 0;
   width: 38px;
   height: 42px;
   background: transparent;
-  border: 1px solid #1e293b;
+  border: 1px solid var(--border);
   border-radius: 10px;
   color: #475569;
   cursor: pointer;
@@ -821,15 +769,12 @@
   background: rgba(239, 68, 68, 0.1);
   border-color: rgba(239, 68, 68, 0.3);
   color: #ef4444;
-}
+} */
 
-/* =============================================
-   СТРОКИ ИНСТРУМЕНТОВ
-   ============================================= */
 .itemRow {
   padding-bottom: 16px;
   margin-bottom: 16px;
-  border-bottom: 1px solid #1e293b;
+  border-bottom: 1px solid var(--border);
 }
 
 .itemRow:last-of-type {
@@ -853,14 +798,15 @@
   align-items: center;
   justify-content: center;
   height: 42px;
-  background: #0d1117;
-  border: 1px solid #1e293b;
+  background: var(--table-thead);
+  border: 1px solid var(--border);
   border-radius: 10px;
 }
 
 .daysBoxLabel {
-  font-size: 9px;
-  color: #475569;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--primary);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   line-height: 1;
@@ -869,7 +815,7 @@
 .daysBoxValue {
   font-size: 15px;
   font-weight: 700;
-  color: #3b82f6;
+  color: var(--primary);
   line-height: 1.3;
 }
 
@@ -877,8 +823,8 @@
 .removeBtn {
   width: 38px;
   height: 42px;
-  background: transparent;
-  border: 1px solid #1e293b;
+  background: var(--table-thead);
+  border: 1px solid var(--border);
   border-radius: 10px;
   color: #475569;
   cursor: pointer;
@@ -886,14 +832,14 @@
   align-items: center;
   justify-content: center;
   transition:
-    background 0.15s,
+    background-color 0.15s,
     color 0.15s,
     border-color 0.15s;
   flex-shrink: 0;
 }
 
 .removeBtn:hover {
-  background: rgba(239, 68, 68, 0.1);
+  background-color: rgba(239, 68, 68, 0.1);
   border-color: rgba(239, 68, 68, 0.3);
   color: #ef4444;
 }
@@ -907,7 +853,7 @@
 }
 
 /* Блок итоговой суммы */
-.totalAmountBlock {
+/* .totalAmountBlock {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -916,9 +862,9 @@
   background: rgba(34, 197, 94, 0.06);
   border: 1px solid rgba(34, 197, 94, 0.15);
   border-radius: 12px;
-}
+} */
 
-.totalAmountBlock .totalLabel {
+/* .totalAmountBlock .totalLabel {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -933,7 +879,7 @@
   font-size: 22px;
   font-weight: 700;
   color: #22c55e;
-}
+} */
 
 /* =============================================
    ОБЕСПЕЧИТЕЛЬНЫЙ ПЛАТЁЖ
@@ -950,7 +896,7 @@
   align-items: center;
   justify-content: space-between;
   font-size: 12px;
-  color: #64748b;
+  color: var(--text-main);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -958,7 +904,7 @@
 
 .depositOptional {
   font-size: 11px;
-  color: #334155;
+  color: var(--text-muted);
   text-transform: none;
   font-weight: 400;
   letter-spacing: 0;
@@ -971,8 +917,8 @@
 
 .depositInput {
   width: 100%;
-  background: #0d1117;
-  border: 1px solid #1e293b;
+  background: var(--table-thead);
+  border: 1px solid var(--border);
   border-radius: 10px;
   padding: 10px 36px 10px 14px;
   font-size: 15px;
@@ -993,7 +939,7 @@
 }
 
 .depositInput::placeholder {
-  color: #334155;
+  color: var(--text-muted);
   font-weight: 400;
 }
 
@@ -1008,7 +954,7 @@
   top: 50%;
   transform: translateY(-50%);
   font-size: 14px;
-  color: #475569;
+  color: #f59e0b;
   pointer-events: none;
 }
 
@@ -1048,7 +994,7 @@
    ============================================= */
 
 /* Перебиваем стили InputWithIcon внутри itemGrid */
-.itemGrid input[type="date"] {
+/* .itemGrid input[type="date"] {
   width: 100%;
   background: #0d1117;
   border: 1px solid #1e293b;
@@ -1071,7 +1017,7 @@
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
 }
 
-/* Иконка календаря внутри InputWithIcon */
+
 .itemGrid .inputWithIcon svg,
 .itemGrid [class*="inputWithIcon"] svg {
   color: #334155;
@@ -1082,7 +1028,7 @@
   border-color: #3b82f6;
 }
 
-/* Кастомизация системного date-picker */
+
 .itemGrid input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(0.3) sepia(1) saturate(0.5) hue-rotate(190deg);
   cursor: pointer;
@@ -1094,7 +1040,7 @@
   opacity: 1;
 }
 
-/* Цвет placeholder-текста даты */
+
 .itemGrid input[type="date"]::-webkit-datetime-edit {
   color: #e2e8f0;
 }
@@ -1121,7 +1067,7 @@
   border-radius: 3px;
   color: #fff;
   outline: none;
-}
+} */
 
 /* =============================================
    FIX: ошибки в itemGrid не должны сдвигать строку
@@ -1143,18 +1089,16 @@
   font-size: 11px;
 }
 
-/* daysBox и removeBtn не нуждаются в padding-bottom */
 .itemGrid .daysBox,
 .itemGrid .removeBtn {
-  padding-bottom: 20px; /* выравниваем с остальными колонками */
-  background: transparent;
-  border: none;
+  padding-bottom: 20px;
+  /* background: transparent; */
+  /* border: none; */
 }
 
-/* daysBox сам по себе имеет фон — восстанавливаем */
 .itemGrid .daysBox {
-  background: #0d1117;
-  border: 1px solid #1e293b;
+  /* background: #0d1117;
+  border: 1px solid #1e293b; */
   border-radius: 10px;
   height: 42px;
   padding: 0;
@@ -1165,8 +1109,8 @@
   height: 42px;
   padding: 0;
   margin-bottom: 20px;
-  border: 1px solid #1e293b;
-  border-radius: 10px;
+  /* border: 1px solid #1e293b;
+  border-radius: 10px; */
 }
 
 /* adaptive */

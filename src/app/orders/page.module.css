@@ -1,5 +1,5 @@
 .header {
-  border-bottom: 1px solid var(--border-dark);
+  border-bottom: 1px solid var(--border);
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 24px;
@@ -8,16 +8,15 @@
 }
 
 .tableCard {
-  background-color: var(--surface-dark);
-  border: 1px solid var(--border-dark);
+  border: 1px solid var(--borer);
   border-radius: 12px;
   overflow: hidden;
 }
 
 .btn {
-  background-color: #2b5bee; /* #2b5bee */
+  background-color: var(--primary);
   color: white;
-  padding: 10px 20px; /* Немного компактнее по вертикали */
+  padding: 10px 20px;
   border-radius: 8px;
   font-weight: 700;
   display: flex;
@@ -25,32 +24,24 @@
   gap: 10px;
   border: none;
   cursor: pointer;
-  transition:
-    filter 0.3s ease,
-    box-shadow 0.3s ease;
-  box-shadow: 0 4px 14px 0 rgba(43, 91, 238, 0.39);
-}
-
-.btn:hover {
-  filter: brightness(1.1);
-  box-shadow: 0 6px 20px rgba(43, 91, 238, 0.5);
+  transition: all 0.3s ease;
 }
 
 .title {
   font-size: 28px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-main);
   margin: 0;
   letter-spacing: -0.01em;
 }
 
 .subtitle {
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 12px;
   max-width: 42rem;
 }
 
-.countBadge {
+/* .countBadge {
   background-color: #f3f4f6;
   color: #6b7280;
   font-size: 13px;
@@ -61,38 +52,38 @@
   display: inline-flex;
   align-items: center;
   height: 22px;
-}
+} */
 
 /* Контейнер для карточек в OrdersList */
-.ordersGrid {
+/* .ordersGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 24px;
   padding: 20px 0;
-}
+} */
 
-.newCard {
-  background: #1a2236; /* Темно-синий фон */
+/* .newCard {
+  background: #1a2236; 
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid #2d3748;
   transition: transform 0.2s;
-}
+} */
 
-.imageSection {
+/* .imageSection {
   position: relative;
   height: 200px;
-  background: #fff; /* Фон для самой картинки инструмента */
+  background: #fff; 
   display: flex;
   align-items: center;
   justify-content: center;
-}
+} */
 
-.cardImage {
+/* .cardImage {
   max-height: 80%;
   max-width: 80%;
   object-fit: contain;
-}
+} */
 
 /* Бейджи статусов */
 .statusCompleted {
@@ -239,6 +230,18 @@
   border-radius: 6px;
   height: 100%;
   cursor: pointer;
+}
+
+@media (hover: hover) {
+  .btn:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 6px 20px rgba(43, 91, 238, 0.5);
+    transform: translateY(-2px);
+  }
+
+  .btn:active {
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 780px) {

@@ -4,12 +4,11 @@
 
 .container {
   display: grid;
-  /* Меняем колонки: Слева контент (гибкий), Справа сайдбар (фиксированный 360px) */
   grid-template-columns: 1fr 360px;
   gap: 32px;
   margin-top: 24px;
   max-width: 1600px;
-  margin-inline: auto; /* Центрируем на больших экранах */
+  margin-inline: auto;
 }
 
 .headerWrapper {
@@ -23,7 +22,7 @@
 .breadcrumbLabelWithIcon {
   display: inline-flex;
   align-items: center;
-  gap: 6px; /* Отступ между иконкой и именем */
+  gap: 6px;
 }
 
 .breadcrumbBlacklistDot {
@@ -32,8 +31,7 @@
   justify-content: center;
   width: 16px;
   height: 16px;
-  /* background-color: #ef4444;  */
-  color: white;
+  color: var(--text-main);
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -68,16 +66,15 @@
 }
 
 .blacklistBannerText {
-  color: #94a3b8;
+  color: var(--text-muted);
   font-size: 13px;
   line-height: 1.5;
 }
 
-/* Левая колонка */
 .mainContent {
   display: flex;
   flex-direction: column;
-  gap: 32px; /* Отступ между блоком Активные и Историей */
+  gap: 32px;
 }
 
 .sectionBlock {
@@ -94,9 +91,9 @@
 }
 
 .sectionTitle {
-  font-size: 20px; /* text-xl */
+  font-size: 20px;
   font-weight: 700;
-  color: white;
+  color: var(--text-main);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -122,16 +119,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 10px;
-
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
-
   color: #9aa4c3;
-
   backdrop-filter: blur(6px);
-
   transition: all 0.25s ease;
   z-index: 10;
 }
@@ -197,8 +189,8 @@
 }
 
 .emptyOrders {
-  background: #161b2c; /* surface-dark */
-  border: 1px dashed #232c48;
+  background: var(--surface);
+  border: 1px dashed var(--border);
   padding: 40px;
   text-align: center;
   border-radius: 12px;
@@ -219,8 +211,9 @@
 }
 
 .profileCard {
-  background-color: #161e2e;
-  border: 1px solid #1f2937;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--table-shadow);
   border-radius: 16px;
   padding: 24px;
   position: relative;
@@ -287,18 +280,21 @@
 }
 
 .name {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
   font-size: 18px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-secondary);
   margin-bottom: 4px;
 }
 
-.roleText {
+/* .roleText {
   color: #64748b;
   font-size: 13px;
-}
+} */
 
-.vipBadge {
+/* .vipBadge {
   position: absolute;
   top: 0;
   right: 0;
@@ -308,7 +304,7 @@
   font-weight: 800;
   padding: 2px 6px;
   border-radius: 4px;
-}
+} */
 
 .contactList {
   display: flex;
@@ -321,8 +317,8 @@
   display: flex;
   align-items: flex-start;
   gap: 14px;
-  padding: 12px 0; /* Отступы сверху и снизу от линии */
-  border-bottom: 1px solid #1f2937; /* Тонкая линия (цвет как у карточки) */
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
   transition: background-color 0.2s ease;
 }
 
@@ -337,13 +333,13 @@
   font-size: 11px; /* Меньший размер шрифта */
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #64748b; /* Приглушенный цвет (Slate 400) */
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
 .contactInfo span {
   font-size: 14px;
-  color: #f1f5f9; /* Яркий цвет для значения */
+  color: var(--text-secondary);
   font-weight: 500;
   font-family: var(--font-space-grotesk); /* Если используешь для чисел */
 }
@@ -353,9 +349,9 @@
   margin-top: 2px;
 }
 
-.iconMuted {
+/* .iconMuted {
   color: #475569;
-}
+} */
 
 /* добавить в чс */
 .blacklistActionWrapper {
@@ -375,7 +371,7 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 /* Кнопка блокировки — агрессивная */
@@ -385,21 +381,11 @@
   border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
-.blacklistBtn:hover {
-  background: #ef4444;
-  color: white;
-}
-
 /* Кнопка разблокировки — нейтральная */
 .unblacklistBtn {
   background: rgba(34, 197, 94, 0.1);
   color: #22c55e;
   border: 1px solid rgba(34, 197, 94, 0.2);
-}
-
-.unblacklistBtn:hover {
-  background: #22c55e;
-  color: white;
 }
 
 /* Блок причины в сайдбаре */
@@ -430,8 +416,9 @@
 
 /* Блок Insights */
 .insightsCard {
-  background-color: #161e2e;
-  border: 1px solid #1f2937;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--table-shadow);
   border-radius: 16px;
   padding: 24px;
   margin-top: 16px;
@@ -442,7 +429,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #64748b;
+  color: var(--text-secondary);
   margin-bottom: 16px;
 }
 
@@ -454,8 +441,8 @@
 }
 
 .miniStat {
-  background: #0f172a;
-  border: 1px solid #1f2937;
+  background: var(--table-thead);
+  border: 1px solid var(--border);
   padding: 12px;
   border-radius: 8px;
   display: flex;
@@ -464,7 +451,7 @@
 
 .statLabel {
   font-size: 10px;
-  color: #64748b;
+  color: var(--text-muted);
   text-transform: uppercase;
   margin-bottom: 4px;
 }
@@ -473,67 +460,67 @@
   font-family: var(--font-space-grotesk);
   font-size: 16px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-secondary);
 }
 
-.progressGroup {
+/* .progressGroup {
   margin-bottom: 16px;
-}
+} */
 
-.progressLabel {
+/* .progressLabel {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
   color: #94a3b8;
   margin-bottom: 6px;
-}
+} */
 
-.scoreValue {
-  color: #10b981; /* Зеленый текст для счета */
+/* .scoreValue {
+  color: #10b981; 
   font-weight: 700;
-}
+} */
 
-.progressBarWrapper {
+/* .progressBarWrapper {
   height: 6px;
   background: #1f2937;
   border-radius: 6px;
   overflow: hidden;
-}
+} */
 
-.progressBarFill {
+/* .progressBarFill {
   height: 100%;
-  background: #10b981; /* Зеленый */
+  background: #10b981;
   border-radius: 6px;
 }
 
 .progressBarFillBlue {
   height: 100%;
-  background: #3b82f6; /* Синий */
+  background: #3b82f6; 
   border-radius: 6px;
-}
+} */
 
 /* --- СТИЛИ ЗАКАЗОВ (OrderCard) --- */
 
-/* 1. Активная карточка (Active Variant) */
 .activeCard {
-  background: #1e293b;
-  border: 1px solid #334155;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--kpi-shadow);
   border-radius: 12px;
   padding: 16px;
-  display: flex; /* Меняем на flex */
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
   text-decoration: none;
-  min-height: 120px; /* Уменьшили высоту */
-  gap: 20px; /* Расстояние между верхним и нижним блоком */
-  transition: all 0.2s;
+  min-height: 120px;
+  gap: 20px;
+  transition: all 0.3s ease;
   position: relative;
 }
 
 .activeCard:hover {
-  transform: translateY(-2px);
-
-  border-color: #3b82f6;
+  box-shadow: var(--kpi-shadow-hover);
+  border: 1px solid var(--primary);
+  transform: translateY(-3px);
 }
 
 .activeCardContent {
@@ -545,23 +532,24 @@
 .activeCardText {
   width: 100%;
   display: flex;
+  color: var(--text-secondary);
   flex-direction: column;
   align-items: flex-start;
   gap: 5px;
 }
 
-.activeCardSubtext {
+/* .activeCardSubtext {
   font-size: 12px;
   color: #94a3b8;
   margin-top: 2px;
-}
+} */
 
 .activeCardDetails {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-top: 12px;
-  border-top: 1px solid #334155; /* Разделительная линия */
+  border-top: 1px solid var(--border);
 }
 
 .detailItem {
@@ -569,7 +557,7 @@
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: #cbd5e1;
+  color: var(--text-muted);
 }
 
 .detailItem span {
@@ -580,7 +568,7 @@
   font-family: var(--font-space-grotesk);
   font-size: 16px;
   font-weight: 700;
-  color: #3b82f6;
+  color: var(--primary);
 }
 
 .dueDate {
@@ -591,68 +579,70 @@
   font-weight: 600;
 }
 
-.dueUrgent {
+/* .dueUrgent {
   color: #f59e0b;
-} /* Оранжевый */
+}
 .dueLate {
   color: #ef4444;
-} /* Красный */
+}
 .dueNormal {
   color: #10b981;
-} /* Зеленый */
+} */
 
-.activeCardDate {
+/* .activeCardDate {
   font-size: 11px;
   color: #64748b;
   text-transform: uppercase;
   font-weight: 700;
-}
+} */
 
 /* 2. Строка списка (List Variant) */
 .listCard {
   display: grid;
   grid-template-columns: 100px 2fr 1.5fr 1fr 120px; /* Сетка как в таблице */
   align-items: center;
-  background: #161e2e;
-  border: 1px solid #1f2937;
+  background: var(--surface);
+  border: 1px solid var(--border);
   padding: 16px 20px;
-  border-radius: 8px; /* Меньшее скругление для списка */
+  border-radius: 8px;
+  box-shadow: var(--table-shadow);
   text-decoration: none;
-  transition: background 0.2s;
+  transition: background-color 0.3s ease;
 }
 
 .listCard:hover {
-  background: #1e293b;
+  background: var(--nav-hover-bg);
 }
 
 .listValueBold {
   font-family: var(--font-space-grotesk);
-  color: #fff;
+  color: var(--text-secondary);
   font-weight: 600;
   font-family: monospace;
 }
 
-.listToolName {
-  color: #e2e8f0;
+/* .listToolName {
+  color: var(--text-secondary);
   font-weight: 500;
   font-size: 14px;
-}
+} */
 
-.listCategory {
+/* .listCategory {
   color: #64748b;
-  font-size: 11px;
+  font-size: 110px;
   text-transform: uppercase;
-}
+} */
 
 .colDate {
   font-family: var(--font-space-grotesk);
-  color: #94a3b8;
+  color: var(--text-muted);
   font-size: 13px;
 }
 
 .colPrice {
   font-family: var(--font-space-grotesk);
-  color: #fff;
+  color: var(--price-color);
+  opacity: 0.6;
   font-weight: 700;
 }
 
@@ -666,6 +656,7 @@
   align-items: center;
   justify-content: center;
   padding: 4px 10px;
+  border: 1px solid var(--border);
   border-radius: 4px;
   font-size: 11px;
   font-weight: 700;
@@ -680,7 +671,7 @@
 }
 .statusCompleted {
   background: rgba(148, 163, 184, 0.1);
-  color: #94a3b8;
+  color: var(--text-muted);
 }
 .statusPending {
   background: rgba(245, 158, 11, 0.1);
@@ -695,7 +686,19 @@
   background: rgba(239, 68, 68, 0.2);
   color: #ef4444;
   border: 1px solid rgba(239, 68, 68, 0.3);
-} /* Для Late Return */
+}
+
+@media (hover: hover) {
+  .blacklistBtn:hover {
+    background: #ef4444;
+    color: white;
+  }
+
+  .unblacklistBtn:hover {
+    background: #22c55e;
+    color: white;
+  }
+}
 
 /* Мобильная адаптация для списка */
 @media (max-width: 768px) {

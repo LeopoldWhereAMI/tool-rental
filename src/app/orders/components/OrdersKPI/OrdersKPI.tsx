@@ -66,22 +66,13 @@ function KpiCard({
   icon,
   loading,
 }: KpiCardProps) {
-  const skeletonBase = "#252d3d";
   return (
     <div className={`${styles.card} ${styles[variant]}`}>
       <div className={styles.iconWrapper}>{icon}</div>
       <div className={styles.info}>
         <div className={styles.title}>{title}</div>
         <div className={styles.value}>
-          {loading ? (
-            <Skeleton
-              width="60px"
-              height="28px"
-              style={{ backgroundColor: skeletonBase, marginTop: "4px" }}
-            />
-          ) : (
-            value
-          )}
+          {loading ? <Skeleton width="60px" height="28px" /> : value}
         </div>
       </div>
     </div>

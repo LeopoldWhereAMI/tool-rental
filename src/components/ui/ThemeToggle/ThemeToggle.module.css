@@ -1,0 +1,53 @@
+/* ThemeToggle.module.css */
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 8px;
+
+  /* Используем твои переменные из темы */
+  background-color: var(--surface);
+  border: 1px solid var(--border-dark);
+  color: var(--text-main);
+
+  transition: all 0.2s ease;
+  font-family: var(--font-ibm-plex), sans-serif;
+  font-size: 14px;
+}
+
+.button:hover {
+  filter: brightness(1.2);
+  border-color: var(--primary);
+}
+
+.themeBtn {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  background: none;
+  border: none;
+  color: var(--text-muted); /* Твоя переменная из :root */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* padding: 8px; */
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  line-height: 0;
+}
+
+.themeBtn:hover {
+  background-color: var(--nav-hover-bg);
+  color: var(--primary);
+}
+
+.themeBtn svg {
+  transition: transform 0.3s ease;
+}
+
+.themeBtn:active svg {
+  transform: scale(0.8);
+}

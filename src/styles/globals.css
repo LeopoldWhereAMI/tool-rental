@@ -1,15 +1,69 @@
 @import "./reset.css";
 @import "./variables.css";
 
+:root {
+  --primary: #2b5bee;
+  --bg-app: #f5f7f8;
+  --bg-header: rgba(245, 247, 248, 0.8);
+  --bg-sidebar: #ffffff;
+  --nav-hover-bg: #f1f5f9;
+  --nav-active-bg: #eff6ff;
+  --nav-active-text: #2563eb;
+  --filter-hover-bg: rgba(0, 0, 0, 0.05);
+  --card-hover-bg: #ffffff;
+  --card-hover-shadow: rgba(0, 0, 0, 0.08);
+  --table-thead: #f1f5f9;
+  --table-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02),
+    0 0 1px 0 rgba(0, 0, 0, 0.1);
+  --kpi-shadow:
+    0 4px 6px -1px rgba(43, 91, 238, 0.05),
+    0 2px 4px -2px rgba(43, 91, 238, 0.05);
+  --kpi-shadow-hover: 0 20px 25px -5px rgba(43, 91, 238, 0.25);
+  --surface: #ffffff;
+  --border: #e2e8f0;
+  --text-main: #1a1a1c;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --backdrop-color: rgba(15, 23, 42, 0.5);
+  --backdrop-blur: 4px;
+  --price-color: #10b981;
+}
+
+.dark {
+  --bg-app: #0a0a0c;
+  --bg-header: rgba(16, 21, 34, 0.8);
+  --bg-sidebar: #0b0f1a;
+  --nav-hover-bg: #1f2937;
+  --nav-active-bg: #161e2d;
+  --nav-active-text: #3b82f6;
+  --filter-hover-bg: rgba(255, 255, 255, 0.05);
+  --card-hover-bg: #1e2943;
+  --card-hover-shadow: rgba(0, 0, 0, 0.4);
+  --table-thead: #111827;
+  --table-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  --kpi-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --kpi-shadow-hover: 0 20px 25px -5px rgba(43, 91, 238, 0.25);
+  --surface: #161b2c;
+  --border: #232c48;
+  --text-main: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --backdrop-color: rgba(2, 6, 17, 0.85);
+  --backdrop-blur: 8px;
+  --price-color: #10b981;
+}
+
 body {
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
   margin: 0;
-  font-family: var(--font-ibm-plex), sans-serif;
+  font-family: var(--font-geist-sans), sans-serif;
   overflow-x: hidden;
-  background-color: #0b101b;
-  color: #ffffff;
+  background-color: var(--bg-app);
+  color: var(--text-main);
 }
 
 body.menu-open .tabBar {
@@ -73,12 +127,4 @@ body.menu-open .tabBar {
     width: 16px;
     height: 16px;
   }
-}
-
-:root {
-  --primary: #2b5bee;
-  --bg-dark: #0a0a0c;
-  --surface-dark: #161b2c;
-  --border-dark: #232c48;
-  --text-muted: #92a0c9;
 }

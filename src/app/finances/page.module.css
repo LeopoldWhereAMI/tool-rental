@@ -1,5 +1,5 @@
 .title {
-  color: #fff;
+  color: var(--text-main);
   letter-spacing: -0.01em;
   margin: 0;
   font-size: 28px;
@@ -29,7 +29,7 @@
   }
 }
 
-.statCard {
+/* .statCard {
   background: white;
   padding: 24px;
   border-radius: 16px;
@@ -39,13 +39,13 @@
   align-items: center;
   gap: 20px;
   transition: transform 0.2s ease;
-}
+} */
 
-.statCard:hover {
+/* .statCard:hover {
   transform: translateY(-2px);
-}
+} */
 
-.iconWrapper {
+/* .iconWrapper {
   width: 56px;
   height: 56px;
   border-radius: 12px;
@@ -66,9 +66,9 @@
 }
 .statCard:last-child .iconWrapper {
   background-color: #eff6ff;
-}
+} */
 
-.statInfo {
+/* .statInfo {
   display: flex;
   flex-direction: column;
 }
@@ -83,18 +83,18 @@
   font-size: 28px;
   color: #0f172a;
   letter-spacing: -0.5px;
-}
+} */
 
-.header {
+/* .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
   flex-wrap: wrap;
   gap: 16px;
-}
+} */
 
-.filterContainer {
+/* .filterContainer {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -106,9 +106,9 @@
 
 .filterIcon {
   color: #64748b;
-}
+} */
 
-.select {
+/* .select {
   border: none;
   outline: none;
   font-size: 14px;
@@ -120,21 +120,12 @@
 
 .select:hover {
   color: #2563eb;
-}
-
-/* Переменные */
-/* :root {
-  --primary: #2b5bee;
-  --bg-dark: #0a0a0c;
-  --surface-dark: #161b2c;
-  --border-dark: #232c48;
-  --text-muted: #92a0c9;
 } */
 
 /* Header */
 .header {
   padding: 32px;
-  border-bottom: 1px solid var(--border-dark);
+  border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -142,22 +133,16 @@
   flex-wrap: wrap;
 }
 
-.breadcrumb {
-  color: #64748b;
-  font-size: 13px;
-  margin: 0;
-}
-
-.headerActions {
+/* .headerActions {
   display: flex;
   gap: 12px;
   align-items: center;
   flex: 1;
   min-width: 300px;
   justify-content: flex-end;
-}
+} */
 
-.searchWrapper {
+/* .searchWrapper {
   position: relative;
   flex: 1;
   max-width: 360px;
@@ -174,7 +159,7 @@
 
 .searchInput {
   width: 100%;
-  background-color: var(--surface-dark);
+  background-color: var(--surface);
   border: 1px solid var(--border-dark);
   color: #fff;
   padding: 10px 12px 10px 40px;
@@ -192,7 +177,7 @@
 .searchInput::placeholder {
   color: var(--text-muted);
   opacity: 0.6;
-}
+} */
 
 /* Button */
 .newEntryBtn {
@@ -207,14 +192,9 @@
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s;
   white-space: nowrap;
   box-shadow: 0 4px 14px rgba(43, 91, 238, 0.3);
-}
-
-.newEntryBtn:hover {
-  filter: brightness(1.1);
-  box-shadow: 0 6px 20px rgba(43, 91, 238, 0.4);
 }
 
 .plusIcon {
@@ -231,8 +211,8 @@
 
 /* Card */
 .card {
-  background-color: var(--surface-dark);
-  border: 1px solid var(--border-dark);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 24px;
   position: relative;
@@ -240,11 +220,6 @@
   transition:
     transform 0.2s,
     box-shadow 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(43, 91, 238, 0.15);
 }
 
 .cardIconWrapper {
@@ -314,7 +289,7 @@
   display: flex;
   align-items: baseline;
   gap: 6px;
-  color: white;
+  color: var(--text-secondary);
   font-size: 28px;
   font-weight: 700;
 }
@@ -339,16 +314,11 @@
   gap: 24px;
 }
 
-@media (max-width: 1200px) {
-  .mainContent {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* Withdraw Card */
 .withdrawCard {
-  background-color: var(--surface-dark);
-  border: 1px solid var(--border-dark);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--table-shadow);
   border-radius: 12px;
   padding: 28px;
   height: fit-content;
@@ -357,7 +327,7 @@
 .withdrawTitle {
   font-size: 18px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-secondary);
   margin: 0 0 8px 0;
 }
 
@@ -406,13 +376,13 @@
 .amountInput {
   width: 100%;
   background-color: rgba(43, 91, 238, 0.05);
-  border: 1px solid var(--border-dark);
-  color: #fff;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
   padding: 14px 14px 14px 32px;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 600;
-  transition: border-color 0.2s;
+  transition: border-color 0.3s;
 }
 
 .amountInput:focus {
@@ -447,9 +417,9 @@
 
 .select,
 .textarea {
-  background-color: var(--surface-dark);
-  border: 1px solid var(--border-dark);
-  color: #fff;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
   padding: 10px 12px;
   border-radius: 8px;
   font-size: 14px;
@@ -461,13 +431,13 @@
 .textarea:focus {
   outline: none;
   border-color: var(--primary);
-  background-color: rgba(43, 91, 238, 0.05);
+  background-color: var(--table-thead);
 }
 
-.select option {
-  background-color: var(--surface-dark);
+/* .select option {
+  background-color: var(--surface);
   color: #fff;
-}
+} */
 
 .textarea {
   resize: vertical;
@@ -506,11 +476,6 @@
   box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
 }
 
-.submitBtn:hover:not(:disabled) {
-  filter: brightness(1.1);
-  box-shadow: 0 6px 20px rgba(43, 91, 238, 0.4);
-}
-
 .submitBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -518,8 +483,9 @@
 
 /* Transaction Card */
 .transactionCard {
-  background-color: var(--surface-dark);
-  border: 1px solid var(--border-dark);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--table-shadow);
   border-radius: 12px;
   overflow: hidden;
   display: flex;
@@ -528,7 +494,7 @@
 
 .transactionHeader {
   padding: 24px;
-  border-bottom: 1px solid var(--border-dark);
+  border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -537,7 +503,7 @@
 .transactionTitle {
   font-size: 18px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-secondary);
   margin: 0;
 }
 
@@ -553,8 +519,8 @@
 }
 
 .tableHeader {
-  background-color: rgba(10, 10, 12, 0.5);
-  border-bottom: 1px solid var(--border-dark);
+  background-color: var(--table-thead);
+  border-bottom: 1px solid var(--border);
 }
 
 .tableHeader th {
@@ -568,17 +534,13 @@
 }
 
 .tableRow {
-  border-bottom: 1px solid var(--border-dark);
+  border-bottom: 1px solid var(--border);
   transition: background-color 0.2s;
-}
-
-.tableRow:hover {
-  background-color: rgba(43, 91, 238, 0.05);
 }
 
 .tableCell {
   padding: 16px 20px;
-  color: #fff;
+  /* color: #fff; */
   white-space: nowrap;
 }
 
@@ -590,7 +552,7 @@
 
 .dateMain {
   font-weight: 500;
-  color: #fff;
+  color: var(--text-secondary);
 }
 
 .dateTime {
@@ -607,7 +569,7 @@
 
 .descriptionMain {
   font-weight: 500;
-  color: #fff;
+  color: var(--text-secondary);
 }
 
 .descriptionSub {
@@ -651,12 +613,6 @@
   font-size: 14px;
 }
 
-/* 
- * Добавьте эти стили в конец вашего finance_page.module.css
- * Это стили для сообщений успеха и ошибки в форме вывода
- */
-
-/* Сообщение в форме вывода */
 .withdrawMessage {
   display: flex;
   align-items: center;
@@ -702,11 +658,10 @@
   font-weight: 500;
 }
 
-/* Информационный блок */
-.withdrawInfo {
+/* .withdrawInfo {
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid var(--border-dark);
+  border-top: 1px solid var(--border);
 }
 
 .withdrawInfo-title {
@@ -721,20 +676,20 @@
   color: var(--text-muted);
   margin: 0;
   padding-left: 20px;
-}
+} */
 
-.withdrawInfo-list li {
+/* .withdrawInfo-list li {
   margin-bottom: 4px;
   line-height: 1.5;
-}
+} */
 .tabContainer {
   display: flex;
-  background-color: rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--border-dark);
+  background-color: var(--table-thead);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 4px;
   margin-bottom: 24px;
-  position: relative; /* Важно для позиционирования */
+  position: relative;
   z-index: 1;
 }
 
@@ -756,16 +711,16 @@
   transition: color 0.3s ease;
   position: relative;
   z-index: 2; /* Кнопки выше фона */
-}
-
-.tabButton:hover:not(.tabActiveExpense):not(.tabActiveIncome) {
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0.05);
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.1s ease,
+    filter 0.2s ease;
 }
 
 .tabActiveExpense,
 .tabActiveIncome {
-  color: #fff !important;
+  color: #fff;
 }
 
 .tabIndicator {
@@ -807,28 +762,22 @@
 .rowCancelled .dateMain,
 .rowCancelled .descriptionMain,
 .rowCancelled .amountText {
-  color: var(--text-muted) !important;
-  text-decoration: line-through; /* Перечеркиваем текст */
+  color: var(--text-muted);
+  text-decoration: line-through;
   opacity: 0.6;
 }
 
 /* Кнопка отмены */
 .cancelBtn {
   background: transparent;
-  border: 1px solid var(--border-dark);
+  border: 1px solid var(--border);
   color: var(--text-muted);
   padding: 6px;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s;
   display: inline-flex;
   align-items: center;
-}
-
-.cancelBtn:hover {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
-  border-color: #ef4444;
 }
 
 /* Бейдж "Отменена" */
@@ -846,8 +795,8 @@
 
 .restoreBtn {
   background: transparent;
-  border: 1px solid var(--border-dark);
-  color: #10b981; /* Зеленый цвет для восстановления */
+  border: 1px solid var(--border);
+  color: #10b981;
   padding: 6px;
   border-radius: 6px;
   cursor: pointer;
@@ -879,9 +828,9 @@
 }
 
 .miniSelect {
-  background: var(--surface-dark);
-  border: 1px solid var(--border-dark);
-  color: #fff;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
   font-size: 11px;
   padding: 4px 8px;
   border-radius: 6px;
@@ -907,10 +856,70 @@
 }
 
 .inlineYearBtn:hover {
-  color: #fff;
+  color: rgb(139, 92, 246);
 }
 
-/* Responsive */
+@media (hover: hover) {
+  .newEntryBtn:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 6px 20px rgba(43, 91, 238, 0.4);
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(43, 91, 238, 0.15);
+  }
+
+  .tabButton:hover {
+    color: var(--text-secondary);
+  }
+
+  .tabButton:hover svg {
+    transform: translateY(-1px);
+    transition: transform 0.2s ease;
+  }
+
+  .tabButton:active {
+    transform: scale(0.98);
+  }
+
+  .tabButton:hover:not(.tabActiveExpense):not(.tabActiveIncome) {
+    color: var(--text-main);
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .tabActiveExpense:hover,
+  .tabActiveIncome:hover {
+    filter: brightness(1.15);
+  }
+
+  .submitBtn:hover:not(:disabled) {
+    filter: brightness(1.1);
+    box-shadow: 0 6px 20px rgba(43, 91, 238, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .submitBtn:active {
+    transform: translateY(0);
+  }
+
+  .tableRow:hover {
+    background-color: var(--nav-hover-bg);
+  }
+
+  .cancelBtn:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border-color: #ef4444;
+  }
+}
+
+@media (max-width: 1200px) {
+  .mainContent {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   .header {
     flex-direction: column;

@@ -1,6 +1,6 @@
 /* Базовый контейнер диалога */
 .modal {
-  border: 1px solid #334155; /* Slate 700 */
+  border: 1px solid var(--border); /* Slate 700 */
   border-radius: 16px;
   padding: 0;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
@@ -8,8 +8,8 @@
   width: calc(100% - 32px);
   margin: auto;
   inset: 0;
-  background-color: #1e293b; /* Slate 800 */
-  color: #f1f5f9;
+  background-color: var(--surface); /* Slate 800 */
+  color: var(--text-main);
 
   opacity: 0;
   transform: scale(0.95) translateY(10px);
@@ -26,8 +26,8 @@
 
 /* Бэкдроп (затемнение фона) */
 .modal::backdrop {
-  background-color: rgba(2, 6, 17, 0);
-  backdrop-filter: blur(0px);
+  background-color: var(--backdrop-color);
+  backdrop-filter: blur(var(--backdrop-blur));
   transition:
     display 0.3s allow-discrete,
     overlay 0.3s allow-discrete,
@@ -36,8 +36,8 @@
 }
 
 .modal[open]::backdrop {
-  background-color: rgba(2, 6, 17, 0.85);
-  backdrop-filter: blur(8px);
+  background-color: var(--backdrop-color);
+  backdrop-filter: blur(var(--backdrop-blur));
 }
 
 @starting-style {
@@ -46,8 +46,8 @@
     transform: scale(0.95) translateY(10px);
   }
   .modal[open]::backdrop {
-    background-color: rgba(2, 6, 17, 0);
-    backdrop-filter: blur(0px);
+    background-color: var(--backdrop-color);
+    backdrop-filter: blur(var(--backdrop-blur));
   }
 }
 
@@ -67,15 +67,15 @@
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #f1f5f9;
+  color: var(--text-main);
 }
 
 .closeBtn {
-  background: #334155;
+  background: var(--table-thead);
   border: none;
   cursor: pointer;
   color: #94a3b8;
-  transition: all 0.2s;
+  transition: all 0.3s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,7 +105,7 @@
 
 .confirmMessage {
   margin: 0;
-  color: #94a3b8;
+  color: var(--text-secondary);
   line-height: 1.5;
   font-size: 1rem;
 }
@@ -119,7 +119,7 @@
 .finalAmountLabel {
   display: block;
   font-size: 0.875rem;
-  color: #64748b;
+  color: var(--text-muted);
   margin-bottom: 4px;
 }
 
@@ -129,10 +129,9 @@
   font-weight: 700;
 }
 
-/* Кнопки */
 .modalActions {
   display: flex;
-  flex-direction: column; /* Кнопки друг под другом для мобилок и акцента */
+  flex-direction: column;
   gap: 12px;
   margin-top: 32px;
 }
@@ -146,7 +145,7 @@
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   width: 100%;
 }
 
@@ -158,20 +157,20 @@
 
 .cancelBtn {
   background-color: transparent;
-  color: #94a3b8;
-  border: 1px solid #334155;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
   padding: 12px;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   width: 100%;
 }
 
 .cancelBtn:hover:not(:disabled) {
-  background-color: #334155;
-  color: #f1f5f9;
+  background-color: var(--nav-hover-bg);
+  color: var(--text-secondary);
 }
 
 button:disabled {
@@ -194,12 +193,12 @@ button:disabled {
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background-color 0.15s;
   font-family: inherit;
 }
 
 .cancelBtnConfirm:hover:not(:disabled) {
-  background: #dc2626;
+  background-color: #dc2626;
 }
 
 .cancelBtnConfirm:disabled {
@@ -263,21 +262,21 @@ button:disabled {
   display: block;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #94a3b8; /* slate-400 */
+  color: var(--text-muted);
   margin-bottom: 0.5rem;
 }
 
 .textarea {
   width: 100%;
   min-height: 100px;
-  background: #1e293b; /* slate-800 */
-  border: 1px solid #334155; /* slate-700 */
+  background: var(--table-thead);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 12px;
-  color: #f1f5f9;
+  color: var(--text-secondary);
   font-family: inherit;
   resize: vertical;
-  transition: border-color 0.2s;
+  transition: border-color 0.3s;
 }
 
 .textarea:focus {
@@ -288,21 +287,17 @@ button:disabled {
 .blacklistBtnConfirm {
   background-color: #ef4444;
   color: white;
-  /* padding и border-radius лучше подогнать под остальные кнопки (14px и 10px) */
   padding: 14px;
   border-radius: 10px;
   font-weight: 600;
   border: none;
   cursor: pointer;
   width: 100%;
-
-  /* ИСПРАВЛЕНИЕ: Анимируем все изменяемые свойства */
-  transition: all 0.2s ease-out;
+  transition: all 0.3s ease-out;
 }
 
 .blacklistBtnConfirm:hover:not(:disabled) {
   background-color: #dc2626;
-  /* Добавляем трансформацию для полноты эффекта, как у других ваших кнопок */
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }

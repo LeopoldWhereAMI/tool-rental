@@ -6,6 +6,7 @@ import Sidebar from "@/components/Sidebar/Sidebar";
 import { Toaster } from "sonner";
 import Footer from "@/components/Footer/Footer";
 import MobileNav from "@/components/ui/MobileNav/MobileNav";
+import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "Главная страница",
@@ -18,24 +19,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className={fontVariables}>
+    <html lang="ru" className={fontVariables} suppressHydrationWarning>
       <body className="root-body">
-        <Toaster
-          position="top-right"
-          offset="16px"
-          gap={8}
-          expand={false}
-          richColors
-          closeButton
-        />
-        <Header />
+        <ThemeProvider>
+          <Toaster
+            position="top-right"
+            offset="16px"
+            gap={8}
+            expand={false}
+            richColors
+            closeButton
+          />
+          <Header />
 
-        <div className="app-layout">
-          <Sidebar />
-          <main className="main-content">{children}</main>
-        </div>
-        <MobileNav />
-        <Footer />
+          <div className="app-layout">
+            <Sidebar />
+            <main className="main-content">{children}</main>
+          </div>
+          <MobileNav />
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

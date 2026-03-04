@@ -1,21 +1,9 @@
-/**
- * Переменные для быстрой настройки темы
- */
 .pageContainer {
-  --primary: #2b5bee;
-  --bg-dark: #101522;
-  --card-bg: #161b2e;
-  --card-border: #1e293b;
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --accent-yellow: #eab308;
-
   min-height: 100vh;
-  /* background-color: var(--bg-dark); */
-  color: var(--text-main);
+  color: var(--text-secondary);
   padding: 32px 80px;
 }
-/* --- Навигация --- */
+
 .topNav {
   display: flex;
   justify-content: space-between;
@@ -27,19 +15,21 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  color: #fff;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-main);
   padding: 10px 18px;
   border-radius: 10px;
   cursor: pointer;
   font-weight: 500;
-  transition: all 0.2s;
+  box-shadow: var(--table-shadow);
+  transition: all 0.3s;
 }
 
 .printBtn:hover {
-  background: #1f2229;
-  border-color: #3f4451;
+  background: var(--nav-hover-bg);
+  border-color: var(--primary);
+  box-shadow: var(--kpi-shadow-hover);
 }
 
 /* --- Сетка --- */
@@ -57,19 +47,19 @@
 
 /* --- Hero Секция (Инструмент) --- */
 .heroSection {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   display: flex;
   overflow: hidden;
   margin-bottom: 32px;
   min-height: 320px;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: var(--table-shadow);
+  transition: border 0.3s ease;
 }
 
 .heroImageWrapper {
-  width: 40%; /* Уменьшили с 50% */
-
+  width: 40%;
   display: flex;
 }
 
@@ -78,22 +68,16 @@
   width: 100%;
   flex: 1;
   min-height: 320px;
-
-  /* Внутренние отступы, чтобы картинка не касалась краев */
   padding: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* Эффект витрины: темный центр, уходящий в основной цвет карты */
   background: radial-gradient(
     circle at center,
-    rgba(43, 91, 238, 0.08) 0%,
-    rgba(22, 27, 46, 1) 70%
+    rgba(43, 91, 238, 0.05) 0%,
+    var(--surface) 70%
   );
-
-  /* Отделяем левую часть от правой тонкой линией */
-  border-right: 1px solid var(--card-border);
+  border-right: 1px solid var(--border);
   overflow: hidden;
 }
 
@@ -113,11 +97,9 @@
   position: relative !important; /* Перебиваем абсолют от fill, если нужно */
   width: 100% !important;
   height: 100% !important;
-
   /* 4. ГЛАВНОЕ: contain сохраняет пропорции и не дает выйти за рамки padding */
   object-fit: contain !important;
-
-  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -136,7 +118,7 @@
 }
 
 .imagePlaceholder span {
-  color: #9ca3af;
+  color: var(--text-muted);
   font-size: 0.875rem;
   font-weight: 500;
   text-transform: uppercase;
@@ -145,18 +127,16 @@
 
 .productImagePlaceholder {
   position: relative;
-  width: 72px; /* Увеличили с 44px */
-  height: 72px; /* Увеличили с 44px */
-  border-radius: 12px; /* Чуть мягче углы для большего размера */
-  background: #252b3b; /* Цвет подложки, если картинка прозрачная */
-
-  display: flex; /* Центрирование для иконки-заглушки */
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  background: var(--bg-app);
+  display: flex;
   align-items: center;
   justify-content: center;
-
   overflow: hidden;
-  flex-shrink: 0; /* Чтобы картинку не сжимало при длинных названиях */
-  border: 1px solid var(--card-border);
+  flex-shrink: 0;
+  border: 1px solid var(--border);
 }
 
 .productImage {
@@ -175,12 +155,15 @@
 .heroPriceTag {
   font-size: 18px;
   font-weight: 800;
-  color: #fff;
+  color: var(--text-main);
   display: flex;
   gap: 5px;
   justify-content: flex-end;
-  /* align-items: flex-end; */
   line-height: 1;
+}
+
+.heroPrice {
+  color: var(--price-color);
 }
 
 .heroDaysLabel {
@@ -194,12 +177,12 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: 8px; /* Отступ от заголовка H1 */
-  margin-bottom: 24px; /* Отступ до следующего блока (specs) */
+  margin-top: 8px;
+  margin-bottom: 24px;
 }
 
 .infoSeparator {
-  color: var(--card-border);
+  color: var(--border);
   font-size: 18px;
   line-height: 0;
   user-select: none;
@@ -208,7 +191,7 @@
 .specValue {
   font-size: 16px;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-main);
 }
 
 .heroMeta {
@@ -218,16 +201,17 @@
   margin-top: 24px;
   font-size: 12px;
   color: var(--text-muted);
-  opacity: 0.6;
+  opacity: 0.9;
 }
 
 .statusBadge {
   display: inline-flex;
   padding: 4px 12px;
-  background: rgba(43, 91, 238, 0.1);
+  /* background: rgba(43, 91, 238, 0.1); */
+  background: var(--nav-active-bg);
   color: var(--primary);
-  border: 1px solid rgba(43, 91, 238, 0.2);
-  border-radius: 9999px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
@@ -258,12 +242,18 @@
 }
 
 /* --- Контентные блоки (WhiteBox) --- */
+.whiteBox,
+.sidebarCard,
+.infoBlock.wideBlock {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--table-shadow);
+}
+
 .whiteBox {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 20px;
   padding: 24px;
-  transition: transform 0.2s ease;
+  border-radius: 20px;
+  transition: all 0.3s ease;
 }
 
 .boxHeader {
@@ -272,7 +262,7 @@
   gap: 12px;
   margin-bottom: 20px;
   color: var(--text-muted);
-  border-bottom: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--border);
   padding-bottom: 16px;
 }
 
@@ -297,15 +287,14 @@
 }
 
 .sidebarCard {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
   border-radius: 20px;
   padding: 24px;
   margin-bottom: 32px;
+  transition: border 0.3s ease;
 }
 
 .sidebarCard .boxHeader {
-  border-bottom: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--border);
   margin-bottom: 16px;
   padding-bottom: 12px;
   display: flex;
@@ -329,24 +318,28 @@
 
 /* --- Баннер дедлайна (Синий) --- */
 .deadlineBanner {
-  background: var(--accent-blue);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 20px;
   padding: 24px;
   display: flex;
   align-items: center;
   gap: 20px;
-  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+  color: var(--primary);
+  transition: border 0.3s ease;
+  box-shadow: var(--table-shadow);
 }
 
 .deadlineIcon {
   width: 54px;
   height: 54px;
-  background: rgba(255, 255, 255, 0.2);
+  background-color: var(--table-thead);
+  border: 1px solid var(--border);
   border-radius: 12px;
+  box-shadow: var(--table-shadow);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
 }
 
 .deadlineText {
@@ -358,7 +351,6 @@
   font-size: 12px;
   font-weight: 600;
   opacity: 0.8;
-  color: #fff;
   margin-bottom: 4px;
 }
 
@@ -367,8 +359,6 @@
   font-weight: 900;
 }
 
-/* OrderItemList */
-/* Основной контейнер блока (заменяет whiteBox для списка) */
 .infoBlock {
   display: flex;
   flex-direction: column;
@@ -386,13 +376,11 @@
   gap: 16px;
 }
 
-.infoBlock.wideBlock {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
+/* .infoBlock.wideBlock {
   border-radius: 20px;
   padding: 24px;
   margin-bottom: 24px;
-}
+} */
 
 /* Заголовок внутри списка */
 .blockTitle {
@@ -401,7 +389,7 @@
   gap: 12px;
   margin-bottom: 20px;
   padding-bottom: 16px;
-  border-bottom: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--border);
 }
 
 .blockTitle h3 {
@@ -420,103 +408,6 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
-
-.toolItemEntry {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
-  padding: 16px;
-  transition: all 0.2s ease;
-}
-
-.toolItemEntry:hover {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(43, 91, 238, 0.4);
-}
-
-/* Верхняя строка: Имя и Цена */
-.toolHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.name {
-  font-weight: 600;
-  font-size: 15px;
-  color: var(--text-main);
-  margin: 0;
-}
-
-.toolPrice {
-  font-weight: 700;
-  color: var(--primary);
-  font-size: 16px;
-  display: flex; /* Добавляем flex для удобного управления выравниванием */
-  align-items: center;
-}
-
-.toolPrice .subText {
-  margin-left: 8px; /* Вот тот самый отступ */
-  font-weight: 400; /* Делаем дни менее жирными, чтобы не спорили с ценой */
-  color: var(--text-muted);
-  font-size: 13px;
-}
-
-/* Нижняя строка: S/N и Даты */
-.toolMeta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.subText {
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-.individualDates {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: var(--text-muted);
-  background: rgba(0, 0, 0, 0.2);
-  padding: 4px 10px;
-  border-radius: 6px;
-}
-
-.individualDates svg {
-  color: var(--primary);
-  opacity: 0.8;
-}
-
-/* OrderClientInfo */
-.clientBlockContent .name {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-main);
-  margin: 0;
-  line-height: 1.4;
-}
-
-.contactRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-muted);
-  font-size: 14px;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 8px 12px;
-  border-radius: 8px;
-  width: fit-content;
-}
-
-.contactRow svg {
-  color: var(--primary);
 }
 
 /* OrderPeriod */
@@ -538,7 +429,7 @@
 }
 
 .miniLabel {
-  color: var(--text-muted);
+  color: var(--text-main);
   text-transform: uppercase;
   font-size: 11px;
   letter-spacing: 0.05em;
@@ -560,7 +451,7 @@
   font-family: var(--font-space-grotesk);
   font-size: 32px;
   font-weight: 800;
-  color: var(--primary);
+  color: var(--price-color);
   margin: -10px 0 0 0;
 }
 
@@ -569,6 +460,7 @@
   background: rgba(239, 68, 68, 0.1);
   border: 1px solid rgba(239, 68, 68, 0.2);
   border-radius: 12px;
+  box-shadow: var(--table-shadow);
   padding: 12px;
 }
 
@@ -608,12 +500,11 @@
 }
 
 .adjInput {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--card-border);
+  background-color: var(--table-thead);
+  border: 1px solid var(--border);
+  color: var(--text-main);
   border-radius: 8px;
   padding: 10px;
-  color: #fff;
-  font-family: inherit;
   outline: none;
   transition: border-color 0.2s;
 }
@@ -624,23 +515,19 @@
 
 /* Кнопка завершения */
 .completeOrderBtn {
+  background-color: var(--primary);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 10px;
-  background: var(--primary);
-  color: white;
   border: none;
-  padding: 14px;
-  border-radius: 12px;
-  font-weight: 700;
-  cursor: pointer;
   transition: all 0.2s;
-}
-
-.completeOrderBtn:hover {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(43, 91, 238, 0.2);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px 0 rgba(43, 91, 238, 0.39);
 }
 
 .completeOrderBtn:disabled {
@@ -677,13 +564,13 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  color: #fff;
+  color: var(--text-main);
   font-size: 18px;
   font-weight: 600;
 }
 
 .itemCountBadge {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface);
   padding: 4px 12px;
   border-radius: 20px;
   font-size: 13px;
@@ -693,48 +580,43 @@
 .toolCard {
   display: flex;
   gap: 16px;
-  background: #1a1f2e; /* Темный фон карточки */
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 16px;
+  box-shadow: var(--table-shadow);
   padding: 16px;
   margin-bottom: 12px;
-  transition: transform 0.2s ease;
 }
 
-.toolCard:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-.toolThumbWrapper {
+/* .toolThumbWrapper {
   width: 100px;
   height: 100px;
   background: #252b3b;
   overflow: hidden;
   flex-shrink: 0;
   position: relative;
-}
+} */
 
-.toolThumbPlaceholder {
+/* .toolThumbPlaceholder {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #94a3b8; /* Цвет иконки slate-400 */
-}
+  color: #94a3b8;
+} */
 
-.toolThumb {
+/* .toolThumb {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* padding: 4px; */
-}
+  
+} */
 
 .toolMainInfo {
   flex: 1;
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
 }
 
 .toolTitleRow {
@@ -747,14 +629,14 @@
 .toolName {
   font-size: 16px;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .toolPriceLabel {
   font-family: var(--font-space-grotesk);
   font-size: 16px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .toolMetaRow {
@@ -771,7 +653,9 @@
 
 .badgeBlue {
   background: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
+  /* color: #60a5fa; */
+  color: var(--primary);
+  font-family: var(--font-space-grotesk);
   font-size: 12px;
   padding: 2px 8px;
   border-radius: 4px;
@@ -779,22 +663,21 @@
   width: fit-content;
 }
 
-.snText {
-  font-size: 12px;
+/* .snText {
+  font-size: 120px;
   color: #64748b;
-}
+} */
 
 .toolTimeline {
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--text-muted);
 }
 
 .daysSmall {
-  font-size: 11px;
-  opacity: 0.7;
+  font-size: 13px;
 }
 
 /* Заголовок в сайдбаре */
@@ -805,7 +688,7 @@
 .sidebarTitle {
   font-size: 12px;
   font-weight: 800;
-  color: var(--text-muted);
+  color: var(--text-main);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -821,17 +704,17 @@
 .avatarWrapper {
   width: 64px;
   height: 64px;
-  border-radius: 12px; /* Мягкий квадрат, как на вашем референсе */
+  border-radius: 12px;
   overflow: hidden;
-  background: #252b3b;
-  border: 1px solid var(--card-border);
+  background: var(--bg-app);
+  border: 1px solid var(--border);
   flex-shrink: 0;
 }
 
 .avatarImage {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Чтобы картинка не растягивалась */
+  object-fit: cover;
 }
 
 .clientMainInfo {
@@ -842,17 +725,17 @@
 .clientName {
   font-size: 18px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-secondary);
 }
 
 .verifiedIcon {
-  color: #2b5bee; /* Синяя галочка */
+  color: var(--primary); /* Синяя галочка */
   margin-left: 4px;
 }
 
 .memberSince {
   font-size: 13px;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 /* Контакты */
@@ -867,7 +750,9 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.02);
+  background-color: var(--table-thead);
+  border: 1px solid var(--border);
+  box-shadow: var(--kpi-shadow);
   padding: 10px;
   border-radius: 10px;
 }
@@ -875,35 +760,35 @@
 .contactIconBox {
   width: 32px;
   height: 32px;
-  background: #1e293b;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #94a3b8;
+  color: var(--primary);
 }
 
 .contactValue {
   font-size: 14px;
-  color: #e2e8f0;
+  color: var(--text-main);
 }
 
 /* Кнопка "Написать" */
 .contactBtn {
-  width: 100%;
-
-  padding: 14px;
-  background: rgba(43, 91, 238, 0.1);
-  border: 1px solid rgba(43, 91, 238, 0.2);
-  border-radius: 14px;
-  color: #4f75ff;
+  background-color: var(--primary);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
   font-weight: 700;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  cursor: pointer;
+  border: none;
   transition: all 0.2s;
+  box-shadow: 0 10px 15px -3px rgba(43, 91, 238, 0.2);
+  transition: all 0.3s ease;
 }
 
 /* В page.module.css */
@@ -918,11 +803,6 @@
   text-decoration: underline; /* Чтобы пользователь понимал, что на это можно нажать */
 }
 
-.contactBtn:hover {
-  background: #2b5bee;
-  color: white;
-}
-
 /* deposit */
 .depositInfo {
   display: flex;
@@ -932,6 +812,7 @@
   margin: 10px 0;
   background: rgba(245, 158, 11, 0.06);
   border: 1px solid rgba(245, 158, 11, 0.2);
+  box-shadow: var(--table-shadow);
   border-radius: 8px;
 }
 
@@ -940,7 +821,7 @@
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
 .depositInfoLeft svg {
@@ -966,7 +847,6 @@
   gap: 8px;
   font-size: 14px;
   font-weight: 600;
-  color: #64748b;
 }
 
 .cancelledFinanceBody {
@@ -974,20 +854,20 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  background: rgba(100, 116, 139, 0.06);
-  border: 1px solid rgba(100, 116, 139, 0.15);
+  background: var(--bg-app);
+  border: 1px solid var(--border);
+  box-shadow: var(--kpi-shadow);
   border-radius: 10px;
 }
 
 .cancelledLabel {
   font-size: 13px;
-  color: #64748b;
 }
 
 .cancelledAmount {
   font-size: 18px;
   font-weight: 700;
-  color: #64748b;
+  color: var(--text-muted);
   text-decoration: line-through;
   opacity: 0.7;
 }
@@ -997,12 +877,30 @@
   justify-content: space-between;
   align-items: center;
   font-size: 13px;
-  color: #475569;
   padding: 0 4px;
 }
 
-/* --- Адаптивность --- */
-/* --- Адаптивность --- */
+@media (hover: hover) {
+  .heroSection:hover,
+  .deadlineBanner:hover,
+  .sidebarCard:hover,
+  .whiteBox:hover {
+    border: 1px solid var(--primary);
+  }
+
+  .completeOrderBtn:hover,
+  .contactBtn:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 6px 20px rgba(43, 91, 238, 0.5);
+    transform: translateY(-2px);
+  }
+
+  .completeOrderBtn:active,
+  .contactBtn:active {
+    /* Эффект нажатия: кнопка "вдавливается" */
+    transform: translateY(0);
+  }
+}
 
 /* 1. Планшеты и небольшие ноутбуки */
 @media (max-width: 1200px) {

@@ -81,7 +81,7 @@ export default function EditInventoryPage() {
             </button>
             <button
               type="submit"
-              form="edit-tool-form" /* Связка с ID формы */
+              form="edit-tool-form"
               className={styles.submitBtn}
             >
               Сохранить

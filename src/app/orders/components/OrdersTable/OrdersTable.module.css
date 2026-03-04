@@ -8,14 +8,24 @@
 
 .cardsContainer {
   display: grid; /* для контейнера карточек */
+  background-color: var(--surface);
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 16px;
   padding: 16px;
+  box-shadow:
+    0 0 1px rgba(0, 0, 0, 0.1),
+    0 0 20px rgba(0, 0, 0, 0.05),
+    0 0 5px rgba(0, 0, 0, 0.05);
 }
 
 .wrapper {
   overflow-x: auto;
-  border: 1px solid #1f2937;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow:
+    0 0 1px rgba(0, 0, 0, 0.1),
+    0 0 20px rgba(0, 0, 0, 0.05),
+    0 0 5px rgba(0, 0, 0, 0.05);
 }
 
 .table {
@@ -23,12 +33,12 @@
   border-collapse: collapse;
   color: #ffffff;
   font-size: 14px;
-  background: #0f1624;
+  background: var(--surface);
   overflow: hidden;
 }
 
 .table thead {
-  background: #111827;
+  background-color: var(--table-thead);
 }
 
 .table th {
@@ -36,20 +46,19 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   text-align: left;
-  background-color: #0a0a0c80;
-  border-bottom: 1px solid #1f2937;
+  border-bottom: 1px solid var(--border);
   padding: 14px 16px;
   font-size: 12px;
   font-weight: 700;
 }
 
 .row {
-  border-bottom: 1px solid #1f2937;
-  transition: background 0.15s ease;
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.15s ease;
 }
 
 .row:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background-color: var(--nav-hover-bg);
 }
 
 .table td {
@@ -104,23 +113,26 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #e5e7eb;
+  color: var(--text-main);
+  text-transform: capitalize;
 }
 
 .client {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  color: var(--text-main);
+  text-transform: capitalize;
 }
 
 .phone {
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 12px;
   font-family: var(--font-space-grotesk);
 }
 
 .price {
-  color: #3b82f6;
+  color: var(--price-color);
   font-family: var(--font-space-grotesk);
   font-weight: 600;
   white-space: nowrap;
@@ -148,7 +160,7 @@
 
 .month {
   font-size: 14px;
-  color: #64748b; /* Приглушенный серо-синий для месяца */
+  color: var(--text-muted);
   text-transform: capitalize;
 }
 
@@ -156,11 +168,11 @@
   font-size: 12px;
   font-family: var(--font-space-grotesk);
   font-weight: 500;
-  color: #94a3b8; /* Чуть светлее для самих чисел */
+  color: var(--text-muted);
 }
 
 .dateSeparator {
-  color: #475569;
+  color: var(--text-muted);
   font-size: 18px;
   font-weight: 300;
 }
@@ -212,7 +224,7 @@
   justify-content: center;
 
   /* Цвет иконки (сделаем чуть светлее, чтобы была видна) */
-  color: #92a0c9;
+  color: var(--text-muted);
   border-radius: 8px;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -222,8 +234,8 @@
 
 .viewButton:hover,
 .actionButton:hover {
-  color: #ffffff;
-  background-color: var(--border-dark); /* #232c48 */
+  color: var(--text-main);
+  background-color: var(--border);
 }
 
 /* Иконка внутри кнопки */
@@ -311,21 +323,19 @@
   background: rgba(239, 68, 68, 0.05);
 }
 
-/* ===== КАРТОЧКИ ДЛЯ МОБИЛЬНЫХ ===== */
-
 /* ===========================
-   КАРТОЧКА ДЛЯ МОБИЛЬНЫХ
+   КАРТОЧКА 
    =========================== */
 
 .card {
-  background: #1a2236;
-  border: 1px solid #2d3748;
+  background-color: var(--table-thead);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card:active {
@@ -339,7 +349,7 @@
   align-items: flex-start;
   gap: 12px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #2d3748;
+  border-bottom: 1px solid var(--border);
 }
 
 .cardOrderInfo {
@@ -359,7 +369,7 @@
 }
 
 .cardClientName {
-  color: #ffffff;
+  color: var(--text-main);
   font-size: 13px;
   font-weight: 600;
   line-height: 1.3;
@@ -389,8 +399,8 @@
 .cardViewBtn,
 .cardMenuBtn {
   background: transparent;
-  border: 1px solid #2d3748;
-  color: #92a0c9;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
   width: 32px;
   height: 32px;
   border-radius: 6px;
@@ -418,7 +428,7 @@
 }
 
 .cardSectionLabel {
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
@@ -426,7 +436,7 @@
 }
 
 .cardTools {
-  color: #e5e7eb;
+  color: var(--text-main);
   font-size: 13px;
   line-height: 1.4;
   word-break: break-word;
@@ -449,18 +459,18 @@
 }
 
 .cardLabel {
-  color: #64748b;
+  color: var(--text-muted);
   white-space: nowrap;
 }
 
 .cardValue {
-  color: #e5e7eb;
+  color: var(--text-main);
   text-align: right;
   word-break: break-word;
 }
 
 .cardPrice {
-  color: #3b82f6;
+  color: var(--price-color);
   font-weight: 600;
   font-family: var(--font-space-grotesk);
 }
@@ -472,7 +482,7 @@
   align-items: center;
   gap: 12px;
   padding-top: 12px;
-  border-top: 1px solid #2d3748;
+  border-top: 1px solid var(--border);
 }
 
 /* Status Badges */
@@ -545,38 +555,46 @@
 /* Hover Effects */
 @media (hover: hover) {
   .card:hover {
-    background: #1e2943;
-    border-color: #3b82f6;
+    background: var(--card-hover-bg);
+    border-color: var(--primary);
     transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(43, 91, 238, 0.15);
+    box-shadow: 0 12px 24px var(--card-hover-shadow);
   }
 
-  .card:hover .cardOrderNumber {
-    color: #60a5fa;
-  }
-
+  .card:hover .cardOrderNumber,
+  .card:hover .cardPrice,
   .card:hover .cardClientPhone {
-    color: #60a5fa;
+    color: var(--nav-active-text); /* Используем наш яркий синий */
   }
 
   .cardClientPhone:hover {
-    text-decoration: underline !important;
-  }
-
-  .card:hover .cardPrice {
-    color: #60a5fa;
+    text-decoration: underline;
   }
 
   .card:hover .cardStatusBadge {
     filter: brightness(1.15);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   }
+}
 
+@media (hover: hover) {
   .cardViewBtn:hover,
   .cardMenuBtn:hover {
-    color: #ffffff;
-    border-color: #475569;
-    transform: scale(1.05);
+    color: var(--text-main);
+    transform: translateY(-1px);
+  }
+
+  /* Если хочешь, чтобы кнопка "Глаз" при ховере становилась синей */
+  .cardViewBtn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background-color: color-mix(in srgb, var(--primary), transparent 92%);
+  }
+
+  .cardViewBtn:active,
+  .cardMenuBtn:active {
+    transform: scale(0.9);
+    background-color: var(--nav-active-bg);
   }
 }
 

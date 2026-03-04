@@ -229,7 +229,7 @@ export default function OrderCard({
 
       {/* Period & Price Section */}
       <div className={styles.cardSection}>
-        <span className={styles.cardSectionLabel}>Период и сумма</span>
+        {/* <span className={styles.cardSectionLabel}>Период и сумма</span> */}
         <div className={styles.cardInfoRow}>
           <span className={styles.cardLabel}>Период:</span>
           <span className={styles.cardValue}>

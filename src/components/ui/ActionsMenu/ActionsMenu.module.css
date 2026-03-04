@@ -2,8 +2,8 @@
 .actionsMenu {
   position: absolute;
   min-width: 220px;
-  background-color: #1a1f2e;
-  border: 1px solid #2d3343;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   box-shadow:
     0 10px 25px -5px rgba(0, 0, 0, 0.4),
@@ -39,7 +39,7 @@
   padding: 10px 14px;
   font-size: 14px;
   font-weight: 500;
-  color: #94a3b8; /* Стандартный серый цвет текста */
+  color: #94a3b8;
   text-decoration: none;
   background: none;
   border: none;
@@ -56,26 +56,26 @@
 }
 
 /* --- 3. Общие эффекты при наведении (Default Hover) --- */
-.actionsMenuList li:hover a,
+/* .actionsMenuList li:hover a,
 .actionsMenuList li:hover button {
   background-color: rgba(59, 130, 246, 0.1);
   color: #ffffff;
   transform: translateX(4px);
-}
+} */
 
 .actionsMenuList li:hover svg {
-  color: #3b82f6; /* По умолчанию иконки синеют */
+  color: #3b82f6;
 }
 
 /* --- 4. Индивидуальные стили кнопок (Специфические цвета) --- */
 
 /* ОТКРЫТЬ (Светлый/Белый) */
 .actionsMenuList li:hover .openLink {
-  color: #f8fafc !important;
-  background-color: rgba(248, 250, 252, 0.08) !important;
+  color: var(--text-main);
+  background-color: var(--nav-hover-bg);
 }
 .actionsMenuList li:hover .openLink svg {
-  color: #f8fafc !important;
+  color: var(--text-main);
 }
 
 /* РЕДАКТИРОВАТЬ (Синий) */
@@ -107,17 +107,17 @@
 
 /* ОТМЕНИТЬ ЗАКАЗ (Светло-красный) */
 .actionsMenuList li:hover .cancelBtn {
-  color: rgb(254, 202, 202) !important;
+  color: rgb(252, 144, 144);
   background-color: rgba(252, 165, 165, 0.1) !important;
 }
 .actionsMenuList li:hover .cancelBtn svg {
-  color: rgb(254, 202, 202) !important;
+  color: rgb(252, 144, 144);
 }
 
 /* УДАЛИТЬ (Критический красный) */
 .deleteSeparator {
   height: 1px;
-  background-color: #2d3343;
+  background-color: var(--border);
   margin: 6px 8px;
 }
 

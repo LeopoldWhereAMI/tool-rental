@@ -1,7 +1,6 @@
 "use client";
 
 import ClientRow from "./ClientRow";
-
 import styles from "../page.module.css";
 import { ClientWithOrders, ViewMode } from "@/types";
 import ClientCard from "./ClientCard";

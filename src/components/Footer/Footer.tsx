@@ -11,7 +11,7 @@ export default function Footer() {
           © {currentYear} Система управления прокатом.
         </span>
 
-        <span className={styles.status}>v {version} - beta</span>
+        <span className={styles.status}>Version {version}</span>
       </div>
     </footer>
   );

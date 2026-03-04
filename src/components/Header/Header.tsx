@@ -11,6 +11,15 @@ import { AuthUser } from "@/types";
 import Image from "next/image";
 import Skeleton from "../ui/Skeleton/Skeleton";
 import Logo from "../ui/Logo/Logo";
+import dynamic from "next/dynamic";
+
+// import ThemeToggle from "../ui/ThemeToggle/ThemeToggle";
+
+const ThemeToggle = dynamic(() => import("../ui/ThemeToggle/ThemeToggle"), {
+  ssr: false,
+  // Опционально: можно добавить loading заглушку, чтобы верстка не прыгала
+  loading: () => <Skeleton width="60px" height="28px" />,
+});
 
 export default function Header() {
   const router = useRouter();
@@ -87,9 +96,10 @@ export default function Header() {
         </div>
 
         <div className={styles.rightSection}>
+          <ThemeToggle />
           <button className={styles.notificationBtn}>
             <Bell size={22} />
-            <span className={styles.notificationBadge}></span>
+            {/* <span className={styles.notificationBadge}></span> */}
           </button>
 
           <div className={styles.divider}></div>

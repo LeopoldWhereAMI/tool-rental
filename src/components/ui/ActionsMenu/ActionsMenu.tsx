@@ -21,6 +21,7 @@ import { Portal } from "@/components/Portal/Portal";
 type ActionsMenuProps = {
   id: string;
   onClose: () => void;
+  isMaintenanceDisabled?: boolean;
   anchor: { top: number; left: number } | null;
   currentStatus?: string;
   onDeleteClick: () => void;
@@ -31,6 +32,7 @@ type ActionsMenuProps = {
 export default function ActionsMenu({
   id,
   onClose,
+  isMaintenanceDisabled,
   anchor,
   currentStatus,
   onDeleteClick,
@@ -54,15 +56,6 @@ export default function ActionsMenu({
       document.body.classList.remove("menu-open");
     };
   }, []);
-
-  // const desktopStyle: React.CSSProperties =
-  //   !isMobile && anchor
-  //     ? {
-  //         position: "absolute",
-  //         top: `${anchor.top + 5}px`,
-  //         left: `${anchor.left - 180}px`,
-  //       }
-  //     : {};
 
   const desktopStyle: React.CSSProperties = {};
   if (!isMobile && anchor) {
@@ -149,6 +142,12 @@ export default function ActionsMenu({
                   <button
                     onClick={() => handleStatusChange("maintenance")}
                     className={styles.maintenanceBtn}
+                    disabled={currentStatus === "rented"}
+                    title={
+                      currentStatus === "rented"
+                        ? "Нельзя отправить в ремонт инструмент в аренде"
+                        : ""
+                    }
                   >
                     <Wrench size={16} /> В ремонт
                   </button>

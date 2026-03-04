@@ -36,7 +36,7 @@ export default function Navigation() {
                 className={styles.navLink}
                 title={item.label}
               >
-                <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+                <Icon size={20} strokeWidth={isActive ? 2 : 1.5} />
                 <span>{item.label}</span>
               </Link>
             </li>

@@ -19,8 +19,8 @@ import {
   prepareOrderPayload,
 } from "@/lib/mappers/orderMapper";
 import OrderClientSection from "./components/OrderClientSection/OrderClientSection";
-import { CheckCircle, ChevronRight, Info, User, Wrench } from "lucide-react";
-import Link from "next/link";
+import { CheckCircle, Info, User, Wrench } from "lucide-react";
+import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 
 export default function AddOrderForm() {
   const { inventory, inventoryMap, clients } = useInventoryAndClients();
@@ -96,6 +96,11 @@ export default function AddOrderForm() {
     }
   };
 
+  const breadcrumbItems = useMemo(
+    () => [{ label: "Заказы", href: "/orders" }, { label: "Новый заказ" }],
+    [],
+  );
+
   return (
     <>
       <div className={styles.noPrint}>
@@ -103,19 +108,7 @@ export default function AddOrderForm() {
           <div className={styles.pageWrapper}>
             {/* Заголовок */}
             <div className={styles.pageHeader}>
-              <nav className={styles.breadcrumb}>
-                {/* Теперь "Заказы" — это кликабельная ссылка */}
-                <Link href="/orders" className={styles.breadcrumbLink}>
-                  Заказы
-                </Link>
-
-                <ChevronRight
-                  size={14}
-                  className={styles.breadcrumbSeparator}
-                />
-
-                <span className={styles.breadcrumbCurrent}>Новый заказ</span>
-              </nav>
+              <Breadcrumbs items={breadcrumbItems} />
               <h1 className={styles.pageTitle}>Оформление нового заказа</h1>
               <p className={styles.pageSubtitle}>
                 Зарегистрируйте новый договор аренды и выберите инструменты из
