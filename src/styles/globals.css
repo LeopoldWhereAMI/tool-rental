@@ -28,6 +28,7 @@
   --backdrop-color: rgba(15, 23, 42, 0.5);
   --backdrop-blur: 4px;
   --price-color: #10b981;
+  --sidebar-width: 220px;
 }
 
 .dark {
@@ -53,6 +54,7 @@
   --backdrop-color: rgba(2, 6, 17, 0.85);
   --backdrop-blur: 8px;
   --price-color: #10b981;
+  --sidebar-width: 220px;
 }
 
 body {
