@@ -6,6 +6,7 @@ import { loginAction, signUpAction } from "@/app/actions/auth";
 import { toast } from "sonner";
 import styles from "./page.module.css";
 import { AlertCircle, CheckCircle } from "lucide-react";
+import PageContainer from "@/components/PageContainer/PageContainer";
 
 interface FormErrors {
   email?: string;
@@ -127,7 +128,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className={styles.container}>
+    <PageContainer>
       <div className={styles.card}>
         <div className={styles.header}>
           <h1 className={styles.title}>{isSignUp ? "Регистрация" : "Вход"}</h1>
@@ -259,6 +260,6 @@ export default function LoginPage() {
           </button>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

@@ -24,6 +24,7 @@ import MainSceleton from "@/components/ui/Skeleton/MainSceleton";
 export default function InventoryPage() {
   const { query, setQuery } = useSearchStore();
   const { items, stats, loading, error, refresh } = useInventory();
+  console.log("Current items state:", items);
   const { viewMode, setViewMode } = useAdaptiveView("inventory");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -55,15 +56,17 @@ export default function InventoryPage() {
       <div className={styles.statsGrid}>
         <StatCard
           label="Всего инструментов"
+          labelColor="var(--primary)"
           value={stats?.total}
           icon={Package}
-          iconColor="#9ca3af"
-          iconBg="#2e333d"
+          iconColor="var(--primary)"
+          iconBg="rgba(59, 130, 246, 0.1)"
           loading={loading}
         />
 
         <StatCard
           label="Доступно"
+          labelColor="#10b981"
           value={stats?.available}
           icon={CheckCircle}
           iconColor="#10b981"
@@ -73,15 +76,17 @@ export default function InventoryPage() {
 
         <StatCard
           label="В аренде"
+          labelColor="var(--secondary)"
           value={stats?.rented}
           icon={ShoppingCart}
-          iconColor="#3b82f6"
+          iconColor="var(--secondary)"
           iconBg="rgba(59, 130, 246, 0.1)"
           loading={loading}
         />
 
         <StatCard
           label="В ремонте"
+          labelColor="#f59e0b"
           value={stats?.maintenance}
           icon={Wrench}
           iconColor="#f59e0b"

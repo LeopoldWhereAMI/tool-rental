@@ -22,10 +22,14 @@
 }
 
 .iconWrapper {
-  color: var(--primary);
+  color: var(--secondary);
   margin-bottom: 4px;
   display: flex;
   align-items: center;
+}
+
+.active .iconWrapper {
+  color: #10b981;
 }
 
 .critical .iconWrapper {
@@ -44,6 +48,14 @@
   font-size: 28px;
   font-weight: 700;
   letter-spacing: -0.02em;
+}
+
+.default .value {
+  color: var(--secondary);
+}
+
+.active .value {
+  color: #10b981;
 }
 
 .critical .value {

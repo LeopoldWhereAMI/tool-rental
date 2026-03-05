@@ -99,9 +99,11 @@ export default function InventoryItemPage() {
               </span>
             </div>
             <div className={styles.metaInfo}>
-              <span>Арт. {item.article || "—"}</span>
+              <span className={styles.info}>Арт. {item.article || "—"}</span>
               <span className={styles.divider}>|</span>
-              <span>S/N. {item.serial_number || "—"}</span>
+              <span className={styles.info}>
+                S/N. {item.serial_number || "—"}
+              </span>
             </div>
           </div>
 

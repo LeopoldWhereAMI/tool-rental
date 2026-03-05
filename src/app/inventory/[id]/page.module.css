@@ -68,7 +68,7 @@
 
 .rented {
   background-color: rgba(43, 91, 238, 0.1);
-  color: var(--primary);
+  color: var(--secondary);
   border-color: rgba(43, 91, 238, 0.2);
 }
 
@@ -87,6 +87,10 @@
   width: 1px;
   height: 12px;
   user-select: none;
+}
+
+.info {
+  color: var(--secondary);
 }
 
 .actionsBar {
@@ -251,15 +255,15 @@
 
 .iconGreen {
   background: rgba(34, 197, 94, 0.1);
-  color: var(--success);
+  color: #10b981;
 }
 .iconBlue {
   background: rgba(43, 91, 238, 0.1);
-  color: var(--primary);
+  color: var(--secondary);
 }
 .iconOrange {
   background: rgba(245, 158, 11, 0.1);
-  color: var(--warning);
+  color: #f59e0b;
 }
 
 .metricContent {

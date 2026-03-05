@@ -7,12 +7,6 @@
   display: flex;
 }
 
-.tableCard {
-  border: 1px solid var(--borer);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
 .btn {
   background-color: var(--primary);
   color: white;

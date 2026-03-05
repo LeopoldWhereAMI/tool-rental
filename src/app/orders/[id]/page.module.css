@@ -385,7 +385,7 @@
 }
 
 .blockTitle svg {
-  color: var(--primary);
+  color: var(--secondary);
 }
 
 .toolsListDetailed {
@@ -606,7 +606,7 @@
 
 .badgeBlue {
   background: rgba(59, 130, 246, 0.15);
-  color: var(--primary);
+  color: var(--secondary);
   font-family: var(--font-space-grotesk);
   font-size: 12px;
   padding: 2px 8px;
@@ -674,7 +674,7 @@
 }
 
 .verifiedIcon {
-  color: var(--primary);
+  color: var(--secondary);
   margin-left: 4px;
 }
 

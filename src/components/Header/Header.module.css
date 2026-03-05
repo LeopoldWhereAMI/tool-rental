@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   background-color: var(--bg-header);
-  backdrop-filter: blur(0px);
+  backdrop-filter: blur(4px);
   border-bottom: 1px solid var(--border);
   color: var(--text-main);
   margin-left: var(--sidebar-width);

@@ -7,6 +7,7 @@ import Image from "next/image";
 import { InventoryUI } from "@/types";
 import ActionsMenu from "@/components/ui/ActionsMenu/ActionsMenu";
 import Link from "next/link";
+import MaintenanceProgress from "@/components/MaintenanceProgress/MaintenanceProgress";
 
 type InventoryCardProps = {
   item: InventoryUI;
@@ -121,23 +122,17 @@ export default function InventoryCard({
       </div>
 
       <div className={styles.cardSection}>
-        <span className={styles.cardSectionLabel}>Наличие</span>
-        <div className={styles.cardAvailability}>
-          <span className={styles.cardAvailabilityRatio}>
-            {item.status === "available" ? "1/1" : "0/1"}
-          </span>
-          <div className={styles.cardProgressBar}>
-            <div
-              className={styles.cardProgressBarFill}
-              style={{
-                width: item.status === "available" ? "100%" : "0%",
-                backgroundColor:
-                  item.status === "available"
-                    ? "var(--status-available-color, #10b981)"
-                    : "#32353b",
-              }}
-            />
-          </div>
+        <span className={styles.cardSectionLabel}>
+          Техническое обслуживание
+        </span>
+        <div
+          className={styles.cardMaintenanceWrapper}
+          style={{ marginTop: "8px" }}
+        >
+          <MaintenanceProgress
+            current={item.work_days_count || 0}
+            interval={item.maintenance_interval_days || 30}
+          />
         </div>
       </div>
     </div>

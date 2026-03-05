@@ -4,7 +4,7 @@
   background: var(--surface);
   padding: 4px;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 8px;
   width: fit-content;
 }
 
@@ -17,7 +17,7 @@
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 4px;
   transition: all 0.2s;
   font-size: 14px;
 }

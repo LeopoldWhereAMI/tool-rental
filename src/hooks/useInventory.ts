@@ -35,11 +35,23 @@ export const useInventory = () => {
     getUser();
   }, []);
 
+  // const { data, error, isLoading, mutate } = useSWR(
+  //   userId ? ["inventory", userId] : null,
+  //   fetcher,
+  //   {
+  //     revalidateOnFocus: false,
+  //   },
+  // );
+
   const { data, error, isLoading, mutate } = useSWR(
-    userId ? ["inventory", userId] : null,
+    // Используем строку, чтобы избежать проблем с детонацией массива при ререндере
+    userId ? `inventory-${userId}` : null,
     fetcher,
     {
-      revalidateOnFocus: false,
+      revalidateOnFocus: false, // Отключаем запрос при смене окна
+      revalidateIfStale: false, // Важно: не обновлять, если данные уже в кэше
+      revalidateOnReconnect: false, // Не обновлять при скачке интернета
+      dedupingInterval: 60000, // Игнорировать любые повторные запросы в течение минуты
     },
   );
 

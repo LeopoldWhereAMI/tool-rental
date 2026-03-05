@@ -169,6 +169,10 @@
   gap: 12px;
 }
 
+.toolIconBox svg {
+  color: var(--secondary);
+}
+
 .detailsLink {
   color: #3b82f6;
   align-items: center;
@@ -463,7 +467,7 @@
 .activeCardText {
   width: 100%;
   display: flex;
-  color: var(--text-secondary);
+  color: var(--secondary);
   flex-direction: column;
   align-items: flex-start;
   gap: 5px;
@@ -523,7 +527,7 @@
 
 .listValueBold {
   font-family: var(--font-space-grotesk);
-  color: var(--text-secondary);
+  color: var(--secondary);
   font-weight: 600;
   font-family: monospace;
 }

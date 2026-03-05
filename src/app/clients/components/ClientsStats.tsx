@@ -17,7 +17,7 @@ interface ClientsStatsProps {
 }
 
 export const ClientsStats = ({ stats, loading }: ClientsStatsProps) => {
-  const renderTrend = (value: number) => {
+  const renderTrend = (value: number, description: string) => {
     if (loading)
       return <Skeleton width="100px" height="16px" borderRadius="4px" />;
 
@@ -28,7 +28,9 @@ export const ClientsStats = ({ stats, loading }: ClientsStatsProps) => {
     return (
       <div className={`${styles.trendWrapper} ${trendClass}`}>
         <Icon size={14} />
-        <span>{isPositive ? `+${value}` : value}% к прошлому месяцу</span>
+        <span>
+          {isPositive ? `+${value}` : value}% {description}
+        </span>
       </div>
     );
   };
@@ -44,7 +46,7 @@ export const ClientsStats = ({ stats, loading }: ClientsStatsProps) => {
             <h3 className={styles.statValue}>{stats.total.toLocaleString()}</h3>
           )}
         </div>
-        {renderTrend(stats.totalTrend)}
+        {renderTrend(stats.totalTrend, "рост всей базы")}
       </div>
 
       <div className={styles.statCard}>
@@ -78,7 +80,7 @@ export const ClientsStats = ({ stats, loading }: ClientsStatsProps) => {
             <h3 className={styles.statValue}>+{stats.newThisMonth}</h3>
           )}
         </div>
-        {renderTrend(stats.newTrend)}
+        {renderTrend(stats.newTrend, "динамика привлечения")}
       </div>
     </div>
   );

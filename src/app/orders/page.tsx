@@ -180,48 +180,48 @@ export default function OrdersListPage() {
         cancelled={cancelled}
         loading={loading}
       />
-      <div className={styles.tableCard}>
-        <OrdersToolbar
-          currentFilter={statusFilter}
-          onFilterChange={setStatusFilter}
-          labels={ORDER_STATUS_LABELS}
-          viewMode={viewMode}
-          setViewMode={setViewMode}
-          isMobile={isMobile}
-        />
 
-        {loading && <MainSceleton />}
+      <OrdersToolbar
+        currentFilter={statusFilter}
+        onFilterChange={setStatusFilter}
+        labels={ORDER_STATUS_LABELS}
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+        isMobile={isMobile}
+      />
 
-        {!loading && filteredOrders.length === 0 && (
-          <div className={styles.emptyWrapper}>
-            <EmptyBlock message="Заказы не найдены" isSearch={!!query} />
-          </div>
-        )}
+      {loading && <MainSceleton />}
 
-        {!loading && filteredOrders.length > 0 && (
-          <>
-            <OrdersTable
-              orders={currentItems}
-              openMenuId={openMenuId}
-              anchor={anchor}
-              onToggleMenu={toggleMenu}
-              onClose={closeMenu}
-              onStatusUpdate={handleStatusUpdate}
-              onDeleteClick={(id) => {
-                setDeleteOrderId(id);
-                closeMenu();
-              }}
-              viewMode={viewMode}
-            />
+      {!loading && filteredOrders.length === 0 && (
+        <div className={styles.emptyWrapper}>
+          <EmptyBlock message="Заказы не найдены" isSearch={!!query} />
+        </div>
+      )}
 
-            <PaginationControls
-              totalPages={totalPages}
-              clickHandler={setCurrentPage}
-              currentPage={currentPage}
-            />
-          </>
-        )}
-      </div>
+      {!loading && filteredOrders.length > 0 && (
+        <>
+          <OrdersTable
+            orders={currentItems}
+            openMenuId={openMenuId}
+            anchor={anchor}
+            onToggleMenu={toggleMenu}
+            onClose={closeMenu}
+            onStatusUpdate={handleStatusUpdate}
+            onDeleteClick={(id) => {
+              setDeleteOrderId(id);
+              closeMenu();
+            }}
+            viewMode={viewMode}
+          />
+
+          <PaginationControls
+            totalPages={totalPages}
+            clickHandler={setCurrentPage}
+            currentPage={currentPage}
+          />
+        </>
+      )}
+
       <CancelOrderModal
         isOpen={!!cancelModal}
         onClose={() => setCancelModal(null)}

@@ -11,14 +11,15 @@ import AddInventoryForm from "@/components/Form/InventoryForm/AddInventoryForm";
 import PageContainer from "@/components/PageContainer/PageContainer";
 import styles from "./page.module.css";
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
+import { useInventory } from "@/hooks/useInventory";
 
 export default function AddInventoryPage() {
   const router = useRouter();
-  const [existingItems, setExistingItems] = useState<Inventory[]>([]);
-
-  useEffect(() => {
-    loadInventory().then(setExistingItems);
-  }, []);
+  // const [existingItems, setExistingItems] = useState<Inventory[]>([]);
+  const { items: existingItems, refresh } = useInventory();
+  // useEffect(() => {
+  //   loadInventory().then(setExistingItems);
+  // }, []);
 
   const breadcrumbItems = [
     { label: "Инвентарь", href: "/inventory" },
@@ -31,7 +32,7 @@ export default function AddInventoryPage() {
 
       if (result) {
         toast.success("Инструмент добавлен!");
-
+        refresh();
         router.push("/inventory");
       }
     } catch (err: unknown) {

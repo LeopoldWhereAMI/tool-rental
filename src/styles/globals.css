@@ -2,7 +2,9 @@
 @import "./variables.css";
 
 :root {
-  --primary: #2b5bee;
+  --secondary: #2b5bee;
+  --primary: #5048e5;
+
   --bg-app: #f5f7f8;
   --bg-header: rgba(245, 247, 248, 0.8);
   --bg-sidebar: #ffffff;
@@ -21,13 +23,14 @@
     0 2px 4px -2px rgba(43, 91, 238, 0.05);
   --kpi-shadow-hover: 0 20px 25px -5px rgba(43, 91, 238, 0.25);
   --surface: #ffffff;
-  --border: #e2e8f0;
+  --border: #cbd5e1;
   --text-main: #1a1a1c;
   --text-secondary: #475569;
   --text-muted: #64748b;
   --backdrop-color: rgba(15, 23, 42, 0.5);
   --backdrop-blur: 4px;
-  --price-color: #10b981;
+  /* --price-color: #10b981; */
+  --price-color: var(--primary);
   --sidebar-width: 220px;
 }
 
@@ -50,11 +53,8 @@
   --border: #232c48;
   --text-main: #ffffff;
   --text-secondary: #94a3b8;
-  --text-muted: #64748b;
   --backdrop-color: rgba(2, 6, 17, 0.85);
   --backdrop-blur: 8px;
-  --price-color: #10b981;
-  --sidebar-width: 220px;
 }
 
 body {

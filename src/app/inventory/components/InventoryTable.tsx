@@ -70,7 +70,7 @@ export default function InventoryTable({
                 <th className={styles.colCategory}>Категория</th>
                 <th className={styles.colStatus}>Статус</th>
                 <th className={styles.colPrice}>Стоимость</th>
-                <th className={styles.colStock}>Наличие</th>
+                <th className={styles.colStock}>ТО</th>
                 <th className={styles.colActions}>Действия</th>
               </tr>
             </thead>

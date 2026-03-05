@@ -7,6 +7,7 @@ import Image from "next/image";
 import { InventoryUI } from "@/types";
 import ActionsMenu from "@/components/ui/ActionsMenu/ActionsMenu";
 import Link from "next/link";
+import MaintenanceProgress from "@/components/MaintenanceProgress/MaintenanceProgress";
 
 type InventoryRowProps = {
   item: InventoryUI;
@@ -90,22 +91,12 @@ export default function InventoryRow({
       </td>
 
       <td>
-        <div className={styles.availabilityWrapper}>
-          <span className={styles.availabilityRatio}>
-            {item.status === "available" ? "1/1" : "0/1"}
-          </span>
-          <div className={styles.progressBarBg}>
-            <div
-              className={styles.progressBarFill}
-              style={{
-                width: item.status === "available" ? "100%" : "0%",
-                backgroundColor:
-                  item.status === "available"
-                    ? "var(--status-available-color, #10b981)"
-                    : "#32353b",
-              }}
-            />
-          </div>
+        <div style={{ minWidth: "140px" }}>
+          <MaintenanceProgress
+            current={item.work_days_count || 0}
+            interval={item.maintenance_interval_days || 30}
+            view="compact"
+          />
         </div>
       </td>
 

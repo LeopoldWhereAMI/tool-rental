@@ -44,7 +44,7 @@ export default function OrderCard({ order, variant = "list" }: OrderCardProps) {
         <div className={styles.activeCardContent}>
           <div className={styles.activeCardMain}>
             <div className={styles.toolIconBox}>
-              <Box size={22} strokeWidth={2.5} />
+              <Box size={22} strokeWidth={2} />
             </div>
             <div className={styles.activeCardText}>
               <span className={styles.activeCardLabel}>

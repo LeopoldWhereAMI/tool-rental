@@ -5,6 +5,18 @@
   width: 100%;
 }
 
+.maintenanceWrapper.compact {
+  width: 100%;
+  max-width: 100px; /* Ограничиваем ширину в таблице */
+  display: flex;
+  align-items: center;
+}
+
+.maintenanceWrapper.compact .progressBarBg {
+  height: 6px; /* Делаем полоску тоньше для таблицы */
+  margin: 0; /* Убираем лишние отступы */
+}
+
 .maintenanceHeader {
   display: flex;
   justify-content: space-between;
@@ -28,7 +40,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: var(--text-main, #f8fafc);
+  color: var(--text-main);
   text-transform: none;
 }
 
@@ -48,7 +60,7 @@
   background: rgba(0, 0, 0, 0.2);
   border-radius: 20px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
   position: relative;
 }
 
@@ -78,7 +90,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: var(--text-secondary, #64748b);
+  color: var(--text-secondary);
   font-variant-numeric: tabular-nums;
 }
 
@@ -90,7 +102,7 @@
 .lastMaintenanceInfo {
   margin-top: 14px;
   padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -98,10 +110,10 @@
 }
 
 .lastMaintenanceLabel {
-  color: var(--text-secondary, #94a3b8);
+  color: var(--text-secondary);
 }
 
 .lastMaintenanceDate {
-  color: var(--text-main, #f8fafc);
+  color: var(--text-main);
   font-weight: 500;
 }

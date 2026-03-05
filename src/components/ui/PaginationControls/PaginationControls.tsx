@@ -25,14 +25,14 @@ export default function PaginationControls({
               onClick={() => clickHandler(currentPage - 1)}
               disabled={currentPage === 1}
             >
-              Previous
+              Пред
             </button>
             <button
               className={`${styles.pageBtn} ${styles.pageBtnNext}`}
               onClick={() => clickHandler(currentPage + 1)}
               disabled={currentPage === totalPages}
             >
-              Next
+              След
             </button>
           </div>
         </div>

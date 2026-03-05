@@ -6,6 +6,7 @@ import Skeleton from "@/components/ui/Skeleton/Skeleton";
 
 interface StatCardProps {
   label: string;
+  labelColor?: string;
   value: number | string | undefined;
   icon: LucideIcon;
   iconColor: string;
@@ -15,6 +16,7 @@ interface StatCardProps {
 
 export default function StatCard({
   label,
+  labelColor,
   value,
   icon: Icon,
   iconColor,
@@ -34,7 +36,7 @@ export default function StatCard({
 
       <div className={styles.statContent}>
         <div className={styles.statLabel}>{label}</div>
-        <div className={styles.statValue}>
+        <div className={styles.statValue} style={{ color: labelColor }}>
           {loading ? (
             <Skeleton width="60%" height="28px" style={{ marginTop: "4px" }} />
           ) : (

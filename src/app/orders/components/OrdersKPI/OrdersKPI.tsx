@@ -24,12 +24,14 @@ export default function OrdersKPI({
       <KpiCard
         title="Всего заказов"
         value={total}
+        variant="default"
         icon={<FileText size={20} />}
         loading={loading}
       />
       <KpiCard
         title="Активные аренды"
         value={active}
+        variant="active"
         icon={<CheckCircle2 size={20} />}
         loading={loading}
       />
@@ -54,7 +56,7 @@ export default function OrdersKPI({
 interface KpiCardProps {
   title: string;
   value: number;
-  variant?: "default" | "critical" | "cancelled";
+  variant?: "default" | "critical" | "cancelled" | "active";
   icon: React.ReactNode;
   loading: boolean;
 }
