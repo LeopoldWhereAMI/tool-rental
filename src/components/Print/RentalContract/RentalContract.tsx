@@ -29,13 +29,13 @@ const RentalContract = ({ items, orderData }: Props) => {
     const now = new Date();
     const adjValue = Number(orderData.adjustment) || 0;
     const totalPrice = Number(orderData.total_price) || 0;
+    const basePrice = totalPrice - adjValue;
 
     const processedItems = items.map((item, index) => {
       const s = new Date(item.start_date);
       const e = new Date(item.end_date);
       const diff = e.getTime() - s.getTime();
       const days = Math.ceil(diff / (1000 * 60 * 60 * 24)) || 1;
-
       const priceAtTime = Number(item.price_at_time || item.daily_price || 0);
 
       return {
@@ -63,6 +63,7 @@ const RentalContract = ({ items, orderData }: Props) => {
       ...orderData,
       items: processedItems,
       totalRentalSum,
+      finalTotal: totalPrice,
       totalPurchasePrice,
       totalPurchasePriceWords: priceToWords(totalPurchasePrice),
       security_deposit: securityDepositValue,
@@ -73,7 +74,7 @@ const RentalContract = ({ items, orderData }: Props) => {
       hasAdjustment: adjValue !== 0,
       isExtraCharge: adjValue > 0,
       adjValue: Math.abs(adjValue),
-      basePrice: totalPrice - adjValue,
+      basePrice: basePrice,
 
       formattedDate: now.toLocaleDateString("ru-RU", {
         day: "2-digit",
