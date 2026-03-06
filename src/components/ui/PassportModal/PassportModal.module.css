@@ -79,6 +79,12 @@
   transition: all 0.3s;
 }
 
+.passportForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .modalGrid {
   display: grid;
   grid-template-columns: 1fr 1fr 1.2fr;

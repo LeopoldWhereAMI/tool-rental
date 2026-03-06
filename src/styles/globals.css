@@ -12,9 +12,10 @@
   --nav-active-bg: #eff6ff;
   --nav-active-text: #2563eb;
   --filter-hover-bg: rgba(0, 0, 0, 0.05);
+  --card-color: #ffffff;
   --card-hover-bg: #ffffff;
   --card-hover-shadow: rgba(0, 0, 0, 0.08);
-  --table-thead: #f1f5f9;
+  --table-thead: rgba(0, 0, 0, 0.03);
   --table-shadow:
     0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02),
     0 0 1px 0 rgba(0, 0, 0, 0.1);
@@ -42,6 +43,7 @@
   --nav-active-bg: #161e2d;
   --nav-active-text: #3b82f6;
   --filter-hover-bg: rgba(255, 255, 255, 0.05);
+  --card-color: #161b2c;
   --card-hover-bg: #1e2943;
   --card-hover-shadow: rgba(0, 0, 0, 0.4);
   --table-thead: #111827;

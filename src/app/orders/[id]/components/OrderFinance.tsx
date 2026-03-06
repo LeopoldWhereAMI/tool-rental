@@ -27,13 +27,16 @@ export default function OrderFinance({
   onFinalAmountChange,
 }: OrderFinanceProps) {
   const { debtAmount, overdueDays } = useOrderStatusInfo(order);
-  const [adjustment, setAdjustment] = useState(0);
+  // const [adjustment, setAdjustment] = useState(0);
+  const [adjustment, setAdjustment] = useState<number | string>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStatus, setCurrentStatus] = useState(order.status);
   const router = useRouter();
 
-  const finalAmount = totalPrice + debtAmount + adjustment;
+  const parsedAdjustment = Number(adjustment);
+  const safeAdjustment = isNaN(parsedAdjustment) ? 0 : parsedAdjustment;
+  const finalAmount = totalPrice + debtAmount + safeAdjustment;
   const securityDeposit = order.security_deposit;
 
   useEffect(() => {
@@ -117,8 +120,9 @@ export default function OrderFinance({
               <label className={styles.adjLabel}>
                 <span>Скидка (-) / Наценка (+)</span>
                 <input
-                  value={adjustment || ""}
-                  onChange={(e) => setAdjustment(Number(e.target.value))}
+                  type="number"
+                  value={adjustment}
+                  onChange={(e) => setAdjustment(e.target.value)}
                   placeholder="0"
                   className={styles.adjInput}
                 />

@@ -28,7 +28,7 @@ export default function PassportModal({
           </button>
         </div>
 
-        <form onSubmit={onPassportSubmit}>
+        <form onSubmit={onPassportSubmit} className={styles.passportForm}>
           <div className={styles.modalGrid}>
             <FormField
               label="Серия"

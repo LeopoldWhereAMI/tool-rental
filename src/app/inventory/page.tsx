@@ -24,7 +24,6 @@ import MainSceleton from "@/components/ui/Skeleton/MainSceleton";
 export default function InventoryPage() {
   const { query, setQuery } = useSearchStore();
   const { items, stats, loading, error, refresh } = useInventory();
-  console.log("Current items state:", items);
   const { viewMode, setViewMode } = useAdaptiveView("inventory");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");

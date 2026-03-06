@@ -113,7 +113,7 @@ export default function InventoryCard({
         </div>
       </div>
 
-      <div className={styles.cardSection}>
+      <div className={styles.cardSectionPrice}>
         <span className={styles.cardSectionLabel}>Цена</span>
         <div className={styles.cardPrice}>
           {item.daily_price} ₽

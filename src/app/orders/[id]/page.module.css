@@ -459,7 +459,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--text-main);
 }
 
 .debtPlus {
@@ -487,10 +487,18 @@
   padding: 10px;
   outline: none;
   transition: border-color 0.2s;
+  appearance: none;
+  -moz-appearance: textfield;
 }
 
 .adjInput:focus {
   border-color: var(--primary);
+}
+
+.adjInput::-webkit-outer-spin-button,
+.adjInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .completeOrderBtn {
@@ -826,7 +834,7 @@
   .deadlineBanner:hover,
   .sidebarCard:hover,
   .whiteBox:hover {
-    border: 1px solid var(--primary);
+    border: 1px solid var(--secondary);
   }
 
   .completeOrderBtn:hover,

@@ -9,13 +9,26 @@ export default function ThemeToggle() {
   const isDark = resolvedTheme === "dark";
 
   return (
-    <button
-      suppressHydrationWarning
-      onClick={() => setTheme(isDark ? "light" : "dark")}
-      className={styles.themeBtn}
-      title={isDark ? "Активировать светлую тему" : "Активировать темную тему"}
-    >
-      {isDark ? <Sun size={20} /> : <Moon size={20} />}
-    </button>
+    <div className={styles.toggleContainer} suppressHydrationWarning>
+      <button
+        onClick={() => setTheme("light")}
+        className={`${styles.iconBtn} ${!isDark ? styles.active : ""}`}
+        title="Светлая тема"
+      >
+        <Sun size={16} />
+      </button>
+
+      <button
+        onClick={() => setTheme("dark")}
+        className={`${styles.iconBtn} ${isDark ? styles.active : ""}`}
+        title="Темная тема"
+      >
+        <Moon size={16} />
+      </button>
+
+      <div
+        className={`${styles.slider} ${isDark ? styles.slideRight : styles.slideLeft}`}
+      />
+    </div>
   );
 }

@@ -4,7 +4,6 @@ import { Inventory, OrderDetailsUI, OrderUI } from "@/types";
 
 // Загрузка инвентаря на страницу
 export async function loadInventory(): Promise<Inventory[]> {
-  console.log("🔥 [API] Запрос loadInventory вызван");
   const { data, error } = await supabase
     .from("inventory")
     .select(
@@ -22,7 +21,6 @@ export async function loadInventory(): Promise<Inventory[]> {
 
 //  Добавление одного инструмента по ID
 export async function getInventoryItem(id: string): Promise<Inventory> {
-  console.log("🔥 [API] Запрос getInventoryItem вызван");
   const { data, error } = await supabase
     .from("inventory")
     .select("*")

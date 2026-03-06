@@ -1,50 +1,50 @@
-.button {
+.toggleContainer {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 8px 12px;
-  cursor: pointer;
-  border-radius: 8px;
-
-  background-color: var(--surface);
-  border: 1px solid var(--border-dark);
-  color: var(--text-main);
-
-  transition: all 0.2s ease;
-  font-family: var(--font-ibm-plex), sans-serif;
-  font-size: 14px;
-}
-
-.button:hover {
-  filter: brightness(1.2);
-  border-color: var(--primary);
-}
-
-.themeBtn {
-  width: 36px;
-  height: 36px;
-  min-width: 36px;
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  line-height: 0;
-}
-
-.themeBtn:hover {
+  position: relative;
   background-color: var(--nav-hover-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 4px;
+  gap: 4px;
+  width: fit-content;
+}
+
+.iconBtn {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: color 0.3s ease;
+}
+
+.iconBtn.active {
   color: var(--primary);
 }
 
-.themeBtn svg {
-  transition: transform 0.3s ease;
+.slider {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: 30px;
+  background-color: var(--surface);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
 }
 
-.themeBtn:active svg {
-  transform: scale(0.8);
+.slideLeft {
+  transform: translateX(0);
+}
+
+.slideRight {
+  transform: translateX(36px);
 }

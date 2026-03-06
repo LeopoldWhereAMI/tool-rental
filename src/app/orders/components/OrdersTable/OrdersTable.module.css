@@ -4,11 +4,13 @@
 
 .cardsContainer {
   display: grid;
-  background-color: var(--surface);
+  /* background-color: var(--surface); */
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 16px;
-  padding: 16px;
-  box-shadow: var(--table-shadow);
+  /* padding-top: 16px; */
+  padding-bottom: 10px;
+  /* padding: 16px; */
+  /* box-shadow: var(--table-shadow); */
 }
 
 .wrapper {
@@ -201,7 +203,7 @@
 
   color: var(--text-muted);
   border-radius: 8px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   flex-shrink: 0;
 }
@@ -285,7 +287,8 @@
 }
 
 .card {
-  background-color: var(--table-thead);
+  /* background-color: var(--table-thead); */
+  background-color: var(--card-color);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 16px;
@@ -295,17 +298,40 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.card:active {
+/* .card:active {
   border-color: #3b82f6;
-}
+} */
 
-.cardHeader {
+/* .cardHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 12px;
   padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
+} */
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+
+  /* ЦВЕТ ФОНА */
+  background-color: var(--table-thead);
+
+  /* РАСТЯГИВАЕМ НА ВСЮ ШИРИНУ */
+  /* -16px соответствует паддингу .card */
+  margin: -16px -16px 0 -16px;
+
+  /* ВОЗВРАЩАЕМ ВНУТРЕННИЙ ОТСТУП КОНТЕНТУ */
+  padding: 12px 16px;
+
+  /* СКРУГЛЯЕМ ВЕРХНИЕ УГЛЫ (чтобы не вылезали за радиус карточки) */
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .cardOrderInfo {
@@ -337,7 +363,7 @@
   font-weight: 600;
   text-decoration: none;
   font-family: var(--font-space-grotesk);
-  transition: color 0.2s;
+  transition: color 0.3s;
 }
 
 .cardClientPhone:active {
@@ -363,7 +389,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   flex-shrink: 0;
 }
 
@@ -379,6 +405,7 @@
   flex-direction: column;
   gap: 4px;
   padding: 8px 0;
+  border-bottom: 1px solid var(--border);
 }
 
 .cardSectionLabel {
@@ -434,7 +461,7 @@
   align-items: center;
   gap: 12px;
   padding-top: 12px;
-  border-top: 1px solid var(--border);
+  /* border-top: 1px solid var(--border); */
 }
 
 .cardStatusBadge {
@@ -505,15 +532,19 @@
 @media (hover: hover) {
   .card:hover {
     background: var(--card-hover-bg);
-    border-color: var(--primary);
+    /* border-color: var(--primary); */
     transform: translateY(-4px);
     box-shadow: 0 12px 24px var(--card-hover-shadow);
   }
 
   .card:hover .cardOrderNumber,
-  .card:hover .cardPrice,
+  /* .card:hover .cardPrice, */
   .card:hover .cardClientPhone {
     color: var(--nav-active-text);
+  }
+
+  .card:hover .cardPrice {
+    filter: brightness(1.2);
   }
 
   .cardClientPhone:hover {
