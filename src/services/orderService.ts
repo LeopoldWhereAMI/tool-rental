@@ -325,3 +325,14 @@ export const deleteOrderById = async (id: string) => {
     throw error;
   }
 };
+
+// комменты к заказу
+export async function updateOrderNotes(id: string, notes: string) {
+  const { data, error } = await supabase
+    .from("orders")
+    .update({ notes })
+    .eq("id", id);
+
+  if (error) throw error;
+  return data;
+}

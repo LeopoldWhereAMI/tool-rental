@@ -6,6 +6,8 @@ import {
   CheckCircle2,
   ArrowDownLeft,
   ArrowUpRight,
+  Minus,
+  Plus,
 } from "lucide-react";
 import {
   createWithdrawRequest,
@@ -94,21 +96,9 @@ export default function FinanceActionForm({
         <div
           className={`
     ${styles.tabIndicator} 
-    ${type === "income" ? styles.indicatorIncome : ""}
+    ${type === "expense" ? styles.indicatorExpense : styles.indicatorIncome}
   `}
         />
-
-        <button
-          className={`${styles.tabButton} ${type === "expense" ? styles.tabActiveExpense : ""}`}
-          onClick={() => {
-            setType("expense");
-            setMessage({ type: null, text: "" });
-          }}
-          type="button"
-        >
-          <ArrowUpRight size={18} /> Вывод
-        </button>
-
         <button
           className={`${styles.tabButton} ${type === "income" ? styles.tabActiveIncome : ""}`}
           onClick={() => {
@@ -117,7 +107,17 @@ export default function FinanceActionForm({
           }}
           type="button"
         >
-          <ArrowDownLeft size={18} /> Пополнение
+          <Plus size={18} /> Пополнение
+        </button>
+        <button
+          className={`${styles.tabButton} ${type === "expense" ? styles.tabActiveExpense : ""}`}
+          onClick={() => {
+            setType("expense");
+            setMessage({ type: null, text: "" });
+          }}
+          type="button"
+        >
+          <Minus size={18} /> Вывод
         </button>
       </div>
 

@@ -8,7 +8,7 @@ import {
   UseFormSetValue,
   useWatch,
 } from "react-hook-form";
-import { Contact, MapPin, Phone, User } from "lucide-react";
+import { AlertOctagon, Contact, MapPin, Phone, User } from "lucide-react";
 import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 import useFindClient from "./useFindClient";
 import usePickClient from "./usePickClient";
@@ -84,37 +84,61 @@ export default function OrderClientSection({
           {!isSelectionActive && foundClients.length > 0 ? (
             <div className={styles.foundList}>
               <div className={styles.foundListHeader}>Найдено в базе:</div>
-              {foundClients.map((client) => (
-                <button
-                  key={client.id}
-                  type="button"
-                  className={styles.foundBadge}
-                  onClick={() => applyFoundClient(client)}
-                  style={
-                    normalizePhone(client.phone ?? "") ===
-                    normalizePhone(watchedPhone ?? "")
-                      ? { borderColor: "#2563eb" }
-                      : {}
-                  }
-                >
-                  <User size={14} className={styles.foundNameIcon} />
-                  <span className={styles.foundName}>
-                    {client.last_name} {client.first_name}
-                  </span>
-                  <span className={styles.foundPhone}>
-                    {highlightPhonePrefix(
-                      client.phone ?? "",
-                      watchedPhone ?? "",
-                    )}
-                  </span>
-                </button>
-              ))}
+
+              {foundClients.map((client) => {
+                const isBlacklisted = client.is_blacklisted; // Или client.is_blacklisted
+
+                return (
+                  <button
+                    key={client.id}
+                    type="button"
+                    className={`${styles.foundBadge} ${isBlacklisted ? styles.blacklisted : ""}`}
+                    onClick={() => applyFoundClient(client)}
+                    style={
+                      normalizePhone(client.phone ?? "") ===
+                      normalizePhone(watchedPhone ?? "")
+                        ? { borderColor: isBlacklisted ? "#ef4444" : "#2563eb" }
+                        : {}
+                    }
+                  >
+                    <User
+                      size={14}
+                      className={
+                        isBlacklisted ? styles.errorIcon : styles.foundNameIcon
+                      }
+                    />
+                    <span className={styles.foundName}>
+                      {client.last_name} {client.first_name}
+                      {isBlacklisted && (
+                        <span className={styles.blacklistLabel}> (ЧС)</span>
+                      )}
+                    </span>
+                    <span className={styles.foundPhone}>
+                      {highlightPhonePrefix(
+                        client.phone ?? "",
+                        watchedPhone ?? "",
+                      )}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           ) : watchedPhone?.length > 10 && !isExactMatch ? (
             <span className={styles.newBadge}>
               Новый клиент — будет создан автоматически
             </span>
           ) : null}
+          {isExactMatch &&
+            foundClients.find(
+              (c) =>
+                normalizePhone(c.phone ?? "") ===
+                  normalizePhone(watchedPhone) && c.is_blacklisted,
+            ) && (
+              <div className={styles.warningBanner}>
+                <AlertOctagon size={18} />
+                <span>Внимание! Этот клиент находится в чёрном списке.</span>
+              </div>
+            )}
         </div>
       </div>
 

@@ -16,7 +16,7 @@
 
 .lineProgress {
   height: 100%;
-  background: var(--primary);
+  background: var(--secondary);
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -57,13 +57,13 @@
 }
 
 .completed .node {
-  background: var(--primary);
+  background: var(--secondary);
   border-color: #2b5bee;
   color: white;
 }
 
 .current .node {
-  background: var(--primary);
+  background: var(--secondary);
   border-color: #2b5bee;
   color: white;
   box-shadow: 0 0 15px rgba(43, 91, 238, 0.4);
@@ -71,7 +71,7 @@
 }
 
 .current .label {
-  color: var(--primary);
+  color: var(--secondary);
   font-weight: 700;
 }
 
@@ -96,7 +96,7 @@
 }
 
 .activeText {
-  color: var(--primary);
+  color: var(--secondary);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;

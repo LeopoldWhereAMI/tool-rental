@@ -74,14 +74,14 @@ export default function InventoryItemPage() {
   }
 
   const purchasePrice = item.purchase_price || 0;
-  const totalEarned = (item.work_days_count || 0) * (item.daily_price || 0);
+  const totalEarned = (item.total_work_days || 0) * (item.daily_price || 0);
   const roiPercentage =
     purchasePrice > 0 ? Math.round((totalEarned / purchasePrice) * 100) : 0;
 
   const daysDisplay = calculateDaysInWork(item.created_at);
 
   const utilizationRate = Math.min(
-    Math.round(((item.work_days_count || 0) / (daysDisplay || 1)) * 100),
+    Math.round(((item.total_work_days || 0) / (daysDisplay || 1)) * 100),
     100,
   );
 
@@ -173,7 +173,7 @@ export default function InventoryItemPage() {
                   <div style={{ width: `${utilizationRate}%` }}></div>
                 </div>
                 <p className={styles.subValueBlue}>
-                  {item.work_days_count || 0} из {daysDisplay} дн. в работе
+                  {item.total_work_days || 0} из {daysDisplay} дн. в работе
                 </p>
               </div>
             </div>

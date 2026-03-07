@@ -23,9 +23,17 @@ export default function usePickClient(
     setValue("middle_name", client.middle_name || "", opts);
     setValue("phone", phoneValue, opts);
 
+    const isBlacklisted = client.is_blacklisted;
+    if (isBlacklisted) {
+      toast.error(`ВНИМАНИЕ: Клиент ${client.last_name} в черном списке!`, {
+        duration: 5000,
+      });
+    } else {
+      toast.success(`Данные клиента ${client.last_name} подставлены`);
+    }
+
     clearErrors();
     setPickedPhone(phoneValue);
-    toast.success(`Данные клиента ${client.last_name} подставлены`);
   };
 
   return { applyFoundClient, isSelectionActive };

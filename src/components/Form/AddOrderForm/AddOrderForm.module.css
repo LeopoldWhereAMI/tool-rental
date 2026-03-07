@@ -228,6 +228,43 @@
   font-size: 12px;
 }
 
+/* Бейдж клиента в черном списке */
+.foundBadge.blacklisted {
+  background-color: #fef2f2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+.foundBadge.blacklisted:hover {
+  background-color: #fee2e2;
+  border-color: #ef4444 !important;
+}
+
+/* Метка (ЧС) */
+.blacklistLabel {
+  color: #ef4444;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+/* Иконка для заблокированного пользователя */
+.errorIcon {
+  color: #dc2626;
+}
+
+/* Опционально: общая плашка под инпутом, если номер совпал на 100% */
+.warningBanner {
+  background-color: #dc2626;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .match {
   color: var(--primary);
   font-weight: 600;

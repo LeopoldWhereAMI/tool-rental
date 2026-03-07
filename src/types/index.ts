@@ -16,6 +16,7 @@ export type Inventory = {
   article: string;
   image_url?: string | null;
   work_days_count: number;
+  total_work_days: number;
   maintenance_interval_days: number;
   last_maintenance_date: string | null;
 };
@@ -77,6 +78,7 @@ export interface OrderUI {
 // Расширенная информация для страницы "Детали заказа"
 export interface OrderDetailsUI extends Omit<OrderUI, "client"> {
   created_at: string;
+  notes?: string;
   order_items: OrderItemDetailed[];
   tools: OrderTool[];
   client: Client; // ← вот тут возвращаем полный тип

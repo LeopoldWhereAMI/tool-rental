@@ -5,13 +5,8 @@ import { useParams } from "next/navigation";
 import { getOrderById } from "@/services/orderService";
 import styles from "./page.module.css";
 import { OrderDetailsUI } from "@/types";
-import {
-  calculateDays,
-  calculateItemTotal,
-  getOrderDateRange,
-  validateOrderStatus,
-} from "@/helpers";
-import { Calendar, CreditCard, ImageIcon, Printer, Timer } from "lucide-react";
+import { getOrderDateRange, validateOrderStatus } from "@/helpers";
+import { CreditCard, Printer, Timer } from "lucide-react";
 import { useReactToPrint } from "react-to-print";
 import {
   PassportInput,
@@ -24,14 +19,13 @@ import PrintArea from "@/components/Print/PrintArea/PrintArea";
 import { mapOrderDetailsToPrint } from "@/lib/mappers/orderMapper";
 import OrderClientInfo from "./components/OrderClientInfo";
 import OrderItemsList from "./components/OrderItemsList";
-import OrderPeriod from "./components/OrderPeriod";
 import OrderFinance from "./components/OrderFinance";
 import OrderDetailsSkeleton from "./OrderDetailsSkeleton";
 import ErrorBlock from "@/components/ui/ErrorBlock/ErrorBlock";
 import { OrderStatusJourney } from "../components/OrderStatusJourney/OrderStatusJourney";
-import Image from "next/image";
 import PageContainer from "@/components/PageContainer/PageContainer";
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
+import OrderNotes from "./components/OrderNotes";
 
 export default function OrderDetailsPage() {
   const { id } = useParams();
@@ -117,8 +111,6 @@ export default function OrderDetailsPage() {
   const statusClass = styles[statusInfo.className as keyof typeof styles] || "";
 
   const items = order.order_items;
-  const isSingleItem = items.length === 1;
-  const mainItem = items[0];
 
   return (
     <PageContainer>
@@ -134,6 +126,27 @@ export default function OrderDetailsPage() {
               }
             />
           </div>
+        </div>
+        <div className={styles.rentedToolsHeader}>
+          <div className={styles.titleItems}>
+            <h2>Арендованные инструменты</h2>
+            <span className={styles.itemCountBadge}>
+              {items?.length || 0} поз.
+            </span>
+            <div className={styles.deadlineBanner}>
+              <div className={styles.deadlineText}>
+                <span className={styles.deadlineLabel}>Срок возврата</span>
+                <span className={styles.deadlineDate}>
+                  {orderDates.end
+                    ? new Date(orderDates.end).toLocaleDateString("ru-RU", {
+                        day: "numeric",
+                        month: "long",
+                      })
+                    : "—"}
+                </span>
+              </div>
+            </div>
+          </div>
           <div className={styles.navActions}>
             <button
               onClick={() => setShowPassportModal(true)}
@@ -144,79 +157,9 @@ export default function OrderDetailsPage() {
             </button>
           </div>
         </div>
-
         <div className={styles.mainGrid}>
           <div className={styles.contentArea}>
-            {isSingleItem ? (
-              <section className={styles.heroSection}>
-                <div className={styles.heroImageContainer}>
-                  {mainItem?.inventory?.image_url ? (
-                    <Image
-                      src={mainItem.inventory.image_url}
-                      alt={mainItem.inventory.name || "Tool Image"}
-                      fill
-                      priority
-                      sizes="40vw"
-                      className={styles.heroImage}
-                    />
-                  ) : (
-                    <div className={styles.imagePlaceholder}>
-                      <ImageIcon size={64} strokeWidth={1} />
-                      <span>Нет фото</span>
-                    </div>
-                  )}
-                </div>
-
-                <div className={styles.heroDetails}>
-                  <div className={styles.heroTitleBlock}>
-                    <h1>{mainItem?.inventory?.name}</h1>
-                    <div className={styles.heroSecondaryInfo}>
-                      <span className={styles.badgeBlue}>
-                        S/N: {mainItem?.inventory?.serial_number || "—"}
-                      </span>
-                      <span className={styles.infoSeparator}>•</span>
-                      <span className={styles.badgeBlue}>
-                        Арт: {mainItem?.inventory?.article || "—"}
-                      </span>
-                    </div>
-                  </div>
-
-                  <section className={styles.sidebarCard}>
-                    <OrderPeriod
-                      start={orderDates.start}
-                      end={orderDates.end}
-                      order={order}
-                    />
-                  </section>
-
-                  <div className={styles.heroMeta}>
-                    <span>
-                      Заказ создан:{" "}
-                      {new Date(order.created_at).toLocaleDateString()}
-                    </span>
-
-                    <div className={styles.heroPriceTag}>
-                      <span className={styles.heroPrice}>
-                        {calculateItemTotal(
-                          mainItem.start_date,
-                          mainItem.end_date,
-                          mainItem.price_at_time,
-                        )}{" "}
-                        ₽
-                      </span>
-                      <span className={styles.heroDaysLabel}>
-                        ({calculateDays(mainItem.start_date, mainItem.end_date)}{" "}
-                        дн.)
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </section>
-            ) : (
-              <div>
-                <OrderItemsList items={items} />
-              </div>
-            )}
+            <OrderItemsList items={items} />
 
             <section className={styles.whiteBox}>
               <div className={styles.boxHeader}>
@@ -233,26 +176,10 @@ export default function OrderDetailsPage() {
                 }}
               />
             </section>
+            <OrderNotes orderId={order.id} initialNotes={order.notes} />
           </div>
 
           <aside className={styles.sidebar}>
-            <div className={styles.deadlineBanner}>
-              <div className={styles.deadlineIcon}>
-                <Calendar size={24} />
-              </div>
-              <div className={styles.deadlineText}>
-                <span className={styles.deadlineLabel}>СРОК ВОЗВРАТА</span>
-                <span className={styles.deadlineDate}>
-                  {orderDates.end
-                    ? new Date(orderDates.end).toLocaleDateString("ru-RU", {
-                        day: "numeric",
-                        month: "long",
-                      })
-                    : "—"}
-                </span>
-              </div>
-            </div>
-
             <section className={styles.sidebarCard}>
               <OrderClientInfo client={order.client} />
             </section>

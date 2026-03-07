@@ -1,0 +1,137 @@
+.whiteBox {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid var(--border);
+}
+
+.boxHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.headerTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerTitle h3 {
+  color: var(--text-main);
+  font-size: 16px;
+  margin: 0;
+}
+
+.headerTitle svg {
+  color: var(--secondary);
+}
+
+.editBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.editBtn:active {
+  transform: translateY(0);
+}
+
+.textarea {
+  width: 100%;
+  min-height: 120px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+  outline: none;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.saveBtn,
+.cancelBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.saveBtn {
+  background: var(--primary);
+  color: white;
+}
+
+.cancelBtn {
+  background: var(--secondary);
+  color: white;
+}
+
+.saveBtn:active,
+.cancelBtn:active {
+  transform: translateY(0);
+  filter: brightness(0.9);
+}
+
+.notesContent {
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.placeholder {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+@media (hover: hover) {
+  .editBtn:hover {
+    filter: brightness(1.2);
+    border: 1px solid var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px #94a3b84d;
+  }
+
+  .saveBtn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); /* Мягкое свечение в цвет primary */
+  }
+
+  /* Ховер для кнопки Отмена */
+  .cancelBtn:hover {
+    background: transparent;
+    color: var(--text-main);
+    border-color: var(--secondary);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+}

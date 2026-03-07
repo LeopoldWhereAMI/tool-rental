@@ -310,7 +310,7 @@
 }
 
 .submitBtnExpense {
-  background-color: var(--primary);
+  background-color: #ef4444;
   color: white;
   box-shadow: 0 4px 14px rgba(43, 91, 238, 0.3);
 }
@@ -534,7 +534,7 @@
 
 .tabActiveExpense,
 .tabActiveIncome {
-  color: #fff;
+  color: #ffff;
 }
 
 .tabIndicator {
@@ -543,17 +543,23 @@
   bottom: 4px;
   left: 4px;
   width: calc(50% - 4px);
-  background-color: var(--primary);
+  background-color: #10b981;
   border-radius: 9px;
   transition:
     transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     background-color 0.3s ease;
   z-index: 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateX(0);
+}
+
+.indicatorExpense {
+  transform: translateX(100%);
+  background-color: #ef4444;
 }
 
 .indicatorIncome {
-  transform: translateX(100%);
+  transform: translateX(0);
   background-color: #10b981;
 }
 
@@ -673,37 +679,8 @@
     box-shadow: 0 6px 20px rgba(43, 91, 238, 0.4);
   }
 
-  .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(43, 91, 238, 0.15);
-  }
-
-  .tabButton:hover {
-    color: var(--text-secondary);
-  }
-
-  .tabButton:hover svg {
-    transform: translateY(-1px);
-    transition: transform 0.2s ease;
-  }
-
-  .tabButton:active {
-    transform: scale(0.98);
-  }
-
-  .tabButton:hover:not(.tabActiveExpense):not(.tabActiveIncome) {
-    color: var(--text-main);
-    background-color: rgba(255, 255, 255, 0.05);
-  }
-
-  .tabActiveExpense:hover,
-  .tabActiveIncome:hover {
-    filter: brightness(1.15);
-  }
-
   .submitBtn:hover:not(:disabled) {
     filter: brightness(1.1);
-    box-shadow: 0 6px 20px rgba(43, 91, 238, 0.4);
     transform: translateY(-2px);
   }
 
@@ -711,14 +688,69 @@
     transform: translateY(0);
   }
 
-  .tableRow:hover {
-    background-color: var(--nav-hover-bg);
+  .submitBtnIncome:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+  }
+
+  .submitBtnExpense:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
   }
 
   .cancelBtn:hover {
     background-color: rgba(239, 68, 68, 0.1);
     color: #ef4444;
     border-color: #ef4444;
+  }
+
+  .restoreBtn:hover {
+    background-color: rgba(16, 185, 129, 0.1);
+    border-color: #10b981;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(43, 91, 238, 0.15);
+  }
+
+  .tableRow:hover {
+    background-color: var(--nav-hover-bg);
+  }
+
+  .tabButton:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .tabButton[data-type="income"]:not(.tabActiveIncome):hover {
+    color: #10b981;
+    background-color: rgba(16, 185, 129, 0.1);
+  }
+
+  .tabButton[data-type="expense"]:not(.tabActiveExpense):hover {
+    color: #ef4444;
+    background-color: rgba(239, 68, 68, 0.1);
+  }
+
+  .tabActiveIncome:hover {
+    filter: brightness(1.15);
+    background-color: rgba(16, 185, 129, 0.2);
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+  }
+
+  .tabActiveExpense:hover {
+    filter: brightness(1.15);
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+  }
+
+  .tabButton:hover svg {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+  }
+
+  .inlineYearBtn:hover {
+    color: rgb(139, 92, 246);
   }
 }
 

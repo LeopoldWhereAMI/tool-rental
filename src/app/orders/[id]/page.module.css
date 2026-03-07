@@ -12,24 +12,21 @@
 }
 
 .printBtn {
-  display: flex;
+  background-color: var(--primary);
+  color: rgb(255, 255, 255);
+  justify-content: center;
   align-items: center;
-  gap: 8px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text-main);
-  padding: 10px 18px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 500;
-  box-shadow: var(--table-shadow);
-  transition: all 0.3s;
-}
-
-.printBtn:hover {
-  background: var(--nav-hover-bg);
-  border-color: var(--primary);
-  box-shadow: var(--kpi-shadow-hover);
+  font-weight: 700;
+  display: flex;
+  box-shadow: rgba(43, 91, 238, 0.2) 0px 10px 15px -3px;
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+  border-radius: 8px;
+  gap: 10px;
+  padding: 12px 24px;
+  transition: 0.3s;
 }
 
 .mainGrid {
@@ -42,65 +39,6 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-}
-
-.heroSection {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  display: flex;
-  overflow: hidden;
-  margin-bottom: 32px;
-  min-height: 320px;
-  box-shadow: var(--table-shadow);
-  transition: border 0.3s ease;
-}
-
-.heroImageWrapper {
-  width: 40%;
-  display: flex;
-}
-
-.heroImageContainer {
-  position: relative;
-  width: 100%;
-  flex: 1;
-  min-height: 320px;
-  padding: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(
-    circle at center,
-    rgba(43, 91, 238, 0.05) 0%,
-    var(--surface) 70%
-  );
-  border-right: 1px solid var(--border);
-  overflow: hidden;
-}
-
-.heroImageContainer::after {
-  content: "";
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  background: var(--primary);
-  filter: blur(80px);
-  opacity: 0.15;
-  pointer-events: none;
-}
-
-.heroImage {
-  position: relative !important;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.heroSection:hover .heroImage {
-  transform: scale(1.03);
 }
 
 .imagePlaceholder {
@@ -139,44 +77,6 @@
   object-fit: cover;
 }
 
-.heroDetails {
-  width: 60%;
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  justify-content: space-between;
-}
-
-.heroPriceTag {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--text-main);
-  display: flex;
-  gap: 5px;
-  justify-content: flex-end;
-  line-height: 1;
-}
-
-.heroPrice {
-  color: var(--price-color);
-}
-
-.heroDaysLabel {
-  font-size: 14px;
-  color: var(--text-muted);
-  font-weight: 400;
-  margin-top: 4px;
-}
-
-.heroSecondaryInfo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 8px;
-  margin-bottom: 24px;
-}
-
 .infoSeparator {
   color: var(--border);
   font-size: 18px;
@@ -190,16 +90,6 @@
   color: var(--text-main);
 }
 
-.heroMeta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 24px;
-  font-size: 12px;
-  color: var(--text-muted);
-  opacity: 0.9;
-}
-
 .statusBadge {
   display: inline-flex;
   padding: 4px 12px;
@@ -210,30 +100,6 @@
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
-}
-
-.heroDetails h1 {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 16px;
-  line-height: 1.2;
-}
-
-.heroSpecs {
-  margin-top: auto;
-  padding-top: 24px;
-}
-
-.specItem {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.heroMeta {
-  margin-top: 24px;
-  font-size: 13px;
-  color: var(--text-muted);
 }
 
 .whiteBox,
@@ -269,7 +135,7 @@
 }
 
 .boxHeader svg {
-  color: var(--primary);
+  color: var(--secondary);
 }
 
 .sidebar {
@@ -282,7 +148,7 @@
 .sidebarCard {
   border-radius: 20px;
   padding: 24px;
-  margin-bottom: 32px;
+  /* margin-bottom: 32px; */
   transition: border 0.3s ease;
 }
 
@@ -313,42 +179,29 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 20px;
-  padding: 24px;
+  padding: 4px 12px;
   display: flex;
   align-items: center;
-  gap: 20px;
-  color: var(--primary);
+  gap: 8px;
   transition: border 0.3s ease;
   box-shadow: var(--table-shadow);
 }
 
-.deadlineIcon {
-  width: 54px;
-  height: 54px;
-  background-color: var(--table-thead);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: var(--table-shadow);
+.deadlineText {
   display: flex;
+  font-size: 13px;
+  font-weight: 400;
+  gap: 8px;
   align-items: center;
   justify-content: center;
 }
 
-.deadlineText {
-  display: flex;
-  flex-direction: column;
-}
-
 .deadlineLabel {
-  font-size: 12px;
-  font-weight: 600;
-  opacity: 0.8;
-  margin-bottom: 4px;
+  color: var(--text-secondary);
 }
 
 .deadlineDate {
-  font-size: 24px;
-  font-weight: 900;
+  color: var(--text-secondary);
 }
 
 .infoBlock {
@@ -548,6 +401,7 @@
 .rentedToolsHeader {
   display: flex;
   justify-content: space-between;
+  gap: 16px;
   align-items: center;
   margin-bottom: 20px;
   color: var(--text-main);
@@ -555,12 +409,18 @@
   font-weight: 600;
 }
 
+.titleItems {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .itemCountBadge {
   background: var(--surface);
   padding: 4px 12px;
   border-radius: 20px;
   font-size: 13px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .toolCard {
@@ -572,6 +432,7 @@
   box-shadow: var(--table-shadow);
   padding: 16px;
   margin-bottom: 12px;
+  transition: border 0.3s ease;
 }
 
 .toolMainInfo {
@@ -718,7 +579,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--primary);
+  color: var(--secondary);
 }
 
 .contactValue {
@@ -830,22 +691,21 @@
 }
 
 @media (hover: hover) {
-  .heroSection:hover,
-  .deadlineBanner:hover,
-  .sidebarCard:hover,
-  .whiteBox:hover {
+  .toolCard:hover {
     border: 1px solid var(--secondary);
   }
 
   .completeOrderBtn:hover,
-  .contactBtn:hover {
+  .contactBtn:hover,
+  .printBtn:hover {
     filter: brightness(1.1);
     box-shadow: 0 6px 20px rgba(43, 91, 238, 0.5);
     transform: translateY(-2px);
   }
 
   .completeOrderBtn:active,
-  .contactBtn:active {
+  .contactBtn:active,
+  .printBtn:active {
     transform: translateY(0);
   }
 }
@@ -891,54 +751,14 @@
     justify-content: center;
   }
 
-  .heroSection {
-    flex-direction: column;
-    min-height: auto;
-  }
-
-  .heroImageContainer {
-    width: 100%;
-    height: 250px;
-    min-height: 250px;
-    border-right: none;
-    border-bottom: 1px solid var(--card-border);
-    padding: 20px;
-  }
-
-  .heroDetails {
-    width: 100%;
-    padding: 20px;
-  }
-
-  .heroDetails h1 {
-    font-size: 24px;
-  }
-
   .sidebar {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 480px) {
-  .heroSecondaryInfo {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
   .infoSeparator {
     display: none;
-  }
-
-  .heroPriceTag {
-    font-size: 20px;
-    flex-direction: column;
-    align-items: flex-end;
-  }
-
-  .heroMeta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
   }
 
   .toolCard {
