@@ -184,7 +184,7 @@ export const loadAllOrders = async (): Promise<OrderUI[]> => {
         price_at_time, 
         start_date,
         end_date,
-        inventory( name, image_url)
+        inventory( id, name, image_url)
       )
     `,
     )

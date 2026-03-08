@@ -16,11 +16,6 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(43, 91, 238, 0.15);
-}
-
 .iconWrapper {
   color: var(--secondary);
   margin-bottom: 4px;
@@ -68,6 +63,13 @@
 
 .cancelled .value {
   color: #fca5a5;
+}
+
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(43, 91, 238, 0.15);
+  }
 }
 
 @media (max-width: 561px) {

@@ -6,6 +6,7 @@ import ActionsMenu from "@/components/ui/ActionsMenu/ActionsMenu";
 import { useOrderStatusInfo } from "@/hooks/useOrderStatusInfo";
 import { EllipsisVertical, Eye } from "lucide-react";
 import Link from "next/link";
+import ToolStatusDot from "../ToolStatusDot/ToolStatusDot";
 
 interface OrderRowProps {
   order: OrderUI;
@@ -28,54 +29,37 @@ export default function OrderRow({
 }: OrderRowProps) {
   const {
     isOverdue,
-    isActive,
-    returnStatus,
-    hasValidDate,
-    isCompleted,
+    statusText,
+    statusVariant,
     formattedStartDate,
     formattedDate,
   } = useOrderStatusInfo(order);
 
   const clientName = `${order.client.last_name} ${order.client.first_name}`;
   const clientPhone = order.client.phone || "";
-
-  let statusClass = "";
-  let statusText = "";
-
-  if (order.status === "cancelled") {
-    statusClass = styles.badgeCancelled;
-    statusText = "Отменён";
-  } else if (isCompleted) {
-    statusClass = styles.badgeCompleted;
-    statusText = "Завершён";
-  } else if (isOverdue) {
-    statusClass = styles.badgeOverdue;
-    statusText = returnStatus?.text || "Просрочено";
-  } else if (returnStatus?.text === "Сегодня возврат") {
-    statusClass = styles.badgeToday;
-    statusText = "Сегодня возврат";
-  } else if (isActive && hasValidDate && returnStatus?.text) {
-    statusClass = styles.badgePending;
-    statusText = returnStatus.text;
-  }
-
-  const dotColorClass = statusClass;
+  const statusClass = statusVariant
+    ? styles[statusVariant as keyof typeof styles]
+    : "";
 
   const toolsList = order.tools?.length ? (
     <div className={styles.toolsWrapper}>
-      {order.tools.map((t, idx) => (
-        <div key={idx} className={styles.toolItem}>
-          <span className={`${styles.toolDot} ${dotColorClass}`}>•</span>
-          {t.name}
+      {order.tools.map((t) => (
+        <div key={t.id} className={styles.toolItem}>
+          <ToolStatusDot endDate={t.end_date} orderStatus={order.status} />
+
+          <Link href={`/inventory/${t.id}`} className={styles.toolNameLink}>
+            {t.name}
+          </Link>
         </div>
       ))}
     </div>
   ) : (
     <div className={styles.toolItem}>
-      <span className={`${styles.toolDot} ${dotColorClass}`}>•</span>
+      <ToolStatusDot endDate={order.end_date} orderStatus={order.status} />
       {order.inventory?.name}
     </div>
   );
+
   return (
     <tr className={`${styles.row} ${isOverdue ? styles.rowOverdue : ""}`}>
       <td className={styles.orderId}>#{order.order_number}</td>
@@ -83,8 +67,18 @@ export default function OrderRow({
       <td className={styles.tools}>{toolsList}</td>
 
       <td className={styles.client}>
-        <div>{clientName}</div>
-        {clientPhone && <span className={styles.phone}>{clientPhone}</span>}
+        <Link
+          href={`/clients/${order.client.id}`}
+          className={styles.clientLink}
+        >
+          <div className={styles.clientName}>{clientName}</div>
+        </Link>
+
+        {clientPhone && (
+          <a href={`tel:${clientPhone}`} className={styles.phone}>
+            {clientPhone}
+          </a>
+        )}
       </td>
 
       <td className={styles.periodCell}>

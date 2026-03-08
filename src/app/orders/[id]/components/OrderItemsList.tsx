@@ -1,80 +1,27 @@
 "use client";
-import { Clock, ImageIcon } from "lucide-react";
+
 import styles from "../page.module.css";
-import { calculateDays, calculateItemTotal } from "@/helpers";
 import { OrderDetailsUI } from "@/types";
-import Image from "next/image";
-import Link from "next/link";
+import { OrderItemRow } from "./OrderItemRow";
 
 type OrderItemsListProps = {
   items: OrderDetailsUI["order_items"];
+  orderStatus: string;
 };
 
-export default function OrderItemsList({ items }: OrderItemsListProps) {
+export default function OrderItemsList({
+  items,
+  orderStatus,
+}: OrderItemsListProps) {
   return (
     <div className={styles.toolsListDetailed}>
       {items && items.length > 0 ? (
         items.map((item, index) => (
-          <Link
-            href={`/inventory/${item.inventory?.id}`}
+          <OrderItemRow
             key={item.id || index}
-            title="Открыть"
-            className={styles.toolCard}
-          >
-            <div className={styles.productImagePlaceholder}>
-              {item.inventory?.image_url ? (
-                <Image
-                  src={item.inventory.image_url}
-                  alt={item.inventory.name || "Tool"}
-                  fill
-                  unoptimized
-                  style={{ objectFit: "cover" }}
-                  className={styles.productImage}
-                  sizes="72px"
-                />
-              ) : (
-                <ImageIcon size={28} color="#9ca3af" />
-              )}
-            </div>
-
-            <div className={styles.toolMainInfo}>
-              <div className={styles.toolTitleRow}>
-                <p className={styles.toolName}>
-                  {item.inventory?.name || "Инструмент"}
-                </p>
-                <p className={styles.toolPriceLabel}>
-                  {calculateItemTotal(
-                    item.start_date,
-                    item.end_date,
-                    item.price_at_time,
-                  )}{" "}
-                  ₽
-                </p>
-              </div>
-
-              <div className={styles.toolMetaRow}>
-                <div className={styles.toolSubInfo}>
-                  <span className={styles.badgeBlue}>
-                    S/N: {item.inventory?.serial_number || "—"}
-                  </span>
-                  <span className={styles.badgeBlue}>
-                    Арт: {item?.inventory?.article || "—"}
-                  </span>
-                </div>
-
-                <div className={styles.toolTimeline}>
-                  <Clock size={14} />
-                  <span>
-                    {new Date(item.start_date).toLocaleDateString()} -{" "}
-                    {new Date(item.end_date).toLocaleDateString()}
-                    <small className={styles.daysSmall}>
-                      ({calculateDays(item.start_date, item.end_date)} дн.)
-                    </small>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </Link>
+            item={item}
+            orderStatus={orderStatus}
+          />
         ))
       ) : (
         <p className={styles.emptyText}>Инструменты не найдены</p>

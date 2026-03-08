@@ -117,13 +117,20 @@ export interface RentalHistoryItem {
 }
 
 // интерфейс для OrderDetailsPage
-interface OrderItemDetailed {
+export interface OrderItemDetailed {
   id: string;
   start_date: string;
   end_date: string;
   price_at_time: number;
   inventory: Inventory;
 }
+
+export type OrderStatusSource = {
+  start_date: string;
+  end_date: string;
+  status: string;
+  actual_end_date?: string | null;
+};
 
 // ***3. Типы для API и операций (DTO - Data Transfer Objects)***
 

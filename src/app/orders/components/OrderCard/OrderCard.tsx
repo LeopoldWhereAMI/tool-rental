@@ -6,6 +6,7 @@ import { useOrderStatusInfo } from "@/hooks/useOrderStatusInfo";
 import Link from "next/link";
 import { EllipsisVertical, Eye } from "lucide-react";
 import ActionsMenu from "@/components/ui/ActionsMenu/ActionsMenu";
+import ToolStatusDot from "../ToolStatusDot/ToolStatusDot";
 
 interface OrderCardProps {
   order: OrderUI;
@@ -26,40 +27,27 @@ export default function OrderCard({
   onStatusUpdate,
   onDeleteClick,
 }: OrderCardProps) {
-  const {
-    isOverdue,
-    isCompleted,
-    formattedStartDate,
-    formattedDate,
-    returnStatus,
-  } = useOrderStatusInfo(order);
+  const { statusText, statusVariant, formattedStartDate, formattedDate } =
+    useOrderStatusInfo(order);
 
   const clientName = `${order.client.last_name} ${order.client.first_name}`;
   const clientPhone = order.client.phone || "";
 
-  let statusClass = "";
-  let statusText = "";
-
-  if (order.status === "cancelled") {
-    statusClass = styles.badgeCancelled;
-    statusText = "Отменён";
-  } else if (isCompleted) {
-    statusClass = styles.badgeCompleted;
-    statusText = "Завершён";
-  } else if (isOverdue) {
-    statusClass = styles.badgeOverdue;
-    statusText = returnStatus?.text || "Просрочено";
-  } else if (returnStatus?.text) {
-    statusClass = `${styles.badgePending}`;
-    statusText = returnStatus.text;
-  }
+  const statusClass = statusVariant
+    ? styles[statusVariant as keyof typeof styles]
+    : "";
 
   return (
     <div className={styles.card}>
       <div className={styles.cardHeader}>
         <div className={styles.cardOrderInfo}>
           <div className={styles.cardOrderNumber}>#{order.order_number}</div>
-          <div className={styles.cardClientName}>{clientName}</div>
+          <Link
+            href={`/clients/${order.client.id}`}
+            className={styles.cardClientLink}
+          >
+            <div className={styles.cardClientName}>{clientName}</div>
+          </Link>
           {clientPhone && (
             <a href={`tel:${clientPhone}`} className={styles.cardClientPhone}>
               {clientPhone}
@@ -96,9 +84,30 @@ export default function OrderCard({
         <div className={styles.cardSection}>
           <span className={styles.cardSectionLabel}>Инструменты</span>
           <div className={styles.cardTools}>
-            {order.tools?.length
-              ? order.tools.map((t) => t.name).join(", ")
-              : order.inventory?.name}
+            {(order.tools ?? []).length > 0 ? (
+              order.tools!.map((t) => (
+                <span key={t.id} className={styles.cardToolItem}>
+                  <ToolStatusDot
+                    endDate={t.end_date}
+                    orderStatus={order.status}
+                  />
+                  <Link
+                    href={`/inventory/${t.id}`}
+                    className={styles.toolNameLink}
+                  >
+                    {t.name}
+                  </Link>
+                </span>
+              ))
+            ) : (
+              <span className={styles.cardToolItem}>
+                <ToolStatusDot
+                  endDate={order.end_date}
+                  orderStatus={order.status}
+                />
+                {order.inventory?.name ?? "Инструмент не указан"}
+              </span>
+            )}
           </div>
         </div>
       )}

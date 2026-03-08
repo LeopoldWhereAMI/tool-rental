@@ -129,10 +129,12 @@ export default function OrderDetailsPage() {
         </div>
         <div className={styles.rentedToolsHeader}>
           <div className={styles.titleItems}>
-            <h2>Арендованные инструменты</h2>
-            <span className={styles.itemCountBadge}>
-              {items?.length || 0} поз.
-            </span>
+            <div className={styles.titleGroup}>
+              <h2>Арендованные инструменты</h2>
+              <span className={styles.itemCountBadge}>
+                {items?.length || 0} поз.
+              </span>
+            </div>
             <div className={styles.deadlineBanner}>
               <div className={styles.deadlineText}>
                 <span className={styles.deadlineLabel}>Срок возврата</span>
@@ -159,7 +161,7 @@ export default function OrderDetailsPage() {
         </div>
         <div className={styles.mainGrid}>
           <div className={styles.contentArea}>
-            <OrderItemsList items={items} />
+            <OrderItemsList items={items} orderStatus={order.status} />
 
             <section className={styles.whiteBox}>
               <div className={styles.boxHeader}>

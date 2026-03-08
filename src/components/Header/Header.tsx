@@ -95,9 +95,6 @@ export default function Header() {
 
         <div className={styles.rightSection}>
           <ThemeToggle />
-          <button className={styles.notificationBtn}>
-            <Bell size={22} />
-          </button>
 
           <div className={styles.divider}></div>
 

@@ -44,19 +44,6 @@
   margin-left: auto;
 }
 
-.notificationBtn {
-  position: relative;
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 4px;
-  transition: color 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .divider {
   width: 1px;
   height: 32px;
@@ -216,12 +203,6 @@
   cursor: not-allowed;
 }
 
-@media (hover: hover) {
-  .notificationBtn:hover {
-    color: #2b5bee;
-  }
-}
-
 @media (max-width: 1150px) {
   .header {
     margin-left: 72px;
@@ -262,5 +243,11 @@
 
   .logoWrapper {
     display: block;
+  }
+}
+
+@media (max-width: 380px) {
+  .rightSection {
+    gap: 10px;
   }
 }
