@@ -21,6 +21,7 @@ import {
 import OrderClientSection from "./components/OrderClientSection/OrderClientSection";
 import { CheckCircle, Info, User, Wrench } from "lucide-react";
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
+import { onOrderCompleted } from "@/helpers/financeIntegration";
 
 export default function AddOrderForm() {
   const { inventory, inventoryMap, clients } = useInventoryAndClients();
@@ -79,6 +80,16 @@ export default function AddOrderForm() {
       const client = await upsertClient(data);
       const orderPayload = prepareOrderPayload(client.id, data, inventoryMap);
       const savedOrder = await createOrder(orderPayload);
+      const finalInitialAmount = orderPayload.total_price;
+
+      const financeDescription = `Предоплата по заказу #${savedOrder.order_number}: ${client.first_name}`;
+
+      // Вызываем интеграцию с кассой
+      await onOrderCompleted(
+        savedOrder.id,
+        finalInitialAmount,
+        financeDescription,
+      );
       const printData = mapOrderToPrintBundle(
         data,
         inventoryMap,
@@ -86,7 +97,7 @@ export default function AddOrderForm() {
         orderPayload.total_price,
       );
       setLastOrderForPrint(printData);
-      toast.success("Заказ успешно создан!");
+      toast.success("Заказ создан и оплата зафиксирована!");
       reset();
     } catch (err) {
       console.error("Ошибка оформления:", err);

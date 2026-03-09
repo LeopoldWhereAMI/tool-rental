@@ -6,17 +6,50 @@ import { createTransaction } from "@/services/financeService";
  * @param totalPrice - Полная стоимость заказа
  * @param itemDescription - Описание заказа (например "Drill Rental - 3 дня")
  */
+// export async function onOrderCompleted(
+//   orderId: string,
+//   totalPrice: number,
+//   itemDescription: string,
+// ) {
+//   try {
+//     const transaction = await createTransaction({
+//       type: "income",
+//       amount: totalPrice,
+//       description: itemDescription,
+//       category: "Rental",
+//       status: "completed",
+//       order_id: orderId,
+//     });
+
+//     return transaction;
+//   } catch (error) {
+//     console.error("❌ Ошибка при добавлении транзакции:", error);
+//     throw error;
+//   }
+// }
+
 export async function onOrderCompleted(
   orderId: string,
   totalPrice: number,
   itemDescription: string,
 ) {
   try {
+    // 1. Проверяем, является ли сумма отрицательной (скидка/возврат разницы)
+    const isNegative = totalPrice < 0;
+
     const transaction = await createTransaction({
-      type: "income",
-      amount: totalPrice,
+      // 2. Если число отрицательное — ставим 'expense', если положительное — 'income'
+      type: isNegative ? "expense" : "income",
+
+      // 3. В базу для типа 'expense' лучше записывать положительное число (модуль)
+      // так как логика отображения минуса обычно привязана к самому типу расхода
+      amount: Math.abs(totalPrice),
+
       description: itemDescription,
-      category: "Rental",
+
+      // 4. Меняем категорию для чистоты аналитики
+      category: isNegative ? "Discount/Refund" : "Rental",
+
       status: "completed",
       order_id: orderId,
     });

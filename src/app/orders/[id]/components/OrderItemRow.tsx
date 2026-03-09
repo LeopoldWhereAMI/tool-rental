@@ -1,5 +1,5 @@
 "use client";
-import { CheckCircle, Clock, ImageIcon, X } from "lucide-react";
+import { Check, CheckCircle, Clock, ImageIcon, X } from "lucide-react";
 import styles from "../page.module.css";
 import { calculateDays, calculateItemTotal } from "@/helpers";
 import { OrderItemDetailed, OrderUI } from "@/types";
@@ -152,35 +152,47 @@ export function OrderItemRow({
             href={`/inventory/${item.inventory?.id}`}
             className={styles.detailsLink}
           >
-            Подробнее →
+            Открыть
           </Link>
-          {/* ✨ ОБНОВЛЕНО - Кнопка возврата показывается если НЕ вернули */}
-          {!isItemReturned && orderStatus !== "cancelled" && (
-            <button
-              onClick={() => handleOpenModal("return")}
-              disabled={isReturning}
-              className={`${styles.returnBtn} ${isReturning ? styles.loading : ""}`}
-            >
-              {isReturning ? "Обработка..." : "Принять "}
-            </button>
-          )}
-
-          {/* ✨ НОВОЕ - Кнопка отмены возврата показывается если вернули */}
-          {isItemReturned && orderStatus !== "cancelled" && (
-            <button
-              onClick={() => handleOpenModal("cancel")}
-              disabled={isCancelling}
-              className={`${styles.cancelReturnBtn} ${isCancelling ? styles.loading : ""}`}
-            >
-              {isCancelling ? (
-                "Отмена..."
-              ) : (
-                <>
-                  <X size={16} />
-                  Вернуть
-                </>
+          {orderStatus !== "completed" && orderStatus !== "cancelled" && (
+            <>
+              {/* 2. Кнопка "Принять" видна, если инструмент еще у клиента */}
+              {!isItemReturned && (
+                <button
+                  onClick={() => handleOpenModal("return")}
+                  disabled={isReturning}
+                  title="Принять инструмент из аренды"
+                  className={`${styles.returnBtn} ${isReturning ? styles.loading : ""}`}
+                >
+                  {isReturning ? (
+                    "Обработка..."
+                  ) : (
+                    <>
+                      <Check size={16} />
+                      Принять
+                    </>
+                  )}
+                </button>
               )}
-            </button>
+
+              {/* 3. Кнопка "Вернуть в работу" видна, если инструмент уже помечен как возвращенный */}
+              {isItemReturned && (
+                <button
+                  onClick={() => handleOpenModal("cancel")}
+                  disabled={isCancelling}
+                  className={`${styles.cancelReturnBtn} ${isCancelling ? styles.loading : ""}`}
+                >
+                  {isCancelling ? (
+                    "Отмена..."
+                  ) : (
+                    <>
+                      <X size={16} />
+                      Отмена
+                    </>
+                  )}
+                </button>
+              )}
+            </>
           )}
         </div>
       </div>

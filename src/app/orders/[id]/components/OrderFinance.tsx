@@ -1,8 +1,11 @@
+"use client";
+
 import {
   AlertCircle,
   CheckCircle,
   CreditCard,
   ShieldCheck,
+  Banknote,
 } from "lucide-react";
 import styles from "../page.module.css";
 import { OrderDetailsUI } from "@/types";
@@ -35,12 +38,19 @@ export default function OrderFinance({
 
   const parsedAdjustment = Number(adjustment);
   const safeAdjustment = isNaN(parsedAdjustment) ? 0 : parsedAdjustment;
-  const finalAmount = totalPrice + debtAmount + safeAdjustment;
-  const securityDeposit = order.security_deposit;
+
+  // ТЕПЕРЬ: К оплате только долг и корректировки (основная сумма уже оплачена при создании)
+  const additionalPayment = debtAmount + safeAdjustment;
+
+  // Для отображения в модалке итоговой суммы договора (информативно)
+  const fullContractAmount = totalPrice + debtAmount + safeAdjustment;
+
+  const isRefund = additionalPayment < 0;
+  const absAmount = Math.abs(additionalPayment);
 
   useEffect(() => {
-    onFinalAmountChange?.(finalAmount);
-  }, [finalAmount, onFinalAmountChange]);
+    onFinalAmountChange?.(fullContractAmount);
+  }, [fullContractAmount, onFinalAmountChange]);
 
   const handleCompleteRequest = () => {
     if (currentStatus === "completed") return;
@@ -51,18 +61,24 @@ export default function OrderFinance({
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    const description = order.inventory?.name
-      ? `Заказ #${order.order_number}: ${order.inventory.name}`
-      : `Заказ #${order.order_number}`;
-
     try {
-      await updateOrderStatus(order.id, "completed", finalAmount);
+      // 1. Обновляем статус заказа
+      await updateOrderStatus(order.id, "completed", fullContractAmount);
 
-      await onOrderCompleted(order.id, finalAmount, description);
+      // 2. Если есть ДОПЛАТА (просрочка/штраф), записываем её в финансы
+      if (additionalPayment !== 0) {
+        const desc = `Доплата по заказу #${order.order_number}${debtAmount > 0 ? " (просрочка)" : ""}`;
+        await onOrderCompleted(order.id, additionalPayment, desc);
+      }
 
+      // 3. Обслуживание (пробег/моточасы)
       await processOrderMaintenance(order);
 
-      toast.success("Заказ завершен. Пробег обновлен.");
+      toast.success(
+        isRefund
+          ? `Возврат ${absAmount} ₽ оформлен. Заказ закрыт.`
+          : `Доплата ${additionalPayment} ₽ принята. Заказ закрыт.`,
+      );
 
       setCurrentStatus("completed");
       setIsModalOpen(false);
@@ -82,33 +98,50 @@ export default function OrderFinance({
   return (
     <div className={`${styles.infoBlock} ${styles.totalBlock}`}>
       <div className={styles.blockTitle}>
-        <CreditCard size={20} /> <h3>Оплата</h3>
+        <CreditCard size={20} /> <h3>Закрытие заказа</h3>
       </div>
       <div className={`${styles.blockContent} ${styles.financeBlockContent}`}>
-        <p className={styles.totalLabel}>Итого к оплате</p>
-        <p className={styles.price}>{finalAmount} ₽</p>
+        {/* Статус основной оплаты */}
+        <div className={styles.prepaidBadge}>
+          <CheckCircle size={14} />
+          <span>Основная аренда оплачена</span>
+        </div>
+
+        <div className={styles.paymentSummary}>
+          <p className={styles.totalLabel}>
+            {additionalPayment < 0
+              ? "Сумма к возврату"
+              : "Доплата при возврате"}
+          </p>
+          <p
+            className={`${styles.price} ${additionalPayment > 0 ? styles.hasDebt : ""}`}
+          >
+            {additionalPayment} ₽
+          </p>
+        </div>
 
         {debtAmount > 0 && (
           <div className={styles.debtDetails}>
             <div className={styles.debtHeader}>
               <AlertCircle size={14} />
-              <span>Включена просрочка ({overdueDays} дн.)</span>
+              <span>Просрочка: {overdueDays} дн.</span>
             </div>
-            <div className={styles.debtBreakdown}>
-              <span>По договору: {totalPrice} ₽</span>
-              <span className={styles.debtPlus}>+ {debtAmount} ₽ долг</span>
-            </div>
+            <p className={styles.debtText}>
+              Нужно доплатить: <strong>{debtAmount} ₽</strong>
+            </p>
           </div>
         )}
 
-        {securityDeposit ? (
-          <div className={styles.depositInfo}>
+        {order.security_deposit ? (
+          <div
+            className={`${styles.depositInfo} ${currentStatus !== "completed" ? styles.highlightDeposit : ""}`}
+          >
             <div className={styles.depositInfoLeft}>
               <ShieldCheck size={14} />
-              <span>Обеспечительный платёж</span>
+              <span>Вернуть залог клиенту</span>
             </div>
             <span className={styles.depositInfoAmount}>
-              {securityDeposit} ₽
+              {order.security_deposit} ₽
             </span>
           </div>
         ) : null}
@@ -117,7 +150,7 @@ export default function OrderFinance({
           <>
             <div className={styles.adjustmentBlock}>
               <label className={styles.adjLabel}>
-                <span>Скидка (-) / Наценка (+)</span>
+                <span>Штраф (+) / Скидка (-)</span>
                 <input
                   type="number"
                   value={adjustment}
@@ -132,25 +165,22 @@ export default function OrderFinance({
               onClick={handleCompleteRequest}
               disabled={isSubmitting}
             >
-              <CheckCircle size={18} />
-              Завершить и принять оплату
+              <Banknote size={18} />
+              {additionalPayment > 0
+                ? "Принять доплату и закрыть"
+                : "Закрыть заказ"}
             </button>
           </>
         )}
       </div>
+
       <CompleteOrderModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        finalAmount={finalAmount}
+        finalAmount={additionalPayment} // Показываем в модалке только то, что берем СЕЙЧАС
         onConfirm={handleConfirm}
         loading={isSubmitting}
       />
-      {currentStatus === "completed" && (
-        <div className={styles.completedStatus}>
-          <CheckCircle size={16} color="#10b981" />
-          <span>Оплачено и завершено</span>
-        </div>
-      )}
     </div>
   );
 }

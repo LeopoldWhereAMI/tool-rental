@@ -147,13 +147,12 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 }
 
 .sidebarCard {
   border-radius: 20px;
   padding: 24px;
-  /* margin-bottom: 32px; */
   transition: border 0.3s ease;
 }
 
@@ -258,10 +257,6 @@
   gap: 12px;
 }
 
-.blockTitle h3 {
-  color: var(--text-muted);
-}
-
 .dateInfo {
   display: flex;
   justify-content: space-between;
@@ -277,7 +272,62 @@
 }
 
 .financeBlockContent {
-  gap: 20px;
+  gap: 12px;
+}
+
+.prepaidBadge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(16, 185, 129, 0.08); /* Светло-зеленый фон */
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 12px;
+  color: #10b981;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.prepaidBadge svg {
+  flex-shrink: 0;
+}
+
+.paymentSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.price.hasDebt {
+  color: #ef4444;
+}
+
+.depositInfo.highlightDeposit {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.4);
+  animation: pulse-orange 2s infinite;
+}
+
+@keyframes pulse-orange {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.2);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+  }
+}
+
+.debtText {
+  font-size: 13px;
+  margin: 4px 0 0 0;
+  color: var(--text-main);
+}
+
+.debtText strong {
+  color: #ef4444;
 }
 
 .totalLabel {
@@ -289,7 +339,7 @@
 
 .price {
   font-family: var(--font-space-grotesk);
-  font-size: 32px;
+  font-size: 26px;
   font-weight: 800;
   color: var(--price-color);
   margin: -10px 0 0 0;
@@ -456,6 +506,12 @@
   margin-bottom: 12px;
 }
 
+.toolNameContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .toolName {
   font-size: 16px;
   font-weight: 600;
@@ -533,7 +589,6 @@
   font-size: 12px;
   color: var(--text-muted);
   font-weight: 500;
-  /* Можно добавить небольшую плашку, если хочется выделить дату сильнее */
   background: var(--bg-app);
   padding: 2px 6px;
   border-radius: 4px;
@@ -547,7 +602,7 @@
   justify-content: space-between;
   gap: 8px;
   border-left: 1px solid var(--border);
-  min-width: 160px;
+  min-width: 120px;
 }
 
 .returnBtn {
@@ -555,14 +610,14 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 6px 10px;
   background-color: #d1fae5;
   color: #065f46;
   border: 1px solid #86efac;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 400;
   transition: all 0.2s ease;
   white-space: nowrap;
 }
@@ -591,14 +646,14 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 6px 10px;
   background-color: #fee2e2;
   color: #991b1b;
   border: 1px solid #fca5a5;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 400;
   transition: all 0.2s ease;
   white-space: nowrap;
 }

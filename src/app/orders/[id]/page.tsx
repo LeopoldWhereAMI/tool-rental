@@ -198,10 +198,6 @@ export default function OrderDetailsPage() {
           </div>
 
           <aside className={styles.sidebar}>
-            <section className={styles.sidebarCard}>
-              <OrderClientInfo client={order.client} />
-            </section>
-
             {order.status === "cancelled" ? (
               <section className={styles.sidebarCard}>
                 <div className={styles.cancelledFinance}>
@@ -232,6 +228,10 @@ export default function OrderDetailsPage() {
                 />
               </section>
             )}
+
+            <section className={styles.sidebarCard}>
+              <OrderClientInfo client={order.client} />
+            </section>
           </aside>
         </div>
 
