@@ -86,3 +86,13 @@
   -webkit-appearance: none;
   margin: 0;
 }
+
+@media (max-width: 780px) {
+  .twoColumnLayout .mainLayout {
+    display: block;
+  }
+
+  .section {
+    margin-bottom: 16px;
+  }
+}
