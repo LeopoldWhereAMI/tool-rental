@@ -77,7 +77,7 @@ export function usePrintAfterSubmit<T>(
         if (onComplete) onComplete();
         router.push("/orders");
       }
-    }, 500);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [data, handlePrint, printRef, router, onComplete]);
