@@ -32,40 +32,6 @@ export async function GET() {
   }
 }
 
-// export async function POST(request: NextRequest) {
-//   try {
-//     const supabase = await createSupabaseServerClient();
-//     const body = await request.json();
-//     const { html_content, action } = body;
-
-//     const {
-//       data: { user },
-//     } = await supabase.auth.getUser();
-//     if (!user)
-//       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-//     if (action === "restore") {
-//       return NextResponse.json({ success: true, message: "Восстановлено" });
-//     }
-
-//     const { error } = await supabase.from("contract_templates").upsert({
-//       html_content,
-//       user_id: user.id,
-//       updated_at: new Date().toISOString(),
-//     });
-
-//     if (error) throw error;
-
-//     return NextResponse.json({ success: true, message: "Сохранено" });
-//   } catch (error) {
-//     console.error("API ошибка:", error);
-//     return NextResponse.json(
-//       { success: false, error: "Ошибка сохранения" },
-//       { status: 500 },
-//     );
-//   }
-// }
-
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createSupabaseServerClient();

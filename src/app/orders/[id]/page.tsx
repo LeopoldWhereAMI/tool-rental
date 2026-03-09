@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { getOrderById } from "@/services/orderService";
 import styles from "./page.module.css";
-import { OrderDetailsUI } from "@/types";
+import { OrderDetailsUI, OrderPrintBundle } from "@/types";
 import { getOrderDateRange, validateOrderStatus } from "@/helpers";
 import { CreditCard, Printer, Timer } from "lucide-react";
 import { useReactToPrint } from "react-to-print";
@@ -33,6 +33,7 @@ export default function OrderDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [showPassportModal, setShowPassportModal] = useState(false);
   const [actualTotal, setActualTotal] = useState<number>(0);
+  const [printData, setPrintData] = useState<OrderPrintBundle | null>(null);
   const printRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -66,9 +67,17 @@ export default function OrderDetailsPage() {
   const handlePrint = useReactToPrint({
     contentRef: printRef,
     documentTitle: `Договор_№${order?.order_number || "заказ"}`,
+    onAfterPrint: () => {
+      setPrintData(null);
+    },
   });
 
   const onPassportSubmit = () => {
+    if (!order) return;
+
+    const data = mapOrderDetailsToPrint(order, passportData, actualTotal);
+
+    setPrintData(data);
     setShowPassportModal(false);
 
     setTimeout(() => {
@@ -76,7 +85,9 @@ export default function OrderDetailsPage() {
     }, 500);
   };
 
-  const loadOrder = async () => {
+  console.log(order);
+
+  const loadOrder = useCallback(async () => {
     if (!id) return;
 
     try {
@@ -91,19 +102,19 @@ export default function OrderDetailsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     loadOrder();
-  }, [id]);
+  }, [loadOrder]);
 
   const handleItemReturned = () => {
-    loadOrder(); // Перезагружаем заказ
+    loadOrder();
   };
 
   const orderDates = useMemo(
-    () => getOrderDateRange(order?.order_items || []),
-    [order],
+    () => getOrderDateRange(order?.order_items ?? []),
+    [order?.order_items],
   );
 
   const breadcrumbItems = [
@@ -244,10 +255,7 @@ export default function OrderDetailsPage() {
           />
         )}
 
-        <PrintArea
-          printRef={printRef}
-          data={mapOrderDetailsToPrint(order, passportData, actualTotal)}
-        />
+        {printData && <PrintArea printRef={printRef} data={printData} />}
       </div>
     </PageContainer>
   );

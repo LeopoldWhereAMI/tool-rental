@@ -125,6 +125,7 @@ export function mapOrderDetailsToPrint(
       total_price: actualTotal,
       order_number: order.order_number ? Number(order.order_number) : undefined,
       adjustment: adjustment,
+      security_deposit: order.security_deposit ?? undefined,
     },
   };
 }

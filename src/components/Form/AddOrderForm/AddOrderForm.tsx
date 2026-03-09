@@ -53,7 +53,6 @@ export default function AddOrderForm() {
     },
   });
 
-  // Автоматическая очистка ошибок при изменении полей
   useEffect(() => {
     const subscription = watch((value, { name }) => {
       if (name && errors[name as keyof OrderInput]) {
@@ -69,7 +68,11 @@ export default function AddOrderForm() {
   );
 
   const watchedItems = useWatch({ control, name: "items" });
-  const securityDeposit = useWatch({ control, name: "security_deposit" });
+  const securityDeposit = useWatch({
+    control,
+    name: "security_deposit",
+    defaultValue: 0,
+  });
 
   const totalAmount = useMemo(() => {
     return calcOrderTotalFromItems(watchedItems, inventoryMap);
@@ -77,9 +80,13 @@ export default function AddOrderForm() {
 
   const handleFormSubmit = async (data: OrderInput) => {
     try {
+      console.log("1. Начало создания заказа");
       const client = await upsertClient(data);
+      console.log("2. Клиент:", client);
       const orderPayload = prepareOrderPayload(client.id, data, inventoryMap);
+      console.log("3. Payload:", orderPayload);
       const savedOrder = await createOrder(orderPayload);
+      console.log("4. Заказ создан:", savedOrder);
       const finalInitialAmount = orderPayload.total_price;
 
       const financeDescription = `Предоплата по заказу #${savedOrder.order_number}: ${client.first_name}`;
@@ -96,7 +103,9 @@ export default function AddOrderForm() {
         savedOrder,
         orderPayload.total_price,
       );
+      console.log("5. Данные для печати:", printData);
       setLastOrderForPrint(printData);
+      console.log("6. Состояние обновлено");
       toast.success("Заказ создан и оплата зафиксирована!");
       reset();
     } catch (err) {
