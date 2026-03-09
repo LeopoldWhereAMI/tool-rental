@@ -5,6 +5,7 @@ import Handlebars from "handlebars";
 import styles from "./RentalContract.module.css";
 import { ContractItem, ContractOrderData } from "@/types";
 import { priceToWords } from "@/helpers";
+import { supabase } from "@/lib/supabase/supabase";
 
 interface Props {
   items: ContractItem[];
@@ -15,14 +16,46 @@ const RentalContract = ({ items, orderData }: Props) => {
   const [templateHtml, setTemplateHtml] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
+  // useEffect(() => {
+  //   fetch("/api/contract-template")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       if (data.success) setTemplateHtml(data.data);
+  //     })
+  //     .catch((err) => console.error("Fetch error:", err))
+  //     .finally(() => setLoading(false));
+  // }, []);
+
   useEffect(() => {
-    fetch("/api/contract-template")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) setTemplateHtml(data.data);
-      })
-      .catch((err) => console.error("Fetch error:", err))
-      .finally(() => setLoading(false));
+    const loadTemplate = async () => {
+      try {
+        // Получаем текущую сессию
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+
+        // Делаем запрос с токеном
+        const res = await fetch("/api/contract-template", {
+          headers: session
+            ? {
+                Authorization: `Bearer ${session.access_token}`,
+              }
+            : {},
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          setTemplateHtml(data.data);
+        }
+      } catch (err) {
+        console.error("Fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadTemplate();
   }, []);
 
   const context = useMemo(() => {
