@@ -85,8 +85,6 @@ export default function OrderDetailsPage() {
     }, 500);
   };
 
-  console.log(order);
-
   const loadOrder = useCallback(async () => {
     if (!id) return;
 

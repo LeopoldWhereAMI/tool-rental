@@ -24,7 +24,27 @@ export default function PrintArea({ data, printRef }: PrintAreaProps) {
   });
 
   return (
-    <div style={{ display: "none" }}>
+    // <div style={{ display: "none" }}>
+    //   <div ref={printRef}>
+    //     <RentalContract
+    //       items={data.items}
+    //       orderData={{
+    //         ...data.client,
+    //         ...data.order,
+    //       }}
+    //     />
+    //   </div>
+    // </div>
+    <div
+      style={{
+        position: "absolute",
+        left: "-9999px", // Убираем за пределы экрана
+        top: "-9999px",
+        width: "1px",
+        height: "1px",
+        overflow: "hidden",
+      }}
+    >
       <div ref={printRef}>
         <RentalContract
           items={data.items}
