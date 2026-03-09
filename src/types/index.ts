@@ -123,6 +123,8 @@ export interface OrderItemDetailed {
   end_date: string;
   price_at_time: number;
   inventory: Inventory;
+  item_status: "active" | "returned";
+  actual_return_date: string | null;
 }
 
 export type OrderStatusSource = {

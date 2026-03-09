@@ -305,3 +305,18 @@ button:disabled {
   font-size: 0.75rem;
   margin-top: 4px;
 }
+
+.cancelReturnBtnConfirm {
+  background-color: #3b82f6;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+  color: white;
+}
+
+.cancelReturnBtnConfirm:hover {
+  background-color: #2563eb;
+}

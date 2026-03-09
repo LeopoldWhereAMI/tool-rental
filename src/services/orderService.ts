@@ -85,13 +85,15 @@ interface SupabaseOrderRow {
   start_date: string;
   end_date: string;
   created_at: string;
-  client: Client; // Используем ваш интерфейс Client
+  client: Client;
   order_items: {
     id: string;
     price_at_time: number;
     start_date: string;
     end_date: string;
-    inventory: Inventory; // Используем ваш интерфейс Inventory
+    item_status: "active" | "returned"; // ✨ НОВОЕ
+    actual_return_date: string | null; // ✨ НОВОЕ
+    inventory: Inventory;
   }[];
 }
 
@@ -107,6 +109,8 @@ export const getOrderById = async (id: string): Promise<OrderDetailsUI> => {
         price_at_time,
         start_date,
         end_date,
+        item_status,
+        actual_return_date,
         inventory(*)
       )
     `,
@@ -334,5 +338,51 @@ export async function updateOrderNotes(id: string, notes: string) {
     .eq("id", id);
 
   if (error) throw error;
+  return data;
+}
+
+// Завершить аренду отдельного инструмента в заказе
+export const returnOrderItem = async (
+  orderId: string,
+  itemId: string,
+  // returnNotes?: string,
+) => {
+  const { data, error } = await supabase
+    .from("order_items")
+    .update({
+      item_status: "returned",
+      actual_return_date: new Date().toISOString(),
+      // return_notes: returnNotes || null,
+    })
+    .eq("id", itemId)
+    .eq("order_id", orderId)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Ошибка при завершении аренды инструмента:", error);
+    throw error;
+  }
+
+  return data;
+};
+
+// отменить завершение аренды для одного инструмента
+export async function cancelItemReturn(orderId: string, itemId: string) {
+  const { data, error } = await supabase
+    .from("order_items")
+    .update({
+      item_status: "rented", // возвращаем статус аренды
+      actual_return_date: null, // очищаем дату
+    })
+    .eq("id", itemId)
+    .eq("order_id", orderId) // Теперь orderId используется!
+    .select();
+
+  if (error) {
+    console.error("Ошибка при отмене возврата инструмента:", error);
+    throw error;
+  }
+
   return data;
 }

@@ -76,19 +76,30 @@ export default function OrderDetailsPage() {
     }, 500);
   };
 
-  useEffect(() => {
-    if (id) {
-      getOrderById(id as string)
-        .then((data) => {
-          setOrder(data);
-          if (data) {
-            setActualTotal(data.total_price);
-          }
-        })
-        .catch((err) => console.error("Ошибка загрузки заказа:", err))
-        .finally(() => setLoading(false));
+  const loadOrder = async () => {
+    if (!id) return;
+
+    try {
+      setLoading(true);
+      const data = await getOrderById(id as string);
+      setOrder(data);
+      if (data) {
+        setActualTotal(data.total_price);
+      }
+    } catch (err) {
+      console.error("Ошибка загрузки заказа:", err);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    loadOrder();
   }, [id]);
+
+  const handleItemReturned = () => {
+    loadOrder(); // Перезагружаем заказ
+  };
 
   const orderDates = useMemo(
     () => getOrderDateRange(order?.order_items || []),
@@ -161,7 +172,12 @@ export default function OrderDetailsPage() {
         </div>
         <div className={styles.mainGrid}>
           <div className={styles.contentArea}>
-            <OrderItemsList items={items} orderStatus={order.status} />
+            <OrderItemsList
+              items={items}
+              orderStatus={order.status}
+              orderId={order.id}
+              onItemReturned={handleItemReturned}
+            />
 
             <section className={styles.whiteBox}>
               <div className={styles.boxHeader}>
