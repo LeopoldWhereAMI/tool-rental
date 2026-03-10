@@ -1,7 +1,7 @@
-import { supabase } from "@/lib/supabase/supabase";
+import { useAuth } from "@/providers/AuthProvider";
 import { loadInventory } from "@/services/inventoryService";
 import { InventoryUI } from "@/types";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import useSWR from "swr";
 
 export interface InventoryStats {
@@ -22,36 +22,17 @@ const fetcher = async (): Promise<InventoryUI[]> => {
 };
 
 export const useInventory = () => {
-  const [userId, setUserId] = useState<string | null>(null);
-
-  // 1. Получаем ID пользователя для ключа SWR
-  useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUserId(user?.id ?? null);
-    };
-    getUser();
-  }, []);
-
-  // const { data, error, isLoading, mutate } = useSWR(
-  //   userId ? ["inventory", userId] : null,
-  //   fetcher,
-  //   {
-  //     revalidateOnFocus: false,
-  //   },
-  // );
+  const { user } = useAuth();
+  const userId = user?.id;
 
   const { data, error, isLoading, mutate } = useSWR(
-    // Используем строку, чтобы избежать проблем с детонацией массива при ререндере
     userId ? `inventory-${userId}` : null,
     fetcher,
     {
-      revalidateOnFocus: false, // Отключаем запрос при смене окна
-      revalidateIfStale: false, // Важно: не обновлять, если данные уже в кэше
-      revalidateOnReconnect: false, // Не обновлять при скачке интернета
-      dedupingInterval: 60000, // Игнорировать любые повторные запросы в течение минуты
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+      revalidateOnReconnect: false,
+      dedupingInterval: 60000,
     },
   );
 
@@ -80,7 +61,7 @@ export const useInventory = () => {
   return {
     items: data ?? [],
     stats,
-    loading: isLoading || (userId === null && !error),
+    loading: isLoading || !user,
     error: error?.message ?? null,
     refresh: mutate,
   };

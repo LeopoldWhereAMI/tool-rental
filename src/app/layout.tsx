@@ -7,6 +7,7 @@ import { Toaster } from "sonner";
 import Footer from "@/components/Footer/Footer";
 import MobileNav from "@/components/ui/MobileNav/MobileNav";
 import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
+import { AuthProvider } from "@/providers/AuthProvider";
 
 export const metadata: Metadata = {
   title: "Главная страница",
@@ -21,24 +22,26 @@ export default function RootLayout({
   return (
     <html lang="ru" className={fontVariables} suppressHydrationWarning>
       <body className="root-body">
-        <ThemeProvider>
-          <Toaster
-            position="top-right"
-            offset="16px"
-            gap={8}
-            expand={false}
-            richColors
-            closeButton
-          />
-          <Header />
+        <AuthProvider>
+          <ThemeProvider>
+            <Toaster
+              position="top-right"
+              offset="16px"
+              gap={8}
+              expand={false}
+              richColors
+              closeButton
+            />
+            <Header />
 
-          <div className="app-layout">
-            <Sidebar />
-            <main className="main-content">{children}</main>
-          </div>
-          <MobileNav />
-          <Footer />
-        </ThemeProvider>
+            <div className="app-layout">
+              <Sidebar />
+              <main className="main-content">{children}</main>
+            </div>
+            <MobileNav />
+            <Footer />
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

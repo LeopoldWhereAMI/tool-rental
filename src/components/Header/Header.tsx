@@ -1,17 +1,16 @@
 "use client";
 
 import styles from "./Header.module.css";
-import { Bell, ChevronDown, LogOut } from "lucide-react";
+import { ChevronDown, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { logoutAction } from "@/app/actions/auth";
 import { toast } from "sonner";
-import { supabase } from "@/lib/supabase/supabase";
-import { AuthUser } from "@/types";
 import Image from "next/image";
 import Skeleton from "../ui/Skeleton/Skeleton";
 import Logo from "../ui/Logo/Logo";
 import dynamic from "next/dynamic";
+import { useAuth } from "@/providers/AuthProvider";
 
 const ThemeToggle = dynamic(() => import("../ui/ThemeToggle/ThemeToggle"), {
   ssr: false,
@@ -21,38 +20,12 @@ const ThemeToggle = dynamic(() => import("../ui/ThemeToggle/ThemeToggle"), {
 
 export default function Header() {
   const router = useRouter();
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
+
+  const { user, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
-        setUser((user as AuthUser) || null);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsInitialLoading(false);
-      }
-    };
-
-    getUser();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser((session?.user as AuthUser) || null);
-    });
-
-    return () => subscription?.unsubscribe();
-  }, []);
-
-  // Закрытие dropdown при клике вне
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -73,7 +46,7 @@ export default function Header() {
       const result = await logoutAction();
       if (result.success) {
         toast.success("Вы вышли из аккаунта");
-        setUser(null);
+        // setUser(null);
         router.push("/login");
       }
     } catch (error) {
@@ -104,7 +77,7 @@ export default function Header() {
               onClick={() => setDropdownOpen(!dropdownOpen)}
               disabled={loading}
             >
-              {isInitialLoading ? (
+              {authLoading ? (
                 <div className={styles.profileInfo}>
                   <Skeleton
                     width="110px"
