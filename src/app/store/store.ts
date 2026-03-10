@@ -6,10 +6,14 @@ interface SearchState {
   resetSearch: () => void;
 }
 
-export const useSearchStore = create<SearchState>((set) => ({
-  query: "",
+export const useSearchStore = create<SearchState>((set) => {
+  // ✅ Функции создаются один раз, не пересоздаются
+  const setQuery = (query: string) => set({ query });
+  const resetSearch = () => set({ query: "" });
 
-  setQuery: (query) => set({ query }),
-
-  resetSearch: () => set({ query: "" }),
-}));
+  return {
+    query: "",
+    setQuery,
+    resetSearch,
+  };
+});
