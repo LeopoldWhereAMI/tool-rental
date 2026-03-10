@@ -35,6 +35,7 @@ export default function Navigation() {
                 href={item.href}
                 className={styles.navLink}
                 title={item.label}
+                prefetch={false}
               >
                 <Icon size={20} strokeWidth={isActive ? 2 : 1.5} />
                 <span>{item.label}</span>
