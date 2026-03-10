@@ -36,22 +36,20 @@ import { updateSession } from "@/lib/supabase/supabase-middleware";
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 1. Быстрый фильтр для статики и системных путей (пре-чеки)
+  // Пропускаем статику
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
-    pathname.startsWith("/static") ||
     pathname === "/login" ||
     pathname === "/favicon.ico" ||
-    pathname.includes(".") // Пропускаем файлы с расширениями (картинки, шрифты)
+    /\.(svg|png|jpg|jpeg|gif|webp|woff|woff2|ttf|eot|js|css)$/i.test(pathname)
   ) {
     return NextResponse.next();
   }
 
-  // 2. Обновляем сессию (здесь происходит запрос к Supabase)
+  // ОДИН запрос
   const { response, user } = await updateSession(request);
 
-  // 3. Если пользователя нет и мы не на странице логина — редирект
   if (!user && pathname !== "/login") {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
@@ -63,14 +61,6 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - login (страница логина)
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico|login).*)",
+    "/((?!_next/static|_next/image|favicon.ico|static|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
