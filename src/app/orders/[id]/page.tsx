@@ -26,6 +26,7 @@ import { OrderStatusJourney } from "../components/OrderStatusJourney/OrderStatus
 import PageContainer from "@/components/PageContainer/PageContainer";
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import OrderNotes from "./components/OrderNotes";
+import { PrintLoadingOverlay } from "@/components/ui/PrintLoadingOverlay/PrintLoadingOverlay";
 
 export default function OrderDetailsPage() {
   const { id } = useParams();
@@ -34,6 +35,8 @@ export default function OrderDetailsPage() {
   const [showPassportModal, setShowPassportModal] = useState(false);
   const [actualTotal, setActualTotal] = useState<number>(0);
   const [printData, setPrintData] = useState<OrderPrintBundle | null>(null);
+  const [isPreparingPrint, setIsPreparingPrint] = useState(false);
+
   const printRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -69,6 +72,7 @@ export default function OrderDetailsPage() {
     documentTitle: `Договор_№${order?.order_number || "заказ"}`,
     onAfterPrint: () => {
       setPrintData(null);
+      setIsPreparingPrint(false);
     },
   });
 
@@ -77,12 +81,9 @@ export default function OrderDetailsPage() {
 
     const data = mapOrderDetailsToPrint(order, passportData, actualTotal);
 
+    setIsPreparingPrint(true);
     setPrintData(data);
     setShowPassportModal(false);
-
-    setTimeout(() => {
-      handlePrint();
-    }, 500);
   };
 
   const loadOrder = useCallback(async () => {
@@ -244,6 +245,8 @@ export default function OrderDetailsPage() {
           </aside>
         </div>
 
+        <PrintLoadingOverlay isVisible={isPreparingPrint} />
+
         {showPassportModal && (
           <PassportModal
             onPassportSubmit={handleSubmit(onPassportSubmit)}
@@ -253,7 +256,13 @@ export default function OrderDetailsPage() {
           />
         )}
 
-        {printData && <PrintArea printRef={printRef} data={printData} />}
+        {printData && (
+          <PrintArea
+            printRef={printRef}
+            data={printData}
+            onReady={handlePrint}
+          />
+        )}
       </div>
     </PageContainer>
   );

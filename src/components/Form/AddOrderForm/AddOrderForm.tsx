@@ -22,9 +22,11 @@ import OrderClientSection from "./components/OrderClientSection/OrderClientSecti
 import { CheckCircle, Info, User, Wrench } from "lucide-react";
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import { onOrderCompleted } from "@/helpers/financeIntegration";
+import { PrintLoadingOverlay } from "@/components/ui/PrintLoadingOverlay/PrintLoadingOverlay";
 
 export default function AddOrderForm() {
   const { inventory, inventoryMap, clients } = useInventoryAndClients();
+  const [isPreparingPrint, setIsPreparingPrint] = useState(false);
 
   const [lastOrderForPrint, setLastOrderForPrint] =
     useState<OrderPrintBundle | null>(null);
@@ -63,9 +65,11 @@ export default function AddOrderForm() {
   }, [watch, errors, clearErrors]);
 
   const printRef = useRef<HTMLDivElement>(null);
-  usePrintAfterSubmit(lastOrderForPrint, printRef, () =>
-    setLastOrderForPrint(null),
-  );
+
+  const { handlePrint } = usePrintAfterSubmit(printRef, () => {
+    setLastOrderForPrint(null);
+    setIsPreparingPrint(false);
+  });
 
   const watchedItems = useWatch({ control, name: "items" });
   const securityDeposit = useWatch({
@@ -80,18 +84,12 @@ export default function AddOrderForm() {
 
   const handleFormSubmit = async (data: OrderInput) => {
     try {
-      console.log("1. Начало создания заказа");
       const client = await upsertClient(data);
-      console.log("2. Клиент:", client);
       const orderPayload = prepareOrderPayload(client.id, data, inventoryMap);
-      console.log("3. Payload:", orderPayload);
       const savedOrder = await createOrder(orderPayload);
-      console.log("4. Заказ создан:", savedOrder);
       const finalInitialAmount = orderPayload.total_price;
-
       const financeDescription = `Предоплата по заказу #${savedOrder.order_number}: ${client.first_name}`;
 
-      // Вызываем интеграцию с кассой
       await onOrderCompleted(
         savedOrder.id,
         finalInitialAmount,
@@ -103,9 +101,9 @@ export default function AddOrderForm() {
         savedOrder,
         orderPayload.total_price,
       );
-      console.log("5. Данные для печати:", printData);
+      setIsPreparingPrint(true);
       setLastOrderForPrint(printData);
-      console.log("6. Состояние обновлено");
+
       toast.success("Заказ создан и оплата зафиксирована!");
       reset();
     } catch (err) {
@@ -113,6 +111,7 @@ export default function AddOrderForm() {
       toast.error(
         err instanceof Error ? err.message : "Не удалось сохранить заказ",
       );
+      setIsPreparingPrint(false);
     }
   };
 
@@ -274,9 +273,13 @@ export default function AddOrderForm() {
           </div>
         </form>
       </div>
-
+      <PrintLoadingOverlay isVisible={isPreparingPrint} />
       {lastOrderForPrint && (
-        <PrintArea data={lastOrderForPrint} printRef={printRef} />
+        <PrintArea
+          data={lastOrderForPrint}
+          printRef={printRef}
+          onReady={handlePrint}
+        />
       )}
     </>
   );
