@@ -1,12 +1,11 @@
 import { useState, useCallback, useEffect } from "react";
 import {
-  getFinanceStats,
   getTransactions,
-  getYearlyReport,
   updateTransactionStatus,
   FinanceStats,
   Transaction,
   YearlyData,
+  getDashboardData,
 } from "@/services/financeService";
 
 export function useFinanceData(initialPage = 1, itemsPerPage = 5) {
@@ -21,15 +20,14 @@ export function useFinanceData(initialPage = 1, itemsPerPage = 5) {
   const fetchAll = useCallback(async () => {
     setLoading(true);
     try {
-      const [statsRes, transRes, yearlyRes] = await Promise.all([
-        getFinanceStats(),
+      const [dashboardRes, transRes] = await Promise.all([
+        getDashboardData(selectedYear),
         getTransactions(currentPage, itemsPerPage),
-        getYearlyReport(selectedYear),
       ]);
-      setStats(statsRes);
+      setStats(dashboardRes.stats);
+      setYearlyData(dashboardRes.yearlyData);
       setTransactions(transRes.transactions);
       setTotalTransactions(transRes.total);
-      setYearlyData(yearlyRes);
     } catch (error) {
       console.error("Data fetch error:", error);
     } finally {

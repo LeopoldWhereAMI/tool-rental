@@ -23,63 +23,24 @@ export interface YearlyData {
   income: number;
 }
 
-export async function getFinanceStats(): Promise<FinanceStats> {
+export async function getDashboardData(
+  year: number,
+): Promise<{ stats: FinanceStats; yearlyData: YearlyData[] }> {
   try {
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth() + 1;
-
-    // 1. Текущий баланс (все время)
-    const { data: balanceData, error: balanceError } = await supabase.rpc(
-      "get_current_balance",
-    );
-    if (balanceError) throw balanceError;
-
-    // 2. Дневной доход (сегодня)
-    const { data: dailyData, error: dailyError } = await supabase.rpc(
-      "get_daily_revenue",
-      { p_date: now.toISOString().split("T")[0] },
-    );
-    if (dailyError) throw dailyError;
-
-    // 3. Прибыль текущего месяца
-    const { data: monthlyData, error: monthlyError } = await supabase.rpc(
-      "get_monthly_profit",
-      { p_year: currentYear, p_month: currentMonth },
-    );
-    if (monthlyError) throw monthlyError;
-
-    // 4. Прибыль ПРОШЛОГО месяца (для расчета тренда)
-    const lastMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-    const { data: prevMonthlyData } = await supabase.rpc("get_monthly_profit", {
-      p_year: lastMonthDate.getFullYear(),
-      p_month: lastMonthDate.getMonth() + 1,
+    const month = new Date().getMonth() + 1;
+    const { data, error } = await supabase.rpc("get_finance_dashboard_data", {
+      p_year: year,
+      p_month: month,
     });
 
-    // Расчет процента тренда
-    const current = monthlyData || 0;
-    const previous = prevMonthlyData || 0;
-    let trend = 0;
-
-    if (previous > 0) {
-      trend = Math.round(((current - previous) / previous) * 100);
-    } else if (current > 0 && previous === 0) {
-      trend = 100; // Если в прошлом месяце было 0, а сейчас есть доход
-    }
-
-    return {
-      currentBalance: balanceData || 0,
-      dailyRevenue: dailyData || 0,
-      monthlyProfit: current,
-      trendPercent: trend,
-    };
+    if (error) throw error;
+    return data;
   } catch (error) {
-    console.error("Ошибка получения финансовой статистики:", error);
+    console.error("Ошибка получения данных дашборда:", error);
     throw error;
   }
-} /**
- * Получение истории транзакций с пагинацией
- */
+}
+
 export async function getTransactions(
   page: number = 1,
   pageSize: number = 10,
@@ -115,9 +76,6 @@ export async function getTransactions(
   }
 }
 
-/**
- * Поиск транзакций по описанию
- */
 export async function searchTransactions(
   query: string,
   page: number = 1,
@@ -260,19 +218,6 @@ export async function createWithdrawRequest(
     return data as Transaction;
   } catch (error) {
     console.error("❌ Ошибка при создании запроса на вывод:", error);
-    throw error;
-  }
-}
-
-export async function getYearlyReport(year: number) {
-  try {
-    const { data, error } = await supabase.rpc("get_yearly_stats", {
-      p_year: year,
-    });
-    if (error) throw error;
-    return data || [];
-  } catch (error) {
-    console.error("Ошибка получения годового отчета:", error);
     throw error;
   }
 }
