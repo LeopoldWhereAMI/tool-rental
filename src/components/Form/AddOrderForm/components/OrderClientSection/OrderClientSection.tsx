@@ -8,10 +8,18 @@ import {
   UseFormSetValue,
   useWatch,
 } from "react-hook-form";
-import { AlertOctagon, Contact, MapPin, Phone, User } from "lucide-react";
+import { AlertOctagon, Phone } from "lucide-react";
 import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 import useFindClient from "./useFindClient";
 import usePickClient from "./usePickClient";
+import { ClientTypeSelector } from "@/components/Form/ClientTypeSelector/ClientTypeSelector";
+import { useEffect, useState } from "react";
+import { findCompanyByInn } from "@/services/dadata";
+import Spinner from "@/components/ui/Spinner/Spinner";
+import { IndividualFields } from "./IndividualFields";
+import { CompanyFields } from "./CompanyFields";
+import { FoundClientBtn } from "./FoundClientBtn";
+import { toast } from "sonner";
 
 type OrderClientSectionProps = {
   register: UseFormRegister<OrderInput>;
@@ -30,36 +38,116 @@ export default function OrderClientSection({
   clearErrors,
   clients,
 }: OrderClientSectionProps) {
+  const [isSearching, setIsSearching] = useState(false);
+  const [isSwitching, setIsSwitching] = useState(false);
+
   const watchedPhone = useWatch({ control, name: "phone" });
+  const watchedClientType = useWatch({ control, name: "client_type" });
+  const watchedInn = useWatch({ control, name: "inn" });
+
+  const isIndividual = watchedClientType === "individual";
+
+  const resetIndividualFields = () => {
+    setValue("last_name", "");
+    setValue("first_name", "");
+    setValue("middle_name", "");
+    setValue("passport_series", "");
+    setValue("passport_number", "");
+    setValue("issue_date", "");
+    setValue("issued_by", "");
+    setValue("registration_address", "");
+
+    clearErrors([
+      "last_name",
+      "first_name",
+      "middle_name",
+      "passport_series",
+      "passport_number",
+      "issue_date",
+      "issued_by",
+      "registration_address",
+    ]);
+  };
+
+  const resetCompanyFields = () => {
+    setValue("company_name", "");
+    setValue("inn", "");
+    setValue("kpp", "");
+    setValue("ogrn", "");
+    setValue("legal_address", "");
+
+    clearErrors(["company_name", "inn", "kpp", "ogrn", "legal_address"]);
+  };
+
+  useEffect(() => {
+    setIsSwitching(true);
+
+    if (watchedClientType === "individual") {
+      resetCompanyFields();
+    } else {
+      resetIndividualFields();
+    }
+
+    const timer = setTimeout(() => {
+      setIsSwitching(false);
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [watchedClientType]);
+
+  useEffect(() => {
+    const debounceTimer = setTimeout(async () => {
+      const cleanInn = (watchedInn || "").trim();
+
+      if (!cleanInn || cleanInn.length !== 10) {
+        setValue("company_name", "");
+        setValue("ogrn", "");
+        setValue("legal_address", "");
+        setValue("kpp", "");
+        return;
+      }
+
+      setIsSearching(true);
+
+      try {
+        const company = await findCompanyByInn(cleanInn);
+
+        if (company) {
+          setValue("company_name", company.value);
+          setValue("ogrn", company.data.ogrn);
+          setValue("legal_address", company.data.address.value);
+          setValue("kpp", company.data.kpp || "");
+          clearErrors(["company_name", "ogrn", "legal_address"]);
+        } else {
+          resetCompanyFields();
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Не удалось найти компанию по ИНН");
+      } finally {
+        setIsSearching(false);
+      }
+    }, 500);
+
+    return () => clearTimeout(debounceTimer);
+  }, [watchedInn]);
 
   const { foundClients, isExactMatch, normalizePhone } = useFindClient(
     watchedPhone,
     clients,
+    watchedClientType,
   );
 
   const { applyFoundClient, isSelectionActive } = usePickClient(
-    watchedPhone,
+    watchedPhone ?? "",
     setValue,
     clearErrors,
   );
 
-  const highlightPhonePrefix = (phone: string, input: string) => {
-    const cleanPhone = normalizePhone(phone);
-    const cleanInput = normalizePhone(input);
-    if (cleanInput.length < 7) return phone;
-    const prefix = cleanPhone.slice(0, 7);
-    const rest = cleanPhone.slice(7);
-    return (
-      <>
-        <span className={styles.match}>{prefix}</span>
-        {rest}
-      </>
-    );
-  };
-
   return (
     <>
-      {/* Телефон */}
+      <ClientTypeSelector register={register} />
+
       <div className={styles.fieldGroup}>
         <label className={styles.label} htmlFor="phone">
           Номер телефона
@@ -86,53 +174,29 @@ export default function OrderClientSection({
               <div className={styles.foundListHeader}>Найдено в базе:</div>
 
               {foundClients.map((client) => {
-                const isBlacklisted = client.is_blacklisted; // Или client.is_blacklisted
-
                 return (
-                  <button
+                  <FoundClientBtn
                     key={client.id}
-                    type="button"
-                    className={`${styles.foundBadge} ${isBlacklisted ? styles.blacklisted : ""}`}
-                    onClick={() => applyFoundClient(client)}
-                    style={
-                      normalizePhone(client.phone ?? "") ===
-                      normalizePhone(watchedPhone ?? "")
-                        ? { borderColor: isBlacklisted ? "#ef4444" : "#2563eb" }
-                        : {}
-                    }
-                  >
-                    <User
-                      size={14}
-                      className={
-                        isBlacklisted ? styles.errorIcon : styles.foundNameIcon
-                      }
-                    />
-                    <span className={styles.foundName}>
-                      {client.last_name} {client.first_name}
-                      {isBlacklisted && (
-                        <span className={styles.blacklistLabel}> (ЧС)</span>
-                      )}
-                    </span>
-                    <span className={styles.foundPhone}>
-                      {highlightPhonePrefix(
-                        client.phone ?? "",
-                        watchedPhone ?? "",
-                      )}
-                    </span>
-                  </button>
+                    client={client}
+                    watchedPhone={watchedPhone ?? ""}
+                    onSelect={applyFoundClient}
+                    normalizePhone={normalizePhone}
+                  />
                 );
               })}
             </div>
-          ) : watchedPhone?.length > 10 && !isExactMatch ? (
+          ) : (watchedPhone || "").length > 10 && !isExactMatch ? (
             <span className={styles.newBadge}>
-              Новый клиент — будет создан автоматически
+              {isIndividual
+                ? "Новый клиент — будет создан автоматически"
+                : "Новая компания — будет создана автоматически"}
             </span>
           ) : null}
           {isExactMatch &&
             foundClients.find(
               (c) =>
                 normalizePhone(c.phone ?? "") ===
-                  normalizePhone(watchedPhone) && c.is_blacklisted,
+                  normalizePhone(watchedPhone ?? "") && c.is_blacklisted,
             ) && (
               <div className={styles.warningBanner}>
                 <AlertOctagon size={18} />
@@ -141,170 +205,32 @@ export default function OrderClientSection({
             )}
         </div>
       </div>
-
-      {/* ФИО */}
-      <div className={styles.nameGrid}>
-        <div className={styles.fieldGroup}>
-          <label className={styles.label} htmlFor="last_name">
-            Фамилия
-          </label>
-          <input
-            {...register("last_name")}
-            id="last_name"
-            type="text"
-            className={`${styles.input} ${errors.last_name ? styles.hasError : ""}`}
-            placeholder="Иванов"
-          />
-          {errors.last_name && (
-            <span className={styles.errorText}>{errors.last_name.message}</span>
-          )}
-        </div>
-
-        <div className={styles.fieldGroup}>
-          <label className={styles.label} htmlFor="first_name">
-            Имя
-          </label>
-          <input
-            {...register("first_name")}
-            id="first_name"
-            type="text"
-            className={`${styles.input} ${errors.first_name ? styles.hasError : ""}`}
-            placeholder="Иван"
-          />
-          {errors.first_name && (
-            <span className={styles.errorText}>
-              {errors.first_name.message}
-            </span>
-          )}
-        </div>
-
-        <div className={styles.fieldGroup}>
-          <label className={styles.label} htmlFor="middle_name">
-            Отчество
-          </label>
-          <input
-            {...register("middle_name")}
-            id="middle_name"
-            type="text"
-            className={`${styles.input} ${errors.middle_name ? styles.hasError : ""}`}
-            placeholder="Иванович"
-          />
-
-          {errors.middle_name && (
-            <span className={styles.errorText}>
-              {errors.middle_name.message}
-            </span>
-          )}
-        </div>
-      </div>
-
-      {/* Паспортные данные */}
-      <div style={{ marginTop: "24px", marginBottom: "16px" }}>
-        <div className={styles.sectionTitle}>
-          <Contact size={20} />
-          <span className={styles.sectionNumber}>2</span>
-          Паспортные данные
-        </div>
-      </div>
-
-      <div className={styles.passportGrid}>
-        <div className={styles.fieldGroup}>
-          <label className={styles.label} htmlFor="passport_series">
-            Серия
-          </label>
-          <input
-            {...register("passport_series")}
-            id="passport_series"
-            type="text"
-            inputMode="numeric"
-            maxLength={4}
-            className={`${styles.input} ${errors.passport_series ? styles.hasError : ""}`}
-            placeholder="0000"
-          />
-          {errors.passport_series && (
-            <span className={styles.errorText}>
-              {errors.passport_series.message}
-            </span>
-          )}
-        </div>
-
-        <div className={styles.fieldGroup}>
-          <label className={styles.label} htmlFor="passport_number">
-            Номер
-          </label>
-          <input
-            {...register("passport_number")}
-            id="passport_number"
-            type="text"
-            inputMode="numeric"
-            maxLength={6}
-            className={`${styles.input} ${errors.passport_number ? styles.hasError : ""}`}
-            placeholder="000000"
-          />
-          {errors.passport_number && (
-            <span className={styles.errorText}>
-              {errors.passport_number.message}
-            </span>
-          )}
-        </div>
-
-        <div className={styles.fieldGroup}>
-          <label className={styles.label} htmlFor="issue_date">
-            Дата выдачи
-          </label>
-          <input
-            {...register("issue_date")}
-            id="issue_date"
-            type="date"
-            className={`${styles.input} ${errors.issue_date ? styles.hasError : ""}`}
-          />
-          {errors.issue_date && (
-            <span className={styles.errorText}>
-              {errors.issue_date.message}
-            </span>
-          )}
-        </div>
-      </div>
-
-      <div className={styles.fieldGroup}>
-        <label className={styles.label} htmlFor="issued_by">
-          Кем выдан (орган)
-        </label>
-        <input
-          {...register("issued_by")}
-          id="issued_by"
-          type="text"
-          className={`${styles.input} ${errors.issued_by ? styles.hasError : ""}`}
-          placeholder="УФМС по городу..."
-        />
-        {errors.issued_by && (
-          <span className={styles.errorText}>{errors.issued_by.message}</span>
-        )}
-      </div>
-
-      {/* Адрес */}
-      <div style={{ marginTop: "24px", marginBottom: "16px" }}>
-        <div className={styles.sectionTitle}>
-          <MapPin size={20} />
-          <span className={styles.sectionNumber}>3</span>
-          Адрес регистрации
-        </div>
-      </div>
-
-      <div className={styles.fieldGroup}>
-        <label className={styles.label} htmlFor="registration_address">
-          Полный адрес постоянной регистрации
-        </label>
-        <textarea
-          {...register("registration_address")}
-          id="registration_address"
-          className={`${styles.textarea} ${errors.registration_address ? styles.hasError : ""}`}
-          placeholder="г. Москва, ул. Ленина, д. 1, кв. 1"
-        />
-        {errors.registration_address && (
-          <span className={styles.errorText}>
-            {errors.registration_address.message}
-          </span>
+      <div
+        className={styles.fieldsContainer}
+        style={{ minHeight: "300px", position: "relative" }}
+      >
+        {isSwitching ? (
+          <div className={styles.switchLoader}>
+            <Spinner size={40} />
+            <p>Загрузка формы...</p>
+          </div>
+        ) : (
+          <>
+            {isIndividual ? (
+              <IndividualFields
+                register={register}
+                errors={errors}
+                control={control}
+                setValue={setValue}
+              />
+            ) : (
+              <CompanyFields
+                register={register}
+                errors={errors}
+                isSearching={isSearching}
+              />
+            )}
+          </>
         )}
       </div>
     </>

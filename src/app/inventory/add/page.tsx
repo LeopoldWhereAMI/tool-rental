@@ -1,11 +1,9 @@
 "use client";
 
 import { InventoryCreateInput } from "@/lib/validators/inventorySchema";
-import { addInventory, loadInventory } from "@/services/inventoryService";
+import { addInventory } from "@/services/inventoryService";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Inventory } from "@/types";
 import { PostgrestError } from "@supabase/supabase-js";
 import AddInventoryForm from "@/components/Form/InventoryForm/AddInventoryForm";
 import PageContainer from "@/components/PageContainer/PageContainer";

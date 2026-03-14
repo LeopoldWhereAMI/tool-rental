@@ -153,7 +153,18 @@
   position: absolute !important;
   top: 0;
   left: 0;
-  transition: transform 0.3s ease;
+  /* transition: transform 0.3s ease; */
+  object-fit: cover;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.imageLoading {
+  opacity: 0;
+}
+
+/* Состояние после загрузки */
+.imageLoaded {
+  opacity: 1;
 }
 
 .imagePlaceholder {

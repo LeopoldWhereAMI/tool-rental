@@ -1,4 +1,4 @@
-import { OrderPrintBundle } from "@/types";
+import { ContractOrderData, OrderPrintBundle } from "@/types";
 import RentalContract from "../RentalContract/RentalContract";
 
 type PrintAreaProps = {
@@ -30,10 +30,12 @@ export default function PrintArea({ data, printRef, onReady }: PrintAreaProps) {
         <div ref={printRef}>
           <RentalContract
             items={data.items}
-            orderData={{
-              ...data.client,
-              ...data.order,
-            }}
+            orderData={
+              {
+                ...data.client,
+                ...data.order,
+              } as unknown as ContractOrderData
+            }
             onReady={onReady}
           />
         </div>

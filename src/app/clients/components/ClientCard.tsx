@@ -12,6 +12,7 @@ import { ClientWithOrders } from "@/types";
 import Link from "next/link";
 import Image from "next/image";
 import { getLoyaltyInfo, getOrderPlural } from "@/helpers";
+import { getClientDisplayName } from "@/helpers/clientUtils";
 
 interface ClientCardProps {
   client: ClientWithOrders;
@@ -30,7 +31,7 @@ export default function ClientCard({
   onDelete,
   anchor,
 }: ClientCardProps) {
-  const avatarUrl = `https://api.dicebear.com/7.x/personas/svg?seed=${client.id}&backgroundColor=b6e3f4,c0aede,d1d4f9`;
+  const avatarUrl = `https://api.dicebear.com/9.x/croodles/svg/seed=${client.id}`;
   const isBlocked = client.is_blacklisted;
   const totalOrders = client.orders?.length || 0;
   const activeOrdersCount =
@@ -76,7 +77,7 @@ export default function ClientCard({
                   isBlocked ? styles.cardBlockedName : ""
                 }`}
               >
-                {client.last_name} {client.first_name}
+                {getClientDisplayName(client)}
               </Link>
             </div>
             <p className={styles.cardSubText}>В базе с {yearSince}</p>

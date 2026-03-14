@@ -1,0 +1,62 @@
+/* Контейнер всего селектора */
+.clientTypeSelector {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* Группа кнопок */
+.clientTypeButtons {
+  display: flex;
+  gap: 12px;
+}
+
+/* Прячем дефолтную радиокнопку */
+.radioInput {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Сама "кнопка" (label) */
+.clientTypeLabel {
+  cursor: pointer;
+  flex: 1; /* Чтобы кнопки были одинаковой ширины */
+}
+
+/* Обертка контента внутри кнопки */
+.clientTypeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.03); /* Очень слабый засвет фона */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--text-muted); /* Приглушенный текст (slate-400) */
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+/* Состояние при наведении */
+.clientTypeLabel:hover .clientTypeButton {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--border);
+  color: var(--text-main);
+}
+
+/* Состояние, когда радиокнопка выбрана (через селектор +) */
+.radioInput:checked + .clientTypeButton {
+  background: rgba(37, 99, 235, 0.1); /* Синий прозрачный фон */
+  border-color: #2563eb; /* Яркий синий бордюр как на скрине */
+  color: #3b82f6; /* Синий текст */
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
+}
+
+/* Иконки внутри активной кнопки */
+.radioInput:checked + .clientTypeButton svg {
+  color: #3b82f6;
+}

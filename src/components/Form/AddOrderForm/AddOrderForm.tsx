@@ -23,6 +23,7 @@ import { CheckCircle, Info, User, Wrench } from "lucide-react";
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import { onOrderCompleted } from "@/helpers/financeIntegration";
 import { PrintLoadingOverlay } from "@/components/ui/PrintLoadingOverlay/PrintLoadingOverlay";
+import { getClientDisplayName } from "@/helpers/clientUtils";
 
 export default function AddOrderForm() {
   const { inventory, inventoryMap, clients } = useInventoryAndClients();
@@ -52,6 +53,7 @@ export default function AddOrderForm() {
         },
       ],
       security_deposit: undefined,
+      client_type: "individual",
     },
   });
 
@@ -88,7 +90,10 @@ export default function AddOrderForm() {
       const orderPayload = prepareOrderPayload(client.id, data, inventoryMap);
       const savedOrder = await createOrder(orderPayload);
       const finalInitialAmount = orderPayload.total_price;
-      const financeDescription = `Предоплата по заказу #${savedOrder.order_number}: ${client.first_name}`;
+
+      // ✅ ИСПРАВЛЕНО: используем getClientDisplayName для правильного отображения имени
+      const clientDisplayName = getClientDisplayName(client);
+      const financeDescription = `Предоплата по заказу #${savedOrder.order_number}: ${clientDisplayName}`;
 
       await onOrderCompleted(
         savedOrder.id,

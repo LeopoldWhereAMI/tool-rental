@@ -30,7 +30,7 @@ export default function OrderCard({
   const { statusText, statusVariant, formattedStartDate, formattedDate } =
     useOrderStatusInfo(order);
 
-  const clientName = `${order.client.last_name} ${order.client.first_name}`;
+  const clientName = order.client.display_name;
   const clientPhone = order.client.phone || "";
 
   const statusClass = statusVariant

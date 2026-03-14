@@ -14,11 +14,9 @@ export async function proxy(request: NextRequest) {
     skipList.some((path) => pathname.startsWith(path)) || isStaticFile;
 
   if (shouldSkip) {
-    console.log(`[PROXY SKIP] ${pathname}`); // 🔍 для отладки
     return NextResponse.next();
   }
 
-  console.log(`[PROXY CALL] ${pathname}`); // 🔍 для отладки
   const { response, user } = await updateSession(request);
 
   if (!user && pathname !== "/login") {

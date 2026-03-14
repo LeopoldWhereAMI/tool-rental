@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { toast } from "sonner";
 import { loadInventory } from "@/services/inventoryService";
 import { loadClients } from "@/services/clientsService";
-import { Inventory, Client } from "@/types";
+import { Inventory, Client, InventoryMap } from "@/types";
 
 export function useInventoryAndClients() {
   const {
@@ -38,9 +38,14 @@ export function useInventoryAndClients() {
     [allInventory],
   );
 
-  // 🗺️ Map для быстрых lookup'ов по id
-  const inventoryMap = useMemo(() => {
-    return new Map(inventory.map((i) => [i.id, i]));
+  // 🗺️ Object для быстрых lookup'ов по id (не Map, а обычный объект)
+  // ✅ ИСПРАВЛЕНО: использован объект вместо Map для совместимости с InventoryMap
+  const inventoryMap: InventoryMap = useMemo(() => {
+    const map: InventoryMap = {};
+    inventory.forEach((item) => {
+      map[item.id] = item;
+    });
+    return map;
   }, [inventory]);
 
   return {

@@ -21,8 +21,9 @@ export function useOrderFilters(
       // 3. Безопасные проверки полей (используем Optional Chaining и оператор ?? "")
       const orderNumber = order.order_number?.toString() || "";
       const phone = order.client?.phone || "";
-      const lastName = order.client?.last_name || "";
-      const firstName = order.client?.first_name || "";
+      // const lastName = order.client?.last_name || "";
+      // const firstName = order.client?.first_name || "";
+      const clientName = order.client?.display_name || "";
 
       // Проверка инструментов (если есть)
       const matchesTools =
@@ -34,8 +35,9 @@ export function useOrderFilters(
         matchesStatus &&
         (orderNumber.includes(searchLower) ||
           phone.toLowerCase().includes(searchLower) ||
-          lastName.toLowerCase().includes(searchLower) ||
-          firstName.toLowerCase().includes(searchLower) ||
+          // lastName.toLowerCase().includes(searchLower) ||
+          // firstName.toLowerCase().includes(searchLower) ||
+          clientName.toLowerCase().includes(searchLower) ||
           matchesTools)
       );
     });

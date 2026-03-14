@@ -20,6 +20,7 @@ import { useSearchStore } from "../store/store";
 import ViewToggle from "@/components/ui/ViewToggle/ViewToggle";
 import { useAdaptiveView } from "@/hooks/useAdaptiveView";
 import MainSceleton from "@/components/ui/Skeleton/MainSceleton";
+import { getClientDisplayName } from "@/helpers/clientUtils";
 
 export default function ClientsPage() {
   const { openMenuId, anchor, toggleMenu, closeMenu } = useMenuAnchor();
@@ -139,7 +140,10 @@ export default function ClientsPage() {
         isOpen={!!deleteClientId}
         onClose={() => setDeleteClientId(null)}
         onConfirm={handleConfirmDelete}
-        itemName={clients.find((c) => c.id === deleteClientId)?.last_name}
+        itemName={(() => {
+          const client = clients.find((c) => c.id === deleteClientId);
+          return client ? getClientDisplayName(client) : "";
+        })()}
         itemType="клиент"
       />
     </div>

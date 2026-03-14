@@ -33,7 +33,10 @@ export default function OrderDetailsPage() {
   const [order, setOrder] = useState<OrderDetailsUI | null>(null);
   const [loading, setLoading] = useState(true);
   const [showPassportModal, setShowPassportModal] = useState(false);
-  const [actualTotal, setActualTotal] = useState<number>(0);
+  const [financeData, setFinanceData] = useState({
+    finalAmount: 0,
+    adjustment: 0,
+  });
   const [printData, setPrintData] = useState<OrderPrintBundle | null>(null);
   const [isPreparingPrint, setIsPreparingPrint] = useState(false);
 
@@ -43,6 +46,7 @@ export default function OrderDetailsPage() {
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm<PassportInput>({
     resolver: zodResolver(passportValidationSchema),
@@ -67,6 +71,31 @@ export default function OrderDetailsPage() {
     ],
   });
 
+  const handlePrintInitiation = () => {
+    if (!order) return;
+
+    if (order.client.client_type === "individual") {
+      setShowPassportModal(true);
+    } else {
+      const data = mapOrderDetailsToPrint(
+        order,
+        {
+          passport_series: "",
+          passport_number: "",
+          issued_by: "",
+          issue_date: "",
+          registration_address: "",
+        },
+
+        financeData.finalAmount,
+        financeData.adjustment,
+      );
+
+      setIsPreparingPrint(true);
+      setPrintData(data);
+    }
+  };
+
   const handlePrint = useReactToPrint({
     contentRef: printRef,
     documentTitle: `Договор_№${order?.order_number || "заказ"}`,
@@ -79,7 +108,12 @@ export default function OrderDetailsPage() {
   const onPassportSubmit = () => {
     if (!order) return;
 
-    const data = mapOrderDetailsToPrint(order, passportData, actualTotal);
+    const data = mapOrderDetailsToPrint(
+      order,
+      passportData,
+      financeData.finalAmount,
+      financeData.adjustment,
+    );
 
     setIsPreparingPrint(true);
     setPrintData(data);
@@ -94,7 +128,7 @@ export default function OrderDetailsPage() {
       const data = await getOrderById(id as string);
       setOrder(data);
       if (data) {
-        setActualTotal(data.total_price);
+        setFinanceData({ finalAmount: data.total_price, adjustment: 0 });
       }
     } catch (err) {
       console.error("Ошибка загрузки заказа:", err);
@@ -171,10 +205,7 @@ export default function OrderDetailsPage() {
             </div>
           </div>
           <div className={styles.navActions}>
-            <button
-              onClick={() => setShowPassportModal(true)}
-              className={styles.printBtn}
-            >
+            <button onClick={handlePrintInitiation} className={styles.printBtn}>
               <Printer size={18} />
               <span>Печать договора</span>
             </button>
@@ -234,7 +265,7 @@ export default function OrderDetailsPage() {
                 <OrderFinance
                   totalPrice={order.total_price}
                   order={order}
-                  onFinalAmountChange={setActualTotal}
+                  onFinanceUpdate={setFinanceData}
                 />
               </section>
             )}
@@ -253,6 +284,8 @@ export default function OrderDetailsPage() {
             onClose={() => setShowPassportModal(false)}
             register={register}
             errors={errors}
+            control={control}
+            setValue={setValue}
           />
         )}
 

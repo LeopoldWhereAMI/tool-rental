@@ -3,13 +3,14 @@ import styles from "../page.module.css";
 import { OrderDetailsUI } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
+import { getClientDisplayName } from "@/helpers/clientUtils";
 
 type OrderClientInfoProps = {
   client: OrderDetailsUI["client"];
 };
 
 export default function OrderClientInfo({ client }: OrderClientInfoProps) {
-  const avatarUrl = `https://api.dicebear.com/7.x/personas/svg?seed=${client?.id || "default"}&backgroundColor=b6e3f4,c0aede,d1d4f9`;
+  const avatarUrl = `https://api.dicebear.com/9.x/croodles/svg?seed=${client?.id || "default"}&backgroundColor=b6e3f4,c0aede,d1d4f9`;
 
   return (
     <div className={styles.infoBlock}>
@@ -32,7 +33,7 @@ export default function OrderClientInfo({ client }: OrderClientInfoProps) {
         <div className={styles.clientMainInfo}>
           <div className={styles.nameRow}>
             <span className={styles.clientName}>
-              {client?.first_name} {client?.last_name}
+              {getClientDisplayName(client)}
             </span>
             <CheckCircle2 size={16} className={styles.verifiedIcon} />
           </div>

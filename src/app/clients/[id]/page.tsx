@@ -12,6 +12,7 @@ import { useClientDetails } from "@/hooks/useClientDetails";
 import PageContainer from "@/components/PageContainer/PageContainer";
 import { useMemo } from "react";
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
+import { getClientDisplayName } from "@/helpers/clientUtils";
 
 export default function ClientDetailsPage() {
   const { id } = useParams();
@@ -31,7 +32,7 @@ export default function ClientDetailsPage() {
                 <AlertCircle size={12} strokeWidth={3} />
               </span>
             )}
-            {client?.last_name} {client?.first_name}
+            {client ? getClientDisplayName(client) : "Загрузка..."}
           </span>
         ),
       },
@@ -74,7 +75,7 @@ export default function ClientDetailsPage() {
             <ActiveOrders orders={activeOrders} />
             <OrdersHistory
               orders={historyOrders}
-              clientName={`${client.last_name} ${client.first_name}`}
+              clientName={getClientDisplayName(client)}
             />
           </div>
 

@@ -1,31 +1,46 @@
-import { Client } from "@/types";
 import { useMemo } from "react";
-
-const normalizePhone = (v: string) => v.replace(/\D/g, "");
+import { Client } from "@/types";
 
 export default function useFindClient(
-  watchedPhone: string | undefined,
+  phone: string | undefined,
   clients: Client[],
+  clientType: "individual" | "legal" | undefined,
 ) {
-  const foundClients = useMemo(() => {
-    if (!watchedPhone) return [];
+  const normalizePhone = (phoneStr: string): string => {
+    return phoneStr.replace(/\D/g, "");
+  };
 
-    const input = normalizePhone(watchedPhone);
+  const { foundClients, isExactMatch } = useMemo(() => {
+    if (!phone) {
+      return { foundClients: [], isExactMatch: false };
+    }
 
-    if (input.length < 7) return [];
+    const cleanPhone = normalizePhone(phone);
+    if (cleanPhone.length < 6) {
+      return { foundClients: [], isExactMatch: false };
+    }
 
-    return clients.filter((c) => {
-      const clientPhone = normalizePhone(c.phone ?? "");
+    const found = clients.filter((client) => {
+      const clientPhone = client.phone ? normalizePhone(client.phone) : "";
 
-      return clientPhone.startsWith(input);
+      // Фильтруем по типу клиента, если выбран
+      if (clientType && client.client_type !== clientType) {
+        return false;
+      }
+
+      // Проверяем совпадение начала номера
+      return (
+        clientPhone.includes(cleanPhone) ||
+        cleanPhone.includes(clientPhone.slice(0, 6))
+      );
     });
-  }, [watchedPhone, clients]);
 
-  const normalizedWatched = normalizePhone(watchedPhone ?? "");
+    const exact = found.some(
+      (c) => normalizePhone(c.phone ?? "") === cleanPhone,
+    );
 
-  const isExactMatch = foundClients.some(
-    (c) => normalizePhone(c.phone ?? "") === normalizedWatched,
-  );
+    return { foundClients: found, isExactMatch: exact };
+  }, [phone, clients, clientType]);
 
   return { foundClients, isExactMatch, normalizePhone };
 }

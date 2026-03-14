@@ -29,7 +29,11 @@ export default function OrdersToolbar({
   return (
     <div className={styles.toolbar}>
       <div className={styles.left}>
-        <SearchInput value={query} setSearch={setQuery} />
+        <SearchInput
+          value={query}
+          setSearch={setQuery}
+          placeholder="Поиск по номеру заказа/телефона"
+        />
       </div>
       <div className={styles.right}>
         <StatusFilter

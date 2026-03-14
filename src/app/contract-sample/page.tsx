@@ -128,11 +128,16 @@ export default function ContractEditorPage() {
         <div className={styles.footerSection}>
           <h3>Доступные переменные</h3>
           <div className={styles.variableList}>
-            {["order_number", "last_name", "first_name", "total_price"].map(
-              (v) => (
-                <span key={v} className={styles.variableTag}>{`{{${v}}}`}</span>
-              ),
-            )}
+            {[
+              "order_number",
+              "last_name",
+              "first_name",
+              "company_name",
+              "inn",
+              "total_price",
+            ].map((v) => (
+              <span key={v} className={styles.variableTag}>{`{{${v}}}`}</span>
+            ))}
           </div>
         </div>
         <div className={styles.footerSection}>

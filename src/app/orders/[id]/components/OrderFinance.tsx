@@ -21,13 +21,13 @@ import { onOrderCompleted } from "@/helpers/financeIntegration";
 type OrderFinanceProps = {
   totalPrice: number;
   order: OrderDetailsUI;
-  onFinalAmountChange?: (amount: number) => void;
+  onFinanceUpdate?: (data: { finalAmount: number; adjustment: number }) => void;
 };
 
 export default function OrderFinance({
   totalPrice,
   order,
-  onFinalAmountChange,
+  onFinanceUpdate,
 }: OrderFinanceProps) {
   const { debtAmount, overdueDays } = useOrderStatusInfo(order);
   const [adjustment, setAdjustment] = useState<number | string>(0);
@@ -39,18 +39,19 @@ export default function OrderFinance({
   const parsedAdjustment = Number(adjustment);
   const safeAdjustment = isNaN(parsedAdjustment) ? 0 : parsedAdjustment;
 
-  // ТЕПЕРЬ: К оплате только долг и корректировки (основная сумма уже оплачена при создании)
   const additionalPayment = debtAmount + safeAdjustment;
 
-  // Для отображения в модалке итоговой суммы договора (информативно)
   const fullContractAmount = totalPrice + debtAmount + safeAdjustment;
 
   const isRefund = additionalPayment < 0;
   const absAmount = Math.abs(additionalPayment);
 
   useEffect(() => {
-    onFinalAmountChange?.(fullContractAmount);
-  }, [fullContractAmount, onFinalAmountChange]);
+    onFinanceUpdate?.({
+      finalAmount: fullContractAmount,
+      adjustment: safeAdjustment,
+    });
+  }, [fullContractAmount, safeAdjustment, onFinanceUpdate]);
 
   const handleCompleteRequest = () => {
     if (currentStatus === "completed") return;

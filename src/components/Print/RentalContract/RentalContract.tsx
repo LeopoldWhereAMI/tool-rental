@@ -7,6 +7,10 @@ import { ContractItem, ContractOrderData } from "@/types";
 import { priceToWords } from "@/helpers";
 import { supabase } from "@/lib/supabase/supabase";
 
+Handlebars.registerHelper("eq", function (a, b) {
+  return String(a) === String(b);
+});
+
 interface Props {
   items: ContractItem[];
   orderData: ContractOrderData;
@@ -58,7 +62,13 @@ const RentalContract = ({ items, orderData, onReady }: Props) => {
       const e = new Date(item.end_date);
       const diff = e.getTime() - s.getTime();
       const days = Math.ceil(diff / (1000 * 60 * 60 * 24)) || 1;
-      const priceAtTime = Number(item.price_at_time || item.daily_price || 0);
+      const priceAtTime = Number(item.daily_price || item.price_at_time || 0);
+      console.log(`Инструмент: ${item.name}`, {
+        fromDB_daily_price: item.daily_price,
+        fromDB_price_at_time: item.price_at_time,
+        calculated_priceAtTime: priceAtTime,
+        days: days,
+      });
 
       return {
         ...item,

@@ -1,6 +1,5 @@
 "use client";
 
-// import useEditInventory from "@/hooks/useEditInventory";
 import { InventoryCreateInput } from "@/lib/validators/inventorySchema";
 import { updateInventory } from "@/services/inventoryService";
 import { useParams, useRouter } from "next/navigation";
@@ -19,8 +18,7 @@ export default function EditInventoryPage() {
   const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
-  // const { defaultValues, loading, error } = useEditInventory(id);
-  // const { item, mutate } = useInventoryItem(id);
+
   const { item, loading, error, mutate } = useInventoryItem(id);
 
   const defaultValues = useMemo(() => {
@@ -32,7 +30,7 @@ export default function EditInventoryPage() {
       category: item.category || "",
       daily_price: item.daily_price || 0,
       purchase_price: item.purchase_price || 0,
-      purchase_date: item.purchase_date, // В useInventoryItem он уже форматируется в YYYY-MM-DD
+      purchase_date: item.purchase_date,
       notes: item.notes || "",
       serial_number: item.serial_number || "",
       maintenance_interval_days: item.maintenance_interval_days || 30,

@@ -20,6 +20,7 @@ export default function ImageUploader({
   currentImageUrl,
 }: ImageUploaderProps) {
   const [uploading, setUploading] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
   const [preview, setPreview] = useState<string | null>(
     currentImageUrl || null,
   );
@@ -27,6 +28,7 @@ export default function ImageUploader({
 
   useEffect(() => {
     setPreview(currentImageUrl || null);
+    setIsImageLoading(true);
   }, [currentImageUrl]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,9 +44,10 @@ export default function ImageUploader({
     try {
       setUploading(true);
       const url = await uploadInventoryImage(file);
+      const freshUrl = `${url}?t=${Date.now()}`;
 
-      setPreview(url);
-      onUploadSuccess(url);
+      setPreview(freshUrl);
+      await onUploadSuccess(url);
       toast.success("Изображение загружено");
     } catch (error) {
       const errorMessage =
@@ -85,11 +88,18 @@ export default function ImageUploader({
           <Image
             src={preview}
             alt="Инструмент"
-            className={styles.previewImage}
+            className={`${styles.previewImage} ${
+              isImageLoading ? styles.imgLoading : styles.imgLoaded
+            }`}
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            // priority
+            sizes="(max-width: 768px) 100vw, 300px"
+            onLoad={() => setIsImageLoading(false)}
           />
+          {uploading && (
+            <div className={styles.overlayLoader}>
+              <Loader2 className={styles.spinner} />
+            </div>
+          )}
           <button
             type="button"
             onClick={handleRemove}

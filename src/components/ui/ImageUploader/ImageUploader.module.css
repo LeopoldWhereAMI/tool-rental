@@ -1,6 +1,8 @@
 .uploaderWrapper {
   width: 100%;
   margin-bottom: 1.5rem;
+  aspect-ratio: 1 / 1; /* Квадратная область для загрузки */
+  position: relative;
 }
 
 .uploaderWrapper:has(img) {
@@ -37,6 +39,45 @@
   border-radius: 12px;
   overflow: hidden;
   background: rgba(15, 23, 42, 0.3);
+  object-fit: cover;
+  transition:
+    opacity 0.5s ease,
+    filter 0.5s ease;
+}
+
+.imgLoading {
+  opacity: 0;
+  filter: blur(10px);
+}
+
+.imgLoaded {
+  opacity: 1;
+  filter: blur(0);
+}
+
+.overlayLoader {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  z-index: 2;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  color: var(--primary);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .previewImage {

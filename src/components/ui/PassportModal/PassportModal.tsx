@@ -1,14 +1,25 @@
 import FormField from "@/components/Form/FormField/FormField";
 import styles from "./PassportModal.module.css";
 import { FileText, X } from "lucide-react";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import {
+  Control,
+  FieldErrors,
+  UseFormRegister,
+  UseFormSetValue,
+  useWatch,
+} from "react-hook-form";
 import { PassportInput } from "@/lib/validators/orderSchema";
+import { useDadataSuggestions } from "@/hooks/useDadataSuggestions";
+import { suggestAddress, suggestFmsUnit } from "@/services/dadata";
+import { SuggestionField } from "../SuggestionField/SuggestionField";
 
 type PassportModalProps = {
   onPassportSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   onClose: () => void;
   register: UseFormRegister<PassportInput>;
   errors: FieldErrors<PassportInput>;
+  control: Control<PassportInput>; // Добавили
+  setValue: UseFormSetValue<PassportInput>;
 };
 
 export default function PassportModal({
@@ -16,7 +27,33 @@ export default function PassportModal({
   onClose,
   register,
   errors,
+  control,
+  setValue,
 }: PassportModalProps) {
+  const {
+    suggestions: fmsSugg,
+    isLoading: fmsLoading,
+    handleSelect: onFmsSelect,
+  } = useDadataSuggestions({
+    searchValue: useWatch({ control, name: "issued_by" }),
+    fieldName: "issued_by",
+    setValue,
+    suggestFn: suggestFmsUnit,
+    minChars: 2,
+  });
+
+  // Подсказки для адреса
+  const {
+    suggestions: addrSugg,
+    isLoading: addrLoading,
+    handleSelect: onAddrSelect,
+  } = useDadataSuggestions({
+    searchValue: useWatch({ control, name: "registration_address" }),
+    fieldName: "registration_address",
+    setValue,
+    suggestFn: suggestAddress,
+  });
+
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>
@@ -72,10 +109,19 @@ export default function PassportModal({
             id="issued_by"
             error={errors.issued_by?.message}
           >
-            <input
-              {...register("issued_by")}
-              placeholder="УФМС..."
-              className={styles.input}
+            <SuggestionField
+              isLoading={fmsLoading}
+              suggestions={fmsSugg}
+              getLabel={(s) => s.value}
+              onSelect={(s) => onFmsSelect(s.value)}
+              renderInput={() => (
+                <input
+                  {...register("issued_by")}
+                  placeholder="Начните вводить название или код..."
+                  className={styles.input}
+                  autoComplete="off"
+                />
+              )}
             />
           </FormField>
 
@@ -84,10 +130,19 @@ export default function PassportModal({
             id="registration_address"
             error={errors.registration_address?.message}
           >
-            <input
-              {...register("registration_address")}
-              placeholder="г. Москва..."
-              className={styles.input}
+            <SuggestionField
+              isLoading={addrLoading}
+              suggestions={addrSugg}
+              getLabel={(s) => s.value}
+              onSelect={(s) => onAddrSelect(s.value)}
+              renderInput={() => (
+                <input
+                  {...register("registration_address")}
+                  placeholder="г. Москва..."
+                  className={styles.input}
+                  autoComplete="off"
+                />
+              )}
             />
           </FormField>
 

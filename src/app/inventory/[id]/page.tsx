@@ -33,6 +33,7 @@ import Image from "next/image";
 export default function InventoryItemPage() {
   const [isMaintenanceModalOpen, setIsMaintenanceModalOpen] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
 
   const params = useParams();
   const id = params.id as string;
@@ -133,7 +134,10 @@ export default function InventoryItemPage() {
                   fill
                   priority
                   sizes="40vw"
-                  className={styles.heroImage}
+                  className={`${styles.heroImage} ${
+                    isImageLoading ? styles.imageLoading : styles.imageLoaded
+                  }`}
+                  onLoad={() => setIsImageLoading(false)}
                 />
               ) : (
                 <div className={styles.imagePlaceholder}>

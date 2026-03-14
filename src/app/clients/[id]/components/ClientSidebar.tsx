@@ -14,6 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useBlacklist } from "@/hooks/useBlacklist";
 import BlacklistModal from "@/components/ui/MyModal/BlacklistModal";
+import { getClientDisplayName } from "@/helpers/clientUtils";
 
 interface ClientSidebarProps {
   client: ClientWithOrders;
@@ -44,7 +45,7 @@ export default function ClientSidebar({
   } = useBlacklist();
   const { loyalty } = insights;
   const isBlacklisted = client.is_blacklisted;
-  const avatarUrl = `https://api.dicebear.com/7.x/personas/svg?seed=${client.id}&backgroundColor=b6e3f4,c0aede,d1d4f9`;
+  const avatarUrl = `https://api.dicebear.com/9.x/croodles/svg/seed=${client.id}`;
 
   const joinDate = client.created_at
     ? new Date(client.created_at).toLocaleDateString("ru-RU", {
@@ -81,7 +82,7 @@ export default function ClientSidebar({
           </div>
           <div className={styles.profileTexts}>
             <h2 className={styles.name}>
-              {client.last_name} {client.first_name}
+              {getClientDisplayName(client)}
               {isBlacklisted && (
                 <span className={styles.statusBlacklistedBadge}>
                   Заблокирован
@@ -168,7 +169,7 @@ export default function ClientSidebar({
         isOpen={isModalOpen}
         onClose={closeBlacklistModal}
         onConfirm={(reason) => addToBlacklist(client.id, reason)}
-        clientName={`${client.first_name} ${client.last_name}`}
+        clientName={getClientDisplayName(client)}
         loading={loading}
       />
     </aside>

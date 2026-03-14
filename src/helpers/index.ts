@@ -1,6 +1,11 @@
 import { DATE_LOCALE, DATE_OPTIONS } from "@/constants";
 import { calculateOrderTotal } from "@/services/orderService";
-import { ClientWithOrders, OrderDetailsUI, OrderUI } from "@/types";
+import {
+  ClientWithOrders,
+  InventoryMap,
+  OrderDetailsUI,
+  OrderUI,
+} from "@/types";
 
 export const validateCategory = (value: string) => {
   let category = "";
@@ -201,18 +206,15 @@ type WatchedItem = {
   end_date?: string;
 };
 
-type InventoryLike = {
-  daily_price: number;
-};
-
 export function calcOrderTotalFromItems(
   items: WatchedItem[] | undefined,
-  inventoryMap: Map<string, InventoryLike>,
+  inventoryMap: InventoryMap, // ← было: Map<string, InventoryLike>
 ): number {
   if (!items || items.length === 0) return 0;
 
   return items.reduce((acc, item) => {
-    const tool = inventoryMap.get(item.inventory_id);
+    // ✅ ИСПРАВЛЕНО: используем индексацию вместо .get()
+    const tool = inventoryMap[item.inventory_id]; // ← было: inventoryMap.get()
 
     if (!tool || !item.start_date || !item.end_date) {
       return acc;
