@@ -35,10 +35,8 @@ export default function OrderRow({
     formattedDate,
   } = useOrderStatusInfo(order);
 
-  // const clientName = `${order.client.last_name} ${order.client.first_name}`;
   const clientName = order.client.display_name;
 
-  console.log(order.client);
   const clientPhone = order.client.phone || "";
   const statusClass = statusVariant
     ? styles[statusVariant as keyof typeof styles]
