@@ -19,8 +19,9 @@ import { calculateClientStats } from "@/helpers";
 import { useSearchStore } from "../store/store";
 import ViewToggle from "@/components/ui/ViewToggle/ViewToggle";
 import { useAdaptiveView } from "@/hooks/useAdaptiveView";
-import MainSceleton from "@/components/ui/Skeleton/MainSceleton";
 import { getClientDisplayName } from "@/helpers/clientUtils";
+import ListSkeleton from "@/components/ui/Skeleton/ListSkeleton/ListSkeleton";
+import { useFinanceData } from "@/hooks/useFinanceData";
 
 export default function ClientsPage() {
   const { openMenuId, anchor, toggleMenu, closeMenu } = useMenuAnchor();
@@ -28,7 +29,7 @@ export default function ClientsPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const { clients, loading, error, addClient, removeClient } = useClients();
   const { query, setQuery } = useSearchStore();
-
+  const { state: finance, actions: financeActions } = useFinanceData();
   const { viewMode, setViewMode, isMobile } = useAdaptiveView("clients");
   const {
     filtered,
@@ -40,12 +41,31 @@ export default function ClientsPage() {
 
   const {
     currentPage,
-    setCurrentPage,
     totalPages,
     currentItems: pagedClients,
+    pageLoading,
+    handlePageChange,
   } = usePagination({ items: filtered, itemsPerPage: 10 });
 
+  const isInitialLoading = loading && clients.length === 0;
+  const showSkeleton = isInitialLoading || pageLoading;
+
   const stats = useMemo(() => calculateClientStats(clients), [clients]);
+
+  const uniqueCompaniesCount = useMemo(() => {
+    const set = new Set(
+      clients
+        .map((c) => {
+          if (c.client_type === "legal") {
+            return c.company_name;
+          }
+          return null;
+        })
+        .filter(Boolean),
+    );
+
+    return set.size;
+  }, [clients]);
 
   const handleConfirmDelete = async () => {
     if (!deleteClientId) return;
@@ -77,7 +97,12 @@ export default function ClientsPage() {
         </div>
       </header>
 
-      <ClientsStats stats={stats} loading={loading && !clients.length} />
+      <ClientsStats
+        stats={stats}
+        loading={loading && !clients.length}
+        companiesCount={uniqueCompaniesCount}
+        companyIncomePercent={finance?.stats?.companyIncomePercent}
+      />
 
       <div className={styles.tableCard}>
         <div className={styles.tableControls}>
@@ -101,8 +126,8 @@ export default function ClientsPage() {
             )}
           </div>
         </div>
-        {loading && !clients.length ? (
-          <MainSceleton />
+        {showSkeleton ? (
+          <ListSkeleton viewMode={viewMode} rows={10} />
         ) : (
           <ClientsTable
             clients={pagedClients}
@@ -124,7 +149,7 @@ export default function ClientsPage() {
             <PaginationControls
               currentPage={currentPage}
               totalPages={totalPages}
-              clickHandler={setCurrentPage}
+              clickHandler={handlePageChange}
             />
           </div>
         )}

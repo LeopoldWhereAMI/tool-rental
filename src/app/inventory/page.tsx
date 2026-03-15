@@ -19,7 +19,9 @@ import StatCard from "./components/StatCard";
 import InventoryTable from "./components/InventoryTable";
 import ViewToggle from "@/components/ui/ViewToggle/ViewToggle";
 import { useAdaptiveView } from "@/hooks/useAdaptiveView";
-import MainSceleton from "@/components/ui/Skeleton/MainSceleton";
+import usePagination from "@/hooks/usePagination";
+import PaginationControls from "@/components/ui/PaginationControls/PaginationControls";
+import ListSkeleton from "@/components/ui/Skeleton/ListSkeleton/ListSkeleton";
 
 export default function InventoryPage() {
   const { query, setQuery } = useSearchStore();
@@ -33,6 +35,19 @@ export default function InventoryPage() {
     categoryFilter,
     statusFilter,
   });
+  const {
+    currentPage,
+    totalPages,
+    currentItems: pagedItems,
+    pageLoading,
+    handlePageChange,
+  } = usePagination({
+    items: filteredItems,
+    itemsPerPage: 10,
+  });
+
+  const isInitialLoading = loading && items.length === 0;
+  const showSkeleton = isInitialLoading || pageLoading;
 
   return (
     <div className={styles.container}>
@@ -113,15 +128,25 @@ export default function InventoryPage() {
           </div>
         </div>
 
-        {loading && items.length === 0 ? (
-          <MainSceleton />
+        {showSkeleton ? (
+          <ListSkeleton viewMode={viewMode} rows={10} />
         ) : (
           <InventoryTable
-            items={filteredItems}
+            items={pagedItems}
             viewMode={viewMode}
             error={error}
             refresh={refresh}
           />
+        )}
+
+        {totalPages > 1 && (
+          <div className={styles.paginationFooter}>
+            <PaginationControls
+              currentPage={currentPage}
+              totalPages={totalPages}
+              clickHandler={handlePageChange}
+            />
+          </div>
         )}
       </>
     </div>

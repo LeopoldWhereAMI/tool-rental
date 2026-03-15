@@ -16,6 +16,7 @@ export interface FinanceStats {
   dailyRevenue: number;
   monthlyProfit: number;
   trendPercent?: number;
+  companyIncomePercent: number;
 }
 
 export interface YearlyData {

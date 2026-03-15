@@ -14,9 +14,16 @@ interface ClientsStatsProps {
     newTrend: number;
   };
   loading?: boolean;
+  companiesCount: number;
+  companyIncomePercent?: number;
 }
 
-export const ClientsStats = ({ stats, loading }: ClientsStatsProps) => {
+export const ClientsStats = ({
+  stats,
+  loading,
+  companiesCount,
+  companyIncomePercent,
+}: ClientsStatsProps) => {
   const renderTrend = (value: number, description: string) => {
     if (loading)
       return <Skeleton width="100px" height="16px" borderRadius="4px" />;
@@ -63,7 +70,7 @@ export const ClientsStats = ({ stats, loading }: ClientsStatsProps) => {
         ) : (
           <div
             className={styles.trendWrapper}
-            style={{ color: stats.activeRate < 10 ? "#ef4444" : "#10b981" }}
+            style={{ color: stats.activeRate < 10 ? "#f59e0b" : "#10b981" }}
           >
             <Activity size={14} />
             <span>{stats.activeRate}% от всей базы</span>
@@ -81,6 +88,39 @@ export const ClientsStats = ({ stats, loading }: ClientsStatsProps) => {
           )}
         </div>
         {renderTrend(stats.newTrend, "динамика привлечения")}
+      </div>
+
+      <div className={styles.statCard}>
+        <div>
+          <p className={styles.statLabel}>Компании</p>
+
+          {loading ? (
+            <Skeleton width="70px" height="32px" style={{ margin: "4px 0" }} />
+          ) : (
+            <h3 className={styles.statValue}>{companiesCount}</h3>
+          )}
+        </div>
+
+        {loading ? (
+          <Skeleton width="120px" height="16px" borderRadius="4px" />
+        ) : (
+          <div
+            className={`${styles.trendWrapper} ${
+              (companyIncomePercent ?? 0) >= 50
+                ? styles.trendPositive
+                : styles.trendNegative
+            }`}
+          >
+            {(companyIncomePercent ?? 0) >= 50 ? (
+              <TrendingUp size={14} />
+            ) : (
+              <TrendingDown size={14} />
+            )}
+            <span>
+              {companyIncomePercent?.toFixed(1) ?? 0}% от общего дохода
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );

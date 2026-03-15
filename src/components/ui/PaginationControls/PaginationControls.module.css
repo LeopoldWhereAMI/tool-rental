@@ -21,35 +21,40 @@
 }
 
 .pageBtn {
-  padding: 4px 12px;
+  padding: 4px 10px;
   border-radius: 8px;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
-  border: 1px solid transparent;
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+  background-color: transparent;
+  color: var(--text-muted);
 }
 
-.pageBtnPrev {
-  background-color: #161e2e;
-  border-color: #1f2937;
-  color: #94a3b8;
+.pageBtn:hover:not(:disabled) {
+  border-color: var(--secondary);
+  color: var(--text-main);
 }
 
-.pageBtnPrev:hover:not(:disabled) {
-  color: #ffffff;
-  border-color: #2b5bee;
+.pageBtn:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
 }
 
-.pageBtnNext {
-  background-color: #2b5bee;
-  color: #ffffff;
-  border: none;
+.active {
+  border-color: var(--secondary);
+  color: var(--text-main);
+  border-color: var(--secondary);
   box-shadow: 0 4px 14px rgba(43, 91, 238, 0.2);
 }
 
-.pageBtnNext:hover:not(:disabled) {
-  background-color: #1e4bd1;
+.dots {
+  padding: 4px 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
 }
 
 .pageBtn:disabled {

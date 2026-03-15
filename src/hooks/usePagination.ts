@@ -10,6 +10,7 @@ export default function usePagination<T>({
   itemsPerPage,
 }: UsePaginationProps<T>) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageLoading, setPageLoading] = useState(false);
 
   const totalPages = useMemo(() => {
     return Math.ceil(items.length / itemsPerPage) || 1;
@@ -23,10 +24,26 @@ export default function usePagination<T>({
     return items.slice(indexOfFirstItem, indexOfLastItem);
   }, [items, activePage, itemsPerPage]);
 
+  const handlePageChange = (page: number) => {
+    setPageLoading(true);
+
+    setTimeout(() => {
+      setCurrentPage(page);
+      setPageLoading(false);
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }, 200);
+  };
+
   return {
     currentPage: activePage,
     setCurrentPage,
     totalPages,
     currentItems,
+    pageLoading,
+    handlePageChange,
   };
 }

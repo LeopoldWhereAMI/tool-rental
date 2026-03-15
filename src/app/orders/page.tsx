@@ -27,7 +27,7 @@ import CancelOrderModal from "@/components/ui/MyModal/CancelOrderModal";
 import { onOrderRefunded } from "@/helpers/financeIntegration";
 import { useSearchStore } from "../store/store";
 import { useAdaptiveView } from "@/hooks/useAdaptiveView";
-import MainSceleton from "@/components/ui/Skeleton/MainSceleton";
+import ListSkeleton from "@/components/ui/Skeleton/ListSkeleton/ListSkeleton";
 
 export default function OrdersListPage() {
   const [orders, setOrders] = useState<OrderUI[]>([]);
@@ -48,11 +48,19 @@ export default function OrdersListPage() {
     query,
   );
 
-  const { currentPage, setCurrentPage, totalPages, currentItems } =
-    usePagination({
-      items: filteredOrders,
-      itemsPerPage: ITEMS_PER_PAGE,
-    });
+  const {
+    currentPage,
+    totalPages,
+    currentItems,
+    pageLoading,
+    handlePageChange,
+  } = usePagination({
+    items: filteredOrders,
+    itemsPerPage: ITEMS_PER_PAGE,
+  });
+
+  const isInitialLoading = loading && orders.length === 0;
+  const showSkeleton = isInitialLoading || pageLoading;
 
   const orderToDelete = orders.find((o) => o.id === deleteOrderId);
 
@@ -190,15 +198,11 @@ export default function OrdersListPage() {
         isMobile={isMobile}
       />
 
-      {loading && <MainSceleton />}
-
-      {!loading && filteredOrders.length === 0 && (
-        <div className={styles.emptyWrapper}>
-          <EmptyBlock message="Заказы не найдены" isSearch={!!query} />
-        </div>
-      )}
-
-      {!loading && filteredOrders.length > 0 && (
+      {showSkeleton ? (
+        <ListSkeleton viewMode={viewMode} rows={10} />
+      ) : filteredOrders.length === 0 ? (
+        <EmptyBlock message="Заказы не найдены" isSearch={!!query} />
+      ) : (
         <>
           <OrdersTable
             orders={currentItems}
@@ -216,7 +220,7 @@ export default function OrdersListPage() {
 
           <PaginationControls
             totalPages={totalPages}
-            clickHandler={setCurrentPage}
+            clickHandler={handlePageChange}
             currentPage={currentPage}
           />
         </>

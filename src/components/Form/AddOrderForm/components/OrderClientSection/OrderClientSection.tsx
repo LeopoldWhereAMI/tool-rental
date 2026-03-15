@@ -20,6 +20,7 @@ import { IndividualFields } from "./IndividualFields";
 import { CompanyFields } from "./CompanyFields";
 import { FoundClientBtn } from "./FoundClientBtn";
 import { toast } from "sonner";
+import { FoundClientsSection } from "../FoundClientsSection/FoundClientsSection";
 
 type OrderClientSectionProps = {
   register: UseFormRegister<OrderInput>;
@@ -44,8 +45,16 @@ export default function OrderClientSection({
   const watchedPhone = useWatch({ control, name: "phone" });
   const watchedClientType = useWatch({ control, name: "client_type" });
   const watchedInn = useWatch({ control, name: "inn" });
+  const watchedCompanyName = useWatch({
+    control,
+    name: "company_name",
+  });
 
   const isIndividual = watchedClientType === "individual";
+
+  const searchValue = isIndividual
+    ? (watchedPhone ?? "")
+    : (watchedCompanyName ?? "");
 
   const resetIndividualFields = () => {
     setValue("last_name", "");
@@ -133,7 +142,7 @@ export default function OrderClientSection({
   }, [watchedInn]);
 
   const { foundClients, isExactMatch, normalizePhone } = useFindClient(
-    watchedPhone,
+    searchValue,
     clients,
     watchedClientType,
   );
@@ -167,43 +176,15 @@ export default function OrderClientSection({
           <span className={styles.errorText}>{errors.phone.message}</span>
         )}
 
-        {/* Найденные клиенты */}
-        <div className={styles.phoneStatus}>
-          {!isSelectionActive && foundClients.length > 0 ? (
-            <div className={styles.foundList}>
-              <div className={styles.foundListHeader}>Найдено в базе:</div>
-
-              {foundClients.map((client) => {
-                return (
-                  <FoundClientBtn
-                    key={client.id}
-                    client={client}
-                    watchedPhone={watchedPhone ?? ""}
-                    onSelect={applyFoundClient}
-                    normalizePhone={normalizePhone}
-                  />
-                );
-              })}
-            </div>
-          ) : (watchedPhone || "").length > 10 && !isExactMatch ? (
-            <span className={styles.newBadge}>
-              {isIndividual
-                ? "Новый клиент — будет создан автоматически"
-                : "Новая компания — будет создана автоматически"}
-            </span>
-          ) : null}
-          {isExactMatch &&
-            foundClients.find(
-              (c) =>
-                normalizePhone(c.phone ?? "") ===
-                  normalizePhone(watchedPhone ?? "") && c.is_blacklisted,
-            ) && (
-              <div className={styles.warningBanner}>
-                <AlertOctagon size={18} />
-                <span>Внимание! Этот клиент находится в чёрном списке.</span>
-              </div>
-            )}
-        </div>
+        <FoundClientsSection
+          foundClients={foundClients}
+          isSelectionActive={isSelectionActive}
+          isExactMatch={isExactMatch}
+          watchedValue={searchValue}
+          isIndividual={isIndividual}
+          normalizePhone={normalizePhone}
+          onSelect={applyFoundClient}
+        />
       </div>
       <div
         className={styles.fieldsContainer}

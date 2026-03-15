@@ -79,6 +79,11 @@
   border-radius: 4px;
 }
 
+.tableWrapper {
+  position: relative;
+  min-height: 600px;
+}
+
 .cardBody {
   padding: 20px;
 }
