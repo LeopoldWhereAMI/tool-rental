@@ -172,6 +172,8 @@ export default function AddOrderForm() {
                   control={control}
                   register={register}
                   errors={errors}
+                  clearErrors={clearErrors}
+                  setValue={setValue}
                   inventory={inventory}
                   // totalAmount={totalAmount}
                 />

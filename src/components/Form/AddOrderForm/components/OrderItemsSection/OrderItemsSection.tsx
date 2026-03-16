@@ -6,18 +6,24 @@ import {
   Control,
   FieldErrors,
   useFieldArray,
+  UseFormClearErrors,
   UseFormRegister,
+  UseFormSetValue,
   useWatch,
 } from "react-hook-form";
 import { Calendar, Plus, Trash2 } from "lucide-react";
 import FormField from "@/components/Form/FormField/FormField";
 import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 import InputWithIcon from "@/components/Form/InputWithIcon/InputWithIcon";
+import OrderInventorySelect from "../OrderInventorySelect/OrderInventorySelect";
+import DaysBox from "../DaysBox/DaysBox";
 
 type OrderItemsSectionProps = {
   control: Control<OrderInput>;
   register: UseFormRegister<OrderInput>;
   errors: FieldErrors<OrderInput>;
+  clearErrors: UseFormClearErrors<OrderInput>;
+  setValue: UseFormSetValue<OrderInput>;
   inventory: Inventory[];
 };
 
@@ -25,6 +31,8 @@ export default function OrderItemsSection({
   control,
   register,
   errors,
+  clearErrors,
+  setValue,
   inventory,
 }: OrderItemsSectionProps) {
   const { fields, append, remove } = useFieldArray({
@@ -38,22 +46,9 @@ export default function OrderItemsSection({
   const isAllToolsSelected =
     selectedInventoryIds.length >= inventory.length && inventory.length > 0;
 
-  const calcDays = (start: string, end: string) => {
-    if (!start || !end) return null;
-    const diff = Math.ceil(
-      (new Date(end).getTime() - new Date(start).getTime()) /
-        (1000 * 60 * 60 * 24),
-    );
-    return diff > 0 ? diff : null;
-  };
-
   return (
     <>
       {fields.map((field, index) => {
-        const start = watchedItems?.[index]?.start_date ?? "";
-        const end = watchedItems?.[index]?.end_date ?? "";
-        const days = calcDays(start, end);
-
         return (
           <div key={field.id} className={styles.itemRow}>
             <div className={styles.itemGrid}>
@@ -62,25 +57,14 @@ export default function OrderItemsSection({
                 label="Инструмент"
                 error={errors.items?.[index]?.inventory_id?.message}
               >
-                <select
-                  {...register(`items.${index}.inventory_id` as const)}
-                  className={styles.select}
-                >
-                  <option value=""> Выбрать </option>
-                  {inventory.map((item) => {
-                    const isAlreadySelected = selectedInventoryIds.includes(
-                      item.id,
-                    );
-                    const isSelectedHere =
-                      watchedItems?.[index]?.inventory_id === item.id;
-                    if (isAlreadySelected && !isSelectedHere) return null;
-                    return (
-                      <option key={item.id} value={item.id}>
-                        {item.name} ({item.daily_price}₽)
-                      </option>
-                    );
-                  })}
-                </select>
+                <OrderInventorySelect
+                  index={index}
+                  control={control}
+                  register={register}
+                  setValue={setValue}
+                  clearErrors={clearErrors}
+                  inventory={inventory}
+                />
               </FormField>
 
               <FormField
@@ -105,15 +89,22 @@ export default function OrderItemsSection({
                   type="date"
                   id={`items.${index}.end_date`}
                   icon={Calendar}
+                  disabled={!watchedItems?.[index]?.inventory_id}
+                  className={
+                    !watchedItems?.[index]?.inventory_id
+                      ? styles.disabledInput
+                      : ""
+                  }
+                  title={
+                    !watchedItems?.[index]?.inventory_id
+                      ? "Сначала выберите инструмент"
+                      : ""
+                  }
                   register={register(`items.${index}.end_date` as const)}
                 />
               </FormField>
 
-              {/* Счётчик дней — новое */}
-              <div className={styles.daysBox}>
-                <span className={styles.daysBoxLabel}>дней</span>
-                <span className={styles.daysBoxValue}>{days ?? "0"}</span>
-              </div>
+              <DaysBox index={index} control={control} setValue={setValue} />
 
               {fields.length > 1 && (
                 <button

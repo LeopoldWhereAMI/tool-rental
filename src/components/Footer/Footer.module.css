@@ -2,7 +2,7 @@
   background-color: var(--bg-header);
   backdrop-filter: blur(12px);
   color: var(--text-muted);
-  padding: 1rem var(--default-padding);
+  padding: 16px;
   border-top: 1px solid var(--border);
   margin-top: auto;
   margin-left: var(--sidebar-width);
