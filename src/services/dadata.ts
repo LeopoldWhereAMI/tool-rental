@@ -1,37 +1,3 @@
-// export async function findCompanyByInn(inn: string) {
-//   try {
-//     const response = await fetch(
-//       "https://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party",
-//       {
-//         method: "POST",
-//         mode: "cors",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Accept: "application/json",
-//           Authorization: "Token " + process.env.NEXT_PUBLIC_DADATA_API_KEY,
-//         },
-//         body: JSON.stringify({ query: inn }),
-//       },
-//     );
-
-//     if (!response.ok) {
-//       console.error("Dadata API error:", response.statusText);
-//       return null;
-//     }
-
-//     const result = await response.json();
-
-//     if (result && result.suggestions && result.suggestions.length > 0) {
-//       return result.suggestions[0];
-//     }
-
-//     return null;
-//   } catch (error) {
-//     console.error("Network error in findCompanyByInn:", error);
-//     return null;
-//   }
-// }
-
 const BASE_URL = "https://suggestions.dadata.ru/suggestions/api/4_1/rs";
 const AUTH_HEADER = {
   "Content-Type": "application/json",
@@ -116,5 +82,6 @@ export const suggestFio = async (query: string, parts?: string[]) => {
     }),
   });
   const data = await response.json();
+
   return data.suggestions;
 };
