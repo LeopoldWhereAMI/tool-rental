@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./Header.module.css";
-import { ChevronDown, LogOut } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { logoutAction } from "@/app/actions/auth";
@@ -11,6 +11,7 @@ import Skeleton from "../ui/Skeleton/Skeleton";
 import Logo from "../ui/Logo/Logo";
 import dynamic from "next/dynamic";
 import { useAuth } from "@/providers/AuthProvider";
+import DropdownMenu from "./DropdownMenu/DropdownMenu";
 
 const ThemeToggle = dynamic(() => import("../ui/ThemeToggle/ThemeToggle"), {
   ssr: false,
@@ -20,7 +21,6 @@ const ThemeToggle = dynamic(() => import("../ui/ThemeToggle/ThemeToggle"), {
 
 export default function Header() {
   const router = useRouter();
-
   const { user, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -46,7 +46,6 @@ export default function Header() {
       const result = await logoutAction();
       if (result.success) {
         toast.success("Вы вышли из аккаунта");
-        // setUser(null);
         router.push("/login");
       }
     } catch (error) {
@@ -109,20 +108,12 @@ export default function Header() {
             </button>
 
             {dropdownOpen && (
-              <div className={styles.dropdown}>
-                <div className={styles.dropdownHeader}>
-                  <p className={styles.dropdownEmail}>{userEmail}</p>
-                </div>
-                <div className={styles.dropdownDivider}></div>
-                <button
-                  className={styles.dropdownItemLogout}
-                  onClick={handleLogout}
-                  disabled={loading}
-                >
-                  <LogOut size={16} />
-                  {loading ? "Выход..." : "Выход"}
-                </button>
-              </div>
+              <DropdownMenu
+                onClose={() => setDropdownOpen(false)}
+                userId={user?.id}
+                handleLogout={handleLogout}
+                loading={loading}
+              />
             )}
           </div>
         </div>
