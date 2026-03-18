@@ -1,0 +1,70 @@
+.wrapper {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.title {
+  color: var(--text-main);
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form label {
+  color: var(--text-secondary);
+}
+
+.form input {
+  background: var(--table-thead);
+  border: 1px solid var(--border);
+  width: 100%;
+  color: var(--text-secondary);
+  box-sizing: border-box;
+  border-radius: 10px;
+  outline: none;
+  padding: 11px 14px;
+  font-family: inherit;
+  font-size: 14px;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+
+  &:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px #3b82f61f;
+  }
+}
+
+.printWrapper {
+  position: absolute;
+  left: -9999px;
+}
+
+.printBtn {
+  background: var(--secondary);
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+  display: inline-flex;
+  width: 100%;
+}
+
+.printBtn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
