@@ -25,37 +25,53 @@ export default async function ProfilePage() {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.titleBlock}>
-          <h1 className={styles.title}>
-            Карточка пользователя {profile.full_name || ""}
-          </h1>
+          <h1 className={styles.title}>Карточка пользователя</h1>
           <span className={styles.subTitle}>
             Просмотр и управление данными аккаунта.
           </span>
         </div>
-        <div className={styles.avatarWrapper}>
-          {profile?.avatar_url ? (
-            <>
-              <Image
-                src={profile.avatar_url}
-                alt="Avatar"
-                width={100}
-                height={100}
-                className={styles.avatar}
-                priority
-              />
-              <DeleteAvatarButton />
-            </>
-          ) : (
-            <div className={styles.avatarFallback}>
-              {profile.full_name?.[0]?.toUpperCase() ?? "U"}
-            </div>
-          )}
-        </div>
       </div>
 
-      <AvatarUploadForm />
-      <ProfileNameForm defaultName={profile?.full_name ?? ""} />
-      <RentalReceiptEditor />
+      {/* Измененная структура контента */}
+      <div className={styles.contentWrapper}>
+        {/* ЛЕВАЯ ЧАСТЬ: Акт аренды (занимает больше места) */}
+        <div className={`${styles.card} ${styles.receiptSection}`}>
+          <h2 className={styles.cardTitle}>Создание акта аренды</h2>
+          <RentalReceiptEditor />
+        </div>
+
+        {/* ПРАВАЯ ЧАСТЬ: Настройки профиля (занимает меньше места) */}
+        <section className={styles.profileSection}>
+          <div className={`${styles.card} ${styles.avatarCard}`}>
+            <h2 className={styles.cardTitle}>Загрузить аватар</h2>
+            <div className={styles.avatarWrapper}>
+              {profile?.avatar_url ? (
+                <>
+                  <Image
+                    src={profile.avatar_url}
+                    alt="Avatar"
+                    width={100}
+                    height={100}
+                    className={styles.avatar}
+                    priority
+                    unoptimized
+                  />
+                  <DeleteAvatarButton />
+                </>
+              ) : (
+                <div className={styles.avatarFallback}>
+                  {profile.full_name?.[0]?.toUpperCase() ?? "U"}
+                </div>
+              )}
+            </div>
+            <AvatarUploadForm />
+          </div>
+          <div className={`${styles.card} ${styles.nameCard}`}>
+            <h2 className={styles.cardTitle}>Редактирование имени</h2>
+            <ProfileNameForm defaultName={profile?.full_name ?? ""} />
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

@@ -2,55 +2,72 @@
 
 import styles from "./RentalReceiptPrint.module.css";
 
+type Item = {
+  name: string;
+  quantity: number;
+  price: number;
+};
+
 type Props = {
   organizationName: string;
-  instrumentName: string;
-  rentalDays: number;
-  pricePerDay: number;
+  items: Item[];
   date: string;
 };
 
 export default function RentalReceiptPrint({
   organizationName,
-  instrumentName,
-  rentalDays,
-  pricePerDay,
+  items,
   date,
 }: Props) {
-  const total = rentalDays * pricePerDay;
+  const grandTotal = items.reduce(
+    (sum, item) => sum + item.quantity * item.price,
+    0,
+  );
 
   return (
     <div className={styles.act}>
       <h1 className={styles.title}>Акт аренды</h1>
-
-      <p>
-        Организация: <strong>{organizationName}</strong>
-      </p>
-
-      <p>Дата: {date}</p>
+      <div className={styles.actHeader}>
+        <p>
+          Организация: <span>{organizationName}</span>
+        </p>
+        <p>ИП: Голубев Максим Анатольевич</p>
+        <p>ИНН: 463310485078</p>
+        <p>Адрес: г. Железногорск, ул. Мира 6А</p>
+        <p>Телефон: +7 930 852-22-96</p>
+        <p>Дата: {date}</p>
+      </div>
 
       <table className={styles.table}>
         <thead>
           <tr>
             <th>Наименование</th>
-            <th>Дни</th>
-            <th>Цена за сутки</th>
+            <th>Кол-во</th>
+            <th>Цена</th>
             <th>Сумма</th>
           </tr>
         </thead>
+
         <tbody>
-          <tr>
-            <td>{instrumentName}</td>
-            <td>{rentalDays}</td>
-            <td>{pricePerDay} ₽</td>
-            <td>{total} ₽</td>
-          </tr>
+          {items.map((item, index) => {
+            const total = item.quantity * item.price;
+
+            return (
+              <tr key={index}>
+                <td>{item.name}</td>
+                <td>{item.quantity}</td>
+                <td>{item.price} ₽</td>
+                <td>{total} ₽</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
-
+      <p className={styles.total}>
+        Итого: <strong>{grandTotal} ₽</strong>
+      </p>
       <div className={styles.signatures}>
         <div>Подпись __________________________</div>
-        <div>Печать __________________________</div>
       </div>
     </div>
   );

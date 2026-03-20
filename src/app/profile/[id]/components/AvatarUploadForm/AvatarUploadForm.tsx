@@ -59,7 +59,7 @@ export default function AvatarUploadForm() {
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      <h2 className={styles.formTitle}>Загрузить аватар</h2>
+      {/* <h2 className={styles.formTitle}>Загрузить аватар</h2> */}
       <div className={styles.inputField}>
         <input
           id="avatar"

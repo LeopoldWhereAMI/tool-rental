@@ -1,5 +1,4 @@
 .container {
-  max-width: 720px;
   margin: 0 auto;
   padding: 24px;
   display: flex;
@@ -75,14 +74,114 @@
   border-radius: 50%;
   border: none;
   cursor: pointer;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   background: rgba(0, 0, 0, 0.55);
   color: white;
-
   opacity: 0;
   transition: opacity 0.2s ease;
+}
+
+/* --- ОБНОВЛЕННЫЕ СТИЛИ МАКЕТА --- */
+
+.contentWrapper {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start; /* Выравнивание по верхнему краю */
+}
+
+/* Левая колонка (Акт аренды) - занимает 3 части пространства */
+.receiptSection {
+  flex: 3;
+  min-width: 0; /* Важно для предотвращения переполнения flex-элементов */
+}
+
+.receiptSection .cardTitle {
+  font-size: 18px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Правая колонка (Профиль) - занимает 1 часть пространства */
+.profileSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 300px; /* Минимальная ширина, чтобы не сплющивалось */
+}
+
+/* Общий стиль карточки */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Заголовки карточек */
+.cardTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Карточка аватара */
+.avatarCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.avatarCard .cardTitle {
+  justify-content: center;
+}
+
+/* Карточка имени */
+.nameCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Адаптивность для планшетов и мобильных */
+@media (max-width: 900px) {
+  .contentWrapper {
+    flex-direction: column;
+  }
+
+  .receiptSection,
+  .profileSection {
+    flex: auto;
+    width: 100%;
+  }
+
+  .profileSection {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  .avatarCard {
+    flex-direction: row;
+    text-align: left;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .avatarCard .cardTitle {
+    justify-content: flex-start;
+    margin-bottom: 8px;
+  }
 }
