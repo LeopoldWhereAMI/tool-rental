@@ -57,9 +57,12 @@ export default function AvatarUploadForm() {
     }
   };
 
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      {/* <h2 className={styles.formTitle}>Загрузить аватар</h2> */}
       <div className={styles.inputField}>
         <input
           id="avatar"
@@ -71,10 +74,14 @@ export default function AvatarUploadForm() {
           hidden
         />
 
-        <label htmlFor="avatar" className={styles.uploadButton}>
+        <button
+          type="button"
+          onClick={handleButtonClick}
+          className={styles.uploadButton}
+        >
           <Upload size={16} />
           Выберите файл
-        </label>
+        </button>
 
         {selectedFileName && (
           <div>

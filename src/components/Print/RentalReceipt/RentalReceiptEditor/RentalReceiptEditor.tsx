@@ -55,12 +55,6 @@ export default function RentalReceiptEditor() {
     <div className={styles.wrapper}>
       {/* Секция формы */}
       <div className={styles.formSection}>
-        {/* <div className={styles.formHeader}>
-          <h3 style={{ margin: 0, fontSize: "18px", fontWeight: 600 }}>
-            Редактор услуг
-          </h3>
-        </div> */}
-
         <div className={styles.inputGroup}>
           <label htmlFor="orgName">Название организации / ИП</label>
           <input
@@ -95,7 +89,7 @@ export default function RentalReceiptEditor() {
                       placeholder="Описание услуги"
                     />
                   </td>
-                  <td>
+                  <td className={styles.colQty}>
                     <input
                       type="number"
                       className={`${styles.tableInput} ${styles.colQty}`}
@@ -104,10 +98,9 @@ export default function RentalReceiptEditor() {
                       onChange={(e) =>
                         updateItem(index, "quantity", Number(e.target.value))
                       }
-                      style={{ textAlign: "center" }}
                     />
                   </td>
-                  <td>
+                  <td className={styles.colPrice}>
                     <input
                       type="number"
                       className={`${styles.tableInput} ${styles.colPrice}`}
@@ -116,7 +109,6 @@ export default function RentalReceiptEditor() {
                       onChange={(e) =>
                         updateItem(index, "price", Number(e.target.value))
                       }
-                      style={{ textAlign: "right" }}
                     />
                   </td>
                   <td className={styles.colTotal}>

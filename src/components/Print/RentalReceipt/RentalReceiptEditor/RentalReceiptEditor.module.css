@@ -1,10 +1,8 @@
-/* RentalReceiptEditor.module.css */
-
 .wrapper {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding: 24px;
+  /* padding: 0 24px; */
 }
 
 .formSection {
@@ -62,6 +60,7 @@
 .itemsTable {
   width: 100%;
   border-collapse: separate;
+  table-layout: fixed;
   border-spacing: 0;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -80,15 +79,42 @@
   color: var(--text-muted);
   font-weight: 600;
   border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.itemsTable th.colQty {
+  text-align: center;
+}
+
+.itemsTable th.colPrice {
+  text-align: right;
+}
+
+.itemsTable th.colTotal {
+  text-align: right;
+}
+
+.itemsTable th.colAction {
+  text-align: center;
+  width: 60px; /* Фиксированная ширина для кнопки действия, чтобы не сжималась */
 }
 
 .itemsTable td {
-  padding: 12px 16px;
+  /* padding: 12px 16px; */
   border-bottom: 1px solid var(--border);
   vertical-align: middle;
   background-color: var(--surface);
   color: var(--text-main);
   transition: background-color 0.2s;
+}
+
+.itemsTable td.colTotal {
+  text-align: right; /* Выравниваем текст суммы вправо */
+  padding-right: 16px; /* Добавляем отступ, чтобы цифра не прилипала к краю */
+  font-weight: 600;
+  color: var(--text-main);
+  font-feature-settings: "tnum";
+  vertical-align: middle;
 }
 
 .itemsTable tr:last-child td {
@@ -102,13 +128,22 @@
 /* Поля ввода внутри таблицы */
 .tableInput {
   width: 100%;
+  height: 100%;
   border: 1px solid transparent;
   background: transparent;
-  padding: 8px 12px;
+  padding: 12px 16px;
   border-radius: 6px;
   font-size: 14px;
   color: var(--text-main);
   transition: all 0.2s;
+  border-radius: 0;
+}
+
+.itemsTable tr:first-child td:first-child .tableInput {
+  border-top-left-radius: 0;
+}
+.itemsTable tr:last-child td:first-child .tableInput {
+  border-bottom-left-radius: 8px;
 }
 
 .tableInput::placeholder {
@@ -131,29 +166,29 @@
 .tableInput[type="number"] {
   text-align: right;
 }
-.col-qty .tableInput {
+
+.itemsTable td.colQty .tableInput {
   text-align: center;
 }
 
-/* Колонки */
-.col-name {
-  width: 50%;
+.itemsTable th.colName {
+  width: 45%;
 }
-.col-qty {
-  width: 12%;
+.itemsTable th.colQty {
+  width: 10%;
 }
-.col-price {
-  width: 18%;
-}
-.col-total {
+.itemsTable th.colPrice {
   width: 15%;
+}
+.itemsTable th.colTotal {
+  width: 20%;
   text-align: right;
   font-weight: 600;
   color: var(--text-main);
-  font-feature-settings: "tnum"; /* Моноширинные цифры для таблиц */
+  font-feature-settings: "tnum";
 }
-.col-action {
-  width: 50px;
+
+.colAction {
   text-align: center;
 }
 

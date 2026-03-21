@@ -50,8 +50,8 @@ export default async function ProfilePage() {
                   <Image
                     src={profile.avatar_url}
                     alt="Avatar"
-                    width={100}
-                    height={100}
+                    width={80}
+                    height={80}
                     className={styles.avatar}
                     priority
                     unoptimized
