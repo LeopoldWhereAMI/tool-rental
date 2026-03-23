@@ -1,19 +1,25 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  /* padding: 0 24px; */
 }
 
-.formSection {
-  background: var(--card-color);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: var(--table-shadow);
-  transition:
-    background-color 0.3s ease,
-    border-color 0.3s ease;
+.cardTitle {
+  font-size: 18px;
+  padding-bottom: 12px;
+  margin-bottom: 26px;
+  border-bottom: 1px solid var(--border);
 }
 
 .formHeader {
@@ -239,26 +245,24 @@
 }
 
 .printBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 12px 28px;
-  background: var(--primary);
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 14px;
+  background: var(--secondary);
+  color: #fff;
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 4px 6px -1px rgba(80, 72, 229, 0.2);
+  border: none;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s;
+  display: inline-flex;
 }
 
 .printBtn:hover {
-  background: var(--secondary);
+  opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: 0 6px 8px -1px rgba(80, 72, 229, 0.3);
 }
 
 .printBtn:active {

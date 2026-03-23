@@ -10,7 +10,7 @@ type OrderClientInfoProps = {
 };
 
 export default function OrderClientInfo({ client }: OrderClientInfoProps) {
-  const avatarUrl = `https://api.dicebear.com/9.x/croodles/svg?seed=${client?.id || "default"}&backgroundColor=b6e3f4,c0aede,d1d4f9`;
+  const avatarUrl = `https://api.dicebear.com/9.x/croodles/png?seed=${client?.id || "default"}&backgroundColor=b6e3f4,c0aede,d1d4f9`;
 
   return (
     <div className={styles.infoBlock}>

@@ -64,10 +64,7 @@
 }
 
 @media (max-width: 380px) {
-  .pagination {
-    padding: 12px;
-  }
   .pageInfo {
-    font-size: 12px;
+    display: none;
   }
 }

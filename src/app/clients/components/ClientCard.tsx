@@ -31,7 +31,7 @@ export default function ClientCard({
   onDelete,
   anchor,
 }: ClientCardProps) {
-  const avatarUrl = `https://api.dicebear.com/9.x/croodles/svg/seed=${client.id}`;
+  const avatarUrl = `https://api.dicebear.com/9.x/croodles/png/seed=${client.id}`;
   const isBlocked = client.is_blacklisted;
   const totalOrders = client.orders?.length || 0;
   const activeOrdersCount =

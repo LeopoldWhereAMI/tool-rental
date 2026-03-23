@@ -45,7 +45,7 @@ export default function ClientSidebar({
   } = useBlacklist();
   const { loyalty } = insights;
   const isBlacklisted = client.is_blacklisted;
-  const avatarUrl = `https://api.dicebear.com/9.x/croodles/svg/seed=${client.id}`;
+  const avatarUrl = `https://api.dicebear.com/9.x/croodles/png/seed=${client.id}`;
 
   const joinDate = client.created_at
     ? new Date(client.created_at).toLocaleDateString("ru-RU", {

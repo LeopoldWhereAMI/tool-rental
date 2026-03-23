@@ -1,46 +1,3 @@
-// import styles from "./PaginationControls.module.css";
-
-// type PaginationControlsProps = {
-//   totalPages: number;
-//   currentPage: number;
-//   clickHandler: (page: number) => void;
-// };
-
-// export default function PaginationControls({
-//   totalPages,
-//   clickHandler,
-//   currentPage,
-// }: PaginationControlsProps) {
-//   return (
-//     <>
-//       {totalPages > 1 && (
-//         <div className={styles.pagination}>
-//           <div className={styles.pageInfo}>
-//             Страница <strong>{currentPage}</strong> из {totalPages}
-//           </div>
-
-//           <div className={styles.buttonGroup}>
-//             <button
-//               className={`${styles.pageBtn} ${styles.pageBtnPrev}`}
-//               onClick={() => clickHandler(currentPage - 1)}
-//               disabled={currentPage === 1}
-//             >
-//               Пред
-//             </button>
-//             <button
-//               className={`${styles.pageBtn} ${styles.pageBtnNext}`}
-//               onClick={() => clickHandler(currentPage + 1)}
-//               disabled={currentPage === totalPages}
-//             >
-//               След
-//             </button>
-//           </div>
-//         </div>
-//       )}
-//     </>
-//   );
-// }
-
 import styles from "./PaginationControls.module.css";
 
 type PaginationControlsProps = {
@@ -59,7 +16,7 @@ export default function PaginationControls({
   const getPages = () => {
     const pages: (number | string)[] = [];
 
-    const maxVisible = 5; // сколько кнопок показывать
+    const maxVisible = 3; // сколько кнопок показывать
     let start = Math.max(1, currentPage - 2);
     const end = Math.min(totalPages, start + maxVisible - 1);
 
@@ -83,7 +40,7 @@ export default function PaginationControls({
   return (
     <div className={styles.pagination}>
       <div className={styles.pageInfo}>
-        Страница <strong>{currentPage}</strong> из {totalPages}
+        Стр <strong>{currentPage}</strong> из {totalPages}
       </div>
 
       <div className={styles.buttonGroup}>

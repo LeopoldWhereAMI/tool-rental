@@ -344,23 +344,6 @@ export type ContractOrderData = {
 // ***6. Типы для аутентификации и профилей***
 // ============================================================================
 
-// export interface AuthUser {
-//   id: string;
-//   email: string | undefined;
-//   user_metadata: Record<string, unknown>;
-//   aud: string;
-//   created_at: string;
-//   updated_at?: string;
-//   last_sign_in_at?: string;
-//   is_super_admin?: boolean;
-//   role?: string;
-//   factors?: unknown[];
-//   identities?: unknown[];
-//   phone?: string;
-//   confirmed_at?: string;
-//   email_confirmed_at?: string;
-// }
-
 export interface UserProfile {
   id: string;
   full_name: string | null;

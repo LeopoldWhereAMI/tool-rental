@@ -38,8 +38,6 @@ export default function ProfileNameForm({ defaultName }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      {/* <label htmlFor="fullName">Редактирование имени</label> */}
-
       <input
         type="text"
         name="fullName"

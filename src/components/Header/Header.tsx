@@ -60,7 +60,7 @@ export default function Header() {
 
   const avatar =
     profile?.avatar_url ||
-    "https://api.dicebear.com/9.x/croodles/svg?seed=Aidan";
+    "https://api.dicebear.com/9.x/croodles/png?seed=Aidan";
 
   return (
     <header className={styles.header}>
@@ -99,7 +99,7 @@ export default function Header() {
               <div className={styles.avatarWrapper}>
                 <Image
                   src={avatar}
-                  alt="Profile"
+                  alt="Avatar"
                   width={44}
                   height={44}
                   className={styles.avatarImage}

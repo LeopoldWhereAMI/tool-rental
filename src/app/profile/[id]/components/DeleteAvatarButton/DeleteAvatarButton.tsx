@@ -3,11 +3,12 @@
 import { deleteAvatarAction } from "@/app/profile/actions/actions";
 import { toast } from "sonner";
 import { useTransition } from "react";
-import { Trash2 } from "lucide-react";
 import styles from "../../page.module.css";
+import { useRouter } from "next/navigation";
 
 export default function DeleteAvatarButton() {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const handleDelete = () => {
     startTransition(async () => {
@@ -19,6 +20,7 @@ export default function DeleteAvatarButton() {
       }
 
       toast.success("Аватар удалён");
+      router.refresh();
     });
   };
 
@@ -28,8 +30,7 @@ export default function DeleteAvatarButton() {
       disabled={isPending}
       className={styles.deleteAvatarBtn}
     >
-      <Trash2 size={16} />
-      {isPending ? "Удаление..." : "Удалить аватар"}
+      {isPending ? "Удаление..." : "Удалить"}
     </button>
   );
 }

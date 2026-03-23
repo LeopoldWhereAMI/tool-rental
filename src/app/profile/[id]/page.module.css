@@ -44,6 +44,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .avatar {
@@ -65,7 +66,23 @@
   background: var(--bg-secondary);
 }
 
-.avatarWrapper:hover .deleteAvatarBtn {
+.uploadOverlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.avatarWrapper:hover .deleteAvatarBtn,
+.avatarWrapper:hover .uploadOverlay {
   opacity: 1;
 }
 
@@ -80,38 +97,28 @@
   justify-content: center;
   background: rgba(0, 0, 0, 0.55);
   color: white;
+  font-size: 12px;
+  font-weight: 500;
   opacity: 0;
   transition: opacity 0.2s ease;
 }
 
-/* --- ОБНОВЛЕННЫЕ СТИЛИ МАКЕТА --- */
-
 .contentWrapper {
   display: flex;
   gap: 24px;
-  align-items: flex-start; /* Выравнивание по верхнему краю */
+  align-items: flex-start;
 }
-
-/* Левая колонка (Акт аренды) - занимает 3 части пространства */
 .receiptSection {
   flex: 3;
-  min-width: 0; /* Важно для предотвращения переполнения flex-элементов */
+  min-width: 0;
 }
 
-.receiptSection .cardTitle {
-  font-size: 18px;
-  margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-}
-
-/* Правая колонка (Профиль) - занимает 1 часть пространства */
 .profileSection {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  min-width: 300px; /* Минимальная ширина, чтобы не сплющивалось */
+  min-width: 300px;
 }
 
 /* Общий стиль карточки */
@@ -135,18 +142,6 @@
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-/* Карточка аватара */
-.avatarCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.avatarCard .cardTitle {
-  justify-content: center;
 }
 
 /* Карточка имени */
