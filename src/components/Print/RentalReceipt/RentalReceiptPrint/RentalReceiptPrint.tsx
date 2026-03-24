@@ -26,7 +26,7 @@ export default function RentalReceiptPrint({
 
   return (
     <div className={styles.act}>
-      <h1 className={styles.title}>Акт аренды</h1>
+      <h1 className={styles.title}>Товарный чек</h1>
       <div className={styles.actHeader}>
         <p>
           Организация: <span>{organizationName}</span>

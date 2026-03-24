@@ -70,7 +70,7 @@ export default function OrderInventorySelect({
 
         return (
           <option key={item.id} value={item.id}>
-            {item.name} ({item.daily_price}₽)
+            ( {item.article}) {"_"} {item.name} ({item.daily_price}₽)
           </option>
         );
       })}

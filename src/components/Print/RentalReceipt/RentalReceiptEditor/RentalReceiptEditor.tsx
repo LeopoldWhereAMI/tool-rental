@@ -52,7 +52,7 @@ export default function RentalReceiptEditor() {
 
   return (
     <div className={styles.card}>
-      <h2 className={styles.cardTitle}>Создание акта аренды</h2>
+      <h2 className={styles.cardTitle}>Создание товарного чека</h2>
 
       <div className={styles.wrapper}>
         <div className={styles.formSection}>
