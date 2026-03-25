@@ -41,30 +41,63 @@ export async function POST(request: NextRequest) {
     const {
       data: { user },
     } = await supabase.auth.getUser();
+
     if (!user)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    if (action === "restore") {
-      return NextResponse.json({ success: true, message: "Восстановлено" });
-    }
-
-    // Сначала получаем существующую запись
+    // 👉 ПОЛУЧАЕМ ТЕКУЩИЙ ШАБЛОН
     const { data: existingTemplate } = await supabase
       .from("contract_templates")
-      .select("id")
+      .select(
+        "id, html_content, updated_at, previous_html, previous_updated_at",
+      )
       .eq("user_id", user.id)
       .maybeSingle();
 
+    // =========================
+    // 🔁 RESTORE
+    // =========================
+    if (action === "restore") {
+      if (!existingTemplate?.previous_html) {
+        return NextResponse.json({
+          success: false,
+          error: "Нет предыдущей версии",
+        });
+      }
+
+      const { error } = await supabase
+        .from("contract_templates")
+        .update({
+          html_content: existingTemplate.previous_html,
+          updated_at: existingTemplate.previous_updated_at,
+        })
+        .eq("user_id", user.id);
+
+      if (error) throw error;
+
+      return NextResponse.json({ success: true });
+    }
+
+    // =========================
+    // 💾 SAVE
+    // =========================
     const { error } = await supabase.from("contract_templates").upsert({
-      id: existingTemplate?.id, // Указываем ID для обновления
-      html_content,
+      id: existingTemplate?.id,
       user_id: user.id,
+
+      // 👉 новое значение
+      html_content,
+
+      // 👉 сохраняем старое
+      previous_html: existingTemplate?.html_content || null,
+      previous_updated_at: existingTemplate?.updated_at || null,
+
       updated_at: new Date().toISOString(),
     });
 
     if (error) throw error;
 
-    return NextResponse.json({ success: true, message: "Сохранено" });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("API ошибка:", error);
     return NextResponse.json(

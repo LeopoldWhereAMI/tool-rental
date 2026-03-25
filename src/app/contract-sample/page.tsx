@@ -124,7 +124,7 @@ export default function ContractEditorPage() {
         />
       </div>
 
-      <footer className={styles.footer}>
+      {/* <footer className={styles.footer}>
         <div className={styles.footerSection}>
           <h3>Доступные переменные</h3>
           <div className={styles.variableList}>
@@ -146,6 +146,60 @@ export default function ContractEditorPage() {
             Используйте <code>{`{{#each items}}`}</code> для списков. <br />
             Пример: <code>{`{{this.name}}`}</code> внутри блока.
           </p>
+        </div>
+      </footer> */}
+      <footer className={styles.footer}>
+        {/* === БЛОК 1: КЛИЕНТ === */}
+        <div className={styles.footerSection}>
+          <h3>👤 Данные клиента</h3>
+          <div className={styles.variableList}>
+            {[
+              "client_type",
+              "last_name",
+              "first_name",
+              "middle_name",
+              "clientShortName",
+              "passport_series",
+              "passport_number",
+              "issued_by",
+              "issue_date",
+              "registration_address",
+              "phone",
+              "company_name",
+              "inn",
+              "kpp",
+              "ogrn",
+              "legal_address",
+            ].map((v) => (
+              <span key={v} className={styles.variableTag}>{`{{${v}}}`}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* === БЛОК 2: ФИНАНСЫ И ДАТЫ === */}
+        <div className={styles.footerSection}>
+          <h3>💰 Финансы и даты</h3>
+          <div className={styles.variableList}>
+            {[
+              "order_number",
+              "total_price",
+              "finalTotal",
+              "basePrice",
+              "security_deposit",
+              "securityDepositWords",
+              "totalPurchasePrice",
+              "totalPurchasePriceWords",
+              "adjValue",
+              "hasAdjustment",
+              "isExtraCharge",
+              "formattedDate",
+              "maxEndDateFormatted",
+              "hours",
+              "minutes",
+            ].map((v) => (
+              <span key={v} className={styles.variableTag}>{`{{${v}}}`}</span>
+            ))}
+          </div>
         </div>
       </footer>
     </div>

@@ -63,12 +63,6 @@ const RentalContract = ({ items, orderData, onReady }: Props) => {
       const diff = e.getTime() - s.getTime();
       const days = Math.ceil(diff / (1000 * 60 * 60 * 24)) || 1;
       const priceAtTime = Number(item.daily_price || item.price_at_time || 0);
-      console.log(`Инструмент: ${item.name}`, {
-        fromDB_daily_price: item.daily_price,
-        fromDB_price_at_time: item.price_at_time,
-        calculated_priceAtTime: priceAtTime,
-        days: days,
-      });
 
       return {
         ...item,
@@ -81,6 +75,22 @@ const RentalContract = ({ items, orderData, onReady }: Props) => {
       };
     });
 
+    // Находим максимальную дату среди всех товаров
+    const maxEndDate = items.reduce((max, item) => {
+      const currentItemEnd = new Date(item.end_date).getTime();
+      const maxTime = max ? new Date(max).getTime() : 0;
+      return currentItemEnd > maxTime ? item.end_date : max;
+    }, items[0]?.end_date || null);
+
+    // Форматируем её для вывода
+    const maxEndDateFormatted = maxEndDate
+      ? new Date(maxEndDate).toLocaleDateString("ru-RU", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        })
+      : "не указана";
+
     const totalRentalSum = processedItems.reduce(
       (sum, i) => sum + i.rowTotal,
       0,
@@ -90,6 +100,11 @@ const RentalContract = ({ items, orderData, onReady }: Props) => {
       0,
     );
     const securityDepositValue = Number(orderData.security_deposit) || 0;
+
+    const clientShortName =
+      orderData.client_type === "individual"
+        ? `${orderData.first_name?.[0] || ""}.${orderData.middle_name?.[0] || ""}. ${orderData.last_name || ""}`
+        : orderData.company_name || "";
 
     return {
       ...orderData,
@@ -115,6 +130,8 @@ const RentalContract = ({ items, orderData, onReady }: Props) => {
       }),
       hours: now.getHours().toString().padStart(2, "0"),
       minutes: now.getMinutes().toString().padStart(2, "0"),
+      maxEndDateFormatted,
+      clientShortName,
     };
   }, [items, orderData]);
 
