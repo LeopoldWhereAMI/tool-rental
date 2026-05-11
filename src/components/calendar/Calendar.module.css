@@ -1,0 +1,402 @@
+.container {
+  width: 100%;
+  min-height: auto;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background-color: var(--surface);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.cardHeader {
+  border-bottom: 1px solid var(--border);
+  padding: 24px;
+}
+
+.cardTitle {
+  letter-spacing: -0.01em;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  & svg {
+    color: var(--secondary);
+    background: rgba(43, 91, 238, 0.1);
+  }
+}
+
+.cardContent {
+  padding: 16px 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* =========================
+   CALENDAR FULL WIDTH FIX
+========================= */
+
+.container :global(.rdp) {
+  --rdp-accent-color: var(--primary);
+  --rdp-background-color: rgba(80, 72, 229, 0.12);
+
+  width: 100% !important;
+  max-width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  margin: 0;
+  color: var(--text-main);
+}
+
+/* Обёртка месяцев */
+.container :global(.rdp-months) {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: flex !important;
+  gap: 24px;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+/* Сам месяц */
+.container :global(.rdp-month) {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 1 1 100% !important;
+  min-width: 0;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Таблица календаря */
+.container :global(.rdp-table) {
+  width: 100% !important;
+  max-width: 100% !important;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 6px;
+}
+
+/* Заголовок месяца */
+.container :global(.rdp-caption) {
+  margin-bottom: 20px;
+  padding: 0 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container :global(.rdp-caption_label) {
+  text-transform: capitalize;
+  color: var(--text-main);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* Навигация */
+.container :global(.rdp-nav) {
+  gap: 8px;
+}
+
+/* Кнопки навигации */
+.container :global(.rdp-button_previous),
+.container :global(.rdp-button_next) {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 1px solid rgba(80, 72, 229, 0.12);
+  background: var(--surface);
+  color: var(--text-main);
+  transition: all 0.2s ease;
+}
+
+.container :global(.rdp-button_previous):hover,
+.container :global(.rdp-button_next):hover {
+  background: rgba(80, 72, 229, 0.12);
+  border-color: rgba(80, 72, 229, 0.35);
+  color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(80, 72, 229, 0.15);
+}
+
+.container :global(.rdp-button_previous):active,
+.container :global(.rdp-button_next):active {
+  transform: translateY(0);
+  box-shadow: none;
+  background: rgba(80, 72, 229, 0.18);
+}
+
+/* Все недели вместе */
+.container :global(.rdp-weeks) {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Недели */
+.container :global(.rdp-weekdays) {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr) !important;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+/* Дни недели */
+.container :global(.rdp-weekday) {
+  text-align: center;
+  padding-bottom: 14px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Ряд дней */
+.container :global(.rdp-week) {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr) !important;
+  width: 100% !important;
+  margin-top: 6px;
+}
+
+/* День */
+.container :global(.rdp-day) {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  margin: 0;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.18s ease;
+}
+
+/* Кнопка дня */
+.container :global(.rdp-day_button) {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-main); /* ← основной */
+  font-weight: 500;
+}
+
+.container :global(.rdp-outside) {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.container :global(.rdp-outside) :global(.rdp-day_button) {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+/* =========================
+   Selected range block
+========================= */
+
+.selectedRange {
+  margin-top: 24px;
+  padding: 18px;
+  border: 1px solid rgba(80, 72, 229, 0.16);
+  border-radius: 18px;
+  background: rgba(80, 72, 229, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.selectedRange p:first-child {
+  margin: 0 0 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.selectedRange p:last-child {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* =========================
+   Buttons
+========================= */
+
+.bookButton {
+  margin-top: 16px;
+  width: 100%;
+  height: 46px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 10px 24px rgba(80, 72, 229, 0.28);
+}
+
+.bookButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(80, 72, 229, 0.38);
+}
+
+.bookButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================
+   Error
+========================= */
+
+.error {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border: 1px solid rgba(239, 68, 68, 0.18);
+  border-radius: 14px;
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* =========================
+   Select
+========================= */
+
+.select {
+  width: 100%;
+  height: 48px;
+  margin-top: 20px;
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 14px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(80, 72, 229, 0.12);
+}
+
+.select option:first-child {
+  color: var(--text-muted);
+}
+
+/* =========================
+   Bookings
+========================= */
+
+.bookingsSection {
+  margin-top: 28px;
+}
+
+.sectionTitle {
+  margin: 0 0 18px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.bookingItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding: 16px 18px;
+  margin-bottom: 12px;
+
+  border: 1px solid var(--border);
+  border-radius: 18px;
+
+  background-color: var(--table-thead);
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.bookingItem:hover {
+  transform: translateY(-1px);
+}
+
+/* Перекрываем стиль react-day-picker для сегодняшней даты */
+.container :global(.rdp-today:not(.rdp-outside)) {
+  color: var(--text-main) !important;
+  border: 2px solid var(--primary);
+}
+
+.container :global(.rdp-today:not(.rdp-outside) .rdp-day_button) {
+  color: var(--primary) !important;
+  font-weight: 700;
+}
+
+.bookingDates {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--secondary);
+}
+
+.cancelButton {
+  height: 38px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 82, 82, 0.18);
+  border-radius: 12px;
+  background: rgba(255, 82, 82, 0.08);
+  color: #ff8f8f;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.cancelButton:hover {
+  background: rgba(255, 82, 82, 0.14);
+  border-color: rgba(255, 82, 82, 0.32);
+  transform: translateY(-1px);
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 640px) {
+  .container {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .bookingItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cancelButton {
+    width: 100%;
+  }
+
+  .container :global(.rdp-day),
+  .container :global(.rdp-day_button) {
+    width: 40px;
+    height: 40px;
+  }
+}

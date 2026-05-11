@@ -2,6 +2,8 @@
   color: var(--text-secondary);
   min-height: 100vh;
   padding: 24px;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
 .chevron {
@@ -123,16 +125,68 @@
   box-shadow: var(--table-shadow);
 }
 
+/* ===== GRID & LAYOUT ===== */
 .dashboardGrid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 24px;
-  align-items: start;
+  align-items: stretch;
 }
 
+.dashboardGrid > * {
+  min-width: 0;
+}
+
+/* ===== HERO SECTION: ФОТО + КАЛЕНДАРЬ ===== */
+.colGallery {
+  grid-column: span 7;
+}
+
+.colCalendar {
+  grid-column: span 5;
+  height: 520px;
+}
+
+/* ===== ДЕТАЛИ + KPI В ДВУХ КОЛОНКАХ ===== */
+.colDetails {
+  grid-column: span 6;
+}
+
+.colMetrics {
+  grid-column: span 6;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* ===== ИСТОРИЯ НА ПОЛНУЮ ШИРИНУ ===== */
+.colHistory {
+  grid-column: span 12;
+}
+
+/* ===== ЕДИНАЯ КАРТОЧНАЯ СИСТЕМА ===== */
+.cardSurface {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--table-shadow);
+  transition:
+    border 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+@media (hover: hover) {
+  .cardSurface:hover {
+    border: 1px solid var(--primary);
+    box-shadow: 0 8px 24px rgba(43, 91, 238, 0.12);
+  }
+}
+
+/* ===== IMAGE ===== */
 .heroImageContainer {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 520px;
+  aspect-ratio: 16 / 10;
   background-color: var(--surface);
   display: flex;
   justify-content: center;
@@ -140,20 +194,21 @@
   position: relative;
   overflow: hidden;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 20px;
   box-shadow: var(--table-shadow);
-  transition: border 0.3s ease;
+  transition:
+    border 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .heroImage {
-  padding: 15px;
+  padding: 12px;
   object-fit: contain !important;
   width: 100% !important;
   height: 100% !important;
   position: absolute !important;
   top: 0;
   left: 0;
-  /* transition: transform 0.3s ease; */
   object-fit: cover;
   transition: opacity 0.4s ease-in-out;
 }
@@ -162,7 +217,6 @@
   opacity: 0;
 }
 
-/* Состояние после загрузки */
 .imageLoaded {
   opacity: 1;
 }
@@ -175,72 +229,28 @@
   width: 100%;
   height: 100%;
   display: flex;
+  color: var(--text-secondary);
 }
 
-.colGallery {
-  grid-column: span 5;
+@media (hover: hover) {
+  .heroImageContainer:hover {
+    border: 1px solid var(--primary);
+    box-shadow: 0 8px 24px rgba(43, 91, 238, 0.12);
+  }
 }
 
-.colMetrics {
-  grid-column: span 3;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.colDetails {
-  grid-column: span 4;
-  grid-row: span 1;
-}
-
-.colHistory {
-  grid-column: span 8;
-  grid-row: 2;
-}
-
-.colDetails .card {
-  background-color: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  box-shadow: var(--table-shadow);
-  transition: border 0.3s ease;
-}
-
-.colDetails .cardHeader {
-  padding: 20px 24px;
-  border-bottom: 1px solid var(--border);
-}
-
-.colDetails .cardTitle {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0;
-  color: var(--text-main);
-  letter-spacing: -0.01em;
-}
-
-.colDetails .cardContent {
-  padding: 24px;
-  flex-grow: 1;
-}
-
+/* ===== METRIC CARDS ===== */
 .metricCardSmall {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: var(--kpi-shadow);
-  padding: 16px;
+  border-radius: 18px;
+  box-shadow: var(--table-shadow);
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 12px;
-  min-height: 120px;
+  min-height: 140px;
   transition: all 0.3s ease;
 }
 
@@ -252,26 +262,32 @@
 
 .metricTitle {
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
 }
 
 .iconBox {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .iconGreen {
   background: rgba(34, 197, 94, 0.1);
   color: #10b981;
 }
+
 .iconBlue {
   background: rgba(43, 91, 238, 0.1);
   color: var(--secondary);
 }
+
 .iconOrange {
   background: rgba(245, 158, 11, 0.1);
   color: #f59e0b;
@@ -280,12 +296,7 @@
 .metricContent {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-}
-
-.subValueBlue {
-  font-size: 12px;
-  color: var(--text-muted);
+  gap: 8px;
 }
 
 .metricContentPadding {
@@ -294,7 +305,7 @@
 
 .bigNumber {
   font-family: var(--font-space-grotesk);
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--text-main);
   line-height: 1;
@@ -302,7 +313,13 @@
 
 .subTextGreen {
   font-family: var(--font-space-grotesk);
-  font-size: 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.subValueBlue {
+  font-size: 13px;
   color: var(--text-muted);
   font-weight: 500;
 }
@@ -310,25 +327,70 @@
 .miniProgress {
   width: 100%;
   height: 8px;
-  background: #0003;
+  background: rgba(0, 0, 0, 0.05);
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 6px;
   overflow: hidden;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .miniProgress div {
   height: 100%;
   background: var(--primary);
   border-radius: 20px;
+  transition: width 0.4s ease;
 }
 
 @media (hover: hover) {
-  .heroImageContainer:hover,
+  .metricCardSmall:hover {
+    border: 1px solid var(--primary);
+    box-shadow: 0 8px 24px rgba(43, 91, 238, 0.12);
+    transform: translateY(-2px);
+  }
+}
+
+/* ===== DETAILS CARD ===== */
+.colDetails .card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--table-shadow);
+  transition:
+    border 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.colDetails .cardHeader {
+  padding: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.colDetails .cardTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.colDetails .cardContent {
+  padding: 24px;
+  flex-grow: 1;
+}
+
+@media (hover: hover) {
   .colDetails .card:hover {
     border: 1px solid var(--primary);
+    box-shadow: 0 8px 24px rgba(43, 91, 238, 0.12);
   }
+}
 
+/* ===== BUTTON EFFECTS ===== */
+@media (hover: hover) {
   .btnPrimary:hover {
     filter: brightness(1.1);
     box-shadow: 0 6px 20px rgba(43, 91, 238, 0.5);
@@ -336,7 +398,7 @@
   }
 
   .btnSecondary:hover {
-    filter: brightness(1.2);
+    filter: brightness(1.1);
     border: 1px solid var(--primary);
     box-shadow: 0 6px 20px rgba(148, 163, 184, 0.3);
     transform: translateY(-2px);
@@ -346,53 +408,89 @@
   .btnSecondary:active {
     transform: translateY(0);
   }
-
-  .heroImageContainer:hover .heroImage {
-    transform: scale(1.02);
-  }
-
-  .metricCardSmall:hover {
-    box-shadow: var(--kpi-shadow-hover);
-    border: 1px solid var(--primary);
-    transform: translateY(-3px);
-  }
 }
 
+/* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 1200px) {
   .dashboardGrid {
     gap: 20px;
+  }
+
+  .pageContainer {
+    padding: 20px;
+  }
+
+  .colGallery {
+    grid-column: span 6;
+  }
+
+  .colCalendar {
+    grid-column: span 6;
+  }
+
+  .calendarWrapper {
+    height: 100%;
+    overflow-y: auto;
+    /* Скрываем скроллбар для чистоты */
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .calendarWrapper::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .calendarWrapper::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+  }
+
+  .colDetails {
+    grid-column: span 6;
+  }
+
+  .colMetrics {
+    grid-column: span 6;
+  }
+
+  .metricCardSmall {
+    min-height: 130px;
+    padding: 16px;
+  }
+
+  .bigNumber {
+    font-size: 28px;
   }
 }
 
 @media (max-width: 992px) {
   .colGallery {
-    grid-column: span 12;
+    grid-column: span 7;
   }
+
+  .colCalendar {
+    grid-column: span 5;
+  }
+
   .colDetails {
-    grid-column: span 12;
+    grid-column: span 6;
   }
+
   .colMetrics {
-    grid-template-columns: 1fr;
-    grid-column: span 4;
-  }
-}
-
-@media (max-width: 875px) {
-  .titleBlock h1 {
-    font-size: 22px;
-  }
-
-  .btn {
-    font-size: 12px;
-    padding: 8px 16px;
+    grid-column: span 6;
   }
 
   .metricCardSmall {
-    padding: 8px;
+    min-height: 120px;
+    padding: 14px;
   }
 
   .bigNumber {
-    font-size: 18px;
+    font-size: 24px;
+  }
+
+  .heroImageContainer {
+    aspect-ratio: 16 / 10;
   }
 }
 
@@ -400,46 +498,42 @@
   .pageContainer {
     padding: 16px;
   }
+
   .headerSection {
     margin-bottom: 24px;
   }
 
-  .btn {
-    justify-content: center;
-  }
-  .colMetrics {
-    grid-template-columns: 1fr;
+  .dashboardGrid {
+    gap: 16px;
   }
 
-  .metricHeader {
-    gap: 5px;
-  }
-
-  .heroImageContainer {
-    aspect-ratio: 1 / 1;
-    max-height: 350px;
-  }
-}
-
-@media (max-width: 610px) {
+  .colGallery,
+  .colCalendar,
+  .colDetails,
+  .colMetrics,
   .colHistory {
     grid-column: span 12;
   }
 
-  .colMetrics {
-    display: none;
+  .heroImageContainer {
+    aspect-ratio: 16 / 10;
+    max-height: 350px;
   }
-}
 
-@media (max-width: 480px) {
-  .statusBadge {
-    width: fit-content;
+  .titleBlock h1 {
+    font-size: 28px;
+  }
+
+  .btn {
+    font-size: 13px;
+    padding: 9px 16px;
   }
 
   .metricCardSmall {
     padding: 12px;
-    min-height: auto;
+    min-height: 110px;
   }
+
   .bigNumber {
     font-size: 20px;
   }
@@ -447,13 +541,71 @@
   .colDetails .cardContent {
     padding: 16px;
   }
+
+  .colDetails .cardHeader {
+    padding: 16px;
+  }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 640px) {
+  .colMetrics {
+    grid-template-columns: 1fr;
+  }
+
+  .actionsBar {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .titleRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .statusBadge {
+    align-self: flex-start;
+  }
+
+  .metricCardSmall {
+    padding: 12px;
+  }
+
+  .heroImageContainer {
+    aspect-ratio: 3 / 4;
+  }
+}
+
+@media (max-width: 480px) {
   .pageContainer {
     padding: 12px;
   }
-  .cardTitle {
+
+  .titleBlock h1 {
+    font-size: 22px;
+  }
+
+  .metaInfo {
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+  }
+
+  .metricCardSmall {
+    min-height: auto;
+    padding: 10px;
+  }
+
+  .bigNumber {
+    font-size: 18px;
+  }
+
+  .colDetails .cardTitle {
     font-size: 14px;
   }
 }

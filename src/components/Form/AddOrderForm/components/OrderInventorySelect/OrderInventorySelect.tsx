@@ -10,6 +10,7 @@ import {
   Control,
 } from "react-hook-form";
 import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
+import { useInventoryBookings } from "@/hooks/useInventoryBookings";
 
 type Props = {
   index: number;
@@ -32,6 +33,9 @@ export default function OrderInventorySelect({
 
   const selectedInventoryIds =
     watchedItems?.map((i) => i.inventory_id).filter(Boolean) || [];
+
+  const allInventoryIds = inventory.map((item) => item.id);
+  const bookingStatuses = useInventoryBookings(allInventoryIds);
 
   return (
     <select
@@ -68,9 +72,19 @@ export default function OrderInventorySelect({
 
         if (isAlreadySelected && !isSelectedHere) return null;
 
+        const bookingStatus = bookingStatuses[item.id];
+        const isBooked = bookingStatus?.has_booking;
+
         return (
-          <option key={item.id} value={item.id}>
+          <option
+            key={item.id}
+            value={item.id}
+            // disabled={isBooked && !isSelectedHere}
+          >
             ( {item.article}) {"_"} {item.name} ({item.daily_price}₽)
+            {isBooked && bookingStatus?.formattedRange
+              ? ` ⚠️ Забронирован на: ${bookingStatus.formattedRange}`
+              : ""}
           </option>
         );
       })}

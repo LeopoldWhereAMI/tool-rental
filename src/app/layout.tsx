@@ -8,7 +8,6 @@ import Footer from "@/components/Footer/Footer";
 import MobileNav from "@/components/ui/MobileNav/MobileNav";
 import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getProfile } from "@/services/profileService";
 
@@ -53,7 +52,6 @@ export default async function RootLayout({
             <Footer />
           </ThemeProvider>
         </AuthProvider>
-        <SpeedInsights />
       </body>
     </html>
   );

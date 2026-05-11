@@ -29,6 +29,7 @@ import ItemRentalHistory from "@/components/Inventory/ItemRentalHistory/ItemRent
 import PageContainer from "@/components/PageContainer/PageContainer";
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import Image from "next/image";
+import Calendar from "@/components/calendar/Calendar";
 
 export default function InventoryItemPage() {
   const [isMaintenanceModalOpen, setIsMaintenanceModalOpen] = useState(false);
@@ -124,6 +125,7 @@ export default function InventoryItemPage() {
           </div>
         </div>
 
+        {/* ===== HERO SECTION: ФОТО + КАЛЕНДАРЬ ===== */}
         <div className={styles.dashboardGrid}>
           <div className={styles.colGallery}>
             <div className={styles.heroImageContainer}>
@@ -133,7 +135,7 @@ export default function InventoryItemPage() {
                   alt={item.name || "Tool Image"}
                   fill
                   priority
-                  sizes="40vw"
+                  sizes="55vw"
                   className={`${styles.heroImage} ${
                     isImageLoading ? styles.imageLoading : styles.imageLoaded
                   }`}
@@ -148,12 +150,33 @@ export default function InventoryItemPage() {
             </div>
           </div>
 
+          <div className={styles.colCalendar}>
+            <div className={styles.calendarWrapper}>
+              <Calendar inventoryId={id} />
+            </div>
+          </div>
+
+          {/* ===== ДЕТАЛИ + KPI В ДВУХ КОЛОНКАХ ===== */}
+          <div className={styles.colDetails}>
+            <div className={styles.card}>
+              <div className={styles.cardHeader}>
+                <h3 className={styles.cardTitle}>
+                  <ClipboardList size={20} className={styles.iconBlue} />
+                  Технические данные
+                </h3>
+              </div>
+              <div className={styles.cardContent}>
+                <ItemDetailsList item={item} />
+              </div>
+            </div>
+          </div>
+
           <div className={styles.colMetrics}>
             <div className={styles.metricCardSmall}>
               <div className={styles.metricHeader}>
                 <span className={styles.metricTitle}>Окупаемость</span>
                 <div className={`${styles.iconBox} ${styles.iconGreen}`}>
-                  <TrendingUp size={16} />
+                  <TrendingUp size={18} />
                 </div>
               </div>
               <div className={styles.metricContent}>
@@ -168,7 +191,7 @@ export default function InventoryItemPage() {
               <div className={styles.metricHeader}>
                 <span className={styles.metricTitle}>Загрузка</span>
                 <div className={`${styles.iconBox} ${styles.iconBlue}`}>
-                  <Settings size={16} />
+                  <Settings size={18} />
                 </div>
               </div>
               <div className={styles.metricContent}>
@@ -186,7 +209,7 @@ export default function InventoryItemPage() {
               <div className={styles.metricHeader}>
                 <span className={styles.metricTitle}>До следующего ТО</span>
                 <div className={`${styles.iconBox} ${styles.iconOrange}`}>
-                  <WrenchIcon size={16} />
+                  <WrenchIcon size={18} />
                 </div>
               </div>
               <div className={styles.metricContentPadding}>
@@ -198,20 +221,7 @@ export default function InventoryItemPage() {
             </div>
           </div>
 
-          <div className={styles.colDetails}>
-            <div className={styles.card}>
-              <div className={styles.cardHeader}>
-                <h3 className={styles.cardTitle}>
-                  <ClipboardList size={20} className={styles.iconBlue} />
-                  Технические данные
-                </h3>
-              </div>
-              <div className={styles.cardContent}>
-                <ItemDetailsList item={item} />
-              </div>
-            </div>
-          </div>
-
+          {/* ===== ИСТОРИЯ НА ПОЛНУЮ ШИРИНУ ===== */}
           <div className={styles.colHistory}>
             <ItemRentalHistory itemId={id} />
           </div>
