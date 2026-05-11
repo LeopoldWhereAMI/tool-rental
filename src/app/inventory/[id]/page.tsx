@@ -151,9 +151,7 @@ export default function InventoryItemPage() {
           </div>
 
           <div className={styles.colCalendar}>
-            <div className={styles.calendarWrapper}>
-              <Calendar inventoryId={id} />
-            </div>
+            <Calendar inventoryId={id} />
           </div>
 
           {/* ===== ДЕТАЛИ + KPI В ДВУХ КОЛОНКАХ ===== */}
