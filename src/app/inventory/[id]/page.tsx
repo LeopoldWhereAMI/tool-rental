@@ -125,9 +125,10 @@ export default function InventoryItemPage() {
           </div>
         </div>
 
-        {/* ===== HERO SECTION: ФОТО + КАЛЕНДАРЬ ===== */}
+        {/* ===== HERO SECTION: ФОТО + МЕТРИКИ + КАЛЕНДАРЬ + ДЕТАЛИ ===== */}
         <div className={styles.dashboardGrid}>
-          <div className={styles.colGallery}>
+          {/* LEFT PANEL: IMAGE + METRICS */}
+          <div className={styles.leftPanel}>
             <div className={styles.heroImageContainer}>
               {item?.image_url ? (
                 <Image
@@ -135,7 +136,7 @@ export default function InventoryItemPage() {
                   alt={item.name || "Tool Image"}
                   fill
                   priority
-                  sizes="55vw"
+                  sizes="25vw"
                   className={`${styles.heroImage} ${
                     isImageLoading ? styles.imageLoading : styles.imageLoaded
                   }`}
@@ -148,83 +149,85 @@ export default function InventoryItemPage() {
                 </div>
               )}
             </div>
+
+            <div className={styles.metricsPanel}>
+              <div className={styles.metricCardSmall}>
+                <div className={styles.metricHeader}>
+                  <span className={styles.metricTitle}>Окупаемость</span>
+                  <div className={`${styles.iconBox} ${styles.iconGreen}`}>
+                    <TrendingUp size={18} />
+                  </div>
+                </div>
+                <div className={styles.metricContent}>
+                  <span className={styles.bigNumber}>{roiPercentage}%</span>
+                  <span className={styles.subTextGreen}>
+                    +{totalEarned.toLocaleString()} ₽
+                  </span>
+                </div>
+              </div>
+
+              <div className={styles.metricCardSmall}>
+                <div className={styles.metricHeader}>
+                  <span className={styles.metricTitle}>Загрузка</span>
+                  <div className={`${styles.iconBox} ${styles.iconBlue}`}>
+                    <Settings size={18} />
+                  </div>
+                </div>
+                <div className={styles.metricContent}>
+                  <span className={styles.bigNumber}>{utilizationRate}%</span>
+                  <div className={styles.miniProgress}>
+                    <div style={{ width: `${utilizationRate}%` }}></div>
+                  </div>
+                  <p className={styles.subValueBlue}>
+                    {item.total_work_days || 0} из {daysDisplay} дн. в работе
+                  </p>
+                </div>
+              </div>
+
+              <div className={styles.metricCardSmall}>
+                <div className={styles.metricHeader}>
+                  <span className={styles.metricTitle}>До следующего ТО</span>
+                  <div className={`${styles.iconBox} ${styles.iconOrange}`}>
+                    <WrenchIcon size={18} />
+                  </div>
+                </div>
+                <div className={styles.metricContentPadding}>
+                  <MaintenanceProgress
+                    current={item.work_days_count || 0}
+                    interval={item.maintenance_interval_days || 30}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
 
+          {/* CALENDAR */}
           <div className={styles.colCalendar}>
             <Calendar inventoryId={id} />
           </div>
 
-          {/* ===== ДЕТАЛИ + KPI В ДВУХ КОЛОНКАХ ===== */}
-          <div className={styles.colDetails}>
-            <div className={styles.card}>
-              <div className={styles.cardHeader}>
-                <h3 className={styles.cardTitle}>
-                  <ClipboardList size={20} className={styles.iconBlue} />
-                  Технические данные
-                </h3>
-              </div>
-              <div className={styles.cardContent}>
-                <ItemDetailsList item={item} />
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.colMetrics}>
-            <div className={styles.metricCardSmall}>
-              <div className={styles.metricHeader}>
-                <span className={styles.metricTitle}>Окупаемость</span>
-                <div className={`${styles.iconBox} ${styles.iconGreen}`}>
-                  <TrendingUp size={18} />
+          {/* TECHNICAL DATA */}
+          <div className={styles.rightColumn}>
+            <div className={styles.colDetails}>
+              <div className={styles.card}>
+                <div className={styles.cardHeader}>
+                  <h3 className={styles.cardTitle}>
+                    <ClipboardList size={20} className={styles.iconBlue} />
+                    Технические данные
+                  </h3>
                 </div>
-              </div>
-              <div className={styles.metricContent}>
-                <span className={styles.bigNumber}>{roiPercentage}%</span>
-                <span className={styles.subTextGreen}>
-                  +{totalEarned.toLocaleString()} ₽
-                </span>
+                <div className={styles.cardContent}>
+                  <ItemDetailsList item={item} />
+                </div>
               </div>
             </div>
 
-            <div className={styles.metricCardSmall}>
-              <div className={styles.metricHeader}>
-                <span className={styles.metricTitle}>Загрузка</span>
-                <div className={`${styles.iconBox} ${styles.iconBlue}`}>
-                  <Settings size={18} />
-                </div>
-              </div>
-              <div className={styles.metricContent}>
-                <span className={styles.bigNumber}>{utilizationRate}%</span>
-                <div className={styles.miniProgress}>
-                  <div style={{ width: `${utilizationRate}%` }}></div>
-                </div>
-                <p className={styles.subValueBlue}>
-                  {item.total_work_days || 0} из {daysDisplay} дн. в работе
-                </p>
-              </div>
+            {/* ===== ИСТОРИЯ НА ПОЛНУЮ ШИРИНУ ===== */}
+            <div className={styles.colHistory}>
+              <ItemRentalHistory itemId={id} />
             </div>
-
-            <div className={styles.metricCardSmall}>
-              <div className={styles.metricHeader}>
-                <span className={styles.metricTitle}>До следующего ТО</span>
-                <div className={`${styles.iconBox} ${styles.iconOrange}`}>
-                  <WrenchIcon size={18} />
-                </div>
-              </div>
-              <div className={styles.metricContentPadding}>
-                <MaintenanceProgress
-                  current={item.work_days_count || 0}
-                  interval={item.maintenance_interval_days || 30}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* ===== ИСТОРИЯ НА ПОЛНУЮ ШИРИНУ ===== */}
-          <div className={styles.colHistory}>
-            <ItemRentalHistory itemId={id} />
           </div>
         </div>
-
         <MaintenanceConfirmModal
           isOpen={isMaintenanceModalOpen}
           onClose={() => setIsMaintenanceModalOpen(false)}

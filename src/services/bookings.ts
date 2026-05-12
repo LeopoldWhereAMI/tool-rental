@@ -66,3 +66,15 @@ export async function cancelBooking(bookingId: string) {
 
   if (error) throw error;
 }
+
+export async function updateBooking(
+  bookingId: string,
+  updates: { notes?: string | null; phone?: string | null },
+) {
+  const { error } = await supabase
+    .from("bookings")
+    .update(updates)
+    .eq("id", bookingId);
+
+  if (error) throw error;
+}

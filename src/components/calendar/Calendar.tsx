@@ -11,14 +11,23 @@ import {
   checkAvailability,
   createBooking,
   cancelBooking,
+  updateBooking,
 } from "@/services/bookings";
 
-import { useClients } from "@/hooks/useClients";
-import { Calendar1 } from "lucide-react";
+import { Calendar1, Check, FileText, Pencil, Phone, X } from "lucide-react";
 import { toast } from "sonner";
 
 type Props = {
   inventoryId: string;
+};
+
+type Booking = {
+  id: string;
+  start_date: string;
+  end_date: string;
+  status: string;
+  notes: string | null;
+  phone: string | null;
 };
 
 export default function Calendar({ inventoryId }: Props) {
@@ -26,16 +35,10 @@ export default function Calendar({ inventoryId }: Props) {
   const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [bookings, setBookings] = useState<
-    {
-      id: string;
-      start_date: string;
-      end_date: string;
-      status: string;
-    }[]
-  >([]);
-
-  const { clients } = useClients();
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editNotes, setEditNotes] = useState("");
+  const [editPhone, setEditPhone] = useState("");
 
   // =========================
   // Загрузка бронирований
@@ -48,11 +51,9 @@ export default function Calendar({ inventoryId }: Props) {
   async function fetchBookings() {
     try {
       const data = await getBookings(inventoryId);
-
       setBookings(data);
     } catch (error) {
       console.error(error);
-
       setError("Ошибка загрузки бронирований");
     }
   }
@@ -78,7 +79,6 @@ export default function Calendar({ inventoryId }: Props) {
 
   async function handleSelect(selectedRange: DateRange | undefined) {
     setError("");
-
     setRange(selectedRange);
 
     if (!selectedRange?.from || !selectedRange?.to) {
@@ -103,9 +103,10 @@ export default function Calendar({ inventoryId }: Props) {
   }
 
   // Создание бронирования
-  // Создание бронирования — теперь просто показывает тост
   function handleBooking() {
     if (!range?.from || !range?.to) return;
+
+    setLoading(true);
 
     const startDate = range.from;
     const endDate = range.to;
@@ -136,9 +137,10 @@ export default function Calendar({ inventoryId }: Props) {
       },
       cancel: {
         label: "Нет",
-        onClick: () => {},
+        onClick: () => setLoading(false),
       },
       duration: 15000,
+      onDismiss: () => setLoading(false),
     });
   }
 
@@ -163,6 +165,36 @@ export default function Calendar({ inventoryId }: Props) {
         onClick: () => {},
       },
     });
+  }
+
+  // Начать редактирование
+  function startEdit(booking: Booking) {
+    setEditingId(booking.id);
+    setEditNotes(booking.notes || "");
+    setEditPhone(booking.phone || "");
+  }
+
+  // Отменить редактирование
+  function cancelEdit() {
+    setEditingId(null);
+    setEditNotes("");
+    setEditPhone("");
+  }
+
+  // Сохранить изменения
+  async function saveEdit(bookingId: string) {
+    try {
+      await updateBooking(bookingId, {
+        notes: editNotes.trim() || null,
+        phone: editPhone.trim() || null,
+      });
+      await fetchBookings();
+      setEditingId(null);
+      toast.success("Сохранено");
+    } catch (error) {
+      console.error(error);
+      toast.error("Ошибка сохранения");
+    }
   }
 
   return (
@@ -192,34 +224,15 @@ export default function Calendar({ inventoryId }: Props) {
 
             <button
               onClick={handleBooking}
-              // disabled={loading}
+              disabled={loading}
               className={styles.bookButton}
             >
-              {"Забронировать"}
+              {loading ? "Создание..." : "Забронировать"}
             </button>
           </div>
         )}
         {error && <p className={styles.error}>{error}</p>}
-        <select
-          value={selectedClientId ?? ""}
-          onChange={(e) => setSelectedClientId(e.target.value)}
-          className={styles.select}
-        >
-          <option value="">Клиент (опционально)</option>
 
-          {clients.map((client) => {
-            const label =
-              client.client_type === "individual"
-                ? `${client.first_name ?? ""} ${client.last_name ?? ""}`
-                : (client.company_name ?? "Без названия");
-
-            return (
-              <option key={client.id} value={client.id}>
-                {label}
-              </option>
-            );
-          })}
-        </select>
         {/* Список бронирований */}
         <div className={styles.bookingsSection}>
           {bookings.length ? (
@@ -231,19 +244,92 @@ export default function Calendar({ inventoryId }: Props) {
           {bookings.map((booking) => (
             <div key={booking.id} className={styles.bookingItem}>
               <div className={styles.bookingDates}>
-                {format(new Date(booking.start_date), "d MMM", { locale: ru })}{" "}
-                —{" "}
-                {format(new Date(booking.end_date), "d MMM yyyy", {
-                  locale: ru,
-                })}
+                <span>
+                  {format(new Date(booking.start_date), "d MMM", {
+                    locale: ru,
+                  })}
+                </span>
+                <span>—</span>
+                <span>
+                  {format(new Date(booking.end_date), "d MMM", {
+                    locale: ru,
+                  })}
+                </span>
               </div>
 
-              <button
-                onClick={() => handleCancelBooking(booking.id)}
-                className={styles.cancelButton}
-              >
-                Отменить
-              </button>
+              {/* Режим редактирования */}
+              {editingId === booking.id ? (
+                <div className={styles.editForm}>
+                  <div className={styles.inputGroup}>
+                    <Phone width={14} height={14} color="#22c55e" />
+                    <input
+                      type="tel"
+                      placeholder="Телефон клиента"
+                      value={editPhone}
+                      onChange={(e) => setEditPhone(e.target.value)}
+                      className={styles.editInput}
+                    />
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <FileText width={14} height={14} color="#2b5bee" />
+                    <input
+                      type="text"
+                      placeholder="Комментарий"
+                      value={editNotes}
+                      onChange={(e) => setEditNotes(e.target.value)}
+                      className={styles.editInput}
+                    />
+                  </div>
+                  <div className={styles.editActions}>
+                    <button
+                      onClick={() => saveEdit(booking.id)}
+                      className={styles.saveButton}
+                    >
+                      <Check width={14} height={14} /> Сохранить
+                    </button>
+                    <button
+                      onClick={cancelEdit}
+                      className={styles.cancelEditButton}
+                    >
+                      <X width={14} height={14} /> Отмена
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                /* Режим просмотра */
+                <div className={styles.bookingInfo}>
+                  {booking.phone && (
+                    <div className={styles.infoRow}>
+                      <Phone width={14} height={14} color="#22c55e" />
+                      <span>{booking.phone}</span>
+                    </div>
+                  )}
+                  {booking.notes && (
+                    <div className={styles.infoRow}>
+                      <FileText width={14} height={14} color="#2b5bee" />
+                      <span>{booking.notes}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className={styles.bookingActions}>
+                {editingId !== booking.id && (
+                  <button
+                    onClick={() => startEdit(booking)}
+                    className={styles.editButton}
+                    title="Редактировать"
+                  >
+                    <Pencil width={14} height={14} color="#5048e5" />
+                  </button>
+                )}
+                <button
+                  onClick={() => handleCancelBooking(booking.id)}
+                  className={styles.cancelButton}
+                >
+                  Отменить
+                </button>
+              </div>
             </div>
           ))}
         </div>
