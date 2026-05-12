@@ -89,26 +89,76 @@ const clientSchema = z.discriminatedUnion("client_type", [
 ]);
 
 // Схема для items (заказываемые инструменты)
-const orderItemsSchema = z
-  .array(
-    z
-      .object({
-        inventory_id: z.string().min(1, "Выберите инструмент"),
-        start_date: z.string().min(1, "Укажите дату начала"),
-        end_date: z.string().min(1, "Укажите дату окончания"),
-      })
-      .refine(
-        (item) => {
-          if (!item.start_date || !item.end_date) return true;
-          return new Date(item.end_date) >= new Date(item.start_date);
-        },
-        {
-          message: "Дата возврата не может быть раньше начала",
-          path: ["end_date"],
-        },
-      ),
+// const orderItemsSchema = z
+//   .array(
+//     z
+//       .object({
+//         inventory_id: z.string().min(1, "Выберите инструмент"),
+//         start_date: z.string().min(1, "Укажите дату начала"),
+//         end_date: z.string().min(1, "Укажите дату окончания"),
+//       })
+//       .refine(
+//         (item) => {
+//           if (!item.start_date || !item.end_date) return true;
+//           return new Date(item.end_date) >= new Date(item.start_date);
+//         },
+//         {
+//           message: "Дата возврата не может быть раньше начала",
+//           path: ["end_date"],
+//         },
+//       ),
+//   )
+//   .min(1, "Добавьте хотя бы один инструмент")
+//   .refine(
+//     (items) => {
+//       const ids = items.map((i) => i.inventory_id).filter(Boolean);
+//       return new Set(ids).size === ids.length;
+//     },
+//     {
+//       message: "Один и тот же инструмент не может быть добавлен дважды",
+//       path: [],
+//     },
+//   );
+
+// Схема для items — теперь гибридная
+const orderItemSchema = z
+  .object({
+    inventory_id: z.string().optional(),
+    custom_name: z.string().min(1, "Укажите название").optional(),
+    custom_price: z.coerce
+      .number()
+      .min(0, "Цена не может быть отрицательной")
+      .optional(),
+    custom_description: z.string().optional(),
+    start_date: z.string().min(1, "Укажите дату начала"),
+    end_date: z.string().min(1, "Укажите дату окончания"),
+  })
+  .refine(
+    (item) => {
+      const hasInventory = !!item.inventory_id;
+      const hasCustom = !!item.custom_name && item.custom_price !== undefined;
+      return hasInventory || hasCustom;
+    },
+    {
+      message:
+        "Выберите инструмент из списка или заполните название и цену вручную",
+      path: ["inventory_id"],
+    },
   )
-  .min(1, "Добавьте хотя бы один инструмент")
+  .refine(
+    (item) => {
+      if (!item.start_date || !item.end_date) return true;
+      return new Date(item.end_date) >= new Date(item.start_date);
+    },
+    {
+      message: "Дата возврата не может быть раньше начала",
+      path: ["end_date"],
+    },
+  );
+
+const orderItemsSchema = z
+  .array(orderItemSchema)
+  .min(1, "Добавьте хотя бы одну позицию")
   .refine(
     (items) => {
       const ids = items.map((i) => i.inventory_id).filter(Boolean);

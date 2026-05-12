@@ -5,6 +5,7 @@ import {
   InventoryMap,
   OrderDetailsUI,
   OrderUI,
+  WatchedItem,
 } from "@/types";
 
 export const validateCategory = (value: string) => {
@@ -200,35 +201,71 @@ export const calculateItemTotal = (
 ) => calculateDays(startDate, endDate) * pricePerDay;
 
 // ордерформхелпер
-type WatchedItem = {
-  inventory_id: string;
-  start_date?: string;
-  end_date?: string;
-};
+// type WatchedItem = {
+//   inventory_id: string;
+//   start_date?: string;
+//   end_date?: string;
+//   custom_name: string;
+//   custom_price: number;
+// };
+
+// export function calcOrderTotalFromItems(
+//   items: WatchedItem[] | undefined,
+//   inventoryMap: InventoryMap, // ← было: Map<string, InventoryLike>
+// ): number {
+//   if (!items || items.length === 0) return 0;
+
+//   return items.reduce((acc, item) => {
+//     // ✅ ИСПРАВЛЕНО: используем индексацию вместо .get()
+//     const tool = inventoryMap[item.inventory_id]; // ← было: inventoryMap.get()
+
+//     if (!tool || !item.start_date || !item.end_date) {
+//       return acc;
+//     }
+
+//     const itemTotal = calculateOrderTotal(
+//       item.start_date,
+//       item.end_date,
+//       tool.daily_price,
+//     );
+
+//     const validItemTotal = isNaN(itemTotal) ? 0 : Math.max(0, itemTotal);
+
+//     return acc + validItemTotal;
+//   }, 0);
+// }
 
 export function calcOrderTotalFromItems(
   items: WatchedItem[] | undefined,
-  inventoryMap: InventoryMap, // ← было: Map<string, InventoryLike>
+  inventoryMap: InventoryMap,
 ): number {
   if (!items || items.length === 0) return 0;
 
   return items.reduce((acc, item) => {
-    // ✅ ИСПРАВЛЕНО: используем индексацию вместо .get()
-    const tool = inventoryMap[item.inventory_id]; // ← было: inventoryMap.get()
+    // Кастомная позиция
+    if (item.custom_name && item.custom_price !== undefined) {
+      if (!item.start_date || !item.end_date) return acc;
+      const s = new Date(item.start_date);
+      const e = new Date(item.end_date);
+      const days =
+        Math.ceil((e.getTime() - s.getTime()) / (1000 * 60 * 60 * 24)) || 1;
+      return acc + item.custom_price * days;
+    }
 
+    // Позиция из склада — проверяем наличие inventory_id
+    if (!item.inventory_id) return acc;
+
+    const tool = inventoryMap[item.inventory_id];
     if (!tool || !item.start_date || !item.end_date) {
       return acc;
     }
 
-    const itemTotal = calculateOrderTotal(
-      item.start_date,
-      item.end_date,
-      tool.daily_price,
-    );
+    const s = new Date(item.start_date);
+    const e = new Date(item.end_date);
+    const days =
+      Math.ceil((e.getTime() - s.getTime()) / (1000 * 60 * 60 * 24)) || 1;
 
-    const validItemTotal = isNaN(itemTotal) ? 0 : Math.max(0, itemTotal);
-
-    return acc + validItemTotal;
+    return acc + tool.daily_price * days;
   }, 0);
 }
 

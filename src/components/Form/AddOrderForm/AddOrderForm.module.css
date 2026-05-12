@@ -518,6 +518,180 @@
   cursor: not-allowed;
 }
 
+/* toggle */
+.modeToggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 4px;
+  background: var(--table-thead);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.modeBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  flex: 1;
+  justify-content: center;
+}
+
+.modeBtn:hover {
+  color: var(--text-secondary);
+  background: rgba(59, 130, 246, 0.06);
+}
+
+.modeBtnActive {
+  background: var(--surface);
+  color: var(--primary);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.modeBtn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ============================================
+   СТИЛИ ДЛЯ КАСТОМНЫХ ПОЛЕЙ
+   ============================================ */
+
+.customInput {
+  width: 100%;
+  background: var(--table-thead);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 14px;
+  color: var(--text-main);
+  outline: none;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.customInput:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+.customInput::placeholder {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.priceInputWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.priceInputWrapper input {
+  flex: 1;
+}
+
+.priceInputWrapper span {
+  color: var(--text-muted);
+  font-size: 13px;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .modeToggle {
+    gap: 4px;
+    padding: 3px;
+  }
+
+  .modeBtn {
+    padding: 6px 10px;
+    font-size: 12px;
+    gap: 4px;
+  }
+
+  .modeBtn svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 900px) {
+  .itemGrid,
+  .itemGridCustom {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+
+  /* Инструмент — на всю ширину */
+  .itemGrid > *:first-child {
+    grid-column: 1 / -1;
+  }
+
+  /* Кастомные: название + цена рядом, на всю ширину */
+  .itemGridCustom > *:nth-child(1),
+  .itemGridCustom > *:nth-child(2) {
+    grid-column: auto;
+  }
+  .itemGridCustom > *:nth-child(1) {
+    grid-column: 1 / 2;
+  }
+  .itemGridCustom > *:nth-child(2) {
+    grid-column: 2 / 4;
+  }
+
+  /* Даты в одну строку */
+  .itemGrid > *:nth-child(3),
+  .itemGrid > *:nth-child(4) {
+    grid-column: auto;
+  }
+
+  .removeBtn {
+    justify-self: end;
+    margin-top: 0;
+  }
+}
+
+/* ============================================
+   АДАПТИВ — МОБИЛКА (≤600px)
+   ============================================ */
+@media (max-width: 600px) {
+  .itemGrid,
+  .itemGridCustom {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .itemGrid > *,
+  .itemGridCustom > * {
+    width: 100%;
+  }
+
+  .modeToggle {
+    order: -1;
+    margin-bottom: 8px;
+  }
+
+  .removeBtn {
+    align-self: flex-end;
+    margin-top: 4px;
+  }
+}
+/*  */
+
 @media print {
   .noPrint {
     display: none;
@@ -557,9 +731,14 @@
   align-items: flex-end;
 }
 
+.itemGridCustom {
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 56px 38px;
+}
+
 .removeBtn {
   width: 38px;
   height: 42px;
+  margin-left: 18px;
   background: var(--table-thead);
   border: 1px solid var(--border);
   border-radius: 10px;

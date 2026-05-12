@@ -11,12 +11,9 @@ import {
   UseFormSetValue,
   useWatch,
 } from "react-hook-form";
-import { Calendar, Plus, Trash2 } from "lucide-react";
-import FormField from "@/components/Form/FormField/FormField";
+import { Plus } from "lucide-react";
 import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
-import InputWithIcon from "@/components/Form/InputWithIcon/InputWithIcon";
-import OrderInventorySelect from "../OrderInventorySelect/OrderInventorySelect";
-import DaysBox from "../DaysBox/DaysBox";
+import OrderItemRow from "./OrderItemRow";
 
 type OrderItemsSectionProps = {
   control: Control<OrderInput>;
@@ -41,6 +38,7 @@ export default function OrderItemsSection({
   });
 
   const watchedItems = useWatch({ control, name: "items" });
+
   const selectedInventoryIds =
     watchedItems?.map((i) => i.inventory_id).filter(Boolean) || [];
   const isAllToolsSelected =
@@ -48,82 +46,27 @@ export default function OrderItemsSection({
 
   return (
     <>
-      {fields.map((field, index) => {
-        return (
-          <div key={field.id} className={styles.itemRow}>
-            <div className={styles.itemGrid}>
-              <FormField
-                id={`items.${index}.inventory_id`}
-                label="Инструмент"
-                error={errors.items?.[index]?.inventory_id?.message}
-              >
-                <OrderInventorySelect
-                  index={index}
-                  control={control}
-                  register={register}
-                  setValue={setValue}
-                  clearErrors={clearErrors}
-                  inventory={inventory}
-                />
-              </FormField>
-
-              <FormField
-                id={`items.${index}.start_date`}
-                label="Начало"
-                error={errors.items?.[index]?.start_date?.message}
-              >
-                <InputWithIcon
-                  type="date"
-                  id={`items.${index}.start_date`}
-                  icon={Calendar}
-                  register={register(`items.${index}.start_date` as const)}
-                />
-              </FormField>
-
-              <FormField
-                id={`items.${index}.end_date`}
-                label="Возврат"
-                error={errors.items?.[index]?.end_date?.message}
-              >
-                <InputWithIcon
-                  type="date"
-                  id={`items.${index}.end_date`}
-                  icon={Calendar}
-                  disabled={!watchedItems?.[index]?.inventory_id}
-                  className={
-                    !watchedItems?.[index]?.inventory_id
-                      ? styles.disabledInput
-                      : ""
-                  }
-                  title={
-                    !watchedItems?.[index]?.inventory_id
-                      ? "Сначала выберите инструмент"
-                      : ""
-                  }
-                  register={register(`items.${index}.end_date` as const)}
-                />
-              </FormField>
-
-              <DaysBox index={index} control={control} setValue={setValue} />
-
-              {fields.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => remove(index)}
-                  className={styles.removeBtn}
-                  style={{ marginTop: "32px" }}
-                >
-                  <Trash2 size={18} />
-                </button>
-              )}
-            </div>
-          </div>
-        );
-      })}
+      {fields.map((field, index) => (
+        <OrderItemRow
+          key={field.id}
+          index={index}
+          fieldId={field.id}
+          control={control}
+          register={register}
+          errors={errors}
+          clearErrors={clearErrors}
+          setValue={setValue}
+          inventory={inventory}
+          onRemove={() => remove(index)}
+          canRemove={fields.length > 1}
+        />
+      ))}
 
       <button
         type="button"
-        disabled={isAllToolsSelected}
+        disabled={
+          isAllToolsSelected && watchedItems?.every((i) => i.inventory_id)
+        }
         onClick={() =>
           append({
             inventory_id: "",
@@ -133,7 +76,7 @@ export default function OrderItemsSection({
         }
         className={styles.addToolBtn}
       >
-        <Plus size={18} /> Добавить инструмент
+        <Plus size={18} /> Добавить позицию
       </button>
     </>
   );

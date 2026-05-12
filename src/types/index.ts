@@ -160,9 +160,11 @@ export interface OrderItemDetailed {
   start_date: string;
   end_date: string;
   price_at_time: number;
-  inventory: Inventory;
+  inventory: Inventory | null;
   item_status: "active" | "returned";
   actual_return_date: string | null;
+  is_custom?: boolean;
+  custom_name?: string | null;
 }
 
 export type OrderStatusSource = {
@@ -218,8 +220,19 @@ export interface CreateOrderParams {
     daily_price: number;
     start_date: string;
     end_date: string;
+    is_custom?: boolean; // ← НОВОЕ
+    custom_name?: string;
   }[];
 }
+
+export type WatchedItem = {
+  inventory_id?: string; // ← теперь optional
+  custom_name?: string; // ← новое
+  custom_price?: number; // ← новое
+  custom_description?: string; // ← новое
+  start_date: string;
+  end_date: string;
+};
 
 export interface SupabaseOrderRow {
   id: string;
@@ -237,7 +250,9 @@ export interface SupabaseOrderRow {
     end_date: string;
     item_status: "active" | "returned";
     actual_return_date: string | null;
-    inventory: Inventory;
+    inventory: Inventory | null;
+    is_custom?: boolean;
+    custom_name?: string | null;
   }[];
 }
 
@@ -330,6 +345,8 @@ export type ContractItem = {
   price_at_time: number;
   purchase_price?: number;
   daily_price?: number;
+  is_custom?: boolean; // ← НОВОЕ
+  custom_description?: string;
 };
 
 // Данные клиента и заказа для шаблона контракта

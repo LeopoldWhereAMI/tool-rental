@@ -124,30 +124,6 @@ export default function ContractEditorPage() {
         />
       </div>
 
-      {/* <footer className={styles.footer}>
-        <div className={styles.footerSection}>
-          <h3>Доступные переменные</h3>
-          <div className={styles.variableList}>
-            {[
-              "order_number",
-              "last_name",
-              "first_name",
-              "company_name",
-              "inn",
-              "total_price",
-            ].map((v) => (
-              <span key={v} className={styles.variableTag}>{`{{${v}}}`}</span>
-            ))}
-          </div>
-        </div>
-        <div className={styles.footerSection}>
-          <h3>Инструкция по циклам</h3>
-          <p className={styles.codeExample}>
-            Используйте <code>{`{{#each items}}`}</code> для списков. <br />
-            Пример: <code>{`{{this.name}}`}</code> внутри блока.
-          </p>
-        </div>
-      </footer> */}
       <footer className={styles.footer}>
         {/* === БЛОК 1: КЛИЕНТ === */}
         <div className={styles.footerSection}>

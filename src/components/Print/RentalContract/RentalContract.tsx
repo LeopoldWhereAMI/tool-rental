@@ -62,15 +62,25 @@ const RentalContract = ({ items, orderData, onReady }: Props) => {
       const e = new Date(item.end_date);
       const diff = e.getTime() - s.getTime();
       const days = Math.ceil(diff / (1000 * 60 * 60 * 24)) || 1;
-      const priceAtTime = Number(item.daily_price || item.price_at_time || 0);
+
+      // ✅ Для кастомных: daily_price уже есть, для складских тоже
+      const dailyPrice = Number(item.daily_price || 0);
+      const priceAtTime = Number(item.price_at_time || 0);
 
       return {
         ...item,
         index: index + 1,
         days,
-        price: priceAtTime,
-        rowTotal: priceAtTime * days,
-        articleOrSerial: item.article || item.serial_number || "—",
+        // ✅ Правильный расчёт: для кастомных daily_price = custom_price
+        price: dailyPrice || priceAtTime / days,
+        rowTotal: priceAtTime || dailyPrice * days,
+        // ✅ Для кастомных: article/serial отсутствуют, показываем "—"
+        articleOrSerial: item.is_custom
+          ? "—"
+          : item.article || item.serial_number || "—",
+        // ✅ Флаг для шаблона Handlebars
+        isCustom: item.is_custom || false,
+        customDescription: item.custom_description || "",
         formattedEndDate: e.toLocaleDateString("ru-RU"),
       };
     });
@@ -82,7 +92,6 @@ const RentalContract = ({ items, orderData, onReady }: Props) => {
       return currentItemEnd > maxTime ? item.end_date : max;
     }, items[0]?.end_date || null);
 
-    // Форматируем её для вывода
     const maxEndDateFormatted = maxEndDate
       ? new Date(maxEndDate).toLocaleDateString("ru-RU", {
           day: "2-digit",
@@ -95,10 +104,13 @@ const RentalContract = ({ items, orderData, onReady }: Props) => {
       (sum, i) => sum + i.rowTotal,
       0,
     );
+
+    // ✅ Только для складских: сумма закупочных цен
     const totalPurchasePrice = items.reduce(
-      (sum, i) => sum + Number(i.purchase_price || 0),
+      (sum, i) => sum + (i.is_custom ? 0 : Number(i.purchase_price || 0)),
       0,
     );
+
     const securityDepositValue = Number(orderData.security_deposit) || 0;
 
     const clientShortName =

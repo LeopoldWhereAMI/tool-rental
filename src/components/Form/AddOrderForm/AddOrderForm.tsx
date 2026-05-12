@@ -191,9 +191,11 @@ export default function AddOrderForm() {
                 <div className={styles.divider} />
 
                 <div className={styles.summaryRow}>
-                  <span>Инструментов</span>
+                  <span>Позиций</span>
                   <span className={styles.summaryValue}>
-                    {watchedItems?.filter((i) => i.inventory_id).length ?? 0}
+                    {watchedItems?.filter(
+                      (i) => i.inventory_id || i.custom_name,
+                    ).length ?? 0}
                   </span>
                 </div>
 
