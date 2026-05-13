@@ -688,6 +688,30 @@
   text-decoration: underline;
 }
 
+/* Кастомная позиция */
+.customToolCard {
+  background: rgba(59, 130, 246, 0.04);
+  border-left: 3px solid #3b82f6;
+}
+
+.customToolName {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.customBadge {
+  display: inline-block;
+  font-size: 11px;
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 4px;
+  padding: 2px 8px;
+  margin-left: 8px;
+  font-weight: 500;
+}
+/*  */
+
 .sidebarHeader {
   margin-bottom: 20px;
 }

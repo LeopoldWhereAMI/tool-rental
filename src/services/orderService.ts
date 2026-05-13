@@ -1,7 +1,6 @@
 import { supabase } from "@/lib/supabase/supabase";
 import {
   Client,
-  Inventory,
   OrderDetailsUI,
   OrderTool,
   OrderUI,
@@ -95,6 +94,8 @@ export const getOrderById = async (id: string): Promise<OrderDetailsUI> => {
         end_date,
         item_status,
         actual_return_date,
+         is_custom,
+          custom_name,
         inventory(*)
       )
     `,
@@ -165,6 +166,8 @@ export const loadAllOrders = async (): Promise<OrderUI[]> => {
         price_at_time, 
         start_date,
         end_date,
+        is_custom,
+         custom_name,
         inventory(id, name, serial_number, image_url)
       )
     `,

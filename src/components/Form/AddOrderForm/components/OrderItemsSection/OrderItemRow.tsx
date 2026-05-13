@@ -47,8 +47,8 @@ export default function OrderItemRow({
 
   // Определяем начальный режим по наличию inventory_id
   const initialMode: "inventory" | "custom" = currentItem?.inventory_id
-    ? "inventory"
-    : "custom";
+    ? "custom"
+    : "inventory";
   const [mode, setMode] = useState<"inventory" | "custom">(initialMode);
 
   const handleModeChange = (newMode: "inventory" | "custom") => {
@@ -64,127 +64,6 @@ export default function OrderItemRow({
       clearErrors(`items.${index}.inventory_id`);
     }
   };
-
-  //   return (
-  //     <div key={fieldId} className={styles.itemRow}>
-  //       {/* Переключатель режима */}
-  //       <div className={styles.modeToggle}>
-  //         <button
-  //           type="button"
-  //           className={`${styles.modeBtn} ${mode === "inventory" ? styles.modeBtnActive : ""}`}
-  //           onClick={() => handleModeChange("inventory")}
-  //         >
-  //           <Package size={14} />
-  //           Из склада
-  //         </button>
-  //         <button
-  //           type="button"
-  //           className={`${styles.modeBtn} ${mode === "custom" ? styles.modeBtnActive : ""}`}
-  //           onClick={() => handleModeChange("custom")}
-  //         >
-  //           <PenLine size={14} />
-  //           Вручную
-  //         </button>
-  //       </div>
-
-  //       <div className={styles.itemGrid}>
-  //         {mode === "inventory" ? (
-  //           <FormField
-  //             id={`items.${index}.inventory_id`}
-  //             label="Инструмент"
-  //             error={errors.items?.[index]?.inventory_id?.message}
-  //           >
-  //             <OrderInventorySelect
-  //               index={index}
-  //               control={control}
-  //               register={register}
-  //               setValue={setValue}
-  //               clearErrors={clearErrors}
-  //               inventory={inventory}
-  //             />
-  //           </FormField>
-  //         ) : (
-  //           <>
-  //             <FormField
-  //               id={`items.${index}.custom_name`}
-  //               label="Название"
-  //               error={errors.items?.[index]?.custom_name?.message}
-  //             >
-  //               <input
-  //                 {...register(`items.${index}.custom_name` as const)}
-  //                 className={styles.customInput}
-  //                 placeholder="Например: Цепь пильная"
-  //               />
-  //             </FormField>
-
-  //             <FormField
-  //               id={`items.${index}.custom_price`}
-  //               label="Цена за сутки"
-  //               error={errors.items?.[index]?.custom_price?.message}
-  //             >
-  //               <div className={styles.priceInputWrapper}>
-  //                 <input
-  //                   {...register(`items.${index}.custom_price` as const, {
-  //                     setValueAs: (v) => (v === "" ? undefined : Number(v)),
-  //                   })}
-  //                   type="number"
-  //                   min="0"
-  //                   className={styles.customInput}
-  //                   placeholder="0"
-  //                 />
-  //                 <span>₽/день</span>
-  //               </div>
-  //             </FormField>
-  //           </>
-  //         )}
-
-  //         <FormField
-  //           id={`items.${index}.start_date`}
-  //           label="Начало"
-  //           error={errors.items?.[index]?.start_date?.message}
-  //         >
-  //           <InputWithIcon
-  //             type="date"
-  //             id={`items.${index}.start_date`}
-  //             icon={Calendar}
-  //             register={register(`items.${index}.start_date` as const)}
-  //           />
-  //         </FormField>
-
-  //         <FormField
-  //           id={`items.${index}.end_date`}
-  //           label="Возврат"
-  //           error={errors.items?.[index]?.end_date?.message}
-  //         >
-  //           <InputWithIcon
-  //             type="date"
-  //             id={`items.${index}.end_date`}
-  //             icon={Calendar}
-  //             disabled={mode === "inventory" && !currentItem?.inventory_id}
-  //             className={
-  //               mode === "inventory" && !currentItem?.inventory_id
-  //                 ? styles.disabledInput
-  //                 : ""
-  //             }
-  //             register={register(`items.${index}.end_date` as const)}
-  //           />
-  //         </FormField>
-
-  //         <DaysBox index={index} control={control} setValue={setValue} />
-
-  //         {canRemove && (
-  //           <button
-  //             type="button"
-  //             onClick={onRemove}
-  //             className={styles.removeBtn}
-  //             style={{ marginTop: "32px" }}
-  //           >
-  //             <Trash2 size={18} />
-  //           </button>
-  //         )}
-  //       </div>
-  //     </div>
-  //   );
 
   return (
     <div key={fieldId} className={styles.itemRow}>

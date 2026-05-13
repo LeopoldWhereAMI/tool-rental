@@ -1,5 +1,5 @@
 "use client";
-import { Check, CheckCircle, Clock, ImageIcon, X } from "lucide-react";
+import { Check, CheckCircle, Clock, ImageIcon, Wrench, X } from "lucide-react";
 import styles from "../page.module.css";
 import { calculateDays, calculateItemTotal } from "@/helpers";
 import { OrderItemDetailed, OrderUI } from "@/types";
@@ -69,15 +69,25 @@ export function OrderItemRow({
   };
 
   const isItemReturned = item.item_status === "returned";
+  const isCustom = item.is_custom;
+
+  const displayName = isCustom
+    ? item.custom_name || "Дополнительная услуга"
+    : item.inventory?.name || "Инструмент";
 
   return (
     <>
-      <div className={styles.toolCard}>
+      <div
+        className={`${styles.toolCard} ${isCustom ? styles.customToolCard : ""}`}
+      >
         <div className={styles.productImagePlaceholder}>
-          {item.inventory?.image_url ? (
+          {isCustom ? (
+            // ✅ Для кастомных — иконка вместо фото
+            <Wrench size={28} color="#3b82f6" />
+          ) : item.inventory?.image_url ? (
             <Image
               src={item.inventory.image_url}
-              alt={item.inventory.name || "Tool"}
+              alt={displayName}
               fill
               unoptimized
               style={{ objectFit: "cover" }}
@@ -92,8 +102,13 @@ export function OrderItemRow({
         <div className={styles.toolMainInfo}>
           <div className={styles.toolTitleRow}>
             <div className={styles.toolNameContainer}>
-              <p className={styles.toolName}>
-                {item.inventory?.name || "Инструмент"}
+              <p
+                className={`${styles.toolName} ${isCustom ? styles.customToolName : ""}`}
+              >
+                {displayName}
+                {isCustom && (
+                  <span className={styles.customBadge}>доп. услуга</span>
+                )}
               </p>
               {statusVariant && (
                 <span className={`${styles.badge} ${styles[statusVariant]}`}>
@@ -126,12 +141,19 @@ export function OrderItemRow({
 
           <div className={styles.toolMetaRow}>
             <div className={styles.toolSubInfo}>
-              <span className={styles.badgeBlue}>
-                S/N: {item.inventory?.serial_number || "—"}
-              </span>
-              <span className={styles.badgeBlue}>
-                Арт: {item?.inventory?.article || "—"}
-              </span>
+              {isCustom ? (
+                // ✅ Для кастомных: серийник и артикул скрыты
+                <span className={styles.badgeBlue}>—</span>
+              ) : (
+                <>
+                  <span className={styles.badgeBlue}>
+                    S/N: {item.inventory?.serial_number || "—"}
+                  </span>
+                  <span className={styles.badgeBlue}>
+                    Арт: {item?.inventory?.article || "—"}
+                  </span>
+                </>
+              )}
             </div>
 
             <div className={styles.toolTimeline}>
@@ -148,12 +170,14 @@ export function OrderItemRow({
         </div>
         <div className={styles.actionSection}>
           {/* Ссылка "Подробнее" видна ВСЕГДА */}
-          <Link
-            href={`/inventory/${item.inventory?.id}`}
-            className={styles.detailsLink}
-          >
-            Открыть
-          </Link>
+          {!isCustom && (
+            <Link
+              href={`/inventory/${item.inventory?.id}`}
+              className={styles.detailsLink}
+            >
+              Открыть
+            </Link>
+          )}
           {orderStatus !== "completed" && orderStatus !== "cancelled" && (
             <>
               {/* 2. Кнопка "Принять" видна, если инструмент еще у клиента */}
@@ -200,7 +224,8 @@ export function OrderItemRow({
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         onConfirm={handleConfirmAction}
-        itemName={item.inventory?.name || "Инструмент"}
+        // itemName={item.inventory?.name || "Инструмент"}
+        itemName={displayName}
         type={modalType}
         loading={loading}
       />
