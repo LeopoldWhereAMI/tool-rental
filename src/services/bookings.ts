@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase/supabase";
+import { toISODate } from "@/helpers/date";
 
 export async function getBookings(inventoryId: string) {
   const { data, error } = await supabase
@@ -19,8 +20,8 @@ export async function checkAvailability(
 ) {
   const { data, error } = await supabase.rpc("check_inventory_availability", {
     p_inventory_id: inventoryId,
-    p_start_date: startDate.toISOString(),
-    p_end_date: endDate.toISOString(),
+    p_start_date: toISODate(startDate),
+    p_end_date: toISODate(endDate),
   });
 
   if (error) throw error;
@@ -44,8 +45,8 @@ export async function createBooking({
     .insert({
       inventory_id: inventoryId,
       client_id: clientId ?? null,
-      start_date: startDate,
-      end_date: endDate,
+      start_date: toISODate(startDate),
+      end_date: toISODate(endDate),
       status: "pending",
     })
     .select()

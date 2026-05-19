@@ -173,6 +173,31 @@
   transition: all 0.18s ease;
 }
 
+/* Сегодняшний день */
+.container :global(.rdp-today) :global(.rdp-day_button) {
+  position: relative;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* Точка под сегодняшним числом */
+.container :global(.rdp-today) :global(.rdp-day_button)::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+/* При выборе диапазона — убираем точку, чтобы не мешала */
+.container :global(.rdp-selected) :global(.rdp-day_button)::after {
+  display: none;
+}
+
 /* Кнопка дня */
 .container :global(.rdp-day_button) {
   width: 100%;

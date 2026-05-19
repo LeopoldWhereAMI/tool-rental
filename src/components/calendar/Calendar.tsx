@@ -16,6 +16,7 @@ import {
 
 import { Calendar1, Check, FileText, Pencil, Phone, X } from "lucide-react";
 import { toast } from "sonner";
+import { parseISODate, toISODate } from "@/helpers/date";
 
 type Props = {
   inventoryId: string;
@@ -67,8 +68,8 @@ export default function Calendar({ inventoryId }: Props) {
       .filter((booking) => booking.status !== "cancelled")
       .flatMap((booking) =>
         eachDayOfInterval({
-          start: new Date(booking.start_date),
-          end: new Date(booking.end_date),
+          start: parseISODate(booking.start_date), // строка → Date
+          end: parseISODate(booking.end_date),
         }),
       );
   }, [bookings]);
@@ -218,8 +219,7 @@ export default function Calendar({ inventoryId }: Props) {
           <div className={styles.selectedRange}>
             <p>Выбран диапазон:</p>
             <p>
-              {range.from.toLocaleDateString()} —{" "}
-              {range.to.toLocaleDateString()}
+              {toISODate(range.from)} — {toISODate(range.to)}
             </p>
 
             <button
@@ -245,13 +245,13 @@ export default function Calendar({ inventoryId }: Props) {
             <div key={booking.id} className={styles.bookingItem}>
               <div className={styles.bookingDates}>
                 <span>
-                  {format(new Date(booking.start_date), "d MMM", {
+                  {format(parseISODate(booking.start_date), "d MMM", {
                     locale: ru,
                   })}
                 </span>
                 <span>—</span>
                 <span>
-                  {format(new Date(booking.end_date), "d MMM", {
+                  {format(parseISODate(booking.end_date), "d MMM", {
                     locale: ru,
                   })}
                 </span>
