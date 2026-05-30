@@ -9,17 +9,17 @@
     border-color 0.2s ease;
 }
 
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
 .cardTitle {
   font-size: 18px;
   padding-bottom: 12px;
   margin-bottom: 26px;
   border-bottom: 1px solid var(--border);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .formHeader {
@@ -245,6 +245,7 @@
 }
 
 .printBtn {
+  width: 100%;
   background: var(--secondary);
   color: #fff;
   cursor: pointer;
@@ -286,6 +287,61 @@
 .inputGroup input[type="number"],
 .tableInput[type="number"] {
   -moz-appearance: textfield;
+}
+
+/* ===================== PREVIEW ===================== */
+.previewSection {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 2px dashed var(--border);
+}
+
+.previewTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.previewContainer {
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  background: #fafafa;
+  box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.04);
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+/* Чтобы чек выглядел как настоящая бумага */
+.previewContainer > div {
+  background: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* Адаптив предпросмотра */
+@media (max-width: 640px) {
+  .previewSection {
+    margin-top: 24px;
+    padding-top: 20px;
+  }
+
+  .previewContainer {
+    padding: 16px;
+  }
+}
+
+@media print {
+  .previewSection {
+    display: none !important; /* скрываем предпросмотр при печати */
+  }
+
+  .printWrapper {
+    /* если оставишь printWrapper */
+    display: block !important;
+  }
 }
 
 /* Адаптивность для мобильных */

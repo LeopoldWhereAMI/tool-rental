@@ -12,7 +12,7 @@ export async function getBookings(inventoryId: string) {
 
   return data;
 }
-// просто так
+
 export async function checkAvailability(
   inventoryId: string,
   startDate: Date,

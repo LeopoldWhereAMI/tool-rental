@@ -14,6 +14,7 @@
   color: #cbd5e1;
 }
 
+/* ===== HEADER ===== */
 .headerSection {
   display: flex;
   flex-direction: column;
@@ -125,30 +126,31 @@
   box-shadow: var(--table-shadow);
 }
 
-/* ===== GRID & LAYOUT ===== */
+/* ===== GRID: Визуал слева, Инфо справа ===== */
 .dashboardGrid {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 24px;
+  grid-template-columns: 5fr 7fr;
+  gap: 32px;
   align-items: start;
 }
 
-.dashboardGrid > * {
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
   min-width: 0;
 }
 
-/* ===== HERO SECTION: ФОТО + МЕТРИКИ + КАЛЕНДАРЬ + ДЕТАЛИ ===== */
-.leftPanel {
-  grid-column: span 3;
-  display: grid;
-  grid-template-rows: auto auto;
-  gap: 16px;
-  align-items: start;
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
 }
 
+/* ===== IMAGE ===== */
 .heroImageContainer {
   width: 100%;
-  height: 100%;
   aspect-ratio: 1 / 1;
   background-color: var(--surface);
   display: flex;
@@ -164,70 +166,14 @@
     box-shadow 0.3s ease;
 }
 
-.metricsPanel {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-  width: 100%;
-}
-
-.colCalendar {
-  grid-column: span 4;
-}
-
-/* .colDetails {
-  grid-column: 8 / span 5;
-}
-
-
-.colHistory {
-  grid-column: 8 / span 5;
-} */
-
-.rightColumn {
-  grid-column: 8 / span 5;
-
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.colDetails {
-  width: 100%;
-}
-
-.colHistory {
-  width: 100%;
-}
-
-/* ===== ЕДИНАЯ КАРТОЧНАЯ СИСТЕМА ===== */
-.cardSurface {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  box-shadow: var(--table-shadow);
-  transition:
-    border 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-@media (hover: hover) {
-  .cardSurface:hover {
-    border: 1px solid var(--primary);
-    box-shadow: 0 8px 24px rgba(43, 91, 238, 0.12);
-  }
-}
-
-/* ===== IMAGE ===== */
 .heroImage {
   padding: 12px;
-  object-fit: contain !important;
-  width: 100% !important;
-  height: 100% !important;
-  position: absolute !important;
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  position: absolute;
   top: 0;
   left: 0;
-  object-fit: cover;
   transition: opacity 0.4s ease-in-out;
 }
 
@@ -257,7 +203,18 @@
   }
 }
 
-/* ===== METRIC CARDS ===== */
+/* ===== CALENDAR WRAPPER ===== */
+.calendarWrapper {
+  width: 100%;
+}
+
+/* ===== METRICS ROW ===== */
+.metricsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
 .metricCardSmall {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -367,8 +324,8 @@
   }
 }
 
-/* ===== DETAILS CARD ===== */
-.colDetails .card {
+/* ===== UNIVERSAL CARD ===== */
+.card {
   background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: 20px;
@@ -380,12 +337,12 @@
     box-shadow 0.3s ease;
 }
 
-.colDetails .cardHeader {
+.cardHeader {
   padding: 24px;
   border-bottom: 1px solid var(--border);
 }
 
-.colDetails .cardTitle {
+.cardTitle {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -395,15 +352,20 @@
   letter-spacing: -0.01em;
 }
 
-.colDetails .cardContent {
+.cardContent {
   padding: 24px;
 }
 
 @media (hover: hover) {
-  .colDetails .card:hover {
+  .card:hover {
     border: 1px solid var(--primary);
     box-shadow: 0 8px 24px rgba(43, 91, 238, 0.12);
   }
+}
+
+/* ===== HISTORY ===== */
+.historySection {
+  width: 100%;
 }
 
 /* ===== BUTTON EFFECTS ===== */
@@ -427,35 +389,24 @@
   }
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 1200px) {
   .dashboardGrid {
-    gap: 20px;
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
 
   .pageContainer {
     padding: 20px;
   }
 
-  .leftPanel {
-    grid-column: span 12;
-    grid-template-rows: auto auto;
-  }
-
   .heroImageContainer {
     aspect-ratio: 16 / 10;
+    max-height: 400px;
   }
 
-  .colCalendar {
-    grid-column: span 12;
-  }
-
-  .colDetails {
-    grid-column: span 12;
-  }
-
-  .colHistory {
-    grid-column: span 12;
+  .metricsRow {
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .metricCardSmall {
@@ -469,20 +420,8 @@
 }
 
 @media (max-width: 992px) {
-  .leftPanel {
-    grid-column: span 12;
-  }
-
-  .heroImageContainer {
-    aspect-ratio: 16 / 10;
-  }
-
-  .colCalendar {
-    grid-column: span 12;
-  }
-
-  .colDetails {
-    grid-column: span 12;
+  .metricsRow {
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .metricCardSmall {
@@ -504,30 +443,13 @@
     margin-bottom: 24px;
   }
 
-  .dashboardGrid {
-    gap: 16px;
-  }
-
-  .leftPanel {
-    grid-column: span 12;
-    grid-template-rows: auto auto;
-  }
-
   .heroImageContainer {
     aspect-ratio: 16 / 10;
     max-height: 350px;
   }
 
-  .colCalendar {
-    grid-column: span 12;
-  }
-
-  .colDetails {
-    grid-column: span 12;
-  }
-
-  .colHistory {
-    grid-column: span 12;
+  .metricsRow {
+    grid-template-columns: 1fr;
   }
 
   .titleBlock h1 {
@@ -548,20 +470,16 @@
     font-size: 20px;
   }
 
-  .colDetails .cardContent {
+  .cardHeader {
     padding: 16px;
   }
 
-  .colDetails .cardHeader {
+  .cardContent {
     padding: 16px;
   }
 }
 
 @media (max-width: 640px) {
-  .metricsPanel {
-    grid-template-columns: 1fr;
-  }
-
   .actionsBar {
     flex-direction: column;
     gap: 12px;
@@ -569,7 +487,6 @@
 
   .btn {
     justify-content: center;
-    width: 100%;
   }
 
   .titleRow {
@@ -582,12 +499,9 @@
     align-self: flex-start;
   }
 
-  .metricCardSmall {
-    padding: 12px;
-  }
-
   .heroImageContainer {
     aspect-ratio: 3 / 4;
+    max-height: none;
   }
 }
 
@@ -615,7 +529,11 @@
     font-size: 18px;
   }
 
-  .colDetails .cardTitle {
+  .cardTitle {
     font-size: 14px;
+  }
+
+  .btn {
+    padding: 8px 16px;
   }
 }

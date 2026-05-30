@@ -551,6 +551,32 @@
 /* =========================
    Mobile
 ========================= */
+@media (max-width: 768px) {
+  .cardContent {
+    padding: 12px 16px;
+  }
+
+  .cardHeader {
+    padding: 16px;
+  }
+
+  .container :global(.rdp-table) {
+    border-spacing: 3px; /* меньше зазор между днями */
+  }
+
+  .container :global(.rdp-day) {
+    font-size: 12px;
+    border-radius: 10px;
+  }
+
+  .container :global(.rdp-day_button) {
+    border-radius: 10px;
+  }
+
+  .bookingItem {
+    padding: 12px 14px;
+  }
+}
 
 @media (max-width: 640px) {
   .container {
@@ -591,5 +617,64 @@
   .container :global(.rdp-day_button) {
     width: 40px;
     height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container :global(.rdp-caption_label) {
+    font-size: 14px;
+  }
+
+  .container :global(.rdp-button_previous),
+  .container :global(.rdp-button_next) {
+    width: 30px;
+    height: 30px;
+  }
+
+  .container,
+  .cardHeader {
+    padding: 12px;
+  }
+
+  .cardTitle {
+    font-size: 15px;
+  }
+
+  .bookingDates {
+    font-size: 13px;
+  }
+
+  .sectionTitle {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 380px) {
+  .container :global(.rdp-table) {
+    border-spacing: 2px; /* сильно уменьшаем расстояние */
+  }
+
+  .container :global(.rdp-day),
+  .container :global(.rdp-day_button) {
+    width: 34px;
+    height: 34px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+
+  .container :global(.rdp-weekday) {
+    font-size: 10px;
+    padding-bottom: 8px;
+    letter-spacing: 0.03em;
+  }
+
+  .container :global(.rdp-caption_label) {
+    font-size: 15px;
+  }
+
+  .container :global(.rdp-button_previous),
+  .container :global(.rdp-button_next) {
+    width: 32px;
+    height: 32px;
   }
 }

@@ -152,13 +152,27 @@ export default function RentalReceiptEditor() {
         </div>
 
         {/* Скрытый блок для печати */}
-        <div className={styles.printWrapper}>
+        {/* <div className={styles.printWrapper}>
           <div ref={printRef}>
             <RentalReceiptPrint
               organizationName={organizationName}
               items={items}
               date={new Date().toLocaleDateString("ru-RU")}
             />
+          </div>
+        </div> */}
+
+        {/* Предпросмотр чека — всегда виден */}
+        <div className={styles.previewSection}>
+          <h3 className={styles.previewTitle}>Предпросмотр товарного чека</h3>
+          <div className={styles.previewContainer}>
+            <div ref={printRef}>
+              <RentalReceiptPrint
+                organizationName={organizationName}
+                items={items}
+                date={new Date().toLocaleDateString("ru-RU")}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -125,10 +125,10 @@ export default function InventoryItemPage() {
           </div>
         </div>
 
-        {/* ===== HERO SECTION: ФОТО + МЕТРИКИ + КАЛЕНДАРЬ + ДЕТАЛИ ===== */}
+        {/* ===== ДВУХКОЛОНОЧНЫЙ ЛЕЙАУТ ===== */}
         <div className={styles.dashboardGrid}>
-          {/* LEFT PANEL: IMAGE + METRICS */}
-          <div className={styles.leftPanel}>
+          {/* ЛЕВАЯ КОЛОНКА: Визуал */}
+          <div className={styles.leftColumn}>
             <div className={styles.heroImageContainer}>
               {item?.image_url ? (
                 <Image
@@ -136,7 +136,7 @@ export default function InventoryItemPage() {
                   alt={item.name || "Tool Image"}
                   fill
                   priority
-                  sizes="25vw"
+                  sizes="(max-width: 1200px) 50vw, 35vw"
                   className={`${styles.heroImage} ${
                     isImageLoading ? styles.imageLoading : styles.imageLoaded
                   }`}
@@ -150,7 +150,15 @@ export default function InventoryItemPage() {
               )}
             </div>
 
-            <div className={styles.metricsPanel}>
+            <div className={styles.calendarWrapper}>
+              <Calendar inventoryId={id} />
+            </div>
+          </div>
+
+          {/* ПРАВАЯ КОЛОНКА: Информация */}
+          <div className={styles.rightColumn}>
+            {/* Метрики в строку */}
+            <div className={styles.metricsRow}>
               <div className={styles.metricCardSmall}>
                 <div className={styles.metricHeader}>
                   <span className={styles.metricTitle}>Окупаемость</span>
@@ -199,16 +207,9 @@ export default function InventoryItemPage() {
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* CALENDAR */}
-          <div className={styles.colCalendar}>
-            <Calendar inventoryId={id} />
-          </div>
-
-          {/* TECHNICAL DATA */}
-          <div className={styles.rightColumn}>
-            <div className={styles.colDetails}>
+            {/* Технические данные */}
+            <div className={styles.detailsCard}>
               <div className={styles.card}>
                 <div className={styles.cardHeader}>
                   <h3 className={styles.cardTitle}>
@@ -222,12 +223,13 @@ export default function InventoryItemPage() {
               </div>
             </div>
 
-            {/* ===== ИСТОРИЯ НА ПОЛНУЮ ШИРИНУ ===== */}
-            <div className={styles.colHistory}>
+            {/* История аренды */}
+            <div className={styles.historySection}>
               <ItemRentalHistory itemId={id} />
             </div>
           </div>
         </div>
+
         <MaintenanceConfirmModal
           isOpen={isMaintenanceModalOpen}
           onClose={() => setIsMaintenanceModalOpen(false)}

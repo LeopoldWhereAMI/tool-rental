@@ -1,3 +1,4 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import styles from "./PaginationControls.module.css";
 
 type PaginationControlsProps = {
@@ -49,7 +50,7 @@ export default function PaginationControls({
           onClick={() => clickHandler(currentPage - 1)}
           disabled={currentPage === 1}
         >
-          Пред
+          <ChevronLeft size={16} />
         </button>
 
         {getPages().map((page, index) =>
@@ -75,7 +76,7 @@ export default function PaginationControls({
           onClick={() => clickHandler(currentPage + 1)}
           disabled={currentPage === totalPages}
         >
-          След
+          <ChevronRight size={16} />
         </button>
       </div>
     </div>

@@ -129,3 +129,15 @@
     border: 1px solid var(--primary);
   }
 }
+
+@media (max-width: 480px) {
+  .cardContent {
+    padding: 10px;
+  }
+
+  .clientInfo,
+  .historyPrice {
+    font-size: 12px;
+    gap: 10px;
+  }
+}
