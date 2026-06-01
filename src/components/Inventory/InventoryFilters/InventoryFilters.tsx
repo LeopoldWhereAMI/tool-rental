@@ -31,29 +31,30 @@ export default function InventoryFilters({
       <div className={styles.filterLabel}>
         <ListFilter size={16} strokeWidth={1.5} /> Фильтры
       </div>
-      <select
-        className={styles.select}
-        value={categoryFilter}
-        onChange={(e) => setCategoryFilter(e.target.value)}
-      >
-        <option value="all">Все категории</option>
-        {categories.map((c) => (
-          <option key={c} value={c}>
-            {validateCategory(c)}
-          </option>
-        ))}
-      </select>
-      <select
-        className={styles.select}
-        value={statusFilter}
-        onChange={(e) => setStatusFilter(e.target.value)}
-      >
-        <option value="all">Все статусы</option>
-        <option value="available">Свободен</option>
-        <option value="rented">В аренде</option>
-        <option value="maintenance">На ремонте</option>
-      </select>
-
+      <div className={styles.selectsWrapper}>
+        <select
+          className={styles.select}
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value)}
+        >
+          <option value="all">Все категории</option>
+          {categories.map((c) => (
+            <option key={c} value={c}>
+              {validateCategory(c)}
+            </option>
+          ))}
+        </select>
+        <select
+          className={styles.select}
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
+          <option value="all">Все статусы</option>
+          <option value="available">Свободен</option>
+          <option value="rented">В аренде</option>
+          <option value="maintenance">На ремонте</option>
+        </select>
+      </div>
       <div className={styles.resetWrapper}>
         {hasFilters && (
           <button

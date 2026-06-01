@@ -3,6 +3,13 @@
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+  /* width: 100%; */
+}
+
+.selectsWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .filterLabel {
@@ -72,6 +79,17 @@
 }
 
 @media (max-width: 590px) {
+  .filterLabel {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .selectsWrapper {
+    width: 100%;
+    justify-content: center;
+  }
+
   .filterLabel {
     display: none;
   }

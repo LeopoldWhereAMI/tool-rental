@@ -601,6 +601,38 @@
     grid-row: 2;
   }
 
+  /* .inputGroup {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  } */
+
+  .inputGroup svg {
+    display: none; /* убираем иконки на мобильных, экономим место */
+  }
+
+  .editInput {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px; /* 16px чтобы iOS не зумил input при фокусе */
+    border-radius: 12px;
+  }
+
+  .editActions {
+    margin-top: 8px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .saveButton,
+  .cancelEditButton {
+    width: 100%;
+    height: 44px;
+    justify-content: center;
+    font-size: 14px;
+    border-radius: 12px;
+  }
+
   .bookingActions {
     grid-column: 1;
     grid-row: 3;
@@ -676,5 +708,24 @@
   .container :global(.rdp-button_next) {
     width: 32px;
     height: 32px;
+  }
+
+  .editForm {
+    gap: 10px;
+  }
+
+  .editInput {
+    padding: 10px 12px;
+    font-size: 16px; /* обязательно 16px для iOS */
+  }
+
+  .editActions {
+    gap: 6px;
+  }
+
+  .saveButton,
+  .cancelEditButton {
+    height: 40px;
+    font-size: 13px;
   }
 }

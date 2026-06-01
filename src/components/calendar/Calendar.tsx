@@ -33,7 +33,7 @@ type Booking = {
 
 export default function Calendar({ inventoryId }: Props) {
   const [range, setRange] = useState<DateRange | undefined>();
-  const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
+  // const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -121,7 +121,7 @@ export default function Calendar({ inventoryId }: Props) {
           try {
             await createBooking({
               inventoryId,
-              clientId: selectedClientId,
+              // clientId: selectedClientId,
               startDate,
               endDate,
             });
@@ -218,10 +218,9 @@ export default function Calendar({ inventoryId }: Props) {
         {range?.from && range?.to && (
           <div className={styles.selectedRange}>
             <p>Выбран диапазон:</p>
-            <p>
-              {toISODate(range.from)} — {toISODate(range.to)}
-            </p>
-
+            <p>{/* {toISODate(range.from)} — {toISODate(range.to)} */}</p>
+            {format(range.from, "dd.MM.yyyy")} —{" "}
+            {format(range.to, "dd.MM.yyyy")}
             <button
               onClick={handleBooking}
               disabled={loading}
@@ -326,6 +325,7 @@ export default function Calendar({ inventoryId }: Props) {
                 <button
                   onClick={() => handleCancelBooking(booking.id)}
                   className={styles.cancelButton}
+                  title="Отменить бронирование"
                 >
                   Отменить
                 </button>

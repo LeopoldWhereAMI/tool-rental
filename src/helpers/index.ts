@@ -200,41 +200,6 @@ export const calculateItemTotal = (
   pricePerDay: number,
 ) => calculateDays(startDate, endDate) * pricePerDay;
 
-// ордерформхелпер
-// type WatchedItem = {
-//   inventory_id: string;
-//   start_date?: string;
-//   end_date?: string;
-//   custom_name: string;
-//   custom_price: number;
-// };
-
-// export function calcOrderTotalFromItems(
-//   items: WatchedItem[] | undefined,
-//   inventoryMap: InventoryMap, // ← было: Map<string, InventoryLike>
-// ): number {
-//   if (!items || items.length === 0) return 0;
-
-//   return items.reduce((acc, item) => {
-//     // ✅ ИСПРАВЛЕНО: используем индексацию вместо .get()
-//     const tool = inventoryMap[item.inventory_id]; // ← было: inventoryMap.get()
-
-//     if (!tool || !item.start_date || !item.end_date) {
-//       return acc;
-//     }
-
-//     const itemTotal = calculateOrderTotal(
-//       item.start_date,
-//       item.end_date,
-//       tool.daily_price,
-//     );
-
-//     const validItemTotal = isNaN(itemTotal) ? 0 : Math.max(0, itemTotal);
-
-//     return acc + validItemTotal;
-//   }, 0);
-// }
-
 export function calcOrderTotalFromItems(
   items: WatchedItem[] | undefined,
   inventoryMap: InventoryMap,
