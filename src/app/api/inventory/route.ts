@@ -34,7 +34,7 @@ export async function GET(request: Request) {
     { success: true, data },
     {
       headers: {
-        "Access-Control-Allow-Origin": "https://rent-app-landing.vercel.app",
+        "Access-Control-Allow-Origin": "https://masterskaya1.online",
       },
     },
   );
