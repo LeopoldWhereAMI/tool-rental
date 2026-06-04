@@ -30,12 +30,47 @@ export async function GET(request: Request) {
     );
   }
 
+  // Разрешённые домены
+  const allowedOrigins = [
+    "https://masterskaya1.online",
+    "https://www.masterskaya1.online",
+    "https://rent-app-landing.vercel.app",
+  ];
+
+  const origin = request.headers.get("origin");
+  const corsOrigin =
+    origin && allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+
   return NextResponse.json(
     { success: true, data },
     {
       headers: {
-        "Access-Control-Allow-Origin": "https://masterskaya1.online",
+        "Access-Control-Allow-Origin": corsOrigin,
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
       },
     },
   );
+}
+
+export async function OPTIONS(request: Request) {
+  const allowedOrigins = [
+    "https://masterskaya1.online",
+    "https://www.masterskaya1.online",
+    "https://rent-app-landing.vercel.app",
+  ];
+
+  const origin = request.headers.get("origin");
+  const corsOrigin =
+    origin && allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": corsOrigin,
+      "Access-Control-Allow-Methods": "GET, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Max-Age": "86400",
+    },
+  });
 }
