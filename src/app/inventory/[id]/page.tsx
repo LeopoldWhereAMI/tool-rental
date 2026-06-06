@@ -141,6 +141,7 @@ export default function InventoryItemPage() {
                     isImageLoading ? styles.imageLoading : styles.imageLoaded
                   }`}
                   onLoad={() => setIsImageLoading(false)}
+                  unoptimized
                 />
               ) : (
                 <div className={styles.imagePlaceholder}>
