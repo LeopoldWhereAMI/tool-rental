@@ -11,6 +11,9 @@ export async function GET() {
       .select("html_content")
       .maybeSingle();
 
+    console.error("Supabase data:", JSON.stringify(data));
+    console.error("Supabase error:", JSON.stringify(error));
+
     if (error) throw error;
 
     const content = data?.html_content || DEFAULT_TEMPLATE;
