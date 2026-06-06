@@ -1,4 +1,3 @@
-// hooks/useInventoryBookings.ts
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/supabase";
 import { format } from "date-fns";

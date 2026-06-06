@@ -75,12 +75,12 @@ export default function InventoryItemPage() {
     return <ErrorBlock message="Инструмент не найден в базе данных" />;
   }
 
-  const purchasePrice = item.purchase_price || 0;
-  const totalEarned = (item.total_work_days || 0) * (item.daily_price || 0);
+  const purchasePrice = item?.purchase_price || 0;
+  const totalEarned = (item?.total_work_days || 0) * (item.daily_price || 0);
   const roiPercentage =
     purchasePrice > 0 ? Math.round((totalEarned / purchasePrice) * 100) : 0;
 
-  const daysDisplay = calculateDaysInWork(item.created_at);
+  const daysDisplay = calculateDaysInWork(item?.created_at);
 
   const utilizationRate = Math.min(
     Math.round(((item.total_work_days || 0) / (daysDisplay || 1)) * 100),
