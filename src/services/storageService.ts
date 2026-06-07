@@ -52,10 +52,17 @@
 //   }
 // };
 
-import { createBrowserClient } from "@supabase/ssr";
+// import { createBrowserClient } from "@supabase/ssr";
 
 // Клиент для Storage — напрямую на Supabase (минуя прокси)
-const supabaseStorage = createBrowserClient(
+// const supabaseStorage = createBrowserClient(
+//   "https://guicprnabbwmkpxhhrwg.supabase.co",
+//   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+// );
+
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseStorage = createClient(
   "https://guicprnabbwmkpxhhrwg.supabase.co",
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 );
