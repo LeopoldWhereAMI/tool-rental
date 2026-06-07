@@ -78,6 +78,7 @@ export default function LoginPage() {
         toast.success("Вы успешно вошли!");
         setSuccessMessage("Перенаправление...");
         setTimeout(() => {
+          router.refresh();
           router.push("/");
         }, 300);
       }

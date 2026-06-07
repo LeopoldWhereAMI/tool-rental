@@ -86,34 +86,6 @@ export const AuthProvider = ({
   //   };
   // }, []);
 
-  // useEffect(() => {
-  //   supabase.auth.getSession().then(async ({ data: { session } }) => {
-  //     const currentUser = session?.user ?? null;
-  //     setUser(currentUser);
-
-  //     if (currentUser && !initialProfile) {
-  //       const { data } = await supabase
-  //         .from("profiles")
-  //         .select("*")
-  //         .eq("id", currentUser.id)
-  //         .single();
-  //       if (data) setProfile(data);
-  //     }
-
-  //     setLoading(false);
-  //   });
-
-  //   const {
-  //     data: { subscription },
-  //   } = supabase.auth.onAuthStateChange((_event, session) => {
-  //     setUser(session?.user ?? null);
-  //   });
-
-  //   return () => {
-  //     subscription.unsubscribe();
-  //   };
-  // }, []);
-
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       const currentUser = session?.user ?? null;
@@ -133,26 +105,13 @@ export const AuthProvider = ({
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      const currentUser = session?.user ?? null;
-      setUser(currentUser);
-
-      if (currentUser) {
-        const { data } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", currentUser.id)
-          .single();
-        if (data) setProfile(data);
-      } else {
-        setProfile(null);
-      }
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
     });
 
     return () => {
       subscription.unsubscribe();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
