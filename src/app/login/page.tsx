@@ -78,8 +78,9 @@ export default function LoginPage() {
         toast.success("Вы успешно вошли!");
         setSuccessMessage("Перенаправление...");
         setTimeout(() => {
-          router.refresh();
-          router.push("/");
+          // router.refresh();
+          // router.push("/");
+          window.location.href = "/";
         }, 300);
       }
     } catch (err) {
