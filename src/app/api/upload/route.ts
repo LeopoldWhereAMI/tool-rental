@@ -35,8 +35,8 @@ export async function POST(request: NextRequest) {
     if (uploadError) throw uploadError;
 
     // URL для чтения — через прокси
-    const publicUrl = `https://api.xn--46-6kcay4al8ahci5n.xn--p1ai/storage/v1/object/public/images/${fileName}`;
-
+    // const publicUrl = `https://api.xn--46-6kcay4al8ahci5n.xn--p1ai/storage/v1/object/public/images/${fileName}`;
+    const publicUrl = `/api/image?path=${fileName}`;
     return NextResponse.json({ success: true, url: publicUrl });
   } catch (error) {
     console.error("Upload error:", error);

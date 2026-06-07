@@ -60,13 +60,6 @@
 //   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 // );
 
-import { createClient } from "@supabase/supabase-js";
-
-const supabaseStorage = createClient(
-  "https://guicprnabbwmkpxhhrwg.supabase.co",
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-);
-
 // export const uploadInventoryImage = async (file: File) => {
 //   console.log("UPLOAD URL:", "https://guicprnabbwmkpxhhrwg.supabase.co");
 //   try {
@@ -91,6 +84,12 @@ const supabaseStorage = createClient(
 //     throw new Error(message);
 //   }
 // };
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseStorage = createClient(
+  "https://guicprnabbwmkpxhhrwg.supabase.co",
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+);
 
 export const uploadInventoryImage = async (file: File) => {
   try {
