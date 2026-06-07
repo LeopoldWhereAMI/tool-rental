@@ -61,6 +61,7 @@ const supabaseStorage = createBrowserClient(
 );
 
 export const uploadInventoryImage = async (file: File) => {
+  console.log("UPLOAD URL:", "https://guicprnabbwmkpxhhrwg.supabase.co");
   try {
     const fileExt = file.name.split(".").pop();
     const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
