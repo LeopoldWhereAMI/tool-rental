@@ -67,23 +67,46 @@ const supabaseStorage = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 );
 
+// export const uploadInventoryImage = async (file: File) => {
+//   console.log("UPLOAD URL:", "https://guicprnabbwmkpxhhrwg.supabase.co");
+//   try {
+//     const fileExt = file.name.split(".").pop();
+//     const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+
+//     const { error: uploadError } = await supabaseStorage.storage
+//       .from("images")
+//       .upload(fileName, file);
+
+//     if (uploadError) {
+//       console.error("Storage Error Detail:", uploadError);
+//       throw uploadError;
+//     }
+
+//     // URL для чтения — через прокси
+//     return `https://api.xn--46-6kcay4al8ahci5n.xn--p1ai/storage/v1/object/public/images/${fileName}`;
+//   } catch (error: unknown) {
+//     const message =
+//       error instanceof Error ? error.message : "Неизвестная ошибка";
+//     console.error("Storage Upload Error:", message);
+//     throw new Error(message);
+//   }
+// };
+
 export const uploadInventoryImage = async (file: File) => {
-  console.log("UPLOAD URL:", "https://guicprnabbwmkpxhhrwg.supabase.co");
   try {
-    const fileExt = file.name.split(".").pop();
-    const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+    const formData = new FormData();
+    formData.append("file", file);
 
-    const { error: uploadError } = await supabaseStorage.storage
-      .from("images")
-      .upload(fileName, file);
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
 
-    if (uploadError) {
-      console.error("Storage Error Detail:", uploadError);
-      throw uploadError;
-    }
+    const data = await response.json();
 
-    // URL для чтения — через прокси
-    return `https://api.xn--46-6kcay4al8ahci5n.xn--p1ai/storage/v1/object/public/images/${fileName}`;
+    if (!data.success) throw new Error(data.error);
+
+    return data.url;
   } catch (error: unknown) {
     const message =
       error instanceof Error ? error.message : "Неизвестная ошибка";
