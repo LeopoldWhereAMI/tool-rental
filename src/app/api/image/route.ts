@@ -8,6 +8,13 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "No path" }, { status: 400 });
   }
 
+  // В дев-режиме редиректим на прокси
+  if (process.env.NODE_ENV === "development") {
+    return NextResponse.redirect(
+      `https://api.xn--46-6kcay4al8ahci5n.xn--p1ai/storage/v1/object/public/images/${path}`,
+    );
+  }
+
   const supabaseUrl = `https://guicprnabbwmkpxhhrwg.supabase.co/storage/v1/object/public/images/${path}`;
 
   const response = await fetch(supabaseUrl);

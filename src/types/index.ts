@@ -222,6 +222,7 @@ export interface CreateOrderParams {
     end_date: string;
     is_custom?: boolean; // ← НОВОЕ
     custom_name?: string;
+    total_price?: number;
   }[];
 }
 
@@ -289,6 +290,7 @@ export interface SupabaseAllOrdersRow {
 export interface OrderItemResponse {
   id: string;
   price_at_time: number;
+  total_price?: number | null;
   start_date: string;
   end_date: string;
   orders: {

@@ -98,9 +98,7 @@ export function mapOrderToPrintBundle(
   };
 }
 
-// ============================================
 // prepareOrderPayload — для создания заказа
-// ============================================
 export function prepareOrderPayload(
   clientId: string,
   formData: OrderInput,
@@ -108,6 +106,11 @@ export function prepareOrderPayload(
 ): CreateOrderParams {
   const items: CreateOrderParams["items"] = formData.items.map(
     (item, index) => {
+      const s = new Date(item.start_date);
+      const e = new Date(item.end_date);
+      const days =
+        Math.ceil((e.getTime() - s.getTime()) / (1000 * 60 * 60 * 24)) || 1;
+
       // Кастомная позиция
       if (item.custom_name && item.custom_price !== undefined) {
         return {
@@ -117,6 +120,7 @@ export function prepareOrderPayload(
           end_date: item.end_date,
           is_custom: true,
           custom_name: item.custom_name,
+          total_price: item.custom_price * days, // ← добавлено
         };
       }
 
@@ -131,11 +135,11 @@ export function prepareOrderPayload(
         daily_price: inventory.daily_price,
         start_date: item.start_date,
         end_date: item.end_date,
+        total_price: inventory.daily_price * days, // ← добавлено
       };
     },
   );
 
-  // Расчёт total_price
   const rentalTotal = formData.items.reduce((sum, item) => {
     const s = new Date(item.start_date);
     const e = new Date(item.end_date);

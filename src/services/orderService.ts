@@ -261,6 +261,7 @@ export const getItemRentalHistory = async (
     const client = item.orders?.clients as Client | null;
 
     let clientName = "Клиент не указан";
+
     if (client) {
       if (client.client_type === "individual") {
         clientName =
@@ -270,12 +271,23 @@ export const getItemRentalHistory = async (
       }
     }
 
+    const fallbackTotal =
+      Math.max(
+        1,
+        Math.ceil(
+          (new Date(item.end_date).getTime() -
+            new Date(item.start_date).getTime()) /
+            (1000 * 60 * 60 * 24),
+        ),
+      ) * item.price_at_time;
+
     return {
       id: item.id,
       order_id: item.orders?.id,
       start_date: item.start_date,
       end_date: item.end_date,
-      total_price: item.price_at_time,
+      // total_price: item.price_at_time,
+      total_price: item.total_price ?? fallbackTotal,
       status: item.orders?.status,
       client_name: clientName,
     };
