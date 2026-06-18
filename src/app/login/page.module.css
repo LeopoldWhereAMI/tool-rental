@@ -141,6 +141,10 @@
   cursor: not-allowed;
 }
 
+.forgotBtn {
+  color: black;
+}
+
 @media (max-width: 480px) {
   .card {
     padding: 24px;

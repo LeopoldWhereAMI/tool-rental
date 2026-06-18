@@ -8,6 +8,7 @@ import styles from "./page.module.css";
 import { AlertCircle, CheckCircle } from "lucide-react";
 import PageContainer from "@/components/PageContainer/PageContainer";
 import { signUpAction } from "../actions/serverAuth";
+import { supabase } from "@/lib/supabase/supabase";
 
 interface FormErrors {
   email?: string;
@@ -25,6 +26,31 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
   const [successMessage, setSuccessMessage] = useState("");
+  const [resetSent, setResetSent] = useState(false);
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      toast.error("Введите email для сброса пароля");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/update-password`,
+      });
+
+      if (error) throw error;
+
+      setResetSent(true);
+      toast.success("Письмо отправлено — проверьте почту");
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : "Ошибка";
+      toast.error("Ошибка: " + msg);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const validateEmail = (emailValue: string): boolean => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -79,8 +105,6 @@ export default function LoginPage() {
         toast.success("Вы успешно вошли!");
         setSuccessMessage("Перенаправление...");
         setTimeout(() => {
-          // router.refresh();
-          // router.push("/");
           window.location.href = "/";
         }, 300);
       }
@@ -242,6 +266,22 @@ export default function LoginPage() {
                   ? "Зарегистрироваться"
                   : "Войти"}
             </button>
+            {!isSignUp && (
+              <button
+                type="button"
+                className={styles.forgotBtn}
+                onClick={handleForgotPassword}
+                disabled={loading}
+              >
+                Забыли пароль?
+              </button>
+            )}
+
+            {resetSent && (
+              <p className={styles.resetSentMsg}>
+                Письмо отправлено на {email}. Проверьте почту.
+              </p>
+            )}
           </div>
         </form>
 

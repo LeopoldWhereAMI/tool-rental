@@ -4,7 +4,7 @@ import { updateSession } from "@/lib/supabase/supabase-middleware";
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const skipList = ["/_next/", "/api/", "/login", "/favicon.ico"];
+  const skipList = ["/_next/", "/api/", "/login", "/favicon.ico", "/auth/"];
 
   const isStaticFile =
     /\.(svg|png|jpg|jpeg|gif|webp|woff|woff2|ttf|eot|js|css|map)$/i.test(
@@ -38,6 +38,6 @@ export const config = {
      * - api (API routes)
      * - login (login page)
      */
-    "/((?!_next/static|_next/image|favicon.ico|api|login).*)",
+    "/((?!_next/static|_next/image|favicon.ico|api|login|auth).*)",
   ],
 };
