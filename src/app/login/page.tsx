@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { loginAction, signUpAction } from "@/app/actions/auth";
+import { loginAction } from "@/app/actions/auth";
 import { toast } from "sonner";
 import styles from "./page.module.css";
 import { AlertCircle, CheckCircle } from "lucide-react";
 import PageContainer from "@/components/PageContainer/PageContainer";
+import { signUpAction } from "../actions/serverAuth";
 
 interface FormErrors {
   email?: string;

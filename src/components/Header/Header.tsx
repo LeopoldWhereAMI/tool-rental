@@ -4,7 +4,7 @@ import styles from "./Header.module.css";
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
-import { logoutAction } from "@/app/actions/auth";
+import {} from "@/app/actions/auth";
 import { toast } from "sonner";
 import Image from "next/image";
 import Skeleton from "../ui/Skeleton/Skeleton";
@@ -12,6 +12,7 @@ import Logo from "../ui/Logo/Logo";
 import dynamic from "next/dynamic";
 import { useAuth } from "@/providers/AuthProvider";
 import DropdownMenu from "./DropdownMenu/DropdownMenu";
+import { logoutAction } from "@/app/actions/serverAuth";
 
 const ThemeToggle = dynamic(() => import("../ui/ThemeToggle/ThemeToggle"), {
   ssr: false,
