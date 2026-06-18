@@ -150,7 +150,6 @@ export default function InventoryItemPage() {
                 </div>
               )}
             </div>
-
             <div className={styles.calendarWrapper}>
               <Calendar inventoryId={id} />
             </div>

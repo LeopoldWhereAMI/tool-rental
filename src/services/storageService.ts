@@ -1,10 +1,3 @@
-// import { createClient } from "@supabase/supabase-js";
-
-// const supabaseStorage = createClient(
-//   "https://guicprnabbwmkpxhhrwg.supabase.co",
-//   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-// );
-
 export const uploadInventoryImage = async (file: File) => {
   try {
     const formData = new FormData();
@@ -38,29 +31,24 @@ export const uploadInventoryImage = async (file: File) => {
 
 //     const pathPart = urlParts[1];
 
-//     const { error } = await supabaseStorage.storage
-//       .from(bucketName)
-//       .remove([pathPart]);
-
-//     if (error) throw error;
+//     await fetch("/api/delete-image", {
+//       method: "DELETE",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ path: pathPart }),
+//     });
 //   } catch (error) {
 //     console.error("Ошибка при удалении файла из Storage:", error);
 //   }
 // };
+
 export const deleteImageByUrl = async (url: string | null) => {
   if (!url) return;
 
   try {
-    const bucketName = "images";
-    const urlParts = url.split(`${bucketName}/`);
-    if (urlParts.length < 2) return;
-
-    const pathPart = urlParts[1];
-
     await fetch("/api/delete-image", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ path: pathPart }),
+      body: JSON.stringify({ path: url }),
     });
   } catch (error) {
     console.error("Ошибка при удалении файла из Storage:", error);

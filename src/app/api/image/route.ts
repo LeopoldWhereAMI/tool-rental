@@ -1,3 +1,17 @@
+// // для локального хранилища
+// import { NextRequest, NextResponse } from "next/server";
+
+// export async function GET(request: NextRequest) {
+//   const { searchParams } = new URL(request.url);
+//   const path = searchParams.get("path");
+
+//   if (!path) {
+//     return NextResponse.json({ error: "No path" }, { status: 400 });
+//   }
+
+//   return NextResponse.redirect(new URL(`/uploads/${path}`, request.url));
+// }
+
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -8,28 +22,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "No path" }, { status: 400 });
   }
 
-  // В дев-режиме редиректим на прокси
-  if (process.env.NODE_ENV === "development") {
+  const isVercel = process.env.VERCEL === "1";
+
+  if (isVercel) {
+    const proxyUrl = process.env.SUPABASE_URL_PROXY;
     return NextResponse.redirect(
-      `https://api.xn--46-6kcay4al8ahci5n.xn--p1ai/storage/v1/object/public/images/${path}`,
+      `${proxyUrl}/storage/v1/object/public/images/${path}`,
     );
+  } else {
+    return NextResponse.redirect(new URL(`/uploads/${path}`, request.url));
   }
-
-  const supabaseUrl = `https://guicprnabbwmkpxhhrwg.supabase.co/storage/v1/object/public/images/${path}`;
-
-  const response = await fetch(supabaseUrl);
-
-  if (!response.ok) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
-  }
-
-  const buffer = await response.arrayBuffer();
-  const contentType = response.headers.get("content-type") || "image/webp";
-
-  return new NextResponse(buffer, {
-    headers: {
-      "Content-Type": contentType,
-      "Cache-Control": "public, max-age=31536000",
-    },
-  });
 }
