@@ -32,37 +32,37 @@ export const geistSans = localFont({
   ],
 });
 
-export const geistMono = localFont({
-  variable: "--font-geist-mono",
-  display: "swap",
-  src: [
-    {
-      path: "./geist-mono/geist-mono-v4-cyrillic_latin-500.woff2",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "./geist-mono/geist-mono-v4-cyrillic_latin-600.woff2",
-      weight: "600",
-      style: "normal",
-    },
-    {
-      path: "./geist-mono/geist-mono-v4-cyrillic_latin-700.woff2",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "./geist-mono/geist-mono-v4-cyrillic_latin-800.woff2",
-      weight: "800",
-      style: "normal",
-    },
-    {
-      path: "./geist-mono/geist-mono-v4-cyrillic_latin-regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-  ],
-});
+// export const geistMono = localFont({
+//   variable: "--font-geist-mono",
+//   display: "swap",
+//   src: [
+//     {
+//       path: "./geist-mono/geist-mono-v4-cyrillic_latin-500.woff2",
+//       weight: "500",
+//       style: "normal",
+//     },
+//     {
+//       path: "./geist-mono/geist-mono-v4-cyrillic_latin-600.woff2",
+//       weight: "600",
+//       style: "normal",
+//     },
+//     {
+//       path: "./geist-mono/geist-mono-v4-cyrillic_latin-700.woff2",
+//       weight: "700",
+//       style: "normal",
+//     },
+//     {
+//       path: "./geist-mono/geist-mono-v4-cyrillic_latin-800.woff2",
+//       weight: "800",
+//       style: "normal",
+//     },
+//     {
+//       path: "./geist-mono/geist-mono-v4-cyrillic_latin-regular.woff2",
+//       weight: "400",
+//       style: "normal",
+//     },
+//   ],
+// });
 
 // export const ibmPlex = localFont({
 //   variable: "--font-ibm-plex",
@@ -197,7 +197,5 @@ export const spaceGrotesk = localFont({
 
 export const fontVariables = `
   ${geistSans.variable}
-  ${geistMono.variable}
   ${spaceGrotesk.variable}
-  
 `;
