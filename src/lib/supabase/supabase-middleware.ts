@@ -10,8 +10,6 @@ export async function updateSession(request: NextRequest) {
 
   const isVercel = process.env.VERCEL === "1";
 
-  // const supabaseUrl =
-  //   process.env.SUPABASE_URL_PROXY || process.env.SUPABASE_URL;
   const supabaseUrl = isVercel
     ? process.env.SUPABASE_URL!
     : process.env.SUPABASE_URL_PROXY || process.env.SUPABASE_URL;
@@ -42,8 +40,8 @@ export async function updateSession(request: NextRequest) {
   });
 
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  return { response, user };
+  return { response, user: session?.user ?? null };
 }

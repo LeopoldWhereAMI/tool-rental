@@ -21,26 +21,6 @@ export const uploadInventoryImage = async (file: File) => {
   }
 };
 
-// export const deleteImageByUrl = async (url: string | null) => {
-//   if (!url) return;
-
-//   try {
-//     const bucketName = "images";
-//     const urlParts = url.split(`${bucketName}/`);
-//     if (urlParts.length < 2) return;
-
-//     const pathPart = urlParts[1];
-
-//     await fetch("/api/delete-image", {
-//       method: "DELETE",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({ path: pathPart }),
-//     });
-//   } catch (error) {
-//     console.error("Ошибка при удалении файла из Storage:", error);
-//   }
-// };
-
 export const deleteImageByUrl = async (url: string | null) => {
   if (!url) return;
 

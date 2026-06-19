@@ -4,8 +4,6 @@ import { cookies } from "next/headers";
 export async function createSupabaseServerClient() {
   const cookieStore = await cookies();
 
-  // const supabaseUrl =
-  //   process.env.SUPABASE_URL_PROXY || process.env.SUPABASE_URL;
   const isVercel = process.env.VERCEL === "1";
   const supabaseUrl = isVercel
     ? process.env.SUPABASE_URL!

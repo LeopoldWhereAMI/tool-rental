@@ -61,7 +61,7 @@ export const restoreContractTemplate = async (): Promise<void> => {
     const { data: current } = await supabase
       .from("contract_templates")
       .select("html_content, previous_html")
-      // .limit(1)
+
       .eq("id", 1) // Используем eq вместо limit
       .single();
 
@@ -76,7 +76,7 @@ export const restoreContractTemplate = async (): Promise<void> => {
         html_content: current.previous_html,
         previous_html: current.html_content,
       })
-      // .limit(1);
+
       .eq("id", 1); // Используем eq вместо limit
 
     if (error) throw error;

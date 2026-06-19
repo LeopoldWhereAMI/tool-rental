@@ -58,27 +58,6 @@ export const createOrder = async (orderData: CreateOrderParams) => {
   }
 };
 
-export const calculateOrderTotal = (
-  start: string,
-  end: string,
-  dailyPrice: number,
-): number => {
-  const startDate = new Date(start);
-  startDate.setHours(0, 0, 0, 0);
-
-  const endDate = new Date(end);
-  endDate.setHours(0, 0, 0, 0);
-
-  const diffTime = endDate.getTime() - startDate.getTime();
-
-  let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-  if (diffDays < 0) return 0;
-  if (diffDays === 0) diffDays = 1;
-
-  return diffDays * dailyPrice;
-};
-
 // ✅ ИСПРАВЛЕННАЯ функция getOrderById
 export const getOrderById = async (id: string): Promise<OrderDetailsUI> => {
   const { data, error } = await supabase

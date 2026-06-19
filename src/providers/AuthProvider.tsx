@@ -25,7 +25,6 @@ export const AuthProvider = ({
 }) => {
   const [user, setUser] = useState<User | null>(initialUser);
   const [profile, setProfile] = useState<UserProfile | null>(initialProfile);
-  // const [loading] = useState(!initialUser);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

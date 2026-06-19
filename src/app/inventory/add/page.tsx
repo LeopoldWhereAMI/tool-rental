@@ -13,11 +13,7 @@ import { useInventory } from "@/hooks/useInventory";
 
 export default function AddInventoryPage() {
   const router = useRouter();
-  // const [existingItems, setExistingItems] = useState<Inventory[]>([]);
   const { items: existingItems, refresh } = useInventory();
-  // useEffect(() => {
-  //   loadInventory().then(setExistingItems);
-  // }, []);
 
   const breadcrumbItems = [
     { label: "Инвентарь", href: "/inventory" },

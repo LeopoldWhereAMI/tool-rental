@@ -224,7 +224,6 @@ export function OrderItemRow({
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         onConfirm={handleConfirmAction}
-        // itemName={item.inventory?.name || "Инструмент"}
         itemName={displayName}
         type={modalType}
         loading={loading}

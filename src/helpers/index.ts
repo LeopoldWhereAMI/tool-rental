@@ -1,5 +1,4 @@
 import { DATE_LOCALE, DATE_OPTIONS } from "@/constants";
-import { calculateOrderTotal } from "@/services/orderService";
 import {
   ClientWithOrders,
   InventoryMap,

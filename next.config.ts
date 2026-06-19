@@ -1,21 +1,11 @@
-// для прокси
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
   reactCompiler: true,
   images: {
+    unoptimized: true,
     remotePatterns: [
-      // {
-      //   protocol: "https",
-      //   hostname: "api.dicebear.com",
-      //   pathname: "/**",
-      // },
-      // {
-      //   protocol: "https",
-      //   hostname: "guicprnabbwmkpxhhrwg.supabase.co",
-      //   pathname: "/storage/v1/object/public/**",
-      // },
       {
         protocol: "https",
         hostname: "api.xn--46-6kcay4al8ahci5n.xn--p1ai",

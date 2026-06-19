@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { loginAction } from "@/app/actions/auth";
 import { toast } from "sonner";
 import styles from "./page.module.css";
@@ -18,7 +17,6 @@ interface FormErrors {
 }
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

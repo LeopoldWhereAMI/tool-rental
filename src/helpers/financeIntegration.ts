@@ -6,27 +6,6 @@ import { createTransaction } from "@/services/financeService";
  * @param totalPrice - Полная стоимость заказа
  * @param itemDescription - Описание заказа (например "Drill Rental - 3 дня")
  */
-// export async function onOrderCompleted(
-//   orderId: string,
-//   totalPrice: number,
-//   itemDescription: string,
-// ) {
-//   try {
-//     const transaction = await createTransaction({
-//       type: "income",
-//       amount: totalPrice,
-//       description: itemDescription,
-//       category: "Rental",
-//       status: "completed",
-//       order_id: orderId,
-//     });
-
-//     return transaction;
-//   } catch (error) {
-//     console.error("❌ Ошибка при добавлении транзакции:", error);
-//     throw error;
-//   }
-// }
 
 export async function onOrderCompleted(
   orderId: string,
