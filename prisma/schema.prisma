@@ -1,0 +1,288 @@
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ClientType {
+  individual
+  legal
+}
+
+model User {
+  id String @id @default(uuid())
+
+  email    String @unique
+  password String
+
+  fullName  String? @map("full_name")
+  avatarUrl String? @map("avatar_url")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  clients           Client[]
+  inventory         Inventory[]
+  orders            Order[]
+  bookings          Booking[]
+  transactions      Transaction[]
+  contractTemplates ContractTemplate[]
+
+  @@map("users")
+}
+
+model Client {
+  id String @id @default(uuid())
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  userId String? @map("user_id")
+
+  isBlacklisted   Boolean   @default(false) @map("is_blacklisted")
+  blacklistedAt   DateTime? @map("blacklisted_at")
+  blacklistReason String?   @map("blacklist_reason")
+
+  clientType ClientType?
+
+  phone String
+
+  firstName  String? @map("first_name")
+  lastName   String? @map("last_name")
+  middleName String? @map("middle_name")
+
+  companyName String? @map("company_name")
+
+  inn          String?
+  kpp          String?
+  ogrn         String?
+  legalAddress String? @map("legal_address")
+
+  user User? @relation(fields: [userId], references: [id])
+
+  passport ClientPassport?
+
+  orders   Order[]
+  bookings Booking[]
+
+  @@map("clients")
+}
+
+model ClientPassport {
+  id String @id @default(uuid())
+
+  clientId String @unique @map("client_id")
+
+  passportSeries String? @map("passport_series")
+  passportNumber String? @map("passport_number")
+
+  issuedBy  String?   @map("issued_by")
+  issueDate DateTime? @map("issue_date")
+
+  departmentCode String? @map("department_code")
+
+  registrationAddress String? @map("registration_address")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@map("client_passports")
+}
+
+model Inventory {
+  id String @id @default(uuid())
+
+  userId String? @map("user_id")
+
+  name     String
+  category String?
+
+  article      String?
+  serialNumber String? @map("serial_number")
+
+  status String
+
+  imageUrl String? @map("image_url")
+  notes    String?
+
+  dailyPrice    Decimal  @map("daily_price")
+  purchasePrice Decimal? @map("purchase_price")
+
+  purchaseDate Decimal? @map("purchase_date")
+
+  maintenanceIntervalDays Int? @map("maintenance_interval_days")
+
+  lastMaintenanceDate DateTime? @map("last_maintenance_date")
+
+  workDaysCount Int? @map("work_days_count")
+  totalWorkDays Int? @map("total_work_days")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User? @relation(fields: [userId], references: [id])
+
+  orderItems OrderItem[]
+  bookings   Booking[]
+
+  @@map("inventory")
+}
+
+model Order {
+  id String @id @default(uuid())
+
+  userId   String? @map("user_id")
+  clientId String  @map("client_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  startDate DateTime? @map("start_date")
+  endDate   DateTime? @map("end_date")
+
+  totalPrice      Decimal? @map("total_price")
+  securityDeposit Decimal? @map("security_deposit")
+
+  orderNumber BigInt @map("order_number")
+
+  status String?
+  notes  String?
+
+  user User? @relation(fields: [userId], references: [id])
+
+  client Client @relation(fields: [clientId], references: [id])
+
+  items OrderItem[]
+
+  transactions Transaction[]
+
+  bookings Booking[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id String @id @default(uuid())
+
+  orderId     String  @map("order_id")
+  inventoryId String? @map("inventory_id")
+
+  userId String? @map("user_id")
+
+  startDate DateTime @map("start_date")
+  endDate   DateTime @map("end_date")
+
+  priceAtTime Int  @map("price_at_time")
+  totalPrice  Int? @map("total_price")
+
+  isCustom Boolean @default(false) @map("is_custom")
+
+  customName String? @map("custom_name")
+
+  itemStatus String @map("item_status")
+
+  actualReturnDate DateTime? @map("actual_return_date")
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  inventory Inventory? @relation(fields: [inventoryId], references: [id])
+
+  @@map("order_items")
+}
+
+model Transaction {
+  id String @id @default(uuid())
+
+  orderId String? @map("order_id")
+  userId  String? @map("user_id")
+
+  amount Decimal
+
+  type   String
+  status String
+
+  description String
+  category    String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User? @relation(fields: [userId], references: [id])
+
+  order Order? @relation(fields: [orderId], references: [id])
+
+  @@map("transactions")
+}
+
+model Booking {
+  id String @id @default(uuid())
+
+  inventoryId String  @map("inventory_id")
+  clientId    String? @map("client_id")
+  orderId     String? @map("order_id")
+
+  userId String? @map("user_id")
+
+  startDate DateTime @map("start_date")
+  endDate   DateTime @map("end_date")
+
+  status String
+
+  phone String?
+  notes String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User? @relation(fields: [userId], references: [id])
+
+  inventory Inventory @relation(fields: [inventoryId], references: [id])
+
+  client Client? @relation(fields: [clientId], references: [id])
+
+  order Order? @relation(fields: [orderId], references: [id])
+
+  conflicts BookingConflict[]
+
+  @@map("bookings")
+}
+
+model BookingConflict {
+  id String @id @default(uuid())
+
+  bookingId String @map("booking_id")
+
+  conflictingOrderId String? @map("conflicting_order_id")
+
+  conflictingBookingId String? @map("conflicting_booking_id")
+
+  createdAt DateTime? @default(now()) @map("created_at")
+
+  booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@map("booking_conflicts")
+}
+
+model ContractTemplate {
+  id BigInt @id @default(autoincrement())
+
+  userId String? @map("user_id")
+
+  htmlContent String @map("html_content")
+
+  previousHtml String? @map("previous_html")
+
+  updatedAt DateTime? @map("updated_at")
+
+  previousUpdatedAt DateTime? @map("previous_updated_at")
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@map("contract_templates")
+}
