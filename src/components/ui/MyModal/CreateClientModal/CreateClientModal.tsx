@@ -1,288 +1,3 @@
-// "use client";
-
-// import { useState } from "react";
-// import FormField from "@/components/Form/FormField/FormField";
-// import { X, User, Building2 } from "lucide-react";
-// import styles from "./CreateClientModal.module.css";
-// import { CreateClientInput } from "@/types";
-// import { ClientTypeSelector } from "@/components/Form/ClientTypeSelector/ClientTypeSelector";
-// import { useForm } from "react-hook-form";
-// import { findCompanyByInn } from "@/services/dadata";
-
-// interface CreateClientModalProps {
-//   isOpen: boolean;
-//   onClose: () => void;
-//   onSave: (data: CreateClientInput) => Promise<boolean>;
-// }
-
-// interface ClientFormValues {
-//   client_type: "individual" | "legal";
-//   last_name: string;
-//   first_name: string;
-//   middle_name: string;
-//   phone: string;
-//   company_name: string;
-//   inn: string;
-//   kpp: string;
-//   ogrn: string;
-//   legal_address: string;
-// }
-
-// export default function CreateClientModal({
-//   isOpen,
-//   onClose,
-//   onSave,
-// }: CreateClientModalProps) {
-//   const [loading, setLoading] = useState(false);
-//   const { register, handleSubmit, watch, reset, setValue } =
-//     useForm<ClientFormValues>({
-//       defaultValues: {
-//         client_type: "individual",
-//         last_name: "",
-//         first_name: "",
-//         middle_name: "",
-//         phone: "",
-//         company_name: "",
-//         inn: "",
-//         kpp: "",
-//         ogrn: "",
-//         legal_address: "",
-//       },
-//     });
-//   const [isSearching, setIsSearching] = useState(false);
-
-//   const clientType = watch("client_type");
-//   const isIndividual = clientType === "individual";
-
-//   const handleInnSearch = async (inn: string) => {
-//     if (inn.length < 10) return;
-
-//     setIsSearching(true);
-//     const company = await findCompanyByInn(inn);
-//     setIsSearching(false);
-
-//     if (company) {
-//       setValue("company_name", company.value || "");
-//       setValue("kpp", company.data.kpp || "");
-//       setValue("ogrn", company.data.ogrn || "");
-//       setValue("legal_address", company.data.address.value || "");
-//     }
-//   };
-
-//   if (!isOpen) return null;
-
-//   const onSubmit = async (data: ClientFormValues) => {
-//     setLoading(true);
-
-//     let submitData: CreateClientInput;
-
-//     if (data.client_type === "individual") {
-//       submitData = {
-//         client_type: "individual",
-//         last_name: data.last_name,
-//         first_name: data.first_name,
-//         middle_name: data.middle_name,
-//         phone: data.phone,
-//       } as CreateClientInput;
-//     } else {
-//       submitData = {
-//         client_type: "legal",
-//         company_name: data.company_name,
-//         inn: data.inn,
-//         kpp: data.kpp,
-//         ogrn: data.ogrn,
-//         legal_address: data.legal_address,
-//         phone: data.phone,
-//         last_name: data.company_name,
-//         first_name: "Юр. лицо",
-//         middle_name: "",
-//       } as CreateClientInput;
-//     }
-
-//     const success = await onSave(submitData);
-//     setLoading(false);
-
-//     if (success) {
-//       reset();
-//       onClose();
-//     }
-//   };
-
-//   return (
-//     <div
-//       className={styles.modalOverlay}
-//       onClick={(e) => e.target === e.currentTarget && onClose()}
-//     >
-//       <div className={styles.modal}>
-//         <div className={styles.modalHeader}>
-//           <h3>Новый клиент</h3>
-//           <button onClick={onClose} className={styles.closeBtn}>
-//             <X size={20} />
-//           </button>
-//         </div>
-
-//         <form onSubmit={handleSubmit(onSubmit)}>
-//           <ClientTypeSelector register={register} />
-
-//           {isIndividual && (
-//             <>
-//               <div
-//                 className={styles.modalGrid}
-//                 style={{ gridTemplateColumns: "1fr 1fr" }}
-//               >
-//                 <FormField label="Фамилия" id="last_name">
-//                   <input
-//                     required
-//                     className={styles.input}
-//                     {...register("last_name", { required: true })}
-//                     placeholder="Иванов"
-//                   />
-//                 </FormField>
-
-//                 <FormField label="Имя" id="first_name">
-//                   <input
-//                     required
-//                     className={styles.input}
-//                     {...register("first_name", { required: true })}
-//                     placeholder="Иван"
-//                   />
-//                 </FormField>
-//               </div>
-
-//               <FormField label="Отчество" id="middle_name">
-//                 <input
-//                   className={styles.input}
-//                   {...register("middle_name")}
-//                   placeholder="Иванович"
-//                 />
-//               </FormField>
-
-//               <FormField label="Телефон" id="phone_individual">
-//                 <input
-//                   type="tel"
-//                   className={styles.input}
-//                   {...register("phone")}
-//                   placeholder="+7 (999) 000-00-00"
-//                 />
-//               </FormField>
-//             </>
-//           )}
-
-//           {!isIndividual && (
-//             <>
-//               <FormField label="Название компании" id="company_name">
-//                 <input
-//                   required
-//                   className={styles.input}
-//                   {...register("company_name", { required: true })}
-//                   placeholder="ООО 'Компания'"
-//                 />
-//               </FormField>
-
-//               <div
-//                 className={styles.modalGrid}
-//                 style={{ gridTemplateColumns: "1fr 1fr" }}
-//               >
-//                 <FormField label="ИНН (10 цифр)" id="inn">
-//                   <input
-//                     required
-//                     type="text"
-//                     inputMode="numeric"
-//                     maxLength={10}
-//                     className={styles.input}
-//                     {...register("inn", {
-//                       required: true,
-//                       onChange: (e) => {
-//                         const val = e.target.value
-//                           .replace(/\D/g, "")
-//                           .slice(0, 10);
-//                         e.target.value = val;
-
-//                         if (val.length === 10) handleInnSearch(val);
-//                       },
-//                     })}
-//                     placeholder="123456789012"
-//                   />
-//                 </FormField>
-
-//                 <FormField label="КПП (9 цифр, опционально)" id="kpp">
-//                   <input
-//                     type="text"
-//                     inputMode="numeric"
-//                     maxLength={9}
-//                     className={styles.input}
-//                     {...register("kpp", {
-//                       onChange: (e) => {
-//                         e.target.value = e.target.value
-//                           .replace(/\D/g, "")
-//                           .slice(0, 9);
-//                       },
-//                     })}
-//                     placeholder="123456789"
-//                   />
-//                 </FormField>
-//               </div>
-
-//               <FormField label="ОГРН (опционально)" id="ogrn">
-//                 <input
-//                   type="text"
-//                   inputMode="numeric"
-//                   maxLength={15}
-//                   className={styles.input}
-//                   {...register("ogrn", {
-//                     onChange: (e) => {
-//                       e.target.value = e.target.value
-//                         .replace(/\D/g, "")
-//                         .slice(0, 15);
-//                     },
-//                   })}
-//                   placeholder="1234567890123"
-//                 />
-//               </FormField>
-
-//               <FormField label="Телефон" id="phone_legal">
-//                 <input
-//                   type="tel"
-//                   className={styles.input}
-//                   {...register("phone")}
-//                   placeholder="+7 (999) 000-00-00"
-//                 />
-//               </FormField>
-
-//               <FormField label="Юридический адрес" id="legal_address">
-//                 <textarea
-//                   className={styles.input}
-//                   {...register("legal_address")}
-//                   placeholder="г. Москва, ул. Ленина, д. 1"
-//                   style={{ minHeight: "80px" }}
-//                 />
-//               </FormField>
-//             </>
-//           )}
-
-//           <div className={styles.modalActions}>
-//             <button
-//               type="button"
-//               onClick={onClose}
-//               className={styles.cancelBtn}
-//               disabled={loading}
-//             >
-//               Отмена
-//             </button>
-//             <button
-//               type="submit"
-//               className={styles.submitBtn}
-//               disabled={loading}
-//             >
-//               {loading ? "Сохранение..." : "Создать клиента"}
-//             </button>
-//           </div>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// }
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -292,15 +7,16 @@ import { findCompanyByInn } from "@/services/dadata";
 import { CreateClientInput } from "@/types";
 import { OrderInput } from "@/lib/validators/orderSchema";
 import { ClientTypeSelector } from "@/components/Form/ClientTypeSelector/ClientTypeSelector";
-import styles from "./CreateClientModal.module.css";
 import formStyles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 import { IndividualFields } from "@/components/Form/AddOrderForm/components/OrderClientSection/IndividualFields";
 import { CompanyFields } from "@/components/Form/AddOrderForm/components/OrderClientSection/CompanyFields";
+import { upsertPassport } from "@/services/passportService";
+import styles from "./CreateClientModal.module.css";
 
 interface CreateClientModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (data: CreateClientInput) => Promise<boolean>;
+  onSave: (data: CreateClientInput) => Promise<{ id: string } | null>;
 }
 
 export default function CreateClientModal({
@@ -372,9 +88,6 @@ export default function CreateClientModal({
         first_name: data.first_name,
         middle_name: data.middle_name,
         phone: data.phone,
-        passport_series: data.passport_series,
-        passport_number: data.passport_number,
-        registration_address: data.registration_address,
       };
     } else {
       submitData = {
@@ -388,10 +101,21 @@ export default function CreateClientModal({
       };
     }
 
-    const success = await onSave(submitData as CreateClientInput);
+    // const success = await onSave(submitData as CreateClientInput);
+    const client = await onSave(submitData);
+    if (client && data.client_type === "individual") {
+      await upsertPassport(client.id, {
+        passport_series: data.passport_series,
+        passport_number: data.passport_number,
+        issued_by: data.issued_by,
+        issue_date: data.issue_date,
+        registration_address: data.registration_address,
+      });
+    }
+
     setLoading(false);
 
-    if (success) {
+    if (client) {
       reset();
       onClose();
     }

@@ -4,6 +4,7 @@ import { OrderInput } from "@/lib/validators/orderSchema";
 import { Client } from "@/types";
 import { toast } from "sonner";
 import { getClientDisplayName } from "@/helpers/clientUtils";
+import { getPassport } from "@/services/passportService";
 
 export default function usePickClient(
   watchedPhone: string | undefined,
@@ -15,7 +16,7 @@ export default function usePickClient(
   const isSelectionActive =
     pickedPhone !== undefined && watchedPhone === pickedPhone;
 
-  const applyFoundClient = (client: Client) => {
+  const applyFoundClient = async (client: Client) => {
     const opts = { shouldValidate: true, shouldDirty: true, shouldTouch: true };
     const phoneValue = client.phone ?? "";
     const displayName = getClientDisplayName(client);
@@ -29,6 +30,35 @@ export default function usePickClient(
       setValue("last_name", client.last_name || "", opts);
       setValue("first_name", client.first_name || "", opts);
       setValue("middle_name", client.middle_name || "", opts);
+
+      if (client.client_type === "individual") {
+        setValue("last_name", client.last_name || "", opts);
+        setValue("first_name", client.first_name || "", opts);
+        setValue("middle_name", client.middle_name || "", opts);
+
+        const passport = await getPassport(client.id);
+
+        if (passport) {
+          setValue("passport_series", passport.passport_series || "", opts);
+          setValue("passport_number", passport.passport_number || "", opts);
+          setValue("issued_by", passport.issued_by || "", opts);
+          setValue("issue_date", passport.issue_date || "", opts);
+          setValue(
+            "registration_address",
+            passport.registration_address || "",
+            opts,
+          );
+        } else {
+          setValue("passport_series", "", opts);
+          setValue("passport_number", "", opts);
+          setValue("issued_by", "", opts);
+          setValue("issue_date", "", opts);
+          setValue("registration_address", "", opts);
+        }
+
+        setValue("company_name", "", opts);
+        setValue("inn", "", opts);
+      }
 
       // Сбрасываем поля юрлица, если они были заполнены
       setValue("company_name", "", opts);

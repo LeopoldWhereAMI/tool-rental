@@ -8,8 +8,7 @@ import {
   UseFormSetValue,
   useWatch,
 } from "react-hook-form";
-import { AlertOctagon, Phone } from "lucide-react";
-import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
+import { Phone } from "lucide-react";
 import useFindClient from "./useFindClient";
 import usePickClient from "./usePickClient";
 import { ClientTypeSelector } from "@/components/Form/ClientTypeSelector/ClientTypeSelector";
@@ -18,9 +17,9 @@ import { findCompanyByInn } from "@/services/dadata";
 import Spinner from "@/components/ui/Spinner/Spinner";
 import { IndividualFields } from "./IndividualFields";
 import { CompanyFields } from "./CompanyFields";
-import { FoundClientBtn } from "./FoundClientBtn";
 import { toast } from "sonner";
 import { FoundClientsSection } from "../FoundClientsSection/FoundClientsSection";
+import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 
 type OrderClientSectionProps = {
   register: UseFormRegister<OrderInput>;

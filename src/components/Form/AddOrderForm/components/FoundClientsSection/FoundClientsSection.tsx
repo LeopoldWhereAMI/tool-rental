@@ -1,8 +1,7 @@
 import { Client } from "@/types";
 import { AlertOctagon } from "lucide-react";
-
-import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 import { FoundClientBtn } from "../OrderClientSection/FoundClientBtn";
+import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 
 type Props = {
   foundClients: Client[];

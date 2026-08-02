@@ -3,18 +3,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { getOrderById } from "@/services/orderService";
-import styles from "./page.module.css";
 import { OrderDetailsUI, OrderPrintBundle } from "@/types";
 import { getOrderDateRange, validateOrderStatus } from "@/helpers";
 import { CreditCard, Printer, Timer } from "lucide-react";
 import { useReactToPrint } from "react-to-print";
-import {
-  PassportInput,
-  passportValidationSchema,
-} from "@/lib/validators/orderSchema";
-import { useForm, useWatch } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import PassportModal from "@/components/ui/PassportModal/PassportModal";
 import PrintArea from "@/components/Print/PrintArea/PrintArea";
 import { mapOrderDetailsToPrint } from "@/lib/mappers/orderMapper";
 import OrderClientInfo from "./components/OrderClientInfo";
@@ -27,12 +19,13 @@ import PageContainer from "@/components/PageContainer/PageContainer";
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import OrderNotes from "./components/OrderNotes";
 import { PrintLoadingOverlay } from "@/components/ui/PrintLoadingOverlay/PrintLoadingOverlay";
+import { getPassport } from "@/services/passportService";
+import styles from "./page.module.css";
 
 export default function OrderDetailsPage() {
   const { id } = useParams();
   const [order, setOrder] = useState<OrderDetailsUI | null>(null);
   const [loading, setLoading] = useState(true);
-  const [showPassportModal, setShowPassportModal] = useState(false);
   const [financeData, setFinanceData] = useState({
     finalAmount: 0,
     adjustment: 0,
@@ -42,57 +35,37 @@ export default function OrderDetailsPage() {
 
   const printRef = useRef<HTMLDivElement>(null);
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    setValue,
-    formState: { errors },
-  } = useForm<PassportInput>({
-    resolver: zodResolver(passportValidationSchema),
-    mode: "onTouched",
-    defaultValues: {
-      passport_series: "",
-      passport_number: "",
-      issued_by: "",
-      issue_date: "",
-      registration_address: "",
-    },
-  });
-
-  const passportData = useWatch({
-    control,
-    name: [
-      "passport_series",
-      "passport_number",
-      "issued_by",
-      "issue_date",
-      "registration_address",
-    ],
-  });
-
-  const handlePrintInitiation = () => {
+  const handlePrintInitiation = async () => {
     if (!order) return;
 
-    if (order.client.client_type === "individual") {
-      setShowPassportModal(true);
-    } else {
+    try {
+      let passport = {
+        passport_series: "",
+        passport_number: "",
+        issued_by: "",
+        issue_date: "",
+        registration_address: "",
+      };
+
+      if (order.client.client_type === "individual") {
+        const clientPassport = await getPassport(order.client.id);
+
+        if (clientPassport) {
+          passport = clientPassport;
+        }
+      }
+
       const data = mapOrderDetailsToPrint(
         order,
-        {
-          passport_series: "",
-          passport_number: "",
-          issued_by: "",
-          issue_date: "",
-          registration_address: "",
-        },
-
+        passport,
         financeData.finalAmount,
         financeData.adjustment,
       );
 
       setIsPreparingPrint(true);
       setPrintData(data);
+    } catch (error) {
+      console.error("Ошибка загрузки паспорта:", error);
     }
   };
 
@@ -104,21 +77,6 @@ export default function OrderDetailsPage() {
       setIsPreparingPrint(false);
     },
   });
-
-  const onPassportSubmit = () => {
-    if (!order) return;
-
-    const data = mapOrderDetailsToPrint(
-      order,
-      passportData,
-      financeData.finalAmount,
-      financeData.adjustment,
-    );
-
-    setIsPreparingPrint(true);
-    setPrintData(data);
-    setShowPassportModal(false);
-  };
 
   const loadOrder = useCallback(async () => {
     if (!id) return;
@@ -277,17 +235,6 @@ export default function OrderDetailsPage() {
         </div>
 
         <PrintLoadingOverlay isVisible={isPreparingPrint} />
-
-        {showPassportModal && (
-          <PassportModal
-            onPassportSubmit={handleSubmit(onPassportSubmit)}
-            onClose={() => setShowPassportModal(false)}
-            register={register}
-            errors={errors}
-            control={control}
-            setValue={setValue}
-          />
-        )}
 
         {printData && (
           <PrintArea

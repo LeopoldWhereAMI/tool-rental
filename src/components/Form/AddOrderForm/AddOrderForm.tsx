@@ -24,6 +24,7 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import { onOrderCompleted } from "@/helpers/financeIntegration";
 import { PrintLoadingOverlay } from "@/components/ui/PrintLoadingOverlay/PrintLoadingOverlay";
 import { getClientDisplayName } from "@/helpers/clientUtils";
+import { upsertPassport } from "@/services/passportService";
 
 export default function AddOrderForm() {
   const { inventory, inventoryMap, clients } = useInventoryAndClients();
@@ -87,11 +88,20 @@ export default function AddOrderForm() {
   const handleFormSubmit = async (data: OrderInput) => {
     try {
       const client = await upsertClient(data);
+      if (data.client_type === "individual") {
+        const passport = {
+          passport_series: data.passport_series,
+          passport_number: data.passport_number,
+          issued_by: data.issued_by,
+          issue_date: data.issue_date,
+          registration_address: data.registration_address,
+        };
+
+        await upsertPassport(client.id, passport);
+      }
       const orderPayload = prepareOrderPayload(client.id, data, inventoryMap);
       const savedOrder = await createOrder(orderPayload);
       const finalInitialAmount = orderPayload.total_price;
-
-      // ✅ ИСПРАВЛЕНО: используем getClientDisplayName для правильного отображения имени
       const clientDisplayName = getClientDisplayName(client);
       const financeDescription = `Предоплата по заказу #${savedOrder.order_number}: ${clientDisplayName}`;
 
@@ -128,7 +138,11 @@ export default function AddOrderForm() {
   return (
     <>
       <div className={styles.noPrint}>
-        <form onSubmit={handleSubmit(handleFormSubmit)}>
+        <form
+          onSubmit={handleSubmit(handleFormSubmit, (errors) =>
+            console.log("FORM ERRORS:", errors),
+          )}
+        >
           <div className={styles.pageWrapper}>
             {/* Заголовок */}
             <div className={styles.pageHeader}>

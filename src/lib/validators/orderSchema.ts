@@ -35,6 +35,7 @@ const individualClientSchema = z.object({
     ),
   issued_by: z.string().min(1, "Укажите, кем выдан"),
   issue_date: z.string().min(1, "Укажите дату выдачи"),
+
   registration_address: z.string().min(1, "Укажите адрес регистрации"),
 });
 

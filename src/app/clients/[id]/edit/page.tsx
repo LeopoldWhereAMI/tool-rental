@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { getClientById, updateClient } from "@/services/clientsService";
-import styles from "./page.module.css";
 import { toast } from "sonner";
 import { User, Save, Info, Building } from "lucide-react";
 import PageContainer from "@/components/PageContainer/PageContainer";
@@ -12,6 +11,8 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import { OrderInput } from "@/lib/validators/orderSchema";
 import { CompanyFields } from "@/components/Form/AddOrderForm/components/OrderClientSection/CompanyFields";
 import { IndividualFields } from "@/components/Form/AddOrderForm/components/OrderClientSection/IndividualFields";
+import { getPassport, upsertPassport } from "@/services/passportService";
+import styles from "./page.module.css";
 
 export default function EditClientPage() {
   const { id } = useParams();
@@ -60,38 +61,84 @@ export default function EditClientPage() {
   );
 
   useEffect(() => {
-    if (id) {
-      getClientById(id as string)
-        .then((data) => {
-          reset({
-            client_type: data.client_type || "individual",
-            first_name: data.first_name || "",
-            last_name: data.last_name || "",
-            middle_name: data.middle_name || "",
-            phone: data.phone || "",
-            // Для юрлиц
-            company_name: data.company_name || "",
-            inn: data.inn || "",
-            kpp: data.kpp || "",
-            ogrn: data.ogrn || "",
-            legal_address: data.legal_address || "",
-            // Для физлиц
-            passport_series: data.passport_series || "",
-            passport_number: data.passport_number || "",
-            issue_date: data.issue_date || "",
-            issued_by: data.issued_by || "",
-            registration_address: data.registration_address || "",
-          });
-        })
-        .finally(() => setLoading(false));
+    if (!id) return;
+
+    async function loadClient() {
+      try {
+        const client = await getClientById(id as string);
+
+        let passport = null;
+
+        if (client.client_type === "individual") {
+          passport = await getPassport(client.id);
+        }
+
+        reset({
+          client_type: client.client_type || "individual",
+
+          first_name: client.first_name || "",
+          last_name: client.last_name || "",
+          middle_name: client.middle_name || "",
+          phone: client.phone || "",
+
+          company_name: client.company_name || "",
+          inn: client.inn || "",
+          kpp: client.kpp || "",
+          ogrn: client.ogrn || "",
+          legal_address: client.legal_address || "",
+
+          passport_series: passport?.passport_series || "",
+          passport_number: passport?.passport_number || "",
+          issue_date: passport?.issue_date || "",
+          issued_by: passport?.issued_by || "",
+          registration_address: passport?.registration_address || "",
+        });
+      } catch (error) {
+        console.error("Ошибка загрузки клиента:", error);
+        toast.error("Не удалось загрузить клиента");
+      } finally {
+        setLoading(false);
+      }
     }
+
+    loadClient();
   }, [id, reset]);
 
-  // onSubmit теперь типизирован через react-hook-form
   const onSubmit: SubmitHandler<OrderInput> = async (data) => {
     setSaving(true);
+
     try {
-      await updateClient(id as string, data);
+      const clientData = {
+        client_type: data.client_type,
+        phone: data.phone,
+
+        ...(data.client_type === "individual"
+          ? {
+              first_name: data.first_name,
+              last_name: data.last_name,
+              middle_name: data.middle_name,
+            }
+          : {
+              company_name: data.company_name,
+              inn: data.inn,
+              kpp: data.kpp,
+              ogrn: data.ogrn,
+              legal_address: data.legal_address,
+            }),
+      };
+
+      await updateClient(id as string, clientData);
+
+      if (data.client_type === "individual") {
+        await upsertPassport(id as string, {
+          passport_series: data.passport_series,
+          passport_number: data.passport_number,
+          issued_by: data.issued_by,
+          issue_date: data.issue_date,
+          registration_address: data.registration_address,
+        });
+      }
+
       toast.success("Данные клиента обновлены");
       router.push(`/clients/${id}`);
     } catch (err) {

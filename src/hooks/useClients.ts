@@ -16,15 +16,18 @@ export function useClients() {
 
   const addClient = async (newClient: CreateClientInput) => {
     try {
-      await createClientInSupabase(newClient);
+      const client = await createClientInSupabase(newClient);
+
       toast.success("Клиент успешно создан");
-      mutate(); // Перезапрашиваем данные
-      return true;
+      mutate();
+
+      return client;
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Ошибка при создании клиента";
+
       toast.error(errorMessage);
-      return false;
+      return null;
     }
   };
 

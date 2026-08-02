@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
+const isVercel = process.env.VERCEL === "1";
+const supabaseUrl = isVercel
+  ? process.env.SUPABASE_URL!
+  : process.env.SUPABASE_URL_PROXY || process.env.SUPABASE_URL!;
+
 const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  supabaseUrl,
   process.env.SUPABASE_SERVICE_ROLE_KEY!,
 );
 
@@ -30,7 +35,6 @@ export async function GET(request: Request) {
     );
   }
 
-  // Разрешённые домены
   const allowedOrigins = [
     "https://masterskaya1.online",
     "https://www.masterskaya1.online",
