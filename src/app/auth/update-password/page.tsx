@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/supabase";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+
 import styles from "./page.module.css";
 
 export default function UpdatePasswordPage() {

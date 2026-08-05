@@ -83,6 +83,36 @@ export type ClientPreview = {
 };
 
 // Краткая информация о заказе для списков и таблиц
+// export interface OrderUI {
+//   id: string;
+//   order_number: string;
+//   status: string;
+//   total_price: number;
+//   start_date: string;
+//   end_date: string;
+//   actual_end_date?: string | null;
+//   inventory_id?: string;
+//   client_id?: string;
+//   security_deposit?: number | null;
+//   client: ClientPreview; // ✅ Теперь совместимо
+//   tools?: Array<{
+//     id: string;
+//     name: string;
+//     image_url?: string | null;
+//     serial_number?: string;
+//     price_at_time?: number;
+//     start_date: string;
+//     end_date: string;
+//   }>;
+//   inventory: {
+//     name: string;
+//     image_url?: string | null;
+//     daily_price?: number;
+//     serial_number?: string;
+//     article?: string;
+//   };
+// }
+
 export interface OrderUI {
   id: string;
   order_number: string;
@@ -91,10 +121,14 @@ export interface OrderUI {
   start_date: string;
   end_date: string;
   actual_end_date?: string | null;
-  inventory_id?: string;
-  client_id?: string;
-  security_deposit?: number | null;
-  client: ClientPreview; // ✅ Теперь совместимо
+
+  client?: ClientPreview;
+
+  items?: {
+    startDate: string;
+    endDate: string;
+  }[];
+
   tools?: Array<{
     id: string;
     name: string;
@@ -104,7 +138,8 @@ export interface OrderUI {
     start_date: string;
     end_date: string;
   }>;
-  inventory: {
+
+  inventory?: {
     name: string;
     image_url?: string | null;
     daily_price?: number;
@@ -117,6 +152,7 @@ export interface OrderUI {
 export interface OrderDetailsUI extends Omit<OrderUI, "client"> {
   created_at: string;
   notes?: string;
+  security_deposit?: number | null;
   order_items: OrderItemDetailed[];
   tools: OrderTool[];
   client: Client; // ✅ Полный тип клиента (Individual | Legal)
@@ -166,6 +202,32 @@ export interface OrderItemDetailed {
   is_custom?: boolean;
   custom_name?: string | null;
 }
+
+// export interface OrderItemDetailed {
+//   id: string;
+
+//   start_date: string;
+//   end_date: string;
+
+//   price_at_time: number;
+
+//   inventory: {
+//     id: string;
+//     name: string;
+//     serial_number?: string | null;
+//     article?: string | null;
+//     image_url?: string | null;
+//     daily_price?: number;
+//   } | null;
+
+//   item_status: "active" | "returned";
+
+//   actual_return_date: string | null;
+
+//   is_custom?: boolean;
+
+//   custom_name?: string | null;
+// }
 
 export type OrderStatusSource = {
   start_date: string;
@@ -339,25 +401,62 @@ export type OrderPrintBundle = {
 // Позиция в печатном договоре
 export type ContractItem = {
   id: string;
+
   name: string;
-  serial_number?: string;
-  article?: string;
+
+  serial_number?: string | null;
+  article?: string | null;
+
   start_date: string;
   end_date: string;
+
   price_at_time: number;
+
   purchase_price?: number;
   daily_price?: number;
-  is_custom?: boolean; // ← НОВОЕ
-  custom_description?: string;
+
+  is_custom?: boolean;
+
+  custom_name?: string | null;
+  custom_description?: string | null;
 };
 
 // Данные клиента и заказа для шаблона контракта
+// export type ContractOrderData = {
+//   total_price: number;
+//   order_number?: number;
+//   adjustment?: number;
+//   security_deposit?: number;
+// } & CreateClientInput;
+
 export type ContractOrderData = {
+  // заказ
   total_price: number;
   order_number?: number;
   adjustment?: number;
   security_deposit?: number;
-} & CreateClientInput;
+
+  // клиент
+  client_type: "individual" | "legal";
+
+  first_name?: string;
+  last_name?: string;
+  middle_name?: string;
+
+  passport_series?: string;
+  passport_number?: string;
+  issued_by?: string;
+  issue_date?: string;
+  registration_address?: string;
+
+  company_name?: string;
+  inn?: string;
+  kpp?: string;
+  ogrn?: string;
+  legal_address?: string;
+
+  phone?: string;
+};
 
 // ============================================================================
 // ***6. Типы для аутентификации и профилей***

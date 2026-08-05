@@ -1,6 +1,5 @@
 "use client";
 import { Check, CheckCircle, Clock, ImageIcon, Wrench, X } from "lucide-react";
-import styles from "../page.module.css";
 import { calculateDays, calculateItemTotal } from "@/helpers";
 import { OrderItemDetailed, OrderUI } from "@/types";
 import Image from "next/image";
@@ -11,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { cancelItemReturn, returnOrderItem } from "@/services/orderService";
 import { toast } from "sonner";
 import ReturnItemModal from "@/components/ui/MyModal/ReturnItemModal";
+import styles from "../page.module.css";
 
 interface OrderItemRowProps {
   item: OrderItemDetailed;

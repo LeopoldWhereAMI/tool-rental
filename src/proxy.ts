@@ -1,43 +1,18 @@
-import { NextRequest, NextResponse } from "next/server";
-import { updateSession } from "@/lib/supabase/supabase-middleware";
+import { NextResponse } from "next/server";
+import { auth } from "../auth";
 
-export async function proxy(request: NextRequest) {
+export default auth((request) => {
   const { pathname } = request.nextUrl;
 
-  const skipList = ["/_next/", "/api/", "/login", "/favicon.ico", "/auth/"];
+  const isLoginPage = pathname === "/login";
 
-  const isStaticFile =
-    /\.(svg|png|jpg|jpeg|gif|webp|woff|woff2|ttf|eot|js|css|map)$/i.test(
-      pathname,
-    );
-  const shouldSkip =
-    skipList.some((path) => pathname.startsWith(path)) || isStaticFile;
-
-  if (shouldSkip) {
-    return NextResponse.next();
+  if (!request.auth && !isLoginPage) {
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  const { response, user } = await updateSession(request);
-
-  if (!user && pathname !== "/login") {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
-  }
-
-  return response;
-}
+  return NextResponse.next();
+});
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - api (API routes)
-     * - login (login page)
-     */
-    "/((?!_next/static|_next/image|favicon.ico|api|login|auth).*)",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|api).*)"],
 };

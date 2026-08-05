@@ -2,37 +2,28 @@ import { supabase } from "@/lib/supabase/supabase";
 import { InventoryCreateInput } from "@/lib/validators/inventorySchema";
 import { Inventory, OrderDetailsUI, OrderUI } from "@/types";
 
-// Загрузка инвентаря на страницу
 export async function loadInventory(): Promise<Inventory[]> {
-  const { data, error } = await supabase
-    .from("inventory")
-    .select(
-      "id, name, category, daily_price,  status, serial_number, image_url, article, purchase_price, purchase_date, work_days_count, maintenance_interval_days, total_work_days",
-    )
-    .order("name");
+  const response = await fetch("/api/inventory");
 
-  if (error) {
-    console.error("Ошибка загрузки инвентаря:", error);
-    throw new Error(error.message);
+  if (!response.ok) {
+    throw new Error("Ошибка загрузки инвентаря");
   }
 
-  return data as Inventory[];
+  const result = await response.json();
+
+  return result.data;
 }
 
-//  Добавление одного инструмента по ID
 export async function getInventoryItem(id: string): Promise<Inventory> {
-  const { data, error } = await supabase
-    .from("inventory")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const response = await fetch(`/api/inventory/${id}`);
 
-  if (error) {
-    console.error("Ошибка загрузки инструмента:", error);
-    throw new Error(error.message);
+  if (!response.ok) {
+    throw new Error("Ошибка загрузки инструмента");
   }
 
-  return data as Inventory;
+  const result = await response.json();
+
+  return result.data;
 }
 
 // Редактирование инструмента
@@ -40,115 +31,139 @@ export async function updateInventory(
   id: string,
   data: InventoryCreateInput,
 ): Promise<Inventory> {
-  const now = new Date().toISOString();
+  const response = await fetch(`/api/inventory/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: data.name,
+      category: data.category,
 
-  const { article: _article, ...rest } = data;
+      serial_number: data.serial_number,
 
-  const formattedData = {
-    ...rest,
-    purchase_date: data.purchase_date
-      ? new Date(data.purchase_date).getTime()
-      : null,
-    updated_at: now,
-  };
+      daily_price: data.daily_price,
+      purchase_price: data.purchase_price,
 
-  const { data: updatedItem, error } = await supabase
-    .from("inventory")
-    .update(formattedData)
-    .eq("id", id)
-    .select()
-    .single();
+      purchase_date: data.purchase_date
+        ? new Date(data.purchase_date).getTime()
+        : null,
 
-  if (error) {
-    console.error("Ошибка при обновлении инструмента:", error);
-    throw new Error(error.message);
+      notes: data.notes,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Ошибка обновления инструмента");
   }
 
-  return updatedItem as Inventory;
+  const result = await response.json();
+
+  return result.data;
 }
 
 // Удаление одного инструмента по ID
 export async function deleteInventory(id: string): Promise<void> {
-  const { error } = await supabase.from("inventory").delete().eq("id", id);
+  const response = await fetch(`/api/inventory/${id}`, {
+    method: "DELETE",
+  });
 
-  if (error) {
-    console.error("Ошибка при удалении инструмента:", error);
-    throw new Error(error.message);
+  if (!response.ok) {
+    throw new Error("Ошибка удаления инструмента");
   }
 }
 
 // Добавление инвентаря
 export async function addInventory(item: InventoryCreateInput) {
-  const now = new Date().toISOString();
+  const response = await fetch("/api/inventory", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: item.name,
+      article: item.article,
+      category: item.category,
 
-  const formattedData = {
-    ...item,
-    purchase_date: item.purchase_date
-      ? new Date(item.purchase_date).getTime()
-      : null,
-    status: "available",
-    created_at: now,
-    updated_at: now,
-  };
+      serial_number: item.serial_number,
 
-  const { data, error } = await supabase
-    .from("inventory")
-    .insert([formattedData])
-    .select()
-    .single();
+      daily_price: item.daily_price,
+      purchase_price: item.purchase_price,
 
-  if (error) {
-    console.error("Ошибка при добавлении инструмента:", error);
-    console.error("--- ДЕТАЛИ ОШИБКИ SUPABASE ---");
-    console.error("Сообщение:", error.message);
-    console.error("Детали:", error.details);
-    console.error("Подсказка:", error.hint);
-    console.error("Код ошибки:", error.code);
-    console.error("------------------------------");
-    throw new Error(error.message);
+      purchase_date: item.purchase_date
+        ? new Date(item.purchase_date).getTime()
+        : null,
+
+      notes: item.notes,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Ошибка добавления инструмента");
   }
 
-  return data;
+  const result = await response.json();
+
+  return result.data;
 }
 
 // Изменение статуса инструмента
-export const updateInventoryStatus = async (id: string, status: string) => {
-  const { data, error } = await supabase
-    .from("inventory")
-    .update({ status })
-    .eq("id", id);
+export async function updateInventoryStatus(id: string, status: string) {
+  const response = await fetch(`/api/inventory/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ status }),
+  });
 
-  if (error) throw error;
-  return data;
-};
+  if (!response.ok) {
+    throw new Error("Ошибка изменения статуса");
+  }
+
+  const result = await response.json();
+
+  return result.data;
+}
 
 // ТО инструмента
 export const incrementMaintenanceCounters = async (
   inventoryId: string,
   days: number,
 ) => {
-  const { error } = await supabase.rpc("increment_work_days", {
-    item_id: inventoryId,
-    days_to_add: days,
+  const response = await fetch(`/api/inventory/${inventoryId}/maintenance`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      days,
+    }),
   });
-  if (error) throw error;
+
+  if (!response.ok) {
+    throw new Error("Ошибка обновления счетчика ТО");
+  }
 };
 
 export const resetMaintenanceCounter = async (id: string) => {
-  const { data, error } = await supabase
-    .from("inventory")
-    .update({
-      work_days_count: 0,
-      last_maintenance_date: new Date().toISOString(),
-    })
-    .eq("id", id);
+  const response = await fetch(`/api/inventory/${id}/maintenance`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      reset: true,
+    }),
+  });
 
-  if (error) {
-    console.error("Ошибка при сбросе счетчика ТО:", error);
-    throw error;
+  if (!response.ok) {
+    throw new Error("Ошибка сброса счетчика ТО");
   }
 
-  return data;
+  const result = await response.json();
+
+  return result.data;
 };
 
 export const processOrderMaintenance = async (

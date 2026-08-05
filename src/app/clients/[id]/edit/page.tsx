@@ -71,6 +71,7 @@ export default function EditClientPage() {
 
         if (client.client_type === "individual") {
           passport = await getPassport(client.id);
+          console.log("PASSPORT:", passport);
         }
 
         reset({

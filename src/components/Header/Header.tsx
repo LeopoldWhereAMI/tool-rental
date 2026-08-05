@@ -2,17 +2,14 @@
 
 import styles from "./Header.module.css";
 import { ChevronDown } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
-import {} from "@/app/actions/auth";
 import { toast } from "sonner";
 import Image from "next/image";
 import Skeleton from "../ui/Skeleton/Skeleton";
 import Logo from "../ui/Logo/Logo";
 import dynamic from "next/dynamic";
-import { useAuth } from "@/providers/AuthProvider";
 import DropdownMenu from "./DropdownMenu/DropdownMenu";
-import { logoutAction } from "@/app/actions/serverAuth";
+import { useSession, signOut } from "next-auth/react";
 
 const ThemeToggle = dynamic(() => import("../ui/ThemeToggle/ThemeToggle"), {
   ssr: false,
@@ -21,11 +18,14 @@ const ThemeToggle = dynamic(() => import("../ui/ThemeToggle/ThemeToggle"), {
 });
 
 export default function Header() {
-  const router = useRouter();
-  const { user, profile, loading: authLoading } = useAuth();
+  const { data: session, status } = useSession();
   const [loading, setLoading] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const user = session?.user;
+
+  const authLoading = status === "loading";
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -43,25 +43,25 @@ export default function Header() {
 
   const handleLogout = async () => {
     setLoading(true);
+
     try {
-      const result = await logoutAction();
-      if (result.success) {
-        toast.success("Вы вышли из аккаунта");
-        router.push("/login");
-      }
+      await signOut({
+        callbackUrl: "/login",
+      });
+
+      toast.success("Вы вышли из аккаунта");
     } catch (error) {
-      console.error("Logout error:", error);
+      console.error(error);
       toast.error("Ошибка при выходе");
     } finally {
       setLoading(false);
     }
   };
 
-  const userName = profile?.full_name || user?.email;
+  const userName = user?.name || user?.email;
 
   const avatar =
-    profile?.avatar_url ||
-    "https://api.dicebear.com/9.x/croodles/png?seed=Aidan";
+    user?.image || "https://api.dicebear.com/9.x/croodles/png?seed=Aidan";
 
   return (
     <header className={styles.header}>

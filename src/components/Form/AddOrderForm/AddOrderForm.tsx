@@ -74,6 +74,12 @@ export default function AddOrderForm() {
     setIsPreparingPrint(false);
   });
 
+  const handleCancelPrint = () => {
+    setLastOrderForPrint(null);
+    setIsPreparingPrint(false);
+    toast.info("Печать отменена");
+  };
+
   const watchedItems = useWatch({ control, name: "items" });
   const securityDeposit = useWatch({
     control,
@@ -296,7 +302,10 @@ export default function AddOrderForm() {
           </div>
         </form>
       </div>
-      <PrintLoadingOverlay isVisible={isPreparingPrint} />
+      <PrintLoadingOverlay
+        isVisible={isPreparingPrint}
+        onCancel={handleCancelPrint}
+      />
       {lastOrderForPrint && (
         <PrintArea
           data={lastOrderForPrint}

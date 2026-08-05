@@ -1,276 +1,87 @@
-import { supabase } from "@/lib/supabase/supabase";
 import {
-  Client,
+  // Client,
   OrderDetailsUI,
-  OrderTool,
   OrderUI,
-  RentalHistoryItem,
   CreateOrderParams,
-  SupabaseOrderRow,
-  SupabaseAllOrdersRow,
-  OrderItemResponse,
-  ClientPreview,
+  // ClientPreview,
 } from "@/types";
 
 // ✅ Вспомогательная функция для преобразования Client в ClientPreview
-function toClientPreview(client: Client | null): ClientPreview {
-  if (!client) {
-    return {
-      id: "",
-      client_type: "individual",
-      display_name: "Клиент не указан",
-    };
-  }
+// function toClientPreview(client: Client | null): ClientPreview {
+//   if (!client) {
+//     return {
+//       id: "",
+//       client_type: "individual",
+//       display_name: "Клиент не указан",
+//     };
+//   }
 
-  const displayName =
-    client.client_type === "individual"
-      ? `${client.last_name || ""} ${client.first_name || ""}`.trim()
-      : client.company_name || "Компания не указана";
+//   const displayName =
+//     client.client_type === "individual"
+//       ? `${client.last_name || ""} ${client.first_name || ""}`.trim()
+//       : client.company_name || "Компания не указана";
 
-  return {
-    id: client.id,
-    phone: client.phone,
-    client_type: client.client_type,
-    display_name: displayName,
-  };
-}
+//   return {
+//     id: client.id,
+//     phone: client.phone,
+//     client_type: client.client_type,
+//     display_name: displayName,
+//   };
+// }
 
 export const createOrder = async (orderData: CreateOrderParams) => {
-  try {
-    const { data, error } = await supabase.rpc("create_order_v2", {
-      p_client_id: orderData.client_id,
-      p_total_price: orderData.total_price,
-      p_security_deposit: orderData.security_deposit,
-      p_items: orderData.items,
-    });
+  const response = await fetch("/api/orders", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(orderData),
+  });
 
-    if (error) {
-      if (error.code === "23505") {
-        throw new Error("Один из инструментов в этом заказе уже забронирован.");
-      }
-      throw error;
-    }
+  const result = await response.json();
 
-    return data;
-  } catch (error) {
-    console.error("Order Service RPC Error:", error);
-    throw error;
+  if (!response.ok) {
+    throw new Error(result.error || "Ошибка создания заказа");
   }
+
+  return result.data;
 };
 
 // ✅ ИСПРАВЛЕННАЯ функция getOrderById
 export const getOrderById = async (id: string): Promise<OrderDetailsUI> => {
-  const { data, error } = await supabase
-    .from("orders")
-    .select(
-      `
-      *,
-      client:clients(*),
-      order_items(
-        id,
-        price_at_time,
-        start_date,
-        end_date,
-        item_status,
-        actual_return_date,
-         is_custom,
-          custom_name,
-        inventory(*)
-      )
-    `,
-    )
-    .eq("id", id)
-    .single();
+  const response = await fetch(`/api/orders/${id}`);
 
-  if (error) throw error;
+  if (!response.ok) {
+    throw new Error("Ошибка загрузки заказа");
+  }
 
-  const orderData = data as unknown as SupabaseOrderRow;
-  if (!orderData) throw new Error("Order not found");
+  const result = await response.json();
 
-  // ✅ Фильтруем и трансформируем инструменты
-  const tools: OrderTool[] = (orderData.order_items || [])
-    .filter((item) => item.inventory)
-    .map((item) => ({
-      ...item.inventory!,
-      price_at_time: item.price_at_time,
-      start_date: item.start_date,
-      end_date: item.end_date,
-    }));
-
-  const mainInventory = tools[0] ?? {
-    id: "",
-    created_at: "",
-    name: "Не указан",
-    category: "",
-    daily_price: 0,
-    purchase_price: 0,
-    purchase_date: 0,
-    status: "available" as const,
-    notes: "",
-    updated_at: "",
-    serial_number: "",
-    article: "",
-    work_days_count: 0,
-    total_work_days: 0,
-    maintenance_interval_days: 0,
-    last_maintenance_date: null,
-  };
-
-  // ✅ Преобразуем client в правильный Client тип
-  const client: Client = orderData.client as Client;
-
-  return {
-    ...orderData,
-    client, // ✅ Теперь это правильный Client (IndividualClient | LegalClient)
-    inventory: mainInventory,
-    tools,
-  };
+  return result.data;
 };
 
-// ✅ ИСПРАВЛЕННАЯ функция loadAllOrders
 export const loadAllOrders = async (): Promise<OrderUI[]> => {
-  const { data, error } = await supabase
-    .from("orders")
-    .select(
-      `
-      id,
-      total_price,
-      start_date,
-      end_date,
-      order_number,
-      status,
-      client:clients(id, last_name, first_name, middle_name, phone, client_type, company_name),
-      order_items(
-        id,
-        price_at_time, 
-        start_date,
-        end_date,
-        is_custom,
-         custom_name,
-        inventory(id, name, serial_number, image_url)
-      )
-    `,
-    )
-    .order("created_at", { ascending: false });
+  const response = await fetch("/api/orders");
 
-  if (error) {
-    console.error("Error loading orders:", error);
-    throw error;
+  if (!response.ok) {
+    throw new Error("Ошибка загрузки заказов");
   }
 
-  const rawData = data as unknown as SupabaseAllOrdersRow[];
+  const result = await response.json();
 
-  return rawData.map((order) => {
-    const tools = (order.order_items || [])
-      .filter((item) => item.inventory)
-      .map((item) => ({
-        id: item.inventory!.id,
-        name: item.inventory!.name,
-        serial_number: item.inventory!.serial_number,
-        image_url: item.inventory!.image_url,
-        price_at_time: item.price_at_time,
-        start_date: item.start_date,
-        end_date: item.end_date,
-      }));
-
-    let mainInventoryName = "Не указан";
-    if (tools.length === 1) {
-      mainInventoryName = tools[0].name;
-    } else if (tools.length > 1) {
-      mainInventoryName = `${tools[0].name} +${tools.length - 1}`;
-    }
-
-    // ✅ Используем вспомогательную функцию для преобразования в ClientPreview
-    const clientPreview = toClientPreview(order.client as Client | null);
-
-    return {
-      id: order.id,
-      order_number: order.order_number,
-      status: order.status,
-      total_price: order.total_price,
-      start_date: order.start_date,
-      end_date: order.end_date,
-      client: clientPreview, // ✅ Теперь совместимо
-      inventory: { name: mainInventoryName },
-      tools,
-    };
-  });
+  return result.data;
 };
 
-// ✅ ИСПРАВЛЕННАЯ функция getItemRentalHistory
-export const getItemRentalHistory = async (
-  itemId: string,
-): Promise<RentalHistoryItem[]> => {
-  const { data, error } = await supabase
-    .from("order_items")
-    .select(
-      `
-      id,
-      price_at_time,
-      start_date,
-      end_date,
-      orders (
-        id,
-        status,
-        clients (
-          id,
-          first_name,
-          last_name,
-          middle_name,
-          phone,
-          client_type,
-          company_name
-        )
-      )
-    `,
-    )
-    .eq("inventory_id", itemId)
-    .order("start_date", { ascending: false })
-    .limit(5);
+export const getItemRentalHistory = async (itemId: string) => {
+  const response = await fetch(`/api/inventory/${itemId}/rental-history`);
 
-  if (error) {
-    console.error("Supabase Error:", error);
-    throw error;
+  if (!response.ok) {
+    throw new Error("Ошибка загрузки истории аренды");
   }
 
-  const responseData = (data as unknown as OrderItemResponse[]) || [];
+  const result = await response.json();
 
-  return responseData.map((item) => {
-    // ✅ Преобразуем в правильный Client тип
-    const client = item.orders?.clients as Client | null;
-
-    let clientName = "Клиент не указан";
-
-    if (client) {
-      if (client.client_type === "individual") {
-        clientName =
-          `${client.last_name || ""} ${client.first_name || ""}`.trim();
-      } else {
-        clientName = client.company_name || "Компания не указана";
-      }
-    }
-
-    const fallbackTotal =
-      Math.max(
-        1,
-        Math.ceil(
-          (new Date(item.end_date).getTime() -
-            new Date(item.start_date).getTime()) /
-            (1000 * 60 * 60 * 24),
-        ),
-      ) * item.price_at_time;
-
-    return {
-      id: item.id,
-      order_id: item.orders?.id,
-      start_date: item.start_date,
-      end_date: item.end_date,
-      // total_price: item.price_at_time,
-      total_price: item.total_price ?? fallbackTotal,
-      status: item.orders?.status,
-      client_name: clientName,
-    };
-  });
+  return result.data;
 };
 
 export const updateOrderStatus = async (
@@ -278,72 +89,100 @@ export const updateOrderStatus = async (
   newStatus: string,
   finalPrice?: number,
 ) => {
-  const { error } = await supabase.rpc("update_order_status_v2", {
-    p_order_id: orderId,
-    p_new_status: newStatus,
-    p_total_price: finalPrice,
+  const response = await fetch(`/api/orders/${orderId}/status`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      status: newStatus,
+      totalPrice: finalPrice,
+    }),
   });
 
-  if (error) {
-    console.error("Ошибка при обновлении статуса заказа через RPC:", error);
-    throw error;
+  const result = await response.json();
+
+  if (!result.success) {
+    throw new Error(result.error);
   }
+
+  return result.data;
 };
 
 export const deleteOrderById = async (id: string) => {
-  const { error } = await supabase.from("orders").delete().eq("id", id);
+  const response = await fetch(`/api/orders/${id}`, {
+    method: "DELETE",
+  });
 
-  if (error) {
-    console.error("Error deleting order:", error);
-    throw error;
+  const result = await response.json();
+
+  if (!result.success) {
+    throw new Error(result.error);
   }
 };
 
 export async function updateOrderNotes(id: string, notes: string) {
-  const { data, error } = await supabase
-    .from("orders")
-    .update({ notes })
-    .eq("id", id);
+  const response = await fetch(`/api/orders/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      notes,
+    }),
+  });
 
-  if (error) throw error;
-  return data;
+  const result = await response.json();
+
+  if (!result.success) {
+    throw new Error(result.error);
+  }
+
+  return result.data;
 }
 
 export const returnOrderItem = async (orderId: string, itemId: string) => {
-  const { data, error } = await supabase
-    .from("order_items")
-    .update({
-      item_status: "returned",
-      actual_return_date: new Date().toISOString(),
-    })
-    .eq("id", itemId)
-    .eq("order_id", orderId)
-    .select()
-    .single();
+  const response = await fetch(
+    `/api/orders/${orderId}/items/${itemId}/return`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        action: "return",
+      }),
+    },
+  );
 
-  if (error) {
-    console.error("Ошибка при завершении аренды инструмента:", error);
-    throw error;
+  const result = await response.json();
+
+  if (!result.success) {
+    throw new Error(result.error);
   }
 
-  return data;
+  return result.data;
 };
 
 export async function cancelItemReturn(orderId: string, itemId: string) {
-  const { data, error } = await supabase
-    .from("order_items")
-    .update({
-      item_status: "rented",
-      actual_return_date: null,
-    })
-    .eq("id", itemId)
-    .eq("order_id", orderId)
-    .select();
+  const response = await fetch(
+    `/api/orders/${orderId}/items/${itemId}/return`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        action: "cancel",
+      }),
+    },
+  );
 
-  if (error) {
-    console.error("Ошибка при отмене возврата инструмента:", error);
-    throw error;
+  const result = await response.json();
+
+  if (!result.success) {
+    throw new Error(result.error);
   }
 
-  return data;
+  return result.data;
 }

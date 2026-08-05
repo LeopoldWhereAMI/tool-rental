@@ -8,13 +8,13 @@ import {
   UserCheck,
   UserX,
 } from "lucide-react";
-import styles from "../page.module.css";
 import { ClientWithOrders } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useBlacklist } from "@/hooks/useBlacklist";
 import BlacklistModal from "@/components/ui/MyModal/BlacklistModal";
 import { getClientDisplayName } from "@/helpers/clientUtils";
+import styles from "../page.module.css";
 
 interface ClientSidebarProps {
   client: ClientWithOrders;

@@ -1,5 +1,3 @@
-import { supabase } from "@/lib/supabase/supabase";
-
 export interface Transaction {
   id: string;
   type: "income" | "expense";
@@ -20,26 +18,24 @@ export interface FinanceStats {
 }
 
 export interface YearlyData {
-  month_index: number;
+  month: number;
   income: number;
+  expense: number;
+  profit: number;
 }
 
 export async function getDashboardData(
   year: number,
 ): Promise<{ stats: FinanceStats; yearlyData: YearlyData[] }> {
-  try {
-    const month = new Date().getMonth() + 1;
-    const { data, error } = await supabase.rpc("get_finance_dashboard_data", {
-      p_year: year,
-      p_month: month,
-    });
+  const response = await fetch(`/api/transactions/dashboard?year=${year}`);
 
-    if (error) throw error;
-    return data;
-  } catch (error) {
-    console.error("Ошибка получения данных дашборда:", error);
-    throw error;
+  const result = await response.json();
+
+  if (!result.success) {
+    throw new Error(result.error);
   }
+
+  return result.data;
 }
 
 export async function getTransactions(
@@ -47,34 +43,24 @@ export async function getTransactions(
   pageSize: number = 10,
   type?: "income" | "expense",
 ): Promise<{ transactions: Transaction[]; total: number }> {
-  try {
-    const start = (page - 1) * pageSize;
+  const params = new URLSearchParams({
+    page: String(page),
+    pageSize: String(pageSize),
+  });
 
-    let query = supabase
-      .from("transactions")
-      .select("*", { count: "exact" })
-      .in("status", ["completed", "cancelled"])
-      .order("created_at", { ascending: false });
-
-    if (type) {
-      query = query.eq("type", type);
-    }
-
-    const { data, count, error } = await query.range(
-      start,
-      start + pageSize - 1,
-    );
-
-    if (error) throw error;
-
-    return {
-      transactions: (data || []) as Transaction[],
-      total: count || 0,
-    };
-  } catch (error) {
-    console.error("Ошибка получения транзакций:", error);
-    throw error;
+  if (type) {
+    params.set("type", type);
   }
+
+  const response = await fetch(`/api/transactions?${params.toString()}`);
+
+  const result = await response.json();
+
+  if (!result.success) {
+    throw new Error(result.error);
+  }
+
+  return result.data;
 }
 
 export async function searchTransactions(
@@ -82,100 +68,78 @@ export async function searchTransactions(
   page: number = 1,
   pageSize: number = 10,
 ): Promise<{ transactions: Transaction[]; total: number }> {
-  try {
-    const start = (page - 1) * pageSize;
+  const params = new URLSearchParams({
+    query,
+    page: String(page),
+    pageSize: String(pageSize),
+  });
 
-    const { data, count, error } = await supabase
-      .from("transactions")
-      .select("*", { count: "exact" })
-      .ilike("description", `%${query}%`)
-      .order("created_at", { ascending: false })
-      .range(start, start + pageSize - 1);
+  const response = await fetch(`/api/transactions/search?${params.toString()}`);
 
-    if (error) throw error;
+  const result = await response.json();
 
-    return {
-      transactions: (data || []) as Transaction[],
-      total: count || 0,
-    };
-  } catch (error) {
-    console.error("Ошибка поиска транзакций:", error);
-    throw error;
+  if (!result.success) {
+    throw new Error(result.error);
   }
+
+  return result.data;
 }
 
-/**
- * Добавление новой транзакции
- */
 export async function createTransaction(
   transaction: Omit<Transaction, "id" | "created_at">,
 ): Promise<Transaction> {
-  try {
-    const { data, error } = await supabase
-      .from("transactions")
-      .insert([transaction])
-      .select()
-      .single();
+  const response = await fetch("/api/transactions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(transaction),
+  });
 
-    if (error) throw error;
-    return data as Transaction;
-  } catch (error) {
-    console.error("Ошибка добавления транзакции:", error);
-    throw error;
+  const result = await response.json();
+
+  if (!result.success) {
+    throw new Error(result.error);
   }
+
+  return result.data;
 }
 
-/**
- * Обновление статуса транзакции
- */
 export async function updateTransactionStatus(
   id: string,
   status: "completed" | "cancelled",
 ): Promise<Transaction> {
-  try {
-    const { data, error } = await supabase
-      .from("transactions")
-      .update({ status, updated_at: new Date().toISOString() })
-      .eq("id", id)
-      .select()
-      .single();
+  const response = await fetch(`/api/transactions/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      status,
+    }),
+  });
 
-    if (error) throw error;
-    return data as Transaction;
-  } catch (error) {
-    console.error("Ошибка обновления транзакции:", error);
-    throw error;
+  const result = await response.json();
+
+  if (!result.success) {
+    throw new Error(result.error);
   }
+
+  return result.data;
 }
 
-/**
- * Получение статистики по категориям
- */
 export async function getCategoryStats(): Promise<
   { category: string; amount: number; type: string }[]
 > {
-  try {
-    const { data, error } = await supabase
-      .from("transactions")
-      .select("category, type, amount")
-      .eq("status", "completed");
+  const response = await fetch("/api/transactions/categories");
 
-    if (error) throw error;
+  const result = await response.json();
 
-    const stats = new Map<string, number>();
-    (data || []).forEach((item) => {
-      const key = `${item.category}-${item.type}`;
-      stats.set(key, (stats.get(key) || 0) + item.amount);
-    });
-
-    return Array.from(stats).map(([key, amount]) => {
-      const [category, type] = key.split("-");
-      return { category, amount, type };
-    });
-  } catch (error) {
-    console.error("Ошибка получения статистики категорий:", error);
-    throw error;
+  if (!result.success) {
+    throw new Error(result.error);
   }
+
+  return result.data;
 }
 
 /**
@@ -187,38 +151,19 @@ export async function createWithdrawRequest(
   amount: number,
   remarks?: string,
 ): Promise<Transaction> {
-  try {
-    // Проверяем валидность суммы
-    if (amount <= 0) {
-      throw new Error("Сумма должна быть больше нуля");
-    }
-
-    // Создаем описание (объединяем причину и примечание)
-    const description = remarks
-      ? `Вывод средств: ${remarks.trim()}`
-      : "Вывод из кассы";
-
-    const { data, error } = await supabase
-      .from("transactions")
-      .insert([
-        {
-          type: "expense",
-          amount: amount,
-          description: description,
-          category: "Withdraw",
-          status: "completed",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-      ])
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    return data as Transaction;
-  } catch (error) {
-    console.error("❌ Ошибка при создании запроса на вывод:", error);
-    throw error;
+  if (amount <= 0) {
+    throw new Error("Сумма должна быть больше нуля");
   }
+
+  const description = remarks
+    ? `Вывод средств: ${remarks.trim()}`
+    : "Вывод из кассы";
+
+  return createTransaction({
+    type: "expense",
+    amount,
+    description,
+    category: "Withdraw",
+    status: "completed",
+  });
 }

@@ -8,8 +8,6 @@ import Footer from "@/components/Footer/Footer";
 import MobileNav from "@/components/ui/MobileNav/MobileNav";
 import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { getProfile } from "@/services/profileService";
 
 export const metadata: Metadata = {
   title: "Главная страница",
@@ -21,18 +19,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createSupabaseServerClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const profile = user ? await getProfile(user.id) : null;
-
   return (
     <html lang="ru" className={fontVariables} suppressHydrationWarning>
       <body className="root-body">
-        <AuthProvider initialUser={user} initialProfile={profile}>
+        <AuthProvider>
           <ThemeProvider>
             <Toaster
               position="top-right"
@@ -42,12 +32,14 @@ export default async function RootLayout({
               richColors
               closeButton
             />
+
             <Header />
 
             <div className="app-layout">
               <Sidebar />
               <main className="main-content">{children}</main>
             </div>
+
             <MobileNav />
             <Footer />
           </ThemeProvider>

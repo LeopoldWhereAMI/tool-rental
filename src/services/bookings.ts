@@ -1,81 +1,127 @@
-import { supabase } from "@/lib/supabase/supabase";
-import { toISODate } from "@/helpers/date";
-
 export async function getBookings(inventoryId: string) {
-  const { data, error } = await supabase
-    .from("bookings")
-    .select("*")
-    .eq("inventory_id", inventoryId)
-    .in("status", ["confirmed", "pending"]);
+  const response = await fetch(
+    `/api/bookings?inventoryId=${encodeURIComponent(inventoryId)}`,
+  );
 
-  if (error) throw error;
+  const result = await response.json();
 
-  return data;
+  if (!response.ok || !result.success) {
+    throw new Error(result.error || "Не удалось загрузить бронирования");
+  }
+
+  return result.data;
 }
 
 export async function checkAvailability(
   inventoryId: string,
   startDate: Date,
   endDate: Date,
+  excludeBookingId?: string,
 ) {
-  const { data, error } = await supabase.rpc("check_inventory_availability", {
-    p_inventory_id: inventoryId,
-    p_start_date: toISODate(startDate),
-    p_end_date: toISODate(endDate),
+  const response = await fetch("/api/bookings/availability", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      inventoryId,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      excludeBookingId,
+    }),
   });
 
-  if (error) throw error;
+  const result = await response.json();
 
-  return data[0];
+  if (!response.ok || !result.success) {
+    throw new Error(
+      result.error || "Не удалось проверить доступность инструмента",
+    );
+  }
+
+  return result.data;
 }
 
 export async function createBooking({
   inventoryId,
   clientId,
+  orderId,
   startDate,
   endDate,
 }: {
   inventoryId: string;
   clientId?: string | null;
+  orderId?: string | null;
   startDate: Date;
   endDate: Date;
 }) {
-  const { data, error } = await supabase
-    .from("bookings")
-    .insert({
-      inventory_id: inventoryId,
-      client_id: clientId ?? null,
-      start_date: toISODate(startDate),
-      end_date: toISODate(endDate),
-      status: "pending",
-    })
-    .select()
-    .single();
+  const response = await fetch("/api/bookings", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      inventoryId,
+      clientId,
+      orderId,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+    }),
+  });
 
-  if (error) throw error;
+  const result = await response.json();
 
-  return data;
+  if (!response.ok || !result.success) {
+    throw new Error(result.error || "Не удалось создать бронирование");
+  }
+
+  return result.data;
 }
 
 export async function cancelBooking(bookingId: string) {
-  const { error } = await supabase
-    .from("bookings")
-    .update({
+  const response = await fetch(`/api/bookings`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: bookingId,
       status: "cancelled",
-    })
-    .eq("id", bookingId);
+    }),
+  });
 
-  if (error) throw error;
+  const result = await response.json();
+
+  if (!response.ok || !result.success) {
+    throw new Error(result.error || "Ошибка отмены");
+  }
+
+  return result.data;
 }
 
 export async function updateBooking(
   bookingId: string,
-  updates: { notes?: string | null; phone?: string | null },
+  updates: {
+    notes?: string | null;
+    phone?: string | null;
+  },
 ) {
-  const { error } = await supabase
-    .from("bookings")
-    .update(updates)
-    .eq("id", bookingId);
+  const response = await fetch("/api/bookings", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: bookingId,
+      ...updates,
+    }),
+  });
 
-  if (error) throw error;
+  const result = await response.json();
+
+  if (!response.ok || !result.success) {
+    throw new Error(result.error || "Не удалось обновить бронирование");
+  }
+
+  return result.data;
 }

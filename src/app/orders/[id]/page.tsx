@@ -66,7 +66,13 @@ export default function OrderDetailsPage() {
       setPrintData(data);
     } catch (error) {
       console.error("Ошибка загрузки паспорта:", error);
+      setIsPreparingPrint(false);
     }
+  };
+
+  const handleCancelPrint = () => {
+    setIsPreparingPrint(false);
+    setPrintData(null);
   };
 
   const handlePrint = useReactToPrint({
@@ -84,6 +90,7 @@ export default function OrderDetailsPage() {
     try {
       setLoading(true);
       const data = await getOrderById(id as string);
+
       setOrder(data);
       if (data) {
         setFinanceData({ finalAmount: data.total_price, adjustment: 0 });
@@ -163,7 +170,11 @@ export default function OrderDetailsPage() {
             </div>
           </div>
           <div className={styles.navActions}>
-            <button onClick={handlePrintInitiation} className={styles.printBtn}>
+            <button
+              onClick={handlePrintInitiation}
+              className={styles.printBtn}
+              disabled={isPreparingPrint}
+            >
               <Printer size={18} />
               <span>Печать договора</span>
             </button>
@@ -234,7 +245,10 @@ export default function OrderDetailsPage() {
           </aside>
         </div>
 
-        <PrintLoadingOverlay isVisible={isPreparingPrint} />
+        <PrintLoadingOverlay
+          isVisible={isPreparingPrint}
+          onCancel={handleCancelPrint}
+        />
 
         {printData && (
           <PrintArea

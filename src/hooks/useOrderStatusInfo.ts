@@ -74,16 +74,17 @@ export function useOrderStatusInfo(order: OrderUI | OrderDetailsUI | null) {
       overdueDays = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
 
       let dailyRate = 0;
+
       if ("order_items" in order && order.order_items) {
         dailyRate = order.order_items.reduce(
-          (sum, item) => sum + (item.inventory?.daily_price || 0),
+          (sum, item) => sum + (item.price_at_time || 0),
           0,
         );
       } else if ("inventory" in order && order.inventory) {
         dailyRate = order.inventory.daily_price || 0;
       } else if (order.tools?.length) {
         dailyRate = order.tools.reduce(
-          (sum, t) => sum + (t.price_at_time || 0),
+          (sum, item) => sum + (item.price_at_time || 0),
           0,
         );
       }

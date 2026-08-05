@@ -1,37 +1,37 @@
-import { supabase } from "@/lib/supabase/supabase";
 import { PassportInput } from "@/lib/validators/orderSchema";
 
 export async function getPassport(clientId: string) {
-  const { data, error } = await supabase
-    .from("client_passports")
-    .select("*")
-    .eq("client_id", clientId)
-    .maybeSingle();
+  const response = await fetch(`/api/client-passports/${clientId}`);
 
-  if (error) {
-    console.error("Ошибка загрузки паспорта:", error);
-    throw new Error(error.message);
+  if (response.status === 404) {
+    return null;
   }
 
-  return data;
+  if (!response.ok) {
+    throw new Error("Ошибка загрузки паспорта");
+  }
+
+  return response.json();
 }
 
 export async function upsertPassport(
   clientId: string,
   passport: PassportInput,
 ) {
-  const { error } = await supabase.from("client_passports").upsert(
-    {
+  const response = await fetch("/api/client-passports", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
       client_id: clientId,
       ...passport,
-    },
-    {
-      onConflict: "client_id",
-    },
-  );
+    }),
+  });
 
-  if (error) {
-    console.error("Ошибка сохранения паспорта:", error);
-    throw new Error(error.message);
+  if (!response.ok) {
+    throw new Error("Ошибка сохранения паспорта");
   }
+
+  return response.json();
 }

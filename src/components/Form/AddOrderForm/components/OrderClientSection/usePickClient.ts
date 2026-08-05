@@ -21,6 +21,12 @@ export default function usePickClient(
     const phoneValue = client.phone ?? "";
     const displayName = getClientDisplayName(client);
 
+    function formatDateForInput(date?: string | null) {
+      if (!date) return "";
+
+      return date.split("T")[0];
+    }
+
     // 1. Устанавливаем общие поля
     setValue("client_type", client.client_type, opts);
     setValue("phone", phoneValue, opts);
@@ -42,7 +48,7 @@ export default function usePickClient(
           setValue("passport_series", passport.passport_series || "", opts);
           setValue("passport_number", passport.passport_number || "", opts);
           setValue("issued_by", passport.issued_by || "", opts);
-          setValue("issue_date", passport.issue_date || "", opts);
+          setValue("issue_date", formatDateForInput(passport.issue_date), opts);
           setValue(
             "registration_address",
             passport.registration_address || "",

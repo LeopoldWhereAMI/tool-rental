@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { getItemRentalHistory } from "@/services/orderService";
 import { RentalHistoryItem } from "@/types";
 
 export function useItemHistory(itemId: string) {
@@ -9,14 +8,22 @@ export function useItemHistory(itemId: string) {
   useEffect(() => {
     async function loadHistory() {
       try {
-        const data = await getItemRentalHistory(itemId);
-        setRentals(data);
+        const response = await fetch(`/api/inventory/${itemId}/history`);
+
+        if (!response.ok) {
+          throw new Error("Ошибка загрузки истории");
+        }
+
+        const result = await response.json();
+
+        setRentals(result);
       } catch (e) {
         console.error("Ошибка при загрузке истории:", e);
       } finally {
         setLoading(false);
       }
     }
+
     if (itemId) loadHistory();
   }, [itemId]);
 

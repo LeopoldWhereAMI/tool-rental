@@ -93,8 +93,10 @@ export default function Calendar({ inventoryId }: Props) {
         selectedRange.to,
       );
 
-      if (!result.is_available) {
+      if (!result.available) {
         setError("Эти даты уже заняты");
+      } else {
+        setError("");
       }
     } catch (error) {
       console.error(error);

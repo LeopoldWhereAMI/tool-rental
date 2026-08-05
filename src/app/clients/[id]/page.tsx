@@ -1,7 +1,6 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import styles from "./page.module.css";
 import ErrorBlock from "@/components/ui/ErrorBlock/ErrorBlock";
 import ClientDetailsSkeleton from "./ClientDetailsSkeleton";
 import ClientSidebar from "./components/ClientSidebar";
@@ -13,6 +12,7 @@ import PageContainer from "@/components/PageContainer/PageContainer";
 import { useMemo } from "react";
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import { getClientDisplayName } from "@/helpers/clientUtils";
+import styles from "./page.module.css";
 
 export default function ClientDetailsPage() {
   const { id } = useParams();

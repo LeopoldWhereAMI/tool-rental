@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { loginAction } from "@/app/actions/auth";
+// import { loginAction } from "@/app/actions/auth";
 import { toast } from "sonner";
 import styles from "./page.module.css";
 import { AlertCircle, CheckCircle } from "lucide-react";
 import PageContainer from "@/components/PageContainer/PageContainer";
 import { signUpAction } from "../actions/serverAuth";
-import { supabase } from "@/lib/supabase/supabase";
+// import { supabase } from "@/lib/supabase/supabase";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface FormErrors {
   email?: string;
@@ -25,29 +27,33 @@ export default function LoginPage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [successMessage, setSuccessMessage] = useState("");
   const [resetSent, setResetSent] = useState(false);
+  const router = useRouter();
+  // const handleForgotPassword = async () => {
+  //   if (!email) {
+  //     toast.error("Введите email для сброса пароля");
+  //     return;
+  //   }
+
+  //   setLoading(true);
+  //   try {
+  //     const { error } = await supabase.auth.resetPasswordForEmail(email, {
+  //       redirectTo: `${window.location.origin}/auth/update-password`,
+  //     });
+
+  //     if (error) throw error;
+
+  //     setResetSent(true);
+  //     toast.success("Письмо отправлено — проверьте почту");
+  //   } catch (error) {
+  //     const msg = error instanceof Error ? error.message : "Ошибка";
+  //     toast.error("Ошибка: " + msg);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const handleForgotPassword = async () => {
-    if (!email) {
-      toast.error("Введите email для сброса пароля");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/update-password`,
-      });
-
-      if (error) throw error;
-
-      setResetSent(true);
-      toast.success("Письмо отправлено — проверьте почту");
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : "Ошибка";
-      toast.error("Ошибка: " + msg);
-    } finally {
-      setLoading(false);
-    }
+    toast.info("Восстановление пароля будет добавлено позже");
   };
 
   const validateEmail = (emailValue: string): boolean => {
@@ -90,7 +96,14 @@ export default function LoginPage() {
 
     setLoading(true);
     try {
-      const result = await loginAction(email, password);
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+        callbackUrl: "/",
+      });
+
+      console.log("SIGN IN RESULT:", result);
 
       if (result?.error) {
         setErrors({ form: result.error });
@@ -99,12 +112,11 @@ export default function LoginPage() {
         return;
       }
 
-      if (result?.success) {
+      if (result?.ok) {
         toast.success("Вы успешно вошли!");
-        setSuccessMessage("Перенаправление...");
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 300);
+
+        router.push("/");
+        router.refresh();
       }
     } catch (err) {
       const error = err as Error;

@@ -1,174 +1,87 @@
-import { supabase } from "@/lib/supabase/supabase";
+// import { supabase } from "@/lib/supabase/supabase";
 import { Client, ClientWithOrders, CreateClientInput } from "@/types";
 
-export async function createClientInSupabase(
-  data: CreateClientInput,
-): Promise<Client> {
-  const { data: newClient, error } = await supabase
-    .from("clients")
-    .insert([data])
-    .select()
-    .single();
+export async function createClient(data: CreateClientInput) {
+  const response = await fetch("/api/clients", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
 
-  if (error) {
-    console.error("Ошибка при добавлении клиента:", error);
-    throw new Error(error.message);
+  if (!response.ok) {
+    throw new Error("Ошибка создания клиента");
   }
 
-  return newClient as Client;
+  return response.json();
 }
 
 export async function upsertClient(data: CreateClientInput): Promise<Client> {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const response = await fetch("/api/clients", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
 
-  if (!user) throw new Error("Пользователь не авторизован");
-
-  // 📌 ВАРИАНТ 1: Физическое лицо
-  if (data.client_type === "individual") {
-    const { data: client, error } = await supabase
-      .from("clients")
-      .upsert(
-        {
-          phone: data.phone,
-          user_id: user.id,
-          client_type: "individual",
-          first_name: data.first_name,
-          last_name: data.last_name,
-          middle_name: data.middle_name || null,
-          company_name: null,
-          inn: null,
-          kpp: null,
-          ogrn: null,
-          legal_address: null,
-        },
-        {
-          onConflict: "user_id,phone",
-          ignoreDuplicates: false,
-        },
-      )
-      .select()
-      .single();
-
-    if (error) {
-      console.error("Ошибка при работе с клиентом:", error);
-      throw new Error(error.message);
-    }
-
-    return client as Client;
+  if (!response.ok) {
+    throw new Error("Ошибка создания клиента");
   }
 
-  // 📌 ВАРИАНТ 2: Юридическое лицо
-  if (data.client_type === "legal") {
-    const { data: client, error } = await supabase
-      .from("clients")
-      .upsert(
-        {
-          phone: data.phone,
-          user_id: user.id,
-          client_type: "legal",
-          first_name: null,
-          last_name: null, // ✅ ИЗ COMPANY_NAME!
-          middle_name: null,
-          company_name: data.company_name,
-          inn: data.inn,
-          kpp: data.kpp || null,
-          ogrn: data.ogrn || null,
-          legal_address: data.legal_address || null,
-        },
-        {
-          onConflict: "user_id,phone",
-          ignoreDuplicates: false,
-        },
-      )
-      .select()
-      .single();
-
-    if (error) {
-      console.error("Ошибка при работе с клиентом:", error);
-      throw new Error(error.message);
-    }
-
-    return client as Client;
-  }
-
-  throw new Error("Неизвестный тип клиента");
+  return response.json();
 }
 
-export async function loadClients(): Promise<Client[]> {
-  const { data, error } = await supabase
-    .from("clients")
-    .select(
-      `
-      *,
-      orders (
-        id,
-        status,
-        total_price
-      )
-    `,
-    )
-    .order("last_name");
+export async function loadClients(): Promise<ClientWithOrders[]> {
+  const response = await fetch("/api/clients");
 
-  if (error) {
-    console.error("Ошибка при загрузке клиентов:", error);
-    throw new Error(error.message);
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error("Ошибка при загрузке клиентов");
   }
 
-  return data as ClientWithOrders[];
+  return data;
 }
 
 export const getClientById = async (id: string) => {
-  const { data, error } = await supabase
-    .from("clients")
-    .select(
-      `
-      *,
-      orders (
-        id,
-        order_number,
-        status,
-        total_price,
-        order_items (
-          start_date,
-            end_date
-        )
-      )
-    `,
-    )
-    .eq("id", id)
-    .single();
+  const response = await fetch(`/api/clients/${id}`);
 
-  if (error) throw error;
+  if (!response.ok) {
+    throw new Error("Ошибка загрузки клиента");
+  }
 
-  return data;
+  return response.json();
 };
 
 export async function updateClient(
   id: string,
   data: Partial<CreateClientInput>,
 ): Promise<Client> {
-  const { data: updatedClient, error } = await supabase
-    .from("clients")
-    .update(data)
-    .eq("id", id)
-    .select()
-    .single();
+  const response = await fetch(`/api/clients/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
 
-  if (error) {
-    console.error("Ошибка при обновлении клиента:", error);
-    throw new Error(error.message);
+  if (!response.ok) {
+    throw new Error("Ошибка обновления клиента");
   }
 
-  return updatedClient as Client;
+  return response.json();
 }
 
 export async function deleteClient(id: string): Promise<void> {
-  const { error } = await supabase.from("clients").delete().eq("id", id);
+  const response = await fetch(`/api/clients/${id}`, {
+    method: "DELETE",
+  });
 
-  if (error) {
-    console.error("Ошибка при удалении клиента:", error);
-    throw new Error(error.message);
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Ошибка удаления клиента");
   }
 }

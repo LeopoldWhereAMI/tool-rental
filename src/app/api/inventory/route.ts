@@ -1,80 +1,108 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { prisma } from "@/lib/prisma";
+import { formatInventory } from "@/lib/formatters/inventoryFormatter";
+import { auth } from "../../../../auth";
 
-const isVercel = process.env.VERCEL === "1";
-const supabaseUrl = isVercel
-  ? process.env.SUPABASE_URL!
-  : process.env.SUPABASE_URL_PROXY || process.env.SUPABASE_URL!;
+export async function GET() {
+  try {
+    const session = await auth();
 
-const supabaseAdmin = createClient(
-  supabaseUrl,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-);
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Unauthorized",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const userId = searchParams.get("user_id");
-
-  if (!userId) {
-    return NextResponse.json(
-      { success: false, error: "user_id required" },
-      { status: 400 },
-    );
-  }
-
-  const { data, error } = await supabaseAdmin
-    .from("inventory")
-    .select("id, name, category, daily_price, status, image_url, serial_number")
-    .eq("user_id", userId)
-    .order("name");
-
-  if (error) {
-    return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 500 },
-    );
-  }
-
-  const allowedOrigins = [
-    "https://masterskaya1.online",
-    "https://www.masterskaya1.online",
-    "https://rent-app-landing.vercel.app",
-  ];
-
-  const origin = request.headers.get("origin");
-  const corsOrigin =
-    origin && allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
-
-  return NextResponse.json(
-    { success: true, data },
-    {
-      headers: {
-        "Access-Control-Allow-Origin": corsOrigin,
-        "Access-Control-Allow-Methods": "GET, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type",
+    const items = await prisma.inventory.findMany({
+      where: {
+        userId: session.user.id,
       },
-    },
-  );
+      orderBy: {
+        name: "asc",
+      },
+    });
+
+    const inventory = items.map(formatInventory);
+
+    return NextResponse.json({
+      success: true,
+      data: inventory,
+    });
+  } catch (error) {
+    console.error("Ошибка загрузки инвентаря:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Ошибка загрузки инвентаря",
+      },
+      {
+        status: 500,
+      },
+    );
+  }
 }
 
-export async function OPTIONS(request: Request) {
-  const allowedOrigins = [
-    "https://masterskaya1.online",
-    "https://www.masterskaya1.online",
-    "https://rent-app-landing.vercel.app",
-  ];
+export async function POST(request: Request) {
+  try {
+    const session = await auth();
 
-  const origin = request.headers.get("origin");
-  const corsOrigin =
-    origin && allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Не авторизован",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
 
-  return new NextResponse(null, {
-    status: 204,
-    headers: {
-      "Access-Control-Allow-Origin": corsOrigin,
-      "Access-Control-Allow-Methods": "GET, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-      "Access-Control-Max-Age": "86400",
-    },
-  });
+    const body = await request.json();
+
+    const item = await prisma.inventory.create({
+      data: {
+        name: body.name,
+        article: body.article,
+        category: body.category,
+
+        serialNumber: body.serial_number,
+
+        dailyPrice: body.daily_price,
+        purchasePrice: body.purchase_price,
+
+        purchaseDate: body.purchase_date,
+
+        notes: body.notes,
+
+        status: "available",
+
+        userId: session.user.id,
+      },
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: item,
+    });
+  } catch (error) {
+    console.error("Ошибка добавления инструмента:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Ошибка добавления инструмента",
+      },
+      {
+        status: 500,
+      },
+    );
+  }
 }

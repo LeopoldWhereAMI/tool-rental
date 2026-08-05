@@ -23,7 +23,7 @@ export default function YearlyStatCard({
     if (selectedMonth === "all") {
       return data.reduce((acc, curr) => acc + curr.income, 0);
     }
-    return data.find((d) => d.month_index === selectedMonth)?.income || 0;
+    return data.find((d) => d.month === selectedMonth)?.income || 0;
   }, [data, selectedMonth]);
 
   return (
@@ -53,8 +53,8 @@ export default function YearlyStatCard({
             >
               <option value="all">Весь год</option>
               {data.map((m) => (
-                <option key={m.month_index} value={m.month_index}>
-                  {new Date(0, m.month_index - 1).toLocaleString("ru", {
+                <option key={m.month} value={m.month}>
+                  {new Date(0, m.month - 1).toLocaleString("ru", {
                     month: "long",
                   })}
                 </option>

@@ -1,121 +1,120 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { DEFAULT_TEMPLATE } from "@/constants/defaultContract";
+import { auth } from "../../../../auth";
+import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
-    const supabase = await createSupabaseServerClient();
+    const session = await auth();
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user)
+    if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    const { data, error } = await supabase
-      .from("contract_templates")
-      .select("html_content")
-      .eq("user_id", user?.id)
-      .order("updated_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-
-    console.error("Supabase data:", JSON.stringify(data));
-    console.error("Supabase error:", JSON.stringify(error));
-
-    if (error) throw error;
-
-    const content = data?.html_content || DEFAULT_TEMPLATE;
+    const template = await prisma.contractTemplate.findFirst({
+      where: {
+        userId: session.user.id,
+      },
+      orderBy: {
+        updatedAt: "desc",
+      },
+    });
 
     return NextResponse.json({
       success: true,
-      data: content,
+      data: template?.htmlContent || DEFAULT_TEMPLATE,
     });
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Неизвестная ошибка";
-
-    console.error("API ошибка [GET]:", errorMessage);
+    console.error(error);
 
     return NextResponse.json(
-      { success: false, error: "Не удалось получить шаблон" },
-      { status: 500 },
+      {
+        success: false,
+        error: "Не удалось получить шаблон",
+      },
+      {
+        status: 500,
+      },
     );
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createSupabaseServerClient();
+    const session = await auth();
+
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
+
     const { html_content, action } = body;
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const existing = await prisma.contractTemplate.findFirst({
+      where: {
+        userId: session.user.id,
+      },
+    });
 
-    if (!user)
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // restore
 
-    // 👉 ПОЛУЧАЕМ ТЕКУЩИЙ ШАБЛОН
-    const { data: existingTemplate } = await supabase
-      .from("contract_templates")
-      .select(
-        "id, html_content, updated_at, previous_html, previous_updated_at",
-      )
-      .eq("user_id", user.id)
-      .maybeSingle();
-
-    // =========================
-    // 🔁 RESTORE
-    // =========================
     if (action === "restore") {
-      if (!existingTemplate?.previous_html) {
+      if (!existing?.previousHtml) {
         return NextResponse.json({
           success: false,
           error: "Нет предыдущей версии",
         });
       }
 
-      const { error } = await supabase
-        .from("contract_templates")
-        .update({
-          html_content: existingTemplate.previous_html,
-          updated_at: existingTemplate.previous_updated_at,
-        })
-        .eq("user_id", user.id);
+      await prisma.contractTemplate.update({
+        where: {
+          id: existing.id,
+        },
+        data: {
+          htmlContent: existing.previousHtml,
+          updatedAt: existing.previousUpdatedAt || new Date(),
+        },
+      });
 
-      if (error) throw error;
-
-      return NextResponse.json({ success: true });
+      return NextResponse.json({
+        success: true,
+      });
     }
 
-    // =========================
-    // 💾 SAVE
-    // =========================
-    const { error } = await supabase.from("contract_templates").upsert({
-      id: existingTemplate?.id,
-      user_id: user.id,
+    // save
 
-      // 👉 новое значение
-      html_content,
+    await prisma.contractTemplate.upsert({
+      where: {
+        id: existing?.id || "",
+      },
 
-      // 👉 сохраняем старое
-      previous_html: existingTemplate?.html_content || null,
-      previous_updated_at: existingTemplate?.updated_at || null,
+      create: {
+        userId: session.user.id,
+        htmlContent: html_content,
+      },
 
-      updated_at: new Date().toISOString(),
+      update: {
+        htmlContent: html_content,
+        previousHtml: existing?.htmlContent,
+        previousUpdatedAt: existing?.updatedAt,
+      },
     });
 
-    if (error) throw error;
-
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+    });
   } catch (error) {
-    console.error("API ошибка:", error);
+    console.error(error);
+
     return NextResponse.json(
-      { success: false, error: "Ошибка сохранения" },
-      { status: 500 },
+      {
+        success: false,
+        error: "Ошибка сохранения",
+      },
+      {
+        status: 500,
+      },
     );
   }
 }
