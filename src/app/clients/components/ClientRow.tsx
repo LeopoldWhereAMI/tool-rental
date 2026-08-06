@@ -7,12 +7,12 @@ import {
   Eye,
 } from "lucide-react";
 import ActionsMenu from "@/components/ui/ActionsMenu/ActionsMenu";
-import styles from "../page.module.css";
 import { ClientWithOrders } from "@/types";
 import Link from "next/link";
 import Image from "next/image";
 import { getLoyaltyInfo, getOrderPlural } from "@/helpers";
 import { getClientDisplayName } from "@/helpers/clientUtils";
+import styles from "../page.module.css";
 
 interface ClientRowProps {
   client: ClientWithOrders;

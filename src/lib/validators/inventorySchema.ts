@@ -47,7 +47,6 @@ export const inventoryCreateSchema = z.object({
     .nullable(),
 });
 
-// Схема для полной записи из Supabase
 export const inventoryRecordSchema = inventoryCreateSchema.extend({
   id: z.string(),
   created_at: z.string(), // ISO string

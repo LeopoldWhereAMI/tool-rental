@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import styles from "./page.module.css";
 import DeleteConfirmModal from "@/components/ui/MyModal/DeleteConfirmModal";
 import ErrorBlock from "@/components/ui/ErrorBlock/ErrorBlock";
 import { useClients } from "@/hooks/useClients";
@@ -22,6 +21,7 @@ import { useAdaptiveView } from "@/hooks/useAdaptiveView";
 import { getClientDisplayName } from "@/helpers/clientUtils";
 import ListSkeleton from "@/components/ui/Skeleton/ListSkeleton/ListSkeleton";
 import { useFinanceData } from "@/hooks/useFinanceData";
+import styles from "./page.module.css";
 
 export default function ClientsPage() {
   const { openMenuId, anchor, toggleMenu, closeMenu } = useMenuAnchor();

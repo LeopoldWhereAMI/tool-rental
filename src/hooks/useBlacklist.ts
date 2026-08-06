@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { supabase } from "@/lib/supabase/supabase";
 import { useRouter } from "next/navigation";
 import { useSWRConfig } from "swr";
 
@@ -23,19 +22,26 @@ export function useBlacklist() {
 
   const addToBlacklist = async (id: string, reason: string) => {
     setLoading(true);
-    try {
-      const { error } = await supabase
-        .from("clients")
-        .update({
-          is_blacklisted: true,
-          blacklist_reason: reason,
-        })
-        .eq("id", id);
 
-      if (error) throw error;
+    try {
+      const response = await fetch(`/api/clients/${id}/blacklist`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          isBlacklisted: true,
+          reason,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error);
+      }
 
       mutate("clients");
-
       mutate(`client-${id}`);
 
       router.refresh();
@@ -49,16 +55,23 @@ export function useBlacklist() {
 
   const removeFromBlacklist = async (id: string) => {
     setLoading(true);
-    try {
-      const { error } = await supabase
-        .from("clients")
-        .update({
-          is_blacklisted: false,
-          blacklist_reason: null,
-        })
-        .eq("id", id);
 
-      if (error) throw error;
+    try {
+      const response = await fetch(`/api/clients/${id}/blacklist`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          isBlacklisted: false,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error);
+      }
 
       mutate("clients");
       mutate(`client-${id}`);

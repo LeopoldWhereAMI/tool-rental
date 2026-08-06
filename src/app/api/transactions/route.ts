@@ -107,7 +107,16 @@ export async function GET(request: Request) {
     return NextResponse.json({
       success: true,
       data: {
-        transactions,
+        transactions: transactions.map((transaction) => ({
+          id: transaction.id,
+          type: transaction.type,
+          amount: Number(transaction.amount),
+          description: transaction.description,
+          category: transaction.category,
+          status: transaction.status,
+          order_id: transaction.orderId,
+          created_at: transaction.createdAt,
+        })),
         total,
       },
     });

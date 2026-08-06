@@ -1,12 +1,13 @@
 import { UseFormRegister, FieldErrors } from "react-hook-form";
-import { OrderInput } from "@/lib/validators/orderSchema";
+// import { OrderInput } from "@/lib/validators/orderSchema";
 import { Building2, MapPin } from "lucide-react";
 import Spinner from "@/components/ui/Spinner/Spinner";
 import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
+import { ClientFormInput } from "@/lib/validators/clientSchema";
 
 interface CompanyFieldsProps {
-  register: UseFormRegister<OrderInput>;
-  errors: FieldErrors<OrderInput>;
+  register: UseFormRegister<ClientFormInput>;
+  errors: FieldErrors<ClientFormInput>;
   isSearching: boolean;
 }
 
@@ -32,7 +33,7 @@ export const CompanyFields = ({
   isSearching,
 }: CompanyFieldsProps) => {
   const errors = errorsProp as FieldErrors<
-    Extract<OrderInput, { client_type: "legal" }>
+    Extract<ClientFormInput, { client_type: "legal" }>
   >;
 
   return (

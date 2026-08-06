@@ -2,7 +2,6 @@ import useSWR from "swr";
 import {
   loadClients,
   deleteClient as deleteClientService,
-  // createClientInSupabase,
   createClient,
 } from "@/services/clientsService";
 import { ClientWithOrders, CreateClientInput } from "@/types";
@@ -17,7 +16,6 @@ export function useClients() {
 
   const addClient = async (newClient: CreateClientInput) => {
     try {
-      // const client = await createClientInSupabase(newClient);
       const client = await createClient(newClient);
 
       toast.success("Клиент успешно создан");

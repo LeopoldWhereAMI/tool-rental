@@ -12,6 +12,8 @@ import { IndividualFields } from "@/components/Form/AddOrderForm/components/Orde
 import { CompanyFields } from "@/components/Form/AddOrderForm/components/OrderClientSection/CompanyFields";
 import { upsertPassport } from "@/services/passportService";
 import styles from "./CreateClientModal.module.css";
+import { ClientFormInput, clientSchema } from "@/lib/validators/clientSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface CreateClientModalProps {
   isOpen: boolean;
@@ -35,7 +37,9 @@ export default function CreateClientModal({
     setValue,
     control,
     formState: { errors },
-  } = useForm<OrderInput>({
+  } = useForm<ClientFormInput>({
+    resolver: zodResolver(clientSchema),
+    mode: "onBlur",
     defaultValues: {
       client_type: "individual",
     },
@@ -76,7 +80,7 @@ export default function CreateClientModal({
 
   if (!isOpen) return null;
 
-  const onSubmit = async (data: OrderInput) => {
+  const onSubmit = async (data: ClientFormInput) => {
     setLoading(true);
 
     let submitData: CreateClientInput;

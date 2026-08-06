@@ -5,18 +5,19 @@ import {
   useWatch,
   Control,
 } from "react-hook-form";
-import { OrderInput } from "@/lib/validators/orderSchema";
+// import { OrderInput } from "@/lib/validators/orderSchema";
 import { Contact, MapPin } from "lucide-react";
 import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 import { suggestAddress, suggestFio, suggestFmsUnit } from "@/services/dadata";
 import { useDadataSuggestions } from "@/hooks/useDadataSuggestions";
 import { SuggestionField } from "@/components/ui/SuggestionField/SuggestionField";
+import { ClientFormInput } from "@/lib/validators/clientSchema";
 
 interface IndividualFieldsProps {
-  register: UseFormRegister<OrderInput>;
-  errors: FieldErrors<OrderInput>;
-  control: Control<OrderInput>;
-  setValue: UseFormSetValue<OrderInput>;
+  register: UseFormRegister<ClientFormInput>;
+  errors: FieldErrors<ClientFormInput>;
+  control: Control<ClientFormInput>;
+  setValue: UseFormSetValue<ClientFormInput>;
 }
 
 export const IndividualFields = ({
@@ -26,7 +27,7 @@ export const IndividualFields = ({
   setValue,
 }: IndividualFieldsProps) => {
   const errors = errorsProp as FieldErrors<
-    Extract<OrderInput, { client_type: "individual" }>
+    Extract<ClientFormInput, { client_type: "individual" }>
   >;
 
   if (!control) {

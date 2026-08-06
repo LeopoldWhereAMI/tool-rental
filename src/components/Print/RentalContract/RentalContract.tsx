@@ -2,10 +2,9 @@
 
 import { useEffect, useState, useMemo } from "react";
 import Handlebars from "handlebars";
-import styles from "./RentalContract.module.css";
 import { ContractItem, ContractOrderData } from "@/types";
 import { priceToWords } from "@/helpers";
-// import { supabase } from "@/lib/supabase/supabase";
+import styles from "./RentalContract.module.css";
 
 Handlebars.registerHelper("eq", function (a, b) {
   return String(a) === String(b);
@@ -24,17 +23,6 @@ const RentalContract = ({ items, orderData, onReady }: Props) => {
   useEffect(() => {
     const loadTemplate = async () => {
       try {
-        // const {
-        //   data: { session },
-        // } = await supabase.auth.getSession();
-
-        // const res = await fetch("/api/contract-template", {
-        //   headers: session
-        //     ? {
-        //         Authorization: `Bearer ${session.access_token}`,
-        //       }
-        //     : {},
-        // });
         const res = await fetch("/api/contract-template");
 
         const data = await res.json();

@@ -4,7 +4,6 @@ import { InventoryCreateInput } from "@/lib/validators/inventorySchema";
 import { addInventory } from "@/services/inventoryService";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { PostgrestError } from "@supabase/supabase-js";
 import AddInventoryForm from "@/components/Form/InventoryForm/AddInventoryForm";
 import PageContainer from "@/components/PageContainer/PageContainer";
 import styles from "./page.module.css";
@@ -30,8 +29,9 @@ export default function AddInventoryPage() {
         router.push("/inventory");
       }
     } catch (err: unknown) {
-      const error = err as PostgrestError;
-      if (error.code === "23505") {
+      const error = err as { code?: string };
+
+      if (error.code === "P2002") {
         toast.error(`Артикул "${data.article}" уже занят!`);
       } else {
         toast.error("Ошибка при сохранении");
