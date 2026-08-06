@@ -1,33 +1,4 @@
-import {
-  // Client,
-  OrderDetailsUI,
-  OrderUI,
-  CreateOrderParams,
-  // ClientPreview,
-} from "@/types";
-
-// ✅ Вспомогательная функция для преобразования Client в ClientPreview
-// function toClientPreview(client: Client | null): ClientPreview {
-//   if (!client) {
-//     return {
-//       id: "",
-//       client_type: "individual",
-//       display_name: "Клиент не указан",
-//     };
-//   }
-
-//   const displayName =
-//     client.client_type === "individual"
-//       ? `${client.last_name || ""} ${client.first_name || ""}`.trim()
-//       : client.company_name || "Компания не указана";
-
-//   return {
-//     id: client.id,
-//     phone: client.phone,
-//     client_type: client.client_type,
-//     display_name: displayName,
-//   };
-// }
+import { OrderDetailsUI, OrderUI, CreateOrderParams } from "@/types";
 
 export const createOrder = async (orderData: CreateOrderParams) => {
   const response = await fetch("/api/orders", {
@@ -161,7 +132,7 @@ export const returnOrderItem = async (orderId: string, itemId: string) => {
     throw new Error(result.error);
   }
 
-  return result.data;
+  return result;
 };
 
 export async function cancelItemReturn(orderId: string, itemId: string) {

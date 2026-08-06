@@ -4,9 +4,11 @@ import { auth } from "../auth";
 export default auth((request) => {
   const { pathname } = request.nextUrl;
 
-  const isLoginPage = pathname === "/login";
+  const publicRoutes = ["/login", "/auth/reset-password"];
 
-  if (!request.auth && !isLoginPage) {
+  const isPublicRoute = publicRoutes.includes(pathname);
+
+  if (!request.auth && !isPublicRoute) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 

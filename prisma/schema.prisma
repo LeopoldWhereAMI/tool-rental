@@ -37,7 +37,37 @@ model User {
   transactions      Transaction[]
   contractTemplates ContractTemplate[]
 
+  passwordResetTokens PasswordResetToken[]
+  profile             Profile?
+
   @@map("users")
+}
+
+model PasswordResetToken {
+  id String @id @default(uuid())
+
+  userId String @map("user_id")
+
+  token String @unique
+
+  expiresAt DateTime @map("expires_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("password_reset_tokens")
+}
+
+model Profile {
+  id        String   @id
+  fullName  String?  @map("full_name")
+  avatarUrl String?  @map("avatar_url")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  user User @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  @@map("profiles")
 }
 
 model Client {

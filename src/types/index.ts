@@ -462,12 +462,12 @@ export type ContractOrderData = {
 // ***6. Типы для аутентификации и профилей***
 // ============================================================================
 
-export interface UserProfile {
+export type UserProfile = {
   id: string;
-  full_name: string | null;
-  avatar_url: string | null;
-  updated_at: string | null;
-}
+  fullName: string | null;
+  avatarUrl: string | null;
+  updatedAt: Date;
+};
 
 export type ViewMode = "table" | "cards";
 

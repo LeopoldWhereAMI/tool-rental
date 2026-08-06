@@ -1,4 +1,3 @@
-// import { supabase } from "@/lib/supabase/supabase";
 import { Client, ClientWithOrders, CreateClientInput } from "@/types";
 
 export async function createClient(data: CreateClientInput) {

@@ -1,23 +1,32 @@
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+// import { createSupabaseServerClient } from "@/lib/supabase/server";
 import styles from "./page.module.css";
 import { redirect } from "next/navigation";
 import { getProfile } from "@/services/profileService";
 import ProfileNameForm from "./components/ProfileNameForm/ProfileNameForm";
 import RentalReceiptEditor from "@/components/Print/RentalReceipt/RentalReceiptEditor/RentalReceiptEditor";
 import AvatarUploader from "./components/AvatarUploader/AvatarUploader";
+import { auth } from "../../../../auth";
 
 export default async function ProfilePage() {
-  const supabase = await createSupabaseServerClient();
+  // const supabase = await createSupabaseServerClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // const {
+  //   data: { user },
+  // } = await supabase.auth.getUser();
 
-  if (!user) {
+  // if (!user) {
+  //   redirect("/login");
+  // }
+
+  // const profile = await getProfile(user.id);
+
+  const session = await auth();
+
+  if (!session?.user?.id) {
     redirect("/login");
   }
 
-  const profile = await getProfile(user.id);
+  const profile = await getProfile(session.user.id);
 
   return (
     <div className={styles.container}>
@@ -37,7 +46,7 @@ export default async function ProfilePage() {
         <section className={styles.profileSection}>
           <div className={`${styles.card} ${styles.nameCard}`}>
             <h2 className={styles.cardTitle}>Редактирование имени</h2>
-            <ProfileNameForm defaultName={profile?.full_name ?? ""} />
+            <ProfileNameForm defaultName={profile?.fullName ?? ""} />
           </div>
         </section>
       </div>

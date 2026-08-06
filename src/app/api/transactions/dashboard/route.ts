@@ -31,7 +31,14 @@ function getMonthlyProfit(
         return sum + amount;
       }
 
-      return sum - amount;
+      if (
+        transaction.type === "expense" &&
+        transaction.category !== "Withdraw"
+      ) {
+        return sum - amount;
+      }
+
+      return sum;
     }, 0);
 }
 

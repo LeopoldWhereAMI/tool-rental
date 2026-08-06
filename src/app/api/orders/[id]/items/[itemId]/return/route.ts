@@ -54,6 +54,16 @@ export async function PATCH(
         },
       });
 
+      const orderItems = await tx.orderItem.findMany({
+        where: {
+          orderId: oldItem.orderId,
+        },
+      });
+
+      const allReturned = orderItems.every(
+        (item) => item.itemStatus === OrderItemStatus.returned,
+      );
+
       if (oldItem.inventoryId) {
         // rented/active -> returned
         // освобождаем инструмент
@@ -88,12 +98,16 @@ export async function PATCH(
         }
       }
 
-      return updatedItem;
+      return {
+        item: updatedItem,
+        allItemsReturned: allReturned,
+      };
     });
 
     return NextResponse.json({
       success: true,
-      data: item,
+      data: item.item,
+      allItemsReturned: item.allItemsReturned,
     });
   } catch (error) {
     console.error("Ошибка обновления возврата инструмента:", error);

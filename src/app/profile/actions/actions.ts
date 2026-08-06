@@ -3,6 +3,7 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { updateProfile } from "@/services/profileService";
 import { revalidatePath } from "next/cache";
+import { auth } from "../../../../auth";
 
 type UpdateProfileResult =
   | { success: true }
@@ -12,14 +13,23 @@ export async function updateProfileAction(
   formData: FormData,
 ): Promise<UpdateProfileResult> {
   try {
-    const supabase = await createSupabaseServerClient();
+    // const supabase = await createSupabaseServerClient();
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    // const {
+    //   data: { user },
+    // } = await supabase.auth.getUser();
 
-    if (!user) {
-      return { success: false, error: "Unauthorized" };
+    // if (!user) {
+    //   return { success: false, error: "Unauthorized" };
+    // }
+
+    const session = await auth();
+
+    if (!session?.user?.id) {
+      return {
+        success: false,
+        error: "Unauthorized",
+      };
     }
 
     const fullName = formData.get("fullName")?.toString().trim();
@@ -28,8 +38,8 @@ export async function updateProfileAction(
       return { success: false, error: "Имя обязательно" };
     }
 
-    await updateProfile(user.id, fullName);
-
+    // await updateProfile(user.id, fullName);
+    await updateProfile(session.user.id, fullName);
     revalidatePath("/profile");
 
     return { success: true };

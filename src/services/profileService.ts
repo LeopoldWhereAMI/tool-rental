@@ -1,36 +1,81 @@
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+// import { createSupabaseServerClient } from "@/lib/supabase/server";
+
+// export async function getProfile(userId: string) {
+//   const supabase = await createSupabaseServerClient();
+
+//   const { data, error } = await supabase
+//     .from("profiles")
+//     .select("*")
+//     .eq("id", userId)
+//     .single();
+
+//   if (error) throw error;
+
+//   return data;
+// }
+
+// export async function updateProfile(userId: string, fullName: string) {
+//   const supabase = await createSupabaseServerClient();
+
+//   const { data, error } = await supabase
+//     .from("profiles")
+//     .upsert(
+//       {
+//         id: userId,
+//         full_name: fullName,
+//         updated_at: new Date().toISOString(),
+//       },
+//       { onConflict: "id" },
+//     )
+//     .select()
+//     .single();
+
+//   if (error) throw error;
+
+//   return data;
+// }
+
+import { prisma } from "@/lib/prisma";
 
 export async function getProfile(userId: string) {
-  const supabase = await createSupabaseServerClient();
+  const profile = await prisma.profile.findUnique({
+    where: {
+      id: userId,
+    },
+  });
 
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", userId)
-    .single();
+  if (!profile) {
+    throw new Error("Профиль не найден");
+  }
 
-  if (error) throw error;
-
-  return data;
+  return profile;
 }
 
 export async function updateProfile(userId: string, fullName: string) {
-  const supabase = await createSupabaseServerClient();
+  return prisma.profile.upsert({
+    where: {
+      id: userId,
+    },
 
-  const { data, error } = await supabase
-    .from("profiles")
-    .upsert(
-      {
-        id: userId,
-        full_name: fullName,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "id" },
-    )
-    .select()
-    .single();
+    create: {
+      id: userId,
+      fullName,
+    },
 
-  if (error) throw error;
+    update: {
+      fullName,
+    },
+  });
+}
 
-  return data;
+export async function updateAvatar(userId: string, avatarUrl: string | null) {
+  return prisma.profile.update({
+    where: {
+      id: userId,
+    },
+
+    data: {
+      avatarUrl,
+    },
+  });
 }

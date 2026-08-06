@@ -1,15 +1,13 @@
 "use client";
 
 import { useState } from "react";
-// import { loginAction } from "@/app/actions/auth";
 import { toast } from "sonner";
-import styles from "./page.module.css";
 import { AlertCircle, CheckCircle } from "lucide-react";
 import PageContainer from "@/components/PageContainer/PageContainer";
 import { signUpAction } from "../actions/serverAuth";
-// import { supabase } from "@/lib/supabase/supabase";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import styles from "./page.module.css";
 
 interface FormErrors {
   email?: string;
@@ -28,32 +26,39 @@ export default function LoginPage() {
   const [successMessage, setSuccessMessage] = useState("");
   const [resetSent, setResetSent] = useState(false);
   const router = useRouter();
-  // const handleForgotPassword = async () => {
-  //   if (!email) {
-  //     toast.error("Введите email для сброса пароля");
-  //     return;
-  //   }
-
-  //   setLoading(true);
-  //   try {
-  //     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-  //       redirectTo: `${window.location.origin}/auth/update-password`,
-  //     });
-
-  //     if (error) throw error;
-
-  //     setResetSent(true);
-  //     toast.success("Письмо отправлено — проверьте почту");
-  //   } catch (error) {
-  //     const msg = error instanceof Error ? error.message : "Ошибка";
-  //     toast.error("Ошибка: " + msg);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const handleForgotPassword = async () => {
-    toast.info("Восстановление пароля будет добавлено позже");
+    if (!email) {
+      toast.error("Введите email");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+
+      toast.success("Письмо отправлено. Проверьте почту");
+      setResetSent(true);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Ошибка отправки");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const validateEmail = (emailValue: string): boolean => {

@@ -50,8 +50,13 @@ export function OrderItemRow({
     setLoading(true);
     try {
       if (modalType === "return") {
-        await returnOrderItem(orderId, item.id);
-        toast.success("Инструмент возвращён");
+        const result = await returnOrderItem(orderId, item.id);
+
+        if (result.allItemsReturned) {
+          toast.info("Все инструменты возвращены. Не забудьте закрыть заказ.");
+        } else {
+          toast.success("Инструмент возвращён");
+        }
       } else {
         await cancelItemReturn(orderId, item.id);
         toast.success("Возврат отменён");
