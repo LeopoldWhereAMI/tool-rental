@@ -7,8 +7,8 @@ import {
 import { ImagePlus, Loader2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import styles from "./ImageUploader.module.css";
 import Image from "next/image";
+import styles from "./ImageUploader.module.css";
 
 type ImageUploaderProps = {
   inventoryId: string;

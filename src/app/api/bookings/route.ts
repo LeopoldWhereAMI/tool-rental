@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
 import { formatBooking } from "@/lib/formatters/bookingFormatter";
 import { auth } from "../../../../auth";
 
