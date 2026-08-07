@@ -6,13 +6,16 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import AddInventoryForm from "@/components/Form/InventoryForm/AddInventoryForm";
 import PageContainer from "@/components/PageContainer/PageContainer";
-import styles from "./page.module.css";
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import { useInventory } from "@/hooks/useInventory";
+import { useState } from "react";
+import styles from "./page.module.css";
+import ImageUploader from "@/components/ui/ImageUploader/ImageUploader";
 
 export default function AddInventoryPage() {
   const router = useRouter();
   const { items: existingItems, refresh } = useInventory();
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const breadcrumbItems = [
     { label: "Инвентарь", href: "/inventory" },
@@ -21,7 +24,10 @@ export default function AddInventoryPage() {
 
   const onSubmit = async (data: InventoryCreateInput) => {
     try {
-      const result = await addInventory(data);
+      const result = await addInventory({
+        ...data,
+        image_url: imageUrl,
+      });
 
       if (result) {
         toast.success("Инструмент добавлен!");
@@ -68,6 +74,12 @@ export default function AddInventoryPage() {
           </div>
         </div>
       </div>
+      <ImageUploader
+        currentImageUrl={imageUrl}
+        onUploadSuccess={async (url) => {
+          setImageUrl(url);
+        }}
+      />
       <AddInventoryForm
         onSubmit={onSubmit}
         existingItems={existingItems}
@@ -80,6 +92,7 @@ export default function AddInventoryPage() {
           purchase_date: null,
           notes: null,
           serial_number: null,
+          image_url: null,
         }}
       />
     </PageContainer>

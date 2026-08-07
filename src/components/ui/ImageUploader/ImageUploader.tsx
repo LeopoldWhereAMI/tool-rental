@@ -1,7 +1,8 @@
 "use client";
 
 import {
-  deleteImageByUrl,
+  deleteInventoryImage,
+  // deleteImageByUrl,
   uploadInventoryImage,
 } from "@/services/storageService";
 import { ImagePlus, Loader2, X } from "lucide-react";
@@ -65,7 +66,7 @@ export default function ImageUploader({
     if (preview) {
       try {
         setUploading(true);
-        await deleteImageByUrl(preview);
+        await deleteInventoryImage(preview);
         setPreview(null);
         await onUploadSuccess("");
         if (fileInputRef.current) {

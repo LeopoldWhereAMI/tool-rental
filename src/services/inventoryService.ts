@@ -28,28 +28,14 @@ export async function getInventoryItem(id: string): Promise<Inventory> {
 // Редактирование инструмента
 export async function updateInventory(
   id: string,
-  data: InventoryCreateInput,
+  data: Partial<InventoryCreateInput>,
 ): Promise<Inventory> {
   const response = await fetch(`/api/inventory/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      name: data.name,
-      category: data.category,
-
-      serial_number: data.serial_number,
-
-      daily_price: data.daily_price,
-      purchase_price: data.purchase_price,
-
-      purchase_date: data.purchase_date
-        ? new Date(data.purchase_date).getTime()
-        : null,
-
-      notes: data.notes,
-    }),
+    body: JSON.stringify(data),
   });
 
   if (!response.ok) {
@@ -94,6 +80,7 @@ export async function addInventory(item: InventoryCreateInput) {
         : null,
 
       notes: item.notes,
+      image_url: item.image_url ?? null,
     }),
   });
 
@@ -205,3 +192,21 @@ export const processOrderMaintenance = async (
 
   return Promise.all(maintenancePromises);
 };
+
+export async function updateInventoryImage(id: string, imageUrl: string) {
+  const response = await fetch(`/api/inventory/${id}/image`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      imageUrl,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Не удалось обновить изображение");
+  }
+
+  return response.json();
+}

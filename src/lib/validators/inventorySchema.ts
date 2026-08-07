@@ -45,6 +45,8 @@ export const inventoryCreateSchema = z.object({
     .max(1000, "Примечание не должно превышать 1000 символов")
     .optional()
     .nullable(),
+
+  image_url: z.string().nullable().optional(),
 });
 
 export const inventoryRecordSchema = inventoryCreateSchema.extend({

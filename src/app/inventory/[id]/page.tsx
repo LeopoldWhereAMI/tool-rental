@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
-import styles from "./page.module.css";
 import { useInventoryItem } from "@/hooks/useInventoryItem";
 import { resetMaintenanceCounter } from "@/services/inventoryService";
 import {
@@ -30,6 +29,7 @@ import PageContainer from "@/components/PageContainer/PageContainer";
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import Image from "next/image";
 import Calendar from "@/components/calendar/Calendar";
+import styles from "./page.module.css";
 
 export default function InventoryItemPage() {
   const [isMaintenanceModalOpen, setIsMaintenanceModalOpen] = useState(false);
@@ -141,7 +141,7 @@ export default function InventoryItemPage() {
                     isImageLoading ? styles.imageLoading : styles.imageLoaded
                   }`}
                   onLoad={() => setIsImageLoading(false)}
-                  unoptimized
+                  // unoptimized
                 />
               ) : (
                 <div className={styles.imagePlaceholder}>

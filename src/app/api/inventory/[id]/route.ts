@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { formatInventory } from "@/lib/formatters/inventoryFormatter";
 import { auth } from "../../../../../auth";
+import { Prisma } from "@/generated/prisma/client";
 
 export async function GET(
   _request: Request,
@@ -61,70 +62,6 @@ export async function GET(
     );
   }
 }
-
-// export async function DELETE(
-//   _request: Request,
-//   { params }: { params: Promise<{ id: string }> },
-// ) {
-//   try {
-//     const session = await auth();
-
-//     if (!session?.user?.id) {
-//       return NextResponse.json(
-//         {
-//           success: false,
-//           error: "Unauthorized",
-//         },
-//         {
-//           status: 401,
-//         },
-//       );
-//     }
-
-//     const { id } = await params;
-
-//     const item = await prisma.inventory.findFirst({
-//       where: {
-//         id,
-//         userId: session.user.id,
-//       },
-//     });
-
-//     if (!item) {
-//       return NextResponse.json(
-//         {
-//           success: false,
-//           error: "Инструмент не найден",
-//         },
-//         {
-//           status: 404,
-//         },
-//       );
-//     }
-
-//     await prisma.inventory.delete({
-//       where: {
-//         id,
-//       },
-//     });
-
-//     return NextResponse.json({
-//       success: true,
-//     });
-//   } catch (error) {
-//     console.error("Ошибка удаления:", error);
-
-//     return NextResponse.json(
-//       {
-//         success: false,
-//         error: "Ошибка удаления инструмента",
-//       },
-//       {
-//         status: 500,
-//       },
-//     );
-//   }
-// }
 
 export async function DELETE(
   _request: Request,
@@ -226,31 +163,34 @@ export async function PATCH(
 
     const body = await request.json();
 
-    const {
-      name,
-      category,
-      status,
-      serial_number,
-      daily_price,
-      purchase_price,
-      purchase_date,
-      notes,
-    } = body;
+    const data: Prisma.InventoryUpdateInput = {};
+
+    if (body.name !== undefined) data.name = body.name;
+
+    if (body.category !== undefined) data.category = body.category;
+
+    if (body.status !== undefined) data.status = body.status;
+
+    if (body.serial_number !== undefined)
+      data.serialNumber = body.serial_number;
+
+    if (body.daily_price !== undefined) data.dailyPrice = body.daily_price;
+
+    if (body.purchase_price !== undefined)
+      data.purchasePrice = body.purchase_price;
+
+    if (body.purchase_date !== undefined)
+      data.purchaseDate = body.purchase_date;
+
+    if (body.notes !== undefined) data.notes = body.notes;
+
+    if (body.imageUrl !== undefined) data.imageUrl = body.imageUrl;
 
     const item = await prisma.inventory.update({
       where: {
         id,
       },
-      data: {
-        name,
-        category,
-        status,
-        serialNumber: serial_number,
-        dailyPrice: daily_price,
-        purchasePrice: purchase_price,
-        purchaseDate: purchase_date,
-        notes,
-      },
+      data,
     });
 
     return NextResponse.json({

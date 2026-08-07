@@ -1,6 +1,6 @@
-import { supabase } from "@/lib/supabase/supabase";
 import { toast } from "sonner";
 import ImageUploader from "@/components/ui/ImageUploader/ImageUploader";
+import { updateInventoryImage } from "@/services/inventoryService";
 
 type ItemGalleryProps = {
   id: string;
@@ -15,12 +15,7 @@ export default function ItemGallery({
 }: ItemGalleryProps) {
   const handleImageUpdate = async (newUrl: string) => {
     try {
-      const { error } = await supabase
-        .from("inventory")
-        .update({ image_url: newUrl })
-        .eq("id", id);
-
-      if (error) throw error;
+      await updateInventoryImage(id, newUrl);
       await onMutate();
 
       toast.success("Фото инструмента обновлено");

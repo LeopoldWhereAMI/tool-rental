@@ -82,6 +82,8 @@ export async function POST(request: Request) {
 
         notes: body.notes,
 
+        imageUrl: body.image_url,
+
         status: "available",
 
         userId: session.user.id,
