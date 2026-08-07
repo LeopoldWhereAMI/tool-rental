@@ -28,6 +28,7 @@ export default function ItemGallery({
   return (
     <section>
       <ImageUploader
+        inventoryId={id}
         currentImageUrl={imageUrl}
         onUploadSuccess={handleImageUpdate}
       />

@@ -10,7 +10,6 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import { useInventory } from "@/hooks/useInventory";
 import { useState } from "react";
 import styles from "./page.module.css";
-import ImageUploader from "@/components/ui/ImageUploader/ImageUploader";
 
 export default function AddInventoryPage() {
   const router = useRouter();
@@ -74,12 +73,7 @@ export default function AddInventoryPage() {
           </div>
         </div>
       </div>
-      <ImageUploader
-        currentImageUrl={imageUrl}
-        onUploadSuccess={async (url) => {
-          setImageUrl(url);
-        }}
-      />
+
       <AddInventoryForm
         onSubmit={onSubmit}
         existingItems={existingItems}

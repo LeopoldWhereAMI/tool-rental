@@ -2,7 +2,6 @@
 
 import {
   deleteInventoryImage,
-  // deleteImageByUrl,
   uploadInventoryImage,
 } from "@/services/storageService";
 import { ImagePlus, Loader2, X } from "lucide-react";
@@ -12,11 +11,13 @@ import styles from "./ImageUploader.module.css";
 import Image from "next/image";
 
 type ImageUploaderProps = {
+  inventoryId: string;
   currentImageUrl?: string | null;
   onUploadSuccess: (url: string) => Promise<void>;
 };
 
 export default function ImageUploader({
+  inventoryId,
   onUploadSuccess,
   currentImageUrl,
 }: ImageUploaderProps) {
@@ -63,12 +64,16 @@ export default function ImageUploader({
   const handleRemove = async (e: React.MouseEvent) => {
     e.preventDefault();
 
+    if (!inventoryId) {
+      throw new Error("Нет ID инструмента");
+    }
+
     if (preview) {
       try {
         setUploading(true);
-        await deleteInventoryImage(preview);
+        await deleteInventoryImage(inventoryId);
         setPreview(null);
-        await onUploadSuccess("");
+
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
