@@ -7,8 +7,7 @@ import {
 import { Building2, MapPin } from "lucide-react";
 import Spinner from "@/components/ui/Spinner/Spinner";
 import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
-import { ClientFormInput, clientSchema } from "@/lib/validators/clientSchema";
-import z from "zod";
+import { ClientFormInput } from "@/lib/validators/clientSchema";
 
 type CompanyClientErrors = FieldErrors<
   Extract<ClientFormInput, { client_type: "legal" }>
