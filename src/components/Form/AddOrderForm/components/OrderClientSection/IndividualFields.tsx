@@ -5,19 +5,21 @@ import {
   useWatch,
   Control,
 } from "react-hook-form";
-// import { OrderInput } from "@/lib/validators/orderSchema";
 import { Contact, MapPin } from "lucide-react";
 import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 import { suggestAddress, suggestFio, suggestFmsUnit } from "@/services/dadata";
 import { useDadataSuggestions } from "@/hooks/useDadataSuggestions";
 import { SuggestionField } from "@/components/ui/SuggestionField/SuggestionField";
-import { ClientFormInput } from "@/lib/validators/clientSchema";
+import { ClientFormInput, clientSchema } from "@/lib/validators/clientSchema";
+import z from "zod";
+
+type ClientFormValues = z.input<typeof clientSchema>;
 
 interface IndividualFieldsProps {
-  register: UseFormRegister<ClientFormInput>;
+  register: UseFormRegister<ClientFormValues>;
   errors: FieldErrors<ClientFormInput>;
-  control: Control<ClientFormInput>;
-  setValue: UseFormSetValue<ClientFormInput>;
+  control: Control<ClientFormValues, unknown, ClientFormInput>;
+  setValue: UseFormSetValue<ClientFormValues>;
 }
 
 export const IndividualFields = ({

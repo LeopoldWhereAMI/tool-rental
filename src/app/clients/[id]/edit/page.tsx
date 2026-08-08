@@ -8,31 +8,44 @@ import { toast } from "sonner";
 import { User, Save, Info, Building } from "lucide-react";
 import PageContainer from "@/components/PageContainer/PageContainer";
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
-import { OrderInput } from "@/lib/validators/orderSchema";
 import { CompanyFields } from "@/components/Form/AddOrderForm/components/OrderClientSection/CompanyFields";
 import { IndividualFields } from "@/components/Form/AddOrderForm/components/OrderClientSection/IndividualFields";
 import { getPassport, upsertPassport } from "@/services/passportService";
 import styles from "./page.module.css";
+import { ClientFormInput, clientSchema } from "@/lib/validators/clientSchema";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function EditClientPage() {
   const { id } = useParams();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [isSearching] = useState(false); // Для ИНН/названия компании
+  const [isSearching] = useState(false);
 
-  // Инициализируем react-hook-form
+  // Тип "на входе" формы (то, что реально вводит пользователь, до трансформаций)
+  type ClientFormValues = z.input<typeof clientSchema>;
+
   const {
     register,
     handleSubmit,
     reset,
     watch,
-    control, // <-- Должно быть здесь
+    control,
     setValue,
     formState: { errors },
-  } = useForm<OrderInput>({
+  } = useForm<ClientFormValues, unknown, ClientFormInput>({
+    resolver: zodResolver(clientSchema),
     defaultValues: {
       client_type: "individual", // По умолчанию физлицо
+      first_name: "",
+      last_name: "",
+      phone: "",
+      passport_series: "",
+      passport_number: "",
+      issued_by: "",
+      issue_date: "",
+      registration_address: "",
     },
   });
 
@@ -105,7 +118,7 @@ export default function EditClientPage() {
     loadClient();
   }, [id, reset]);
 
-  const onSubmit: SubmitHandler<OrderInput> = async (data) => {
+  const onSubmit: SubmitHandler<ClientFormInput> = async (data) => {
     setSaving(true);
 
     try {

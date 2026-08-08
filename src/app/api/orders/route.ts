@@ -120,6 +120,8 @@ export async function POST(request: Request) {
           create: body.items.map((item) => ({
             inventoryId: item.is_custom ? null : item.id,
 
+            userId: session.user.id,
+
             startDate: new Date(item.start_date),
             endDate: new Date(item.end_date),
 

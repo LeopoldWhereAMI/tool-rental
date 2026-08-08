@@ -9,8 +9,9 @@ import {
   UseFormClearErrors,
   Control,
 } from "react-hook-form";
-import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 import { useInventoryBookings } from "@/hooks/useInventoryBookings";
+import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
+import { useRentedInventory } from "@/hooks/useRentedInventory";
 
 type Props = {
   index: number;
@@ -36,6 +37,7 @@ export default function OrderInventorySelect({
 
   const allInventoryIds = inventory.map((item) => item.id);
   const bookingStatuses = useInventoryBookings(allInventoryIds);
+  const { rentedIds } = useRentedInventory();
 
   return (
     <select
@@ -71,6 +73,10 @@ export default function OrderInventorySelect({
         const isSelectedHere = watchedItems?.[index]?.inventory_id === item.id;
 
         if (isAlreadySelected && !isSelectedHere) return null;
+
+        if (rentedIds.includes(item.id) && !isSelectedHere) {
+          return null;
+        }
 
         const bookingStatus = bookingStatuses[item.id];
         const isBooked = bookingStatus?.has_booking;

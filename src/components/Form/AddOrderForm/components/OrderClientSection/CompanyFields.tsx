@@ -1,12 +1,14 @@
 import { UseFormRegister, FieldErrors } from "react-hook-form";
-// import { OrderInput } from "@/lib/validators/orderSchema";
 import { Building2, MapPin } from "lucide-react";
 import Spinner from "@/components/ui/Spinner/Spinner";
 import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
-import { ClientFormInput } from "@/lib/validators/clientSchema";
+import { ClientFormInput, clientSchema } from "@/lib/validators/clientSchema";
+import z from "zod";
+
+type ClientFormValues = z.input<typeof clientSchema>;
 
 interface CompanyFieldsProps {
-  register: UseFormRegister<ClientFormInput>;
+  register: UseFormRegister<ClientFormValues>;
   errors: FieldErrors<ClientFormInput>;
   isSearching: boolean;
 }

@@ -37,7 +37,6 @@ export default function TransactionTable({
         </thead>
         <tbody>
           {transactions.map((transaction) => {
-            console.log("TRANSACTION DATE:", transaction.created_at);
             const isCancelled = transaction.status === "cancelled";
             const type = TYPE_CONFIG[transaction.type];
             const displayColor = isCancelled ? "#92a0c9" : type.color;
