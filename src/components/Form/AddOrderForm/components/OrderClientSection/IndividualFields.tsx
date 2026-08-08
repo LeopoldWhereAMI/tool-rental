@@ -4,53 +4,55 @@ import {
   UseFormSetValue,
   useWatch,
   Control,
+  FieldValues,
+  Path,
 } from "react-hook-form";
-import { Contact, MapPin } from "lucide-react";
-import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
-import { suggestAddress, suggestFio, suggestFmsUnit } from "@/services/dadata";
+import { ClientFormInput } from "@/lib/validators/clientSchema";
 import { useDadataSuggestions } from "@/hooks/useDadataSuggestions";
+import { suggestAddress, suggestFio, suggestFmsUnit } from "@/services/dadata";
+import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 import { SuggestionField } from "@/components/ui/SuggestionField/SuggestionField";
-import { ClientFormInput, clientSchema } from "@/lib/validators/clientSchema";
-import z from "zod";
+import { Contact, MapPin } from "lucide-react";
 
-type ClientFormValues = z.input<typeof clientSchema>;
+// Выносим тип отдельно — никакой многострочной дженерик-конструкции в теле функции
+type IndividualClientErrors = FieldErrors<
+  Extract<ClientFormInput, { client_type: "individual" }>
+>;
 
-interface IndividualFieldsProps {
-  register: UseFormRegister<ClientFormValues>;
-  errors: FieldErrors<ClientFormInput>;
-  control: Control<ClientFormValues, unknown, ClientFormInput>;
-  setValue: UseFormSetValue<ClientFormValues>;
+interface IndividualFieldsProps<TFieldValues extends FieldValues> {
+  register: UseFormRegister<TFieldValues>;
+  errors: FieldErrors<TFieldValues>;
+  control: Control<TFieldValues>;
+  setValue: UseFormSetValue<TFieldValues>;
 }
 
-export const IndividualFields = ({
+export function IndividualFields<TFieldValues extends FieldValues>({
   register,
   errors: errorsProp,
   control,
   setValue,
-}: IndividualFieldsProps) => {
-  const errors = errorsProp as FieldErrors<
-    Extract<ClientFormInput, { client_type: "individual" }>
-  >;
-
-  if (!control) {
-    throw new Error(
-      "IndividualFields must be used within a Hook Form context or receive control prop",
-    );
-  }
+}: IndividualFieldsProps<TFieldValues>) {
+  const errors = errorsProp as unknown as IndividualClientErrors;
 
   const formValues = useWatch({
     control,
-    // Перечисляем только те поля, которые триггерят подсказки
     name: [
       "registration_address",
       "issued_by",
       "last_name",
       "first_name",
       "middle_name",
-    ],
+    ] as Path<TFieldValues>[],
   });
 
-  const [regAddr, issuedBy, lastName, firstName, middleName] = formValues;
+  const [regAddr, issuedBy, lastName, firstName, middleName] =
+    formValues as unknown as [
+      string,
+      string,
+      string,
+      string,
+      string | undefined,
+    ];
 
   const {
     suggestions: addrSugg,
@@ -58,7 +60,7 @@ export const IndividualFields = ({
     handleSelect: onAddrSelect,
   } = useDadataSuggestions({
     searchValue: regAddr,
-    fieldName: "registration_address",
+    fieldName: "registration_address" as Path<TFieldValues>,
     setValue,
     suggestFn: suggestAddress,
   });
@@ -69,35 +71,32 @@ export const IndividualFields = ({
     handleSelect: onFmsSelect,
   } = useDadataSuggestions({
     searchValue: issuedBy,
-    fieldName: "issued_by",
+    fieldName: "issued_by" as Path<TFieldValues>,
     setValue,
     suggestFn: suggestFmsUnit,
     minChars: 2,
   });
 
-  // Подсказки для Фамилии
   const { suggestions: surnameSugg, handleSelect: onSurnameSelect } =
     useDadataSuggestions({
       searchValue: lastName,
-      fieldName: "last_name",
+      fieldName: "last_name" as Path<TFieldValues>,
       setValue,
-      suggestFn: (q) => suggestFio(q, ["SURNAME"]), // Ищем только фамилии
+      suggestFn: (q) => suggestFio(q, ["SURNAME"]),
     });
 
-  // Подсказки для Имени
   const { suggestions: nameSugg, handleSelect: onNameSelect } =
     useDadataSuggestions({
       searchValue: firstName,
-      fieldName: "first_name",
+      fieldName: "first_name" as Path<TFieldValues>,
       setValue,
-      suggestFn: (q) => suggestFio(q, ["NAME"]), // Ищем только имена
+      suggestFn: (q) => suggestFio(q, ["NAME"]),
     });
 
-  // ОТЧЕСТВО (НОВОЕ)
   const { suggestions: patronymicSugg, handleSelect: onPatronymicSelect } =
     useDadataSuggestions({
       searchValue: middleName,
-      fieldName: "middle_name",
+      fieldName: "middle_name" as Path<TFieldValues>,
       setValue,
       suggestFn: (q) => suggestFio(q, ["PATRONYMIC"]),
     });
@@ -112,7 +111,7 @@ export const IndividualFields = ({
           getLabel={(s) => s.value}
           renderInput={() => (
             <input
-              {...register("last_name")}
+              {...register("last_name" as Path<TFieldValues>)}
               className={styles.input}
               placeholder="Иванов"
             />
@@ -126,7 +125,7 @@ export const IndividualFields = ({
           getLabel={(s) => s.value}
           renderInput={() => (
             <input
-              {...register("first_name")}
+              {...register("first_name" as Path<TFieldValues>)}
               className={styles.input}
               placeholder="Иван"
             />
@@ -140,7 +139,7 @@ export const IndividualFields = ({
           getLabel={(s) => s.value}
           renderInput={() => (
             <input
-              {...register("middle_name")}
+              {...register("middle_name" as Path<TFieldValues>)}
               className={`${styles.input} ${errors.middle_name ? styles.hasError : ""}`}
               placeholder="Иванович"
             />
@@ -162,7 +161,7 @@ export const IndividualFields = ({
             Серия
           </label>
           <input
-            {...register("passport_series")}
+            {...register("passport_series" as Path<TFieldValues>)}
             id="passport_series"
             inputMode="numeric"
             maxLength={4}
@@ -181,7 +180,7 @@ export const IndividualFields = ({
             Номер
           </label>
           <input
-            {...register("passport_number")}
+            {...register("passport_number" as Path<TFieldValues>)}
             id="passport_number"
             inputMode="numeric"
             maxLength={6}
@@ -200,7 +199,7 @@ export const IndividualFields = ({
             Дата выдачи
           </label>
           <input
-            {...register("issue_date")}
+            {...register("issue_date" as Path<TFieldValues>)}
             id="issue_date"
             type="date"
             className={`${styles.input} ${errors.issue_date ? styles.hasError : ""}`}
@@ -221,7 +220,7 @@ export const IndividualFields = ({
         onSelect={(s) => onFmsSelect(s.value)}
         renderInput={() => (
           <input
-            {...register("issued_by")}
+            {...register("issued_by" as Path<TFieldValues>)}
             className={`${styles.input} ${errors.issued_by ? styles.hasError : ""}`}
             placeholder="Начните вводить код подразделения..."
             autoComplete="off"
@@ -245,7 +244,7 @@ export const IndividualFields = ({
         onSelect={(s) => onAddrSelect(s.value)}
         renderInput={() => (
           <textarea
-            {...register("registration_address")}
+            {...register("registration_address" as Path<TFieldValues>)}
             className={`${styles.textarea} ${errors.registration_address ? styles.hasError : ""}`}
             placeholder="г. Москва, ул. Ленина..."
             rows={2}
@@ -254,4 +253,4 @@ export const IndividualFields = ({
       />
     </>
   );
-};
+}

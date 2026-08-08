@@ -1,15 +1,22 @@
-import { UseFormRegister, FieldErrors } from "react-hook-form";
+import {
+  UseFormRegister,
+  FieldErrors,
+  FieldValues,
+  Path,
+} from "react-hook-form";
 import { Building2, MapPin } from "lucide-react";
 import Spinner from "@/components/ui/Spinner/Spinner";
 import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 import { ClientFormInput, clientSchema } from "@/lib/validators/clientSchema";
 import z from "zod";
 
-type ClientFormValues = z.input<typeof clientSchema>;
+type CompanyClientErrors = FieldErrors<
+  Extract<ClientFormInput, { client_type: "legal" }>
+>;
 
-interface CompanyFieldsProps {
-  register: UseFormRegister<ClientFormValues>;
-  errors: FieldErrors<ClientFormInput>;
+interface CompanyFieldsProps<TFieldValues extends FieldValues> {
+  register: UseFormRegister<TFieldValues>;
+  errors: FieldErrors<TFieldValues>;
   isSearching: boolean;
 }
 
@@ -29,14 +36,12 @@ const InputSpinner = ({
   );
 };
 
-export const CompanyFields = ({
+export function CompanyFields<TFieldValues extends FieldValues>({
   register,
   errors: errorsProp,
   isSearching,
-}: CompanyFieldsProps) => {
-  const errors = errorsProp as FieldErrors<
-    Extract<ClientFormInput, { client_type: "legal" }>
-  >;
+}: CompanyFieldsProps<TFieldValues>) {
+  const errors = errorsProp as unknown as CompanyClientErrors;
 
   return (
     <>
@@ -55,7 +60,7 @@ export const CompanyFields = ({
         </label>
         <div style={{ position: "relative" }}>
           <input
-            {...register("company_name")}
+            {...register("company_name" as Path<TFieldValues>)}
             id="company_name"
             readOnly={isSearching}
             className={`${styles.input} ${errors.company_name ? styles.hasError : ""}`}
@@ -78,7 +83,7 @@ export const CompanyFields = ({
           </label>
           <div style={{ position: "relative" }}>
             <input
-              {...register("inn")}
+              {...register("inn" as Path<TFieldValues>)}
               id="inn"
               inputMode="numeric"
               maxLength={10}
@@ -99,7 +104,7 @@ export const CompanyFields = ({
           </label>
           <div style={{ position: "relative" }}>
             <input
-              {...register("kpp")}
+              {...register("kpp" as Path<TFieldValues>)}
               id="kpp"
               readOnly={isSearching}
               className={`${styles.input} ${errors.kpp ? styles.hasError : ""}`}
@@ -118,7 +123,7 @@ export const CompanyFields = ({
           </label>
           <div style={{ position: "relative" }}>
             <input
-              {...register("ogrn")}
+              {...register("ogrn" as Path<TFieldValues>)}
               id="ogrn"
               readOnly={isSearching}
               className={`${styles.input} ${errors.ogrn ? styles.hasError : ""}`}
@@ -146,7 +151,7 @@ export const CompanyFields = ({
         </label>
         <div style={{ position: "relative" }}>
           <textarea
-            {...register("legal_address")}
+            {...register("legal_address" as Path<TFieldValues>)}
             id="legal_address"
             readOnly={isSearching}
             className={`${styles.textarea} ${errors.legal_address ? styles.hasError : ""}`}
@@ -165,4 +170,4 @@ export const CompanyFields = ({
       </div>
     </>
   );
-};
+}

@@ -13,7 +13,7 @@ import { IndividualFields } from "@/components/Form/AddOrderForm/components/Orde
 import { getPassport, upsertPassport } from "@/services/passportService";
 import styles from "./page.module.css";
 import { ClientFormInput, clientSchema } from "@/lib/validators/clientSchema";
-import z from "zod";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function EditClientPage() {
@@ -23,9 +23,6 @@ export default function EditClientPage() {
   const [saving, setSaving] = useState(false);
   const [isSearching] = useState(false);
 
-  // Тип "на входе" формы (то, что реально вводит пользователь, до трансформаций)
-  type ClientFormValues = z.input<typeof clientSchema>;
-
   const {
     register,
     handleSubmit,
@@ -34,10 +31,10 @@ export default function EditClientPage() {
     control,
     setValue,
     formState: { errors },
-  } = useForm<ClientFormValues, unknown, ClientFormInput>({
+  } = useForm<ClientFormInput>({
     resolver: zodResolver(clientSchema),
     defaultValues: {
-      client_type: "individual", // По умолчанию физлицо
+      client_type: "individual",
       first_name: "",
       last_name: "",
       phone: "",

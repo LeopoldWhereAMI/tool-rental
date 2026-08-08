@@ -108,8 +108,6 @@ export default function LoginPage() {
         callbackUrl: "/",
       });
 
-      console.log("SIGN IN RESULT:", result);
-
       if (result?.error) {
         setErrors({ form: result.error });
         toast.error(result.error);

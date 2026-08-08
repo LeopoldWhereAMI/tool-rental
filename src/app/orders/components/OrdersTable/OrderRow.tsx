@@ -35,9 +35,9 @@ export default function OrderRow({
     formattedDate,
   } = useOrderStatusInfo(order);
 
-  const clientName = order.client.display_name;
+  const clientName = order?.client?.display_name;
 
-  const clientPhone = order.client.phone || "";
+  const clientPhone = order?.client?.phone || "";
   const statusClass = statusVariant
     ? styles[statusVariant as keyof typeof styles]
     : "";
@@ -69,7 +69,7 @@ export default function OrderRow({
 
       <td className={styles.client}>
         <Link
-          href={`/clients/${order.client.id}`}
+          href={`/clients/${order?.client?.id}`}
           className={styles.clientLink}
         >
           <div className={styles.clientName}>{clientName}</div>

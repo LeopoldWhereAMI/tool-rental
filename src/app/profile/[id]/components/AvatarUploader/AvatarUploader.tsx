@@ -60,10 +60,10 @@ export default function AvatarUploader({ profile }: AvatarUploaderProps) {
         onChange={handleChange}
         hidden
       />
-      {profile?.avatar_url ? (
+      {profile?.avatarUrl ? (
         <>
           <Image
-            src={profile.avatar_url}
+            src={profile.avatarUrl}
             alt="Avatar"
             width={80}
             height={80}
@@ -78,7 +78,7 @@ export default function AvatarUploader({ profile }: AvatarUploaderProps) {
       ) : (
         <>
           <div className={styles.avatarFallback}>
-            {profile.full_name?.[0]?.toUpperCase() ?? "U"}
+            {profile.fullName?.[0]?.toUpperCase() ?? "U"}
           </div>
           <button disabled={loading} className={styles.uploadOverlay}>
             {loading ? "Загрузка..." : "Загрузить"}

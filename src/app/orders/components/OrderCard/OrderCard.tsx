@@ -30,8 +30,8 @@ export default function OrderCard({
   const { statusText, statusVariant, formattedStartDate, formattedDate } =
     useOrderStatusInfo(order);
 
-  const clientName = order.client.display_name;
-  const clientPhone = order.client.phone || "";
+  const clientName = order?.client?.display_name;
+  const clientPhone = order?.client?.phone || "";
 
   const statusClass = statusVariant
     ? styles[statusVariant as keyof typeof styles]
@@ -43,7 +43,7 @@ export default function OrderCard({
         <div className={styles.cardOrderInfo}>
           <div className={styles.cardOrderNumber}>#{order.order_number}</div>
           <Link
-            href={`/clients/${order.client.id}`}
+            href={`/clients/${order?.client?.id}`}
             className={styles.cardClientLink}
           >
             <div className={styles.cardClientName}>{clientName}</div>
