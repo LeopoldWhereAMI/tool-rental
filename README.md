@@ -34,3 +34,15 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Deploy on ssh
+
+Деплой запускать командой .\deploy.ps1
+Он сам сделает всё: сборку, копирование Prisma/pg в standalone, очистку dev-мусора, упаковку (с проверкой размера архива — предупредит, если снова раздуется за 150 МБ), заливку по scp и запуск deploy.sh на сервере по SSH. В конце покажет ссылку на сайт для проверки.
+
+Если при первом запуске PowerShell откажется выполнять скрипт из соображений безопасности (... cannot be loaded because running scripts is disabled...), выполни один раз:
+
+powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+
+и подтверди Y.
