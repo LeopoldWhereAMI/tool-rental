@@ -1,9 +1,11 @@
 "use server";
 
-import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { updateProfile } from "@/services/profileService";
 import { revalidatePath } from "next/cache";
+import fs from "fs/promises";
+import path from "path";
 import { auth } from "../../../../auth";
+import { prisma } from "@/lib/prisma";
 
 type UpdateProfileResult =
   | { success: true }
@@ -13,16 +15,6 @@ export async function updateProfileAction(
   formData: FormData,
 ): Promise<UpdateProfileResult> {
   try {
-    // const supabase = await createSupabaseServerClient();
-
-    // const {
-    //   data: { user },
-    // } = await supabase.auth.getUser();
-
-    // if (!user) {
-    //   return { success: false, error: "Unauthorized" };
-    // }
-
     const session = await auth();
 
     if (!session?.user?.id) {
@@ -38,7 +30,6 @@ export async function updateProfileAction(
       return { success: false, error: "Имя обязательно" };
     }
 
-    // await updateProfile(user.id, fullName);
     await updateProfile(session.user.id, fullName);
     revalidatePath("/profile");
 
@@ -58,19 +49,15 @@ export async function uploadAvatarAction(
   formData: FormData,
 ): Promise<UploadAvatarResult> {
   try {
-    const supabase = await createSupabaseServerClient();
+    const session = await auth();
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
+    if (!session?.user?.id) {
       return { success: false, error: "Unauthorized" };
     }
 
-    const file = formData.get("avatar") as File;
+    const file = formData.get("avatar");
 
-    if (!file) {
+    if (!(file instanceof File)) {
       return { success: false, error: "Файл не выбран" };
     }
 
@@ -82,41 +69,30 @@ export async function uploadAvatarAction(
       return { success: false, error: "Максимальный размер — 2MB" };
     }
 
-    const filePath = user.id;
+    const extension = path.extname(file.name).toLowerCase() || ".jpg";
+    const fileName = `${session.user.id}${extension}`;
 
-    const { error: uploadError } = await supabase.storage
-      .from("avatars")
-      .upload(filePath, file, { upsert: true });
+    const uploadDir = path.join(process.cwd(), "uploads", "avatars");
+    await fs.mkdir(uploadDir, { recursive: true });
 
-    if (uploadError) {
-      return { success: false, error: uploadError.message };
-    }
+    const filePath = path.join(uploadDir, fileName);
 
-    const { data } = supabase.storage.from("avatars").getPublicUrl(filePath);
+    const buffer = Buffer.from(await file.arrayBuffer());
+    await fs.writeFile(filePath, buffer);
 
-    const { error: updateError } = await supabase
-      .from("profiles")
-      .update({ avatar_url: data.publicUrl })
-      .eq("id", user.id);
-
-    if (updateError) {
-      return { success: false, error: updateError.message };
-    }
+    const avatarUrl = `/api/images/avatars/${fileName}`;
+    await prisma.profile.update({
+      where: { id: session.user.id },
+      data: { avatarUrl },
+    });
 
     revalidatePath("/profile");
 
     return { success: true };
   } catch (error) {
-    if (error instanceof Error) {
-      return {
-        success: false,
-        error: error.message,
-      };
-    }
-
     return {
       success: false,
-      error: "Неизвестная ошибка",
+      error: error instanceof Error ? error.message : "Неизвестная ошибка",
     };
   }
 }
@@ -125,34 +101,27 @@ type DeleteAvatarResult = { success: true } | { success: false; error: string };
 
 export async function deleteAvatarAction(): Promise<DeleteAvatarResult> {
   try {
-    const supabase = await createSupabaseServerClient();
+    const session = await auth();
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
+    if (!session?.user?.id) {
       return { success: false, error: "Unauthorized" };
     }
 
-    const filePath = user.id;
+    const uploadDir = path.join(process.cwd(), "uploads", "avatars");
+    const files = await fs.readdir(uploadDir).catch(() => []);
 
-    const { error: storageError } = await supabase.storage
-      .from("avatars")
-      .remove([filePath]);
+    const userFiles = files.filter((file) =>
+      file.startsWith(`${session.user.id}.`),
+    );
 
-    if (storageError) {
-      return { success: false, error: storageError.message };
+    for (const file of userFiles) {
+      await fs.unlink(path.join(uploadDir, file));
     }
 
-    const { error: updateError } = await supabase
-      .from("profiles")
-      .update({ avatar_url: null })
-      .eq("id", user.id);
-
-    if (updateError) {
-      return { success: false, error: updateError.message };
-    }
+    await prisma.profile.update({
+      where: { id: session.user.id },
+      data: { avatarUrl: null },
+    });
 
     revalidatePath("/profile");
 

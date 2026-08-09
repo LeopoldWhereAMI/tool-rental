@@ -3,8 +3,8 @@
 import { deleteAvatarAction } from "@/app/profile/actions/actions";
 import { toast } from "sonner";
 import { useTransition } from "react";
-import styles from "../../page.module.css";
 import { useRouter } from "next/navigation";
+import styles from "../../page.module.css";
 
 export default function DeleteAvatarButton() {
   const [isPending, startTransition] = useTransition();

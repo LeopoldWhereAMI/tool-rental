@@ -1,10 +1,10 @@
-import styles from "./page.module.css";
 import { redirect } from "next/navigation";
 import { getProfile } from "@/services/profileService";
 import ProfileNameForm from "./components/ProfileNameForm/ProfileNameForm";
 import RentalReceiptEditor from "@/components/Print/RentalReceipt/RentalReceiptEditor/RentalReceiptEditor";
 import AvatarUploader from "./components/AvatarUploader/AvatarUploader";
 import { auth } from "../../../../auth";
+import styles from "./page.module.css";
 
 export default async function ProfilePage() {
   const session = await auth();

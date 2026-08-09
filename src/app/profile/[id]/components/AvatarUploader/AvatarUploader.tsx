@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import styles from "../../page.module.css";
 import DeleteAvatarButton from "../DeleteAvatarButton/DeleteAvatarButton";
 import { UserProfile } from "@/types";
 import { useRef, useState } from "react";
 import { uploadAvatarAction } from "@/app/profile/actions/actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import styles from "../../page.module.css";
 
 type AvatarUploaderProps = {
   profile: UserProfile;

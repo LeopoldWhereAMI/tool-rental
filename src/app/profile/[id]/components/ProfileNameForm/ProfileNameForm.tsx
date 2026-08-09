@@ -2,9 +2,9 @@
 
 import { updateProfileAction } from "@/app/profile/actions/actions";
 import { useState } from "react";
-import styles from "./ProfileNameForm.module.css";
 import { toast } from "sonner";
 import { Save } from "lucide-react";
+import styles from "./ProfileNameForm.module.css";
 
 interface Props {
   defaultName: string;

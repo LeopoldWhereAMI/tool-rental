@@ -198,6 +198,7 @@ model Order {
 
   bookings Booking[]
 
+  @@unique([userId, orderNumber])
   @@map("orders")
 }
 

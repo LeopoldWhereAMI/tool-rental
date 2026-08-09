@@ -107,6 +107,20 @@ export async function POST(request: Request) {
 
     const body = (await request.json()) as CreateOrderParams;
 
+    const lastOrder = await prisma.order.findFirst({
+      where: {
+        userId: session.user.id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        orderNumber: true,
+      },
+    });
+
+    const nextOrderNumber = lastOrder ? Number(lastOrder.orderNumber) + 1 : 1;
+
     const order = await prisma.order.create({
       data: {
         userId: session.user.id,
@@ -114,7 +128,7 @@ export async function POST(request: Request) {
         totalPrice: body.total_price,
         securityDeposit: body.security_deposit,
         status: "active",
-        orderNumber: "1",
+        orderNumber: String(nextOrderNumber),
 
         items: {
           create: body.items.map((item) => ({
