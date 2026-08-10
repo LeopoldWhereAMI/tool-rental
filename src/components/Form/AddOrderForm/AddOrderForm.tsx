@@ -8,7 +8,6 @@ import { OrderInput, orderSchema } from "@/lib/validators/orderSchema";
 import { upsertClient } from "@/services/clientsService";
 import { createOrder } from "@/services/orderService";
 import { OrderPrintBundle } from "@/types";
-import styles from "./AddOrderForm.module.css";
 import PrintArea from "@/components/Print/PrintArea/PrintArea";
 import { useInventoryAndClients } from "@/hooks/useInventoryAndClients";
 import { usePrintAfterSubmit } from "@/hooks/usePrintAfterSubmit";
@@ -25,11 +24,12 @@ import { onOrderCompleted } from "@/helpers/financeIntegration";
 import { PrintLoadingOverlay } from "@/components/ui/PrintLoadingOverlay/PrintLoadingOverlay";
 import { getClientDisplayName } from "@/helpers/clientUtils";
 import { upsertPassport } from "@/services/passportService";
+import styles from "./AddOrderForm.module.css";
 
 export default function AddOrderForm() {
   const { inventory, inventoryMap, clients } = useInventoryAndClients();
   const [isPreparingPrint, setIsPreparingPrint] = useState(false);
-
+  const [createdOrderId, setCreatedOrderId] = useState<string | null>(null);
   const [lastOrderForPrint, setLastOrderForPrint] =
     useState<OrderPrintBundle | null>(null);
 
@@ -69,10 +69,19 @@ export default function AddOrderForm() {
 
   const printRef = useRef<HTMLDivElement>(null);
 
-  const { handlePrint } = usePrintAfterSubmit(printRef, () => {
-    setLastOrderForPrint(null);
-    setIsPreparingPrint(false);
-  });
+  // const { handlePrint } = usePrintAfterSubmit(printRef, () => {
+  //   setLastOrderForPrint(null);
+  //   setIsPreparingPrint(false);
+  // });
+
+  const { handlePrint } = usePrintAfterSubmit(
+    printRef,
+    () => {
+      setLastOrderForPrint(null);
+      setIsPreparingPrint(false);
+    },
+    createdOrderId,
+  );
 
   const handleCancelPrint = () => {
     setLastOrderForPrint(null);
@@ -107,6 +116,7 @@ export default function AddOrderForm() {
       }
       const orderPayload = prepareOrderPayload(client.id, data, inventoryMap);
       const savedOrder = await createOrder(orderPayload);
+      setCreatedOrderId(savedOrder.id);
       const finalInitialAmount = orderPayload.total_price;
       const clientDisplayName = getClientDisplayName(client);
       const financeDescription = `Предоплата по заказу #${savedOrder.order_number}: ${clientDisplayName}`;
@@ -195,7 +205,6 @@ export default function AddOrderForm() {
                   clearErrors={clearErrors}
                   setValue={setValue}
                   inventory={inventory}
-                  // totalAmount={totalAmount}
                 />
               </div>
             </div>

@@ -17,7 +17,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize(credentials) {
         console.log("credentials:", credentials);
         if (!credentials?.email || !credentials?.password) {
-          console.log("Нет email или password");
           return null;
         }
 
@@ -28,7 +27,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         });
         console.log("user:", user);
         if (!user) {
-          console.log("Пользователь не найден");
           return null;
         }
 
@@ -38,10 +36,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         );
         console.log("passwordValid:", passwordValid);
         if (!passwordValid) {
-          console.log("Пароль неверный");
           return null;
         }
-        console.log("Успешная авторизация");
+
         return {
           id: user.id,
           email: user.email,

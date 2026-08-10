@@ -1,6 +1,5 @@
 "use client";
 
-import styles from "./Header.module.css";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
@@ -10,6 +9,7 @@ import Logo from "../ui/Logo/Logo";
 import dynamic from "next/dynamic";
 import DropdownMenu from "./DropdownMenu/DropdownMenu";
 import { useSession, signOut } from "next-auth/react";
+import styles from "./Header.module.css";
 
 const ThemeToggle = dynamic(() => import("../ui/ThemeToggle/ThemeToggle"), {
   ssr: false,
@@ -22,10 +22,41 @@ export default function Header() {
   const [loading, setLoading] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   const user = session?.user;
 
   const authLoading = status === "loading";
+
+  const loadProfile = async () => {
+    try {
+      const response = await fetch("/api/profile");
+
+      if (!response.ok) return;
+
+      const result = await response.json();
+
+      setAvatarUrl(result.data?.avatarUrl ?? null);
+    } catch (error) {
+      console.error("Ошибка загрузки профиля:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    loadProfile();
+
+    const handleAvatarUpdated = () => {
+      loadProfile();
+    };
+
+    window.addEventListener("avatar-updated", handleAvatarUpdated);
+
+    return () => {
+      window.removeEventListener("avatar-updated", handleAvatarUpdated);
+    };
+  }, [user?.id]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -61,7 +92,7 @@ export default function Header() {
   const userName = user?.name || user?.email;
 
   const avatar =
-    user?.image || "https://api.dicebear.com/9.x/croodles/png?seed=Aidan";
+    avatarUrl || "https://api.dicebear.com/9.x/croodles/png?seed=Aidan";
 
   return (
     <header className={styles.header}>

@@ -40,6 +40,7 @@ export default function AvatarUploader({ profile }: AvatarUploaderProps) {
       }
 
       toast.success("Аватар обновлён");
+      window.dispatchEvent(new Event("avatar-updated"));
       router.refresh();
     } catch {
       toast.error("Ошибка загрузки");

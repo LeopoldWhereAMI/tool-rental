@@ -30,9 +30,6 @@ export async function GET() {
         startDate: {
           lte: now,
         },
-        endDate: {
-          gt: now,
-        },
       },
       select: {
         inventoryId: true,
