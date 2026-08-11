@@ -27,6 +27,13 @@ export async function GET() {
           not: null,
         },
         itemStatus: "active",
+
+        order: {
+          status: {
+            in: ["active", "pending"],
+          },
+        },
+
         startDate: {
           lte: now,
         },
