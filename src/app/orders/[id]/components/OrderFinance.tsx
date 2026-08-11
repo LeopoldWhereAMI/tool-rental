@@ -6,17 +6,24 @@ import {
   CreditCard,
   ShieldCheck,
   Banknote,
+  X,
 } from "lucide-react";
 import styles from "../page.module.css";
 import { OrderDetailsUI } from "@/types";
 import { useOrderStatusInfo } from "@/hooks/useOrderStatusInfo";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CompleteOrderModal from "@/components/ui/MyModal/CompliteOrderModal";
 import { updateOrderStatus } from "@/services/orderService";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { processOrderMaintenance } from "@/services/inventoryService";
 import { onOrderCompleted } from "@/helpers/financeIntegration";
+import {
+  getTransactions,
+  Transaction,
+  updateTransactionStatus,
+} from "@/services/financeService";
+import AddPaymentForm from "./AddPaymentForm";
 
 type OrderFinanceProps = {
   totalPrice: number;
@@ -34,6 +41,11 @@ export default function OrderFinance({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStatus, setCurrentStatus] = useState(order.status);
+
+  const [payments, setPayments] = useState<Transaction[]>([]);
+  const [paymentsLoading, setPaymentsLoading] = useState(true);
+  const [isPaymentFormOpen, setIsPaymentFormOpen] = useState(false);
+
   const router = useRouter();
 
   const parsedAdjustment = Number(adjustment);
@@ -96,6 +108,45 @@ export default function OrderFinance({
     }
   };
 
+  const handleCancelPayment = (paymentId: string) => {
+    toast("Отменить этот платёж?", {
+      description: "Платёж будет помечен как отменённый.",
+      action: {
+        label: "Отменить",
+        onClick: async () => {
+          try {
+            await updateTransactionStatus(paymentId, "cancelled");
+
+            toast.success("Платёж отменён");
+
+            await loadPayments();
+          } catch (error) {
+            console.error("Ошибка отмены платежа:", error);
+            toast.error("Не удалось отменить платёж");
+          }
+        },
+      },
+    });
+  };
+
+  const loadPayments = useCallback(async () => {
+    try {
+      setPaymentsLoading(true);
+
+      const result = await getTransactions(1, 100, "income", order.id);
+
+      setPayments(result.transactions);
+    } catch (error) {
+      console.error("Ошибка загрузки платежей:", error);
+    } finally {
+      setPaymentsLoading(false);
+    }
+  }, [order.id]);
+
+  useEffect(() => {
+    loadPayments();
+  }, [loadPayments]);
+
   return (
     <div className={`${styles.infoBlock} ${styles.totalBlock}`}>
       <div className={styles.blockTitle}>
@@ -146,6 +197,71 @@ export default function OrderFinance({
             </span>
           </div>
         ) : null}
+
+        <div className={styles.paymentsBlock}>
+          <div className={styles.paymentsHeader}>
+            <span>Дополнительные платежи</span>
+
+            {!isPaymentFormOpen && (
+              <button type="button" onClick={() => setIsPaymentFormOpen(true)}>
+                + Добавить платёж
+              </button>
+            )}
+          </div>
+
+          {isPaymentFormOpen && (
+            <AddPaymentForm
+              orderId={order.id}
+              orderNumber={order.order_number}
+              onPaymentAdded={async () => {
+                setIsPaymentFormOpen(false);
+                await loadPayments();
+              }}
+            />
+          )}
+
+          {!paymentsLoading && payments.length > 0 && (
+            <div className={styles.paymentsList}>
+              {payments.map((payment) => (
+                <div
+                  key={payment.id}
+                  className={`${styles.paymentItem} ${
+                    payment.status === "cancelled"
+                      ? styles.cancelledPayment
+                      : ""
+                  }`}
+                >
+                  <div className={styles.paymentContent}>
+                    <strong>+ {payment.amount} ₽</strong>
+                    <span>{payment.description}</span>
+                  </div>
+
+                  <div className={styles.paymentMeta}>
+                    <small>
+                      {new Date(payment.created_at).toLocaleString("ru-RU")}
+                    </small>
+
+                    {payment.status === "completed" && (
+                      <button
+                        type="button"
+                        className={styles.cancelPaymentButton}
+                        onClick={() => handleCancelPayment(payment.id)}
+                        title="Отменить платёж"
+                        aria-label="Отменить платёж"
+                      >
+                        <X size={14} />
+                      </button>
+                    )}
+                  </div>
+
+                  {payment.status === "cancelled" && (
+                    <span className={styles.cancelledLabel}>Отменён</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
         {currentStatus !== "completed" && (
           <>

@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/../auth";
-import { formatClient } from "@/lib/formatters/clientFormatter";
+import {
+  formatClient,
+  formatClientForResponse,
+} from "@/lib/formatters/clientFormatter";
 
 export async function GET() {
   try {
@@ -99,7 +102,8 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json(client);
+    // return NextResponse.json(client);
+    return NextResponse.json(formatClientForResponse(client));
   } catch (error) {
     console.error("Ошибка создания клиента:", error);
 

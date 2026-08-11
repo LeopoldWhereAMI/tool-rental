@@ -69,11 +69,6 @@ export default function AddOrderForm() {
 
   const printRef = useRef<HTMLDivElement>(null);
 
-  // const { handlePrint } = usePrintAfterSubmit(printRef, () => {
-  //   setLastOrderForPrint(null);
-  //   setIsPreparingPrint(false);
-  // });
-
   const { handlePrint } = usePrintAfterSubmit(
     printRef,
     () => {
@@ -118,6 +113,7 @@ export default function AddOrderForm() {
       const savedOrder = await createOrder(orderPayload);
       setCreatedOrderId(savedOrder.id);
       const finalInitialAmount = orderPayload.total_price;
+      console.log("CLIENT:", client);
       const clientDisplayName = getClientDisplayName(client);
       const financeDescription = `Предоплата по заказу #${savedOrder.order_number}: ${clientDisplayName}`;
 

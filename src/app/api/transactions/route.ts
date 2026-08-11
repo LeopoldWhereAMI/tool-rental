@@ -74,7 +74,7 @@ export async function GET(request: Request) {
     const page = Number(searchParams.get("page") || 1);
     const pageSize = Number(searchParams.get("pageSize") || 10);
     const type = searchParams.get("type");
-
+    const orderId = searchParams.get("orderId");
     const skip = (page - 1) * pageSize;
 
     const where = {
@@ -85,6 +85,11 @@ export async function GET(request: Request) {
       ...(type
         ? {
             type,
+          }
+        : {}),
+      ...(orderId
+        ? {
+            orderId,
           }
         : {}),
     };

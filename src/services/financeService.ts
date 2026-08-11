@@ -42,6 +42,7 @@ export async function getTransactions(
   page: number = 1,
   pageSize: number = 10,
   type?: "income" | "expense",
+  orderId?: string,
 ): Promise<{ transactions: Transaction[]; total: number }> {
   const params = new URLSearchParams({
     page: String(page),
@@ -50,6 +51,10 @@ export async function getTransactions(
 
   if (type) {
     params.set("type", type);
+  }
+
+  if (orderId) {
+    params.set("orderId", orderId);
   }
 
   const response = await fetch(`/api/transactions?${params.toString()}`);
