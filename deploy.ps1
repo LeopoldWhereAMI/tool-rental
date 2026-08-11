@@ -1,6 +1,6 @@
 # deploy.ps1
-# Полный цикл: сборка -> подготовка standalone -> упаковка -> заливка на сервер -> деплой
-# Запуск: .\deploy.ps1
+# Full cycle: build -> prepare standalone -> package -> upload -> deploy
+# Usage: .\deploy.ps1
 
 $ErrorActionPreference = "Stop"
 $ServerIP = "194.87.94.197"
@@ -11,10 +11,10 @@ function Write-Step($msg) {
     Write-Host "==> $msg" -ForegroundColor Cyan
 }
 
-Write-Step "1/7 Сборка проекта (prisma generate + next build)"
+Write-Step "1/7 Build project (prisma generate + next build)"
 npm run build
 
-Write-Step "2/7 Копирование внешних пакетов и статики в standalone"
+Write-Step "2/7 Copy external packages and static assets into standalone"
 $standalone = ".next/standalone"
 
 Remove-Item -Recurse -Force "$standalone/node_modules/pg" -ErrorAction SilentlyContinue
@@ -34,33 +34,33 @@ if (Test-Path "public") {
     Copy-Item -Recurse -Force "public" "$standalone/public"
 }
 
-Write-Step "3/7 Очистка dev-артефактов (иначе архив раздувается до сотен МБ)"
+Write-Step "3/7 Clean dev artifacts (otherwise archive gets huge)"
 Remove-Item -Recurse -Force ".next/dev" -ErrorAction SilentlyContinue
 Remove-Item -Recurse -Force ".next/cache" -ErrorAction SilentlyContinue
 
-Write-Step "4/7 Упаковка архива"
+Write-Step "4/7 Package archive"
 if (Test-Path "rent-app-build.tar.gz") {
     Remove-Item "rent-app-build.tar.gz"
 }
 tar -czf rent-app-build.tar.gz .next
 
 $sizeMB = [math]::Round((Get-Item "rent-app-build.tar.gz").Length / 1MB, 1)
-Write-Host "Размер архива: $sizeMB MB" -ForegroundColor Yellow
+Write-Host "Archive size: $sizeMB MB" -ForegroundColor Yellow
 if ($sizeMB -gt 150) {
-    Write-Host "ВНИМАНИЕ: архив подозрительно большой (>150MB)." -ForegroundColor Red
-    Write-Host "Проверь, не попал ли в него .next/dev или другой мусор." -ForegroundColor Red
-    $confirm = Read-Host "Продолжить заливку всё равно? (y/n)"
+    Write-Host "WARNING: archive is suspiciously large (>150MB)." -ForegroundColor Red
+    Write-Host "Check if .next/dev or other junk got included." -ForegroundColor Red
+    $confirm = Read-Host "Continue uploading anyway? (y/n)"
     if ($confirm -ne "y") {
-        Write-Host "Остановлено пользователем." -ForegroundColor Red
+        Write-Host "Stopped by user." -ForegroundColor Red
         exit 1
     }
 }
 
-Write-Step "5/7 Заливка архива на сервер"
+Write-Step "5/7 Upload archive to server"
 scp rent-app-build.tar.gz "root@${ServerIP}:${ServerPath}/"
 
-Write-Step "6/7 Запуск атомарного деплоя на сервере"
+Write-Step "6/7 Run atomic deploy on server"
 ssh "root@${ServerIP}" "bash ${ServerPath}/deploy.sh"
 
-Write-Step "7/7 Готово"
-Write-Host "Проверь сайт: http://${ServerIP}:3000" -ForegroundColor Green
+Write-Step "7/7 Done"
+Write-Host "Check the site: http://${ServerIP}:3000" -ForegroundColor Green
