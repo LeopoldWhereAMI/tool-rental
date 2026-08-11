@@ -131,7 +131,7 @@ export default function OrderDetailsPage() {
   const statusClass = styles[statusInfo.className as keyof typeof styles] || "";
 
   const items = order.order_items;
-
+  console.log("security_deposit:", order.security_deposit);
   return (
     <PageContainer>
       <div className={styles.pageContainer}>
