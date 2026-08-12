@@ -46,6 +46,7 @@ export default function PaginationControls({
 
       <div className={styles.buttonGroup}>
         <button
+          type="button"
           className={styles.pageBtn}
           onClick={() => clickHandler(currentPage - 1)}
           disabled={currentPage === 1}
@@ -60,6 +61,7 @@ export default function PaginationControls({
             </span>
           ) : (
             <button
+              type="button"
               key={index}
               onClick={() => clickHandler(Number(page))}
               className={`${styles.pageBtn} ${
@@ -72,6 +74,7 @@ export default function PaginationControls({
         )}
 
         <button
+          type="button"
           className={styles.pageBtn}
           onClick={() => clickHandler(currentPage + 1)}
           disabled={currentPage === totalPages}

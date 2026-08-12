@@ -15,8 +15,8 @@ import { Calendar, Trash2, Package, PenLine } from "lucide-react";
 import FormField from "@/components/Form/FormField/FormField";
 import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 import InputWithIcon from "@/components/Form/InputWithIcon/InputWithIcon";
-import OrderInventorySelect from "../OrderInventorySelect/OrderInventorySelect";
 import DaysBox from "../DaysBox/DaysBox";
+import OrderInventorySelectModal from "../OrderInventorySelect/OrderInventorySelectModal";
 
 type OrderItemRowProps = {
   index: number;
@@ -97,7 +97,7 @@ export default function OrderItemRow({
             label="Инструмент"
             error={errors.items?.[index]?.inventory_id?.message}
           >
-            <OrderInventorySelect
+            <OrderInventorySelectModal
               index={index}
               control={control}
               register={register}

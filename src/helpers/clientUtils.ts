@@ -1,8 +1,5 @@
 import { Client, IndividualClient, LegalClient } from "@/types";
 
-/**
- * Получает отображаемое имя клиента в зависимости от его типа
- */
 export function getClientDisplayName(client: Client | null): string {
   if (!client) return "Неизвестный клиент";
 
@@ -18,23 +15,14 @@ export function getClientDisplayName(client: Client | null): string {
   return client.company_name || "Неизвестная компания";
 }
 
-/**
- * Получает полный адрес клиента в зависимости от его типа
- * ✅ ИСПРАВЛЕНО: Добавлена проверка client_type для type narrowing
- */
 export function getClientAddress(client: Client): string {
   if (client.client_type === "individual") {
-    // ✅ TypeScript ЗНАЕТ, что это IndividualClient
     return client.registration_address || "";
   }
-  // ✅ TypeScript ЗНАЕТ, что это LegalClient
+
   return client.legal_address || "";
 }
 
-/**
- * Получает идентификационные номера клиента
- * ✅ ИСПРАВЛЕНО: Type narrowing для правильного доступа к свойствам
- */
 export function getClientIdentifiers(client: Client): {
   label: string;
   value: string;
@@ -42,7 +30,6 @@ export function getClientIdentifiers(client: Client): {
   const identifiers: { label: string; value: string }[] = [];
 
   if (client.client_type === "individual") {
-    // ✅ TypeScript ЗНАЕТ, что client — это IndividualClient
     if (client.passport_series && client.passport_number) {
       identifiers.push({
         label: "Паспорт",
@@ -52,7 +39,6 @@ export function getClientIdentifiers(client: Client): {
     return identifiers;
   }
 
-  // ✅ TypeScript ЗНАЕТ, что client — это LegalClient
   if (client.inn) {
     identifiers.push({
       label: "ИНН",
@@ -77,9 +63,6 @@ export function getClientIdentifiers(client: Client): {
   return identifiers;
 }
 
-/**
- * Форматирует ИНН для отображения (XXXX XXXX XXXX)
- */
 export function formatINN(inn: string): string {
   if (!inn) return "";
   const cleaned = inn.replace(/\D/g, "");
@@ -87,9 +70,6 @@ export function formatINN(inn: string): string {
   return `${cleaned.slice(0, 4)} ${cleaned.slice(4, 8)} ${cleaned.slice(8)}`;
 }
 
-/**
- * Форматирует КПП для отображения (XXXX XXXX X)
- */
 export function formatKPP(kpp: string): string {
   if (!kpp) return "";
   const cleaned = kpp.replace(/\D/g, "");
@@ -97,35 +77,22 @@ export function formatKPP(kpp: string): string {
   return `${cleaned.slice(0, 4)} ${cleaned.slice(4, 8)} ${cleaned.slice(8)}`;
 }
 
-/**
- * Форматирует ОГРН для отображения
- */
 export function formatOGRN(ogrn: string): string {
   if (!ogrn) return "";
   const cleaned = ogrn.replace(/\D/g, "");
   return cleaned;
 }
 
-/**
- * Получает иконку типа клиента (название иконки из lucide-react)
- */
 export function getClientTypeIcon(
   clientType: "individual" | "legal",
 ): "User" | "Building2" {
   return clientType === "individual" ? "User" : "Building2";
 }
 
-/**
- * Получает читаемое название типа клиента
- */
 export function getClientTypeLabel(clientType: "individual" | "legal"): string {
   return clientType === "individual" ? "Физическое лицо" : "Юридическое лицо";
 }
 
-/**
- * Получает краткое описание для профиля клиента
- * ✅ ИСПРАВЛЕНО: Type narrowing для доступа к разным свойствам
- */
 export function getClientDescription(client: Client): string {
   const parts: string[] = [];
 
@@ -142,24 +109,14 @@ export function getClientDescription(client: Client): string {
   return parts.join(" • ");
 }
 
-/**
- * Проверяет, заполнены ли обязательные поля для типа клиента
- * ✅ ИСПРАВЛЕНО: Type narrowing для доступа к разным полям
- */
 export function isClientComplete(client: Client): boolean {
   if (client.client_type === "individual") {
-    // ✅ TypeScript ЗНАЕТ, что client — это IndividualClient
     return !!(client.first_name && client.last_name && client.phone);
   }
 
-  // ✅ TypeScript ЗНАЕТ, что client — это LegalClient
   return !!(client.company_name && client.inn && client.phone);
 }
 
-/**
- * Получает список полей, которые нужно заполнить
- * ✅ ИСПРАВЛЕНО: Type narrowing для каждого типа клиента
- */
 export function getMissingClientFields(client: Client): string[] {
   const missing: string[] = [];
 
@@ -182,10 +139,6 @@ export function getMissingClientFields(client: Client): string[] {
   return missing;
 }
 
-/**
- * Фильтрует клиентов по типу с правильной типизацией
- * ✅ УЛУЧШЕНО: Типизированная фильтрация с overloads
- */
 export function filterClientsByType(
   clients: Client[],
   type: "individual",
@@ -201,9 +154,6 @@ export function filterClientsByType(
   return clients.filter((client) => client.client_type === type);
 }
 
-/**
- * Сортирует клиентов по типу и названию
- */
 export function sortClients(clients: Client[]): {
   individual: IndividualClient[];
   legal: LegalClient[];
@@ -223,18 +173,10 @@ export function sortClients(clients: Client[]): {
   return { individual, legal };
 }
 
-/**
- * Type guard для проверки, что клиент — физическое лицо
- * ✅ БОНУС: Для использования в условиях
- */
 export function isIndividualClient(client: Client): client is IndividualClient {
   return client.client_type === "individual";
 }
 
-/**
- * Type guard для проверки, что клиент — юридическое лицо
- * ✅ БОНУС: Для использования в условиях
- */
 export function isLegalClient(client: Client): client is LegalClient {
   return client.client_type === "legal";
 }

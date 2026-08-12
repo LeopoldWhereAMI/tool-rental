@@ -610,6 +610,257 @@
   font-weight: 500;
 }
 
+/* modal */
+.inventoryModalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: var(--backdrop-color);
+  backdrop-filter: blur(var(--backdrop-blur));
+  animation: modalOverlayIn 0.2s ease-out;
+}
+
+.inventoryModal {
+  width: min(760px, 100%);
+  max-height: 80vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.22),
+    0 4px 12px rgba(0, 0, 0, 0.08);
+
+  overflow: hidden;
+  animation: modalIn 0.2s ease-out;
+}
+
+@keyframes modalOverlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.inventoryModalOverlay.closing {
+  animation: modalOverlayOut 0.2s ease-in forwards;
+}
+
+.inventoryModal.closing {
+  animation: modalOut 0.2s ease-in forwards;
+}
+
+@keyframes modalOverlayOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes modalOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+
+.inventoryModalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.inventoryModalHeader h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.inventoryModalClose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.inventoryModalClose:hover {
+  background: var(--nav-hover-bg);
+  color: var(--text);
+}
+
+.inventorySearch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin: 16px 20px;
+  padding: 10px 12px;
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  background: var(--card-color);
+  color: var(--text-muted);
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.inventorySearch:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(80, 72, 229, 0.12);
+}
+
+.inventorySearch input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.inventoryModalList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 0 20px 20px;
+
+  height: clamp(400px, 55vh, 700px);
+
+  overflow-y: auto;
+}
+
+.inventoryModalItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  width: 100%;
+  padding: 10px;
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  background: var(--card-color);
+
+  text-align: left;
+  cursor: pointer;
+
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.inventoryModalItem:hover {
+  border-color: var(--primary);
+  background: var(--card-hover-bg);
+  box-shadow: 0 4px 14px var(--card-hover-shadow);
+  /* transform: translateY(-1px); */
+}
+
+.inventoryModalImage {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+  border-radius: 8px;
+
+  background: var(--nav-hover-bg);
+  border: 1px solid var(--border);
+
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.inventoryModalImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.inventoryModalInfo {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inventoryModalInfo strong {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.inventoryModalInfo span {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.inventoryModalInfo small {
+  color: #d97706;
+  font-size: 12px;
+}
+
+.inventoryEmpty {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
 @media (max-width: 600px) {
   .modeToggle {
     gap: 4px;

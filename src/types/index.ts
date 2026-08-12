@@ -82,37 +82,6 @@ export type ClientPreview = {
   display_name: string; // "Фамилия Имя" для физ.лиц или "Компания" для юр.лиц
 };
 
-// Краткая информация о заказе для списков и таблиц
-// export interface OrderUI {
-//   id: string;
-//   order_number: string;
-//   status: string;
-//   total_price: number;
-//   start_date: string;
-//   end_date: string;
-//   actual_end_date?: string | null;
-//   inventory_id?: string;
-//   client_id?: string;
-//   security_deposit?: number | null;
-//   client: ClientPreview; // ✅ Теперь совместимо
-//   tools?: Array<{
-//     id: string;
-//     name: string;
-//     image_url?: string | null;
-//     serial_number?: string;
-//     price_at_time?: number;
-//     start_date: string;
-//     end_date: string;
-//   }>;
-//   inventory: {
-//     name: string;
-//     image_url?: string | null;
-//     daily_price?: number;
-//     serial_number?: string;
-//     article?: string;
-//   };
-// }
-
 export interface OrderUI {
   id: string;
   order_number: string;
