@@ -61,6 +61,10 @@ export async function POST(
         throw new Error("ORDER_ALREADY_COMPLETED");
       }
 
+      if (order.endDate && order.endDate < new Date()) {
+        throw new Error("ORDER_EXPIRED");
+      }
+
       if (!order.endDate) {
         throw new Error("ORDER_HAS_NO_END_DATE");
       }
@@ -124,6 +128,16 @@ export async function POST(
           {
             success: false,
             error: "Нельзя продлить завершённый заказ",
+          },
+          { status: 400 },
+        );
+      }
+
+      if (error.message === "ORDER_EXPIRED") {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Нельзя продлить просроченный заказ",
           },
           { status: 400 },
         );

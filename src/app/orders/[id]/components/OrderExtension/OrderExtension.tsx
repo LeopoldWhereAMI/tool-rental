@@ -126,6 +126,10 @@ export default function OrderExtension({
     }
   };
 
+  const isExpired = order.end_date
+    ? new Date(order.end_date) < new Date()
+    : false;
+
   return (
     <>
       <div className={styles.extension}>
@@ -133,8 +137,10 @@ export default function OrderExtension({
           type="button"
           className={styles.openButton}
           onClick={() => setIsOpen(true)}
+          disabled={isExpired}
+          title={isExpired ? "Нельзя продлить просроченный заказ" : undefined}
         >
-          Продлить аренду
+          {isExpired ? "Заказ просрочен" : "Продлить аренду"}
         </button>
 
         {isOpen && (
