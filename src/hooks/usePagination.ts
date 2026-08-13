@@ -30,11 +30,6 @@ export default function usePagination<T>({
     setTimeout(() => {
       setCurrentPage(page);
       setPageLoading(false);
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
     }, 200);
   };
 

@@ -25,6 +25,8 @@ import {
 import AddPaymentForm from "./AddPaymentForm/AddPaymentForm";
 import OrderExtension from "./OrderExtension/OrderExtension";
 import styles from "../page.module.css";
+import PaginationControls from "@/components/ui/PaginationControls/PaginationControls";
+import usePagination from "@/hooks/usePagination";
 
 type OrderFinanceProps = {
   totalPrice: number;
@@ -46,6 +48,28 @@ export default function OrderFinance({
   const [extensions, setExtensions] = useState(order.extensions);
   const [paymentsLoading, setPaymentsLoading] = useState(true);
   const [isPaymentFormOpen, setIsPaymentFormOpen] = useState(false);
+
+  const {
+    currentPage,
+    totalPages,
+    currentItems: currentPayments,
+    handlePageChange,
+    pageLoading,
+  } = usePagination({
+    items: payments,
+    itemsPerPage: 5,
+  });
+
+  const {
+    currentPage: extensionsPage,
+    totalPages: totalExtensionsPages,
+    currentItems: currentExtensions,
+    handlePageChange: setExtensionsPage,
+    pageLoading: extensionsPageLoading,
+  } = usePagination({
+    items: extensions,
+    itemsPerPage: 5,
+  });
 
   const router = useRouter();
 
@@ -250,8 +274,12 @@ export default function OrderFinance({
               <span>Продления</span>
             </div>
 
-            <div className={styles.extensionsList}>
-              {extensions.map((extension) => {
+            <div
+              className={`${styles.extensionsList} ${
+                extensionsPageLoading ? styles.paginationLoading : ""
+              }`}
+            >
+              {currentExtensions.map((extension) => {
                 const remaining = extension.amount - extension.paid_amount;
 
                 return (
@@ -289,6 +317,11 @@ export default function OrderFinance({
                 );
               })}
             </div>
+            <PaginationControls
+              totalPages={totalExtensionsPages}
+              currentPage={extensionsPage}
+              clickHandler={setExtensionsPage}
+            />
           </div>
         )}
 
@@ -333,55 +366,65 @@ export default function OrderFinance({
             <AddPaymentForm
               orderId={order.id}
               orderNumber={order.order_number}
-              // extensionId={selectedExtensionId ?? undefined}
               onPaymentAdded={async () => {
                 await loadPayments();
                 setIsPaymentFormOpen(false);
-                // setSelectedExtensionId(null);
               }}
             />
           )}
 
           {!paymentsLoading && payments.length > 0 && (
-            <div className={styles.paymentsList}>
-              {payments.map((payment) => (
-                <div
-                  key={payment.id}
-                  className={`${styles.paymentItem} ${
-                    payment.status === "cancelled"
-                      ? styles.cancelledPayment
-                      : ""
-                  }`}
-                >
-                  <div className={styles.paymentContent}>
-                    <strong>+ {payment.amount} ₽</strong>
-                    <span>{payment.description}</span>
-                  </div>
+            <>
+              <div
+                className={`${styles.paymentsList} ${
+                  pageLoading ? styles.paginationLoading : ""
+                }`}
+              >
+                {currentPayments.map((payment) => (
+                  <div
+                    key={payment.id}
+                    className={`${styles.paymentItem} ${
+                      payment.status === "cancelled"
+                        ? styles.cancelledPayment
+                        : ""
+                    }`}
+                  >
+                    <div className={styles.paymentContent}>
+                      <strong>+ {payment.amount} ₽</strong>
+                      <span>{payment.description}</span>
+                    </div>
 
-                  <div className={styles.paymentMeta}>
-                    <small>
-                      {new Date(payment.created_at).toLocaleString("ru-RU")}
-                    </small>
+                    <div className={styles.paymentMeta}>
+                      <small>
+                        {new Date(payment.created_at).toLocaleString("ru-RU")}
+                      </small>
 
-                    {payment.status === "completed" && (
-                      <button
-                        type="button"
-                        className={styles.cancelPaymentButton}
-                        onClick={() => handleCancelPayment(payment.id)}
-                        title="Отменить платёж"
-                        aria-label="Отменить платёж"
-                      >
-                        <X size={14} />
-                      </button>
+                      {payment.status === "completed" && (
+                        <button
+                          type="button"
+                          className={styles.cancelPaymentButton}
+                          onClick={() => handleCancelPayment(payment.id)}
+                          title="Отменить платёж"
+                          aria-label="Отменить платёж"
+                        >
+                          <X size={14} />
+                        </button>
+                      )}
+                    </div>
+
+                    {payment.status === "cancelled" && (
+                      <span className={styles.cancelledLabel}>Отменён</span>
                     )}
                   </div>
+                ))}
+              </div>
 
-                  {payment.status === "cancelled" && (
-                    <span className={styles.cancelledLabel}>Отменён</span>
-                  )}
-                </div>
-              ))}
-            </div>
+              <PaginationControls
+                totalPages={totalPages}
+                currentPage={currentPage}
+                clickHandler={handlePageChange}
+              />
+            </>
           )}
         </div>
 

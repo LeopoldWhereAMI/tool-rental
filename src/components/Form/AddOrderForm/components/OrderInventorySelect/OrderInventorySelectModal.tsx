@@ -16,6 +16,7 @@ import { useRentedInventory } from "@/hooks/useRentedInventory";
 import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 import Image from "next/image";
 import PaginationControls from "@/components/ui/PaginationControls/PaginationControls";
+import usePagination from "@/hooks/usePagination";
 
 type Props = {
   index: number;
@@ -36,10 +37,9 @@ export default function OrderInventorySelectModal({
 }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
   const [isClosing, setIsClosing] = useState(false);
 
-  const ITEMS_PER_PAGE = 10;
+  const ITEMS_PER_PAGE = 6;
 
   const watchedItems = useWatch({
     control,
@@ -81,13 +81,16 @@ export default function OrderInventorySelectModal({
       );
     });
   }, [inventory, search, watchedItems, selectedId, rentedIds]);
-
-  const totalPages = Math.ceil(filteredInventory.length / ITEMS_PER_PAGE);
-
-  const paginatedInventory = filteredInventory.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE,
-  );
+  const {
+    currentPage,
+    currentItems: paginatedInventory,
+    totalPages,
+    handlePageChange,
+    pageLoading,
+  } = usePagination({
+    items: filteredInventory,
+    itemsPerPage: ITEMS_PER_PAGE,
+  });
 
   const handleSelect = (item: Inventory) => {
     clearErrors(`items.${index}.inventory_id`);
@@ -172,14 +175,17 @@ export default function OrderInventorySelectModal({
                 value={search}
                 onChange={(e) => {
                   setSearch(e.target.value);
-                  setCurrentPage(1);
                 }}
                 placeholder="Поиск по названию или артикулу..."
                 autoFocus
               />
             </div>
 
-            <div className={styles.inventoryModalList}>
+            <div
+              className={`${styles.inventoryModalList} ${
+                pageLoading ? styles.paginationLoading : ""
+              }`}
+            >
               {filteredInventory.length === 0 ? (
                 <div className={styles.inventoryEmpty}>
                   Инструменты не найдены
@@ -231,7 +237,7 @@ export default function OrderInventorySelectModal({
             <PaginationControls
               totalPages={totalPages}
               currentPage={currentPage}
-              clickHandler={setCurrentPage}
+              clickHandler={handlePageChange}
             />
           </div>
         </div>
