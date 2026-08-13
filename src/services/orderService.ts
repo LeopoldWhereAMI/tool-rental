@@ -157,3 +157,28 @@ export async function cancelItemReturn(orderId: string, itemId: string) {
 
   return result.data;
 }
+
+export const createOrderExtension = async (
+  orderId: string,
+  days: number,
+  amount: number,
+) => {
+  const response = await fetch(`/api/orders/${orderId}/extensions`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      days,
+      amount,
+    }),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.error || "Ошибка создания продления");
+  }
+
+  return result.data;
+};

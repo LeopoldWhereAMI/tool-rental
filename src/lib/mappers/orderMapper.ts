@@ -41,6 +41,7 @@ export function mapOrderToPrintBundle(
 
     // ПОЗИЦИЯ ИЗ СКЛАДА
     const inventory = inventoryMap[item.inventory_id!];
+
     if (!inventory) {
       throw new Error(`Инструмент с ID ${item.inventory_id} не найден в базе`);
     }
@@ -224,7 +225,12 @@ export function mapOrderDetailsToPrint(
     if (!item.inventory) {
       throw new Error(`Инструмент для позиции ${item.id} не найден`);
     }
-
+    console.log("🔍 Inventory fields:", Object.keys(item.inventory));
+    console.log("🔍 Purchase price fields:", {
+      purchase_price: item.inventory.purchase_price,
+      purchasePrice: item.inventory.purchase_price,
+      daily_price: item.inventory.daily_price,
+    });
     return {
       id: item.inventory.id,
       name: item.inventory.name,

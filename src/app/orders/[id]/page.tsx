@@ -17,10 +17,11 @@ import ErrorBlock from "@/components/ui/ErrorBlock/ErrorBlock";
 import { OrderStatusJourney } from "../components/OrderStatusJourney/OrderStatusJourney";
 import PageContainer from "@/components/PageContainer/PageContainer";
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
-import OrderNotes from "./components/OrderNotes";
+// import OrderNotes from "./components/OrderNotes";
 import { PrintLoadingOverlay } from "@/components/ui/PrintLoadingOverlay/PrintLoadingOverlay";
 import { getPassport } from "@/services/passportService";
 import styles from "./page.module.css";
+import OrderNotes from "./components/OrderNotes/OrderNotes";
 
 export default function OrderDetailsPage() {
   const { id } = useParams();

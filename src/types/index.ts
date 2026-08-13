@@ -117,6 +117,14 @@ export interface OrderUI {
   };
 }
 
+export interface OrderExtensionUI {
+  id: string;
+  days: number;
+  amount: number;
+  paid_amount: number;
+  created_at: string;
+}
+
 // Расширенная информация для страницы "Детали заказа"
 export interface OrderDetailsUI extends Omit<OrderUI, "client"> {
   created_at: string;
@@ -124,7 +132,9 @@ export interface OrderDetailsUI extends Omit<OrderUI, "client"> {
   security_deposit?: number | null;
   order_items: OrderItemDetailed[];
   tools: OrderTool[];
-  client: Client; // ✅ Полный тип клиента (Individual | Legal)
+  client: Client;
+
+  extensions: OrderExtensionUI[];
 }
 
 // Вспомогательный тип: Инструмент внутри заказа со всеми данными + условиями аренды
@@ -171,32 +181,6 @@ export interface OrderItemDetailed {
   is_custom?: boolean;
   custom_name?: string | null;
 }
-
-// export interface OrderItemDetailed {
-//   id: string;
-
-//   start_date: string;
-//   end_date: string;
-
-//   price_at_time: number;
-
-//   inventory: {
-//     id: string;
-//     name: string;
-//     serial_number?: string | null;
-//     article?: string | null;
-//     image_url?: string | null;
-//     daily_price?: number;
-//   } | null;
-
-//   item_status: "active" | "returned";
-
-//   actual_return_date: string | null;
-
-//   is_custom?: boolean;
-
-//   custom_name?: string | null;
-// }
 
 export type OrderStatusSource = {
   start_date: string;

@@ -143,9 +143,16 @@ export function formatOrder(order: OrderListItem) {
 type OrderDetailsPayload = Prisma.OrderGetPayload<{
   include: {
     client: true;
+
     items: {
       include: {
         inventory: true;
+      };
+    };
+
+    extensions: {
+      orderBy: {
+        createdAt: "asc";
       };
     };
   };
@@ -271,6 +278,14 @@ export function formatOrderDetails(order: OrderDetailsPayload) {
             image_url: item.inventory.imageUrl,
           }
         : null,
+    })),
+
+    extensions: order.extensions.map((extension) => ({
+      id: extension.id,
+      days: extension.days,
+      amount: Number(extension.amount),
+      paid_amount: Number(extension.paidAmount),
+      created_at: extension.createdAt.toISOString(),
     })),
   };
 }

@@ -129,6 +129,8 @@ export async function POST(request: Request) {
         securityDeposit: body.security_deposit,
         status: "active",
         orderNumber: String(nextOrderNumber),
+        startDate: new Date(body.items[0].start_date),
+        endDate: new Date(body.items[0].end_date),
 
         items: {
           create: body.items.map((item) => ({

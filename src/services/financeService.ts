@@ -7,6 +7,7 @@ export interface Transaction {
   status: "completed" | "cancelled";
   order_id?: string;
   created_at: string;
+  extension_id?: string | null;
 }
 
 export interface FinanceStats {

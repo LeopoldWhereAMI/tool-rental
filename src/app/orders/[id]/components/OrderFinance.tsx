@@ -8,7 +8,6 @@ import {
   Banknote,
   X,
 } from "lucide-react";
-import styles from "../page.module.css";
 import { OrderDetailsUI } from "@/types";
 import { useOrderStatusInfo } from "@/hooks/useOrderStatusInfo";
 import { useCallback, useEffect, useState } from "react";
@@ -23,7 +22,9 @@ import {
   Transaction,
   updateTransactionStatus,
 } from "@/services/financeService";
-import AddPaymentForm from "./AddPaymentForm";
+import AddPaymentForm from "./AddPaymentForm/AddPaymentForm";
+import OrderExtension from "./OrderExtension/OrderExtension";
+import styles from "../page.module.css";
 
 type OrderFinanceProps = {
   totalPrice: number;
@@ -41,8 +42,8 @@ export default function OrderFinance({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStatus, setCurrentStatus] = useState(order.status);
-
   const [payments, setPayments] = useState<Transaction[]>([]);
+  const [extensions, setExtensions] = useState(order.extensions);
   const [paymentsLoading, setPaymentsLoading] = useState(true);
   const [isPaymentFormOpen, setIsPaymentFormOpen] = useState(false);
 
@@ -50,9 +51,12 @@ export default function OrderFinance({
 
   const parsedAdjustment = Number(adjustment);
   const safeAdjustment = isNaN(parsedAdjustment) ? 0 : parsedAdjustment;
+  const unpaidExtensions = extensions.reduce(
+    (sum, extension) => sum + (extension.amount - extension.paid_amount),
+    0,
+  );
 
-  const additionalPayment = debtAmount + safeAdjustment;
-
+  const additionalPayment = debtAmount + unpaidExtensions + safeAdjustment;
   const fullContractAmount = totalPrice + debtAmount + safeAdjustment;
 
   const isRefund = additionalPayment < 0;
@@ -75,16 +79,13 @@ export default function OrderFinance({
     setIsSubmitting(true);
 
     try {
-      // 1. Обновляем статус заказа
       await updateOrderStatus(order.id, "completed", fullContractAmount);
 
-      // 2. Если есть ДОПЛАТА (просрочка/штраф), записываем её в финансы
       if (additionalPayment !== 0) {
         const desc = `Доплата по заказу #${order.order_number}${debtAmount > 0 ? " (просрочка)" : ""}`;
         await onOrderCompleted(order.id, additionalPayment, desc);
       }
 
-      // 3. Обслуживание (пробег/моточасы)
       await processOrderMaintenance(order);
 
       toast.success(
@@ -147,6 +148,61 @@ export default function OrderFinance({
     loadPayments();
   }, [loadPayments]);
 
+  const handlePayExtension = async (
+    extension: OrderDetailsUI["extensions"][number],
+  ) => {
+    try {
+      const remaining = extension.amount - extension.paid_amount;
+
+      if (remaining <= 0) {
+        return;
+      }
+
+      const response = await fetch("/api/transactions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: "income",
+          amount: remaining,
+          description: `Оплата продления по заказу #${order.order_number}`,
+          category: "OrderExtension",
+          status: "completed",
+          order_id: order.id,
+          extension_id: extension.id,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+
+      toast.success(`Продление оплачено: ${remaining} ₽`);
+
+      setExtensions((prev) =>
+        prev.map((item) =>
+          item.id === extension.id
+            ? {
+                ...item,
+                paid_amount: item.paid_amount + remaining,
+              }
+            : item,
+        ),
+      );
+    } catch (error) {
+      console.error("Ошибка оплаты продления:", error);
+
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Не удалось оплатить продление",
+      );
+    }
+  };
+
   return (
     <div className={`${styles.infoBlock} ${styles.totalBlock}`}>
       <div className={styles.blockTitle}>
@@ -171,6 +227,70 @@ export default function OrderFinance({
             {additionalPayment} ₽
           </p>
         </div>
+
+        <OrderExtension
+          order={order}
+          onExtensionCreated={(extension) => {
+            setExtensions((prev) => [...prev, extension]);
+          }}
+          onExtensionUpdated={(updatedExtension) => {
+            setExtensions((prev) =>
+              prev.map((extension) =>
+                extension.id === updatedExtension.id
+                  ? updatedExtension
+                  : extension,
+              ),
+            );
+          }}
+        />
+
+        {extensions.length > 0 && (
+          <div className={styles.extensionsBlock}>
+            <div className={styles.extensionsHeader}>
+              <span>Продления</span>
+            </div>
+
+            <div className={styles.extensionsList}>
+              {extensions.map((extension) => {
+                const remaining = extension.amount - extension.paid_amount;
+
+                return (
+                  <div key={extension.id} className={styles.extensionItem}>
+                    <div className={styles.extensionInfo}>
+                      <strong>Продление на {extension.days} дн.</strong>
+
+                      <div className={styles.extensionDetails}>
+                        <span>Сумма: {extension.amount} ₽</span>
+
+                        <span>Оплачено: {extension.paid_amount} ₽</span>
+                      </div>
+                    </div>
+
+                    <div className={styles.extensionRight}>
+                      {remaining > 0 ? (
+                        <>
+                          <span className={styles.extensionDebt}>
+                            Осталось: {remaining} ₽
+                          </span>
+
+                          <button
+                            type="button"
+                            className={styles.extensionPayButton}
+                            onClick={() => handlePayExtension(extension)}
+                          >
+                            Оплатить
+                          </button>
+                        </>
+                      ) : (
+                        <span className={styles.extensionPaid}>Оплачено</span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {debtAmount > 0 && (
           <div className={styles.debtDetails}>
@@ -200,7 +320,7 @@ export default function OrderFinance({
 
         <div className={styles.paymentsBlock}>
           <div className={styles.paymentsHeader}>
-            <span>Дополнительные платежи</span>
+            <span>Платежи</span>
 
             {!isPaymentFormOpen && (
               <button type="button" onClick={() => setIsPaymentFormOpen(true)}>
@@ -213,9 +333,11 @@ export default function OrderFinance({
             <AddPaymentForm
               orderId={order.id}
               orderNumber={order.order_number}
+              // extensionId={selectedExtensionId ?? undefined}
               onPaymentAdded={async () => {
-                setIsPaymentFormOpen(false);
                 await loadPayments();
+                setIsPaymentFormOpen(false);
+                // setSelectedExtensionId(null);
               }}
             />
           )}

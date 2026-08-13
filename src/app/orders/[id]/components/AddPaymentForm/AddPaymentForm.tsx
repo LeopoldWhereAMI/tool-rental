@@ -8,12 +8,14 @@ import styles from "./AddPaymentForm.module.css";
 type AddPaymentFormProps = {
   orderId: string;
   orderNumber: string;
+  // extensionId?: string;
   onPaymentAdded: () => void;
 };
 
 export default function AddPaymentForm({
   orderId,
   orderNumber,
+  // extensionId,
   onPaymentAdded,
 }: AddPaymentFormProps) {
   const [amount, setAmount] = useState("");
@@ -43,6 +45,7 @@ export default function AddPaymentForm({
         category: "OrderPayment",
         status: "completed",
         order_id: orderId,
+        // extension_id: extensionId,
       });
 
       toast.success(`Платёж ${paymentAmount} ₽ добавлен`);

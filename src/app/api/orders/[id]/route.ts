@@ -37,6 +37,12 @@ export async function GET(
             inventory: true,
           },
         },
+
+        extensions: {
+          orderBy: {
+            createdAt: "asc",
+          },
+        },
       },
     });
 

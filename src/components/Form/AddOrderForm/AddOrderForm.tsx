@@ -113,7 +113,7 @@ export default function AddOrderForm() {
       const savedOrder = await createOrder(orderPayload);
       setCreatedOrderId(savedOrder.id);
       const finalInitialAmount = orderPayload.total_price;
-      console.log("CLIENT:", client);
+
       const clientDisplayName = getClientDisplayName(client);
       const financeDescription = `Предоплата по заказу #${savedOrder.order_number}: ${clientDisplayName}`;
 
@@ -122,6 +122,7 @@ export default function AddOrderForm() {
         finalInitialAmount,
         financeDescription,
       );
+
       const printData = mapOrderToPrintBundle(
         data,
         inventoryMap,

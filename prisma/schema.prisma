@@ -198,6 +198,8 @@ model Order {
 
   bookings Booking[]
 
+  extensions OrderExtension[]
+
   @@unique([userId, orderNumber])
   @@map("orders")
 }
@@ -231,11 +233,31 @@ model OrderItem {
   @@map("order_items")
 }
 
+model OrderExtension {
+  id String @id @default(uuid())
+
+  orderId String @map("order_id")
+
+  days Int
+
+  amount Decimal
+  paidAmount Decimal @default(0) @map("paid_amount")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+   transactions Transaction[]
+
+  @@map("order_extensions")
+}
+
 model Transaction {
   id String @id @default(uuid())
 
   orderId String? @map("order_id")
   userId  String? @map("user_id")
+  extensionId String? @map("extension_id")
 
   amount Decimal
 
@@ -251,6 +273,8 @@ model Transaction {
   user User? @relation(fields: [userId], references: [id])
 
   order Order? @relation(fields: [orderId], references: [id])
+
+  extension OrderExtension? @relation(fields: [extensionId], references: [id])
 
   @@map("transactions")
 }
