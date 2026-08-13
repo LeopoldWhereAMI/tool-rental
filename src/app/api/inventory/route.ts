@@ -3,52 +3,6 @@ import { prisma } from "@/lib/prisma";
 import { formatInventory } from "@/lib/formatters/inventoryFormatter";
 import { auth } from "../../../../auth";
 
-// export async function GET() {
-//   try {
-//     const session = await auth();
-
-//     if (!session?.user?.id) {
-//       return NextResponse.json(
-//         {
-//           success: false,
-//           error: "Unauthorized",
-//         },
-//         {
-//           status: 401,
-//         },
-//       );
-//     }
-
-//     const items = await prisma.inventory.findMany({
-//       where: {
-//         userId: session.user.id,
-//       },
-//       orderBy: {
-//         name: "asc",
-//       },
-//     });
-
-//     const inventory = items.map(formatInventory);
-
-//     return NextResponse.json({
-//       success: true,
-//       data: inventory,
-//     });
-//   } catch (error) {
-//     console.error("Ошибка загрузки инвентаря:", error);
-
-//     return NextResponse.json(
-//       {
-//         success: false,
-//         error: "Ошибка загрузки инвентаря",
-//       },
-//       {
-//         status: 500,
-//       },
-//     );
-//   }
-// }
-
 export async function GET() {
   try {
     const session = await auth();
@@ -65,9 +19,6 @@ export async function GET() {
       );
     }
 
-    const now = new Date();
-
-    // 1. Получаем весь инвентарь пользователя
     const items = await prisma.inventory.findMany({
       where: {
         userId: session.user.id,
@@ -77,8 +28,6 @@ export async function GET() {
       },
     });
 
-    // 2. Находим инструменты, которые сейчас находятся
-    //    в действующих заказах
     const activeOrderItems = await prisma.orderItem.findMany({
       where: {
         userId: session.user.id,
@@ -92,14 +41,6 @@ export async function GET() {
             in: ["active", "pending"],
           },
         },
-
-        startDate: {
-          lte: now,
-        },
-
-        endDate: {
-          gte: now,
-        },
       },
 
       select: {
@@ -107,15 +48,12 @@ export async function GET() {
       },
     });
 
-    // 3. Собираем ID инструментов в аренде
     const rentedIds = new Set(
       activeOrderItems
         .map((item) => item.inventoryId)
         .filter((id): id is string => id !== null),
     );
 
-    // 4. Формируем ответ.
-    //    Статус rented вычисляем по действующему заказу.
     const inventory = items.map((item) => {
       const formatted = formatInventory(item);
 

@@ -18,8 +18,6 @@ export async function GET() {
       );
     }
 
-    const now = new Date();
-
     const rentedItems = await prisma.orderItem.findMany({
       where: {
         userId: session.user.id,
@@ -32,13 +30,6 @@ export async function GET() {
           status: {
             in: ["active", "pending"],
           },
-        },
-
-        startDate: {
-          lte: now,
-        },
-        endDate: {
-          gte: now,
         },
       },
       select: {
