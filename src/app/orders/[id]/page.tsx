@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { getOrderById } from "@/services/orderService";
+import { getOrderById, updateOrderStatus } from "@/services/orderService";
 import { OrderDetailsUI, OrderPrintBundle } from "@/types";
 import { getOrderDateRange, validateOrderStatus } from "@/helpers";
 import { CreditCard, Printer, Timer } from "lucide-react";
@@ -21,19 +21,29 @@ import { PrintLoadingOverlay } from "@/components/ui/PrintLoadingOverlay/PrintLo
 import { getPassport } from "@/services/passportService";
 import styles from "./page.module.css";
 import OrderNotes from "./components/OrderNotes/OrderNotes";
-
+import OrderCompletionControls from "./components/OrderCompletionControls/OrderCompletionControls";
+import { onOrderCompleted } from "@/helpers/financeIntegration";
+import { processOrderMaintenance } from "@/services/inventoryService";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import CompleteOrderModal from "@/components/ui/MyModal/CompliteOrderModal";
 export default function OrderDetailsPage() {
   const { id } = useParams();
   const [order, setOrder] = useState<OrderDetailsUI | null>(null);
   const [loading, setLoading] = useState(true);
   const [financeData, setFinanceData] = useState({
     finalAmount: 0,
+    additionalPayment: 0,
     adjustment: 0,
+    debtAmount: 0,
   });
   const [printData, setPrintData] = useState<OrderPrintBundle | null>(null);
   const [isPreparingPrint, setIsPreparingPrint] = useState(false);
-
+  const [adjustment, setAdjustment] = useState<number | string>(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const printRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const handlePrintInitiation = async () => {
     if (!order) return;
@@ -84,6 +94,45 @@ export default function OrderDetailsPage() {
     },
   });
 
+  const handleConfirm = async () => {
+    if (isSubmitting) return;
+    if (!order) return;
+
+    setIsSubmitting(true);
+
+    try {
+      await updateOrderStatus(order.id, "completed", financeData.finalAmount);
+
+      if (financeData.additionalPayment !== 0) {
+        const desc = `Доплата по заказу #${order.order_number}${
+          financeData.debtAmount > 0 ? " (просрочка)" : ""
+        }`;
+
+        await onOrderCompleted(order.id, financeData.additionalPayment, desc);
+      }
+
+      await processOrderMaintenance(order);
+
+      const isRefund = financeData.additionalPayment < 0;
+      const absAmount = Math.abs(financeData.additionalPayment);
+
+      toast.success(
+        isRefund
+          ? `Возврат ${absAmount} ₽ оформлен. Заказ закрыт.`
+          : `Доплата ${financeData.additionalPayment} ₽ принята. Заказ закрыт.`,
+      );
+
+      setIsModalOpen(false);
+
+      router.refresh();
+    } catch (err) {
+      toast.error("Ошибка при завершении заказа");
+      console.error(err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const loadOrder = useCallback(async () => {
     if (!id) return;
 
@@ -93,7 +142,12 @@ export default function OrderDetailsPage() {
 
       setOrder(data);
       if (data) {
-        setFinanceData({ finalAmount: data.total_price, adjustment: 0 });
+        setFinanceData({
+          finalAmount: data.total_price,
+          additionalPayment: 0,
+          adjustment: 0,
+          debtAmount: 0,
+        });
       }
     } catch (err) {
       console.error("Ошибка загрузки заказа:", err);
@@ -119,6 +173,12 @@ export default function OrderDetailsPage() {
     { label: "Заказы", href: "/orders" },
     { label: `№ ${order?.order_number}` },
   ];
+
+  const handleCompleteRequest = () => {
+    if (order?.status === "completed") return;
+
+    setIsModalOpen(true);
+  };
 
   if (loading) return <OrderDetailsSkeleton />;
 
@@ -189,25 +249,6 @@ export default function OrderDetailsPage() {
               onItemReturned={handleItemReturned}
             />
 
-            <section className={styles.whiteBox}>
-              <div className={styles.boxHeader}>
-                <Timer size={18} />
-                <h3>Статус выполнения</h3>
-              </div>
-              <OrderStatusJourney
-                status={order.status}
-                dates={{
-                  start:
-                    orderDates.start?.toISOString() || new Date().toISOString(),
-                  end:
-                    orderDates.end?.toISOString() || new Date().toISOString(),
-                }}
-              />
-            </section>
-            <OrderNotes orderId={order.id} initialNotes={order.notes} />
-          </div>
-
-          <aside className={styles.sidebar}>
             {order.status === "cancelled" ? (
               <section className={styles.sidebarCard}>
                 <div className={styles.cancelledFinance}>
@@ -234,16 +275,55 @@ export default function OrderDetailsPage() {
                 <OrderFinance
                   totalPrice={order.total_price}
                   order={order}
+                  adjustment={adjustment}
                   onFinanceUpdate={setFinanceData}
                 />
               </section>
+            )}
+            <OrderNotes orderId={order.id} initialNotes={order.notes} />
+          </div>
+
+          <aside className={styles.sidebar}>
+            {order.status !== "completed" && (
+              <OrderCompletionControls
+                adjustment={adjustment}
+                onAdjustmentChange={setAdjustment}
+                additionalPayment={financeData.additionalPayment}
+                securityDeposit={order.security_deposit ?? 0}
+                onComplete={handleCompleteRequest}
+                isSubmitting={isSubmitting}
+              />
             )}
 
             <section className={styles.sidebarCard}>
               <OrderClientInfo client={order.client} />
             </section>
+            <section className={styles.whiteBox}>
+              <div className={styles.boxHeader}>
+                <Timer size={18} />
+                <h3>Статус выполнения</h3>
+              </div>
+              <OrderStatusJourney
+                status={order.status}
+                dates={{
+                  start:
+                    orderDates.start?.toISOString() || new Date().toISOString(),
+                  end:
+                    orderDates.end?.toISOString() || new Date().toISOString(),
+                }}
+              />
+            </section>
+            {/* <OrderNotes orderId={order.id} initialNotes={order.notes} /> */}
           </aside>
         </div>
+
+        <CompleteOrderModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          finalAmount={financeData.additionalPayment}
+          onConfirm={handleConfirm}
+          loading={isSubmitting}
+        />
 
         <PrintLoadingOverlay
           isVisible={isPreparingPrint}

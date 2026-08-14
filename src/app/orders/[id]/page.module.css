@@ -153,7 +153,6 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  /* justify-content: space-between; */
 }
 
 .sidebarCard {
@@ -281,172 +280,6 @@
   gap: 12px;
 }
 
-.prepaidBadge {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  background: rgba(16, 185, 129, 0.08);
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  border-radius: 12px;
-  color: #10b981;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.prepaidBadge svg {
-  flex-shrink: 0;
-}
-
-.paymentSummary {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.price.hasDebt {
-  color: #ef4444;
-}
-
-.depositInfo.highlightDeposit {
-  background: rgba(245, 158, 11, 0.12);
-  border-color: rgba(245, 158, 11, 0.4);
-  animation: pulse-orange 2s infinite;
-}
-
-@keyframes pulse-orange {
-  0% {
-    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.2);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
-  }
-}
-
-.debtText {
-  font-size: 13px;
-  margin: 4px 0 0 0;
-  color: var(--text-main);
-}
-
-.debtText strong {
-  color: #ef4444;
-}
-
-.totalLabel {
-  font-size: 12px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.price {
-  font-family: var(--font-space-grotesk);
-  font-size: 26px;
-  font-weight: 800;
-  color: var(--price-color);
-  margin: -10px 0 0 0;
-}
-
-.debtDetails {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  border-radius: 12px;
-  box-shadow: var(--table-shadow);
-  padding: 12px;
-}
-
-.debtHeader {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #ef4444;
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.debtBreakdown {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: var(--text-main);
-}
-
-.debtPlus {
-  color: #ef4444;
-  font-weight: 700;
-}
-
-.adjustmentBlock {
-  margin-top: 8px;
-}
-
-.adjLabel {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-.adjInput {
-  background-color: var(--table-thead);
-  border: 1px solid var(--border);
-  color: var(--text-main);
-  border-radius: 8px;
-  padding: 10px;
-  outline: none;
-  transition: border-color 0.2s;
-  appearance: none;
-  -moz-appearance: textfield;
-}
-
-.adjInput:focus {
-  border-color: var(--primary);
-}
-
-.adjInput::-webkit-outer-spin-button,
-.adjInput::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.completeOrderBtn {
-  background-color: var(--primary);
-  color: white;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border: none;
-  transition: all 0.2s;
-  box-shadow: 0 10px 15px -3px rgba(43, 91, 238, 0.2);
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 14px 0 rgba(43, 91, 238, 0.39);
-}
-
-.completeOrderBtn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.completedStatus {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #10b981;
-  font-weight: 600;
-  font-size: 14px;
-  justify-content: center;
-  margin-top: 10px;
-}
-
 .statusCompleted {
   color: rgb(156, 163, 175);
   background: rgba(107, 114, 128, 0.15);
@@ -496,7 +329,6 @@
   box-shadow: var(--table-shadow);
   padding: 16px;
   margin-bottom: 12px;
-  /* transition: border 0.3s ease; */
 }
 
 .toolMainInfo {
@@ -603,7 +435,7 @@
 
 .actionSection {
   display: flex;
-  flex-direction: column; /* Элементы будут друг под другом */
+  flex-direction: column;
   align-items: flex-end;
   justify-content: space-between;
   gap: 8px;
@@ -684,7 +516,7 @@
 }
 
 .detailsLink {
-  color: var(--secondary); /* Используй системный синий цвет */
+  color: var(--secondary);
   font-size: 13px;
   text-decoration: none;
   font-weight: 500;
@@ -694,7 +526,6 @@
   text-decoration: underline;
 }
 
-/* Кастомная позиция */
 .customToolCard {
   background: rgba(59, 130, 246, 0.04);
   border-left: 3px solid #3b82f6;
@@ -716,7 +547,6 @@
   margin-left: 8px;
   font-weight: 500;
 }
-/*  */
 
 .sidebarHeader {
   margin-bottom: 20px;
@@ -836,37 +666,6 @@
   text-decoration: underline;
 }
 
-.depositInfo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 12px;
-  margin: 10px 0;
-  background: rgba(245, 158, 11, 0.06);
-  border: 1px solid rgba(245, 158, 11, 0.2);
-  box-shadow: var(--table-shadow);
-  border-radius: 8px;
-}
-
-.depositInfoLeft {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
-.depositInfoLeft svg {
-  color: #f59e0b;
-  flex-shrink: 0;
-}
-
-.depositInfoAmount {
-  font-size: 14px;
-  font-weight: 600;
-  color: #f59e0b;
-}
-
 .cancelledFinance {
   display: flex;
   flex-direction: column;
@@ -941,7 +740,6 @@
   background: #6b728026;
 }
 
-/*  */
 .paymentsBlock {
   margin-top: 16px;
   padding-top: 16px;
@@ -980,7 +778,6 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  min-height: 250px;
 }
 
 .paymentItem {
@@ -1075,8 +872,17 @@
   font-weight: 600;
 }
 
+.emptyExtensions {
+  padding: 12px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  background: var(--bg-app);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
 @media (hover: hover) {
-  .completeOrderBtn:hover,
   .contactBtn:hover,
   .printBtn:hover {
     filter: brightness(1.1);
@@ -1084,7 +890,6 @@
     transform: translateY(-2px);
   }
 
-  .completeOrderBtn:active,
   .contactBtn:active,
   .printBtn:active {
     transform: translateY(0);
