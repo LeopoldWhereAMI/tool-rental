@@ -33,7 +33,7 @@ export default function OrderFinance({
   order,
   onFinanceUpdate,
 }: OrderFinanceProps) {
-  const { debtAmount, overdueDays } = useOrderStatusInfo(order);
+  const { debtAmount } = useOrderStatusInfo(order);
   const [adjustment, setAdjustment] = useState<number | string>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -16,6 +16,8 @@ export default function PaginationControls({
   className,
   compact = false,
 }: PaginationControlsProps) {
+  if (totalPages <= 1) return null;
+
   const getPages = () => {
     if (compact) {
       if (totalPages <= 4) {
