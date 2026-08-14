@@ -18,14 +18,28 @@ type OrderExtensionProps = {
 export default function OrderExtension({
   order,
   onExtensionCreated,
-  // onExtensionUpdated,
 }: OrderExtensionProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [days, setDays] = useState(1);
   const [isPaying, setIsPaying] = useState(false);
   const [createdExtension, setCreatedExtension] = useState<
     OrderDetailsUI["extensions"][number] | null
   >(null);
+
+  const handleOpen = () => {
+    setIsClosing(false);
+    setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsClosing(true);
+
+    setTimeout(() => {
+      setIsOpen(false);
+      setIsClosing(false);
+    }, 200);
+  };
 
   const dailyAmount = order.order_items.reduce((sum, item) => {
     if (item.is_custom) return sum;
@@ -64,11 +78,11 @@ export default function OrderExtension({
         created_at: extension.createdAt,
       };
 
-      setCreatedExtension(extensionUI);
+      handleClose();
 
-      setIsOpen(false);
-
-      // onExtensionCreated?.(extensionUI);
+      setTimeout(() => {
+        setCreatedExtension(extensionUI);
+      }, 200);
     } catch (error) {
       console.error("Ошибка продления:", error);
       toast.error(
@@ -136,7 +150,7 @@ export default function OrderExtension({
         <button
           type="button"
           className={styles.openButton}
-          onClick={() => setIsOpen(true)}
+          onClick={handleOpen}
           disabled={isExpired}
           title={isExpired ? "Нельзя продлить просроченный заказ" : undefined}
         >
@@ -144,8 +158,16 @@ export default function OrderExtension({
         </button>
 
         {isOpen && (
-          <div className={styles.overlay}>
-            <div className={styles.modal}>
+          <div
+            className={`${styles.overlay} ${
+              isClosing ? styles.overlayClosing : ""
+            }`}
+          >
+            <div
+              className={`${styles.modal} ${
+                isClosing ? styles.modalClosing : ""
+              }`}
+            >
               <h3 className={styles.title}>Продление аренды</h3>
 
               <div className={styles.field}>
@@ -175,7 +197,7 @@ export default function OrderExtension({
                 <button
                   type="button"
                   className={styles.cancelButton}
-                  onClick={() => setIsOpen(false)}
+                  onClick={handleClose}
                 >
                   Отмена
                 </button>

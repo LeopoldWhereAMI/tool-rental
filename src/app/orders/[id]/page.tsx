@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import CompleteOrderModal from "@/components/ui/MyModal/CompliteOrderModal";
 import { calculateUnpaidExtensions } from "./components/OrderFinance/helper";
+import OrderPayments from "./components/OrderPayments/OrderPayments";
 export default function OrderDetailsPage() {
   const { id } = useParams();
   const [order, setOrder] = useState<OrderDetailsUI | null>(null);
@@ -125,6 +126,8 @@ export default function OrderDetailsPage() {
       );
 
       setIsModalOpen(false);
+
+      await loadOrder();
 
       router.refresh();
     } catch (err) {
@@ -286,7 +289,12 @@ export default function OrderDetailsPage() {
                 />
               </section>
             )}
-            <OrderNotes orderId={order.id} initialNotes={order.notes} />
+            <section className={styles.sidebarCard}>
+              <OrderPayments
+                orderId={order.id}
+                orderNumber={order.order_number}
+              />
+            </section>
           </div>
 
           <aside className={styles.sidebar}>
@@ -319,7 +327,7 @@ export default function OrderDetailsPage() {
                 }}
               />
             </section>
-            {/* <OrderNotes orderId={order.id} initialNotes={order.notes} /> */}
+            <OrderNotes orderId={order.id} initialNotes={order.notes} />
           </aside>
         </div>
 

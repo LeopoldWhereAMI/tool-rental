@@ -1,4 +1,4 @@
-import { Banknote, CheckCircle, ShieldCheck } from "lucide-react";
+import { Banknote, CheckCircle, ReceiptText, ShieldCheck } from "lucide-react";
 import styles from "./OrderCompletionControls.module.css";
 type OrderCompletionControlsProps = {
   adjustment: number | string;
@@ -19,6 +19,10 @@ export default function OrderCompletionControls({
 }: OrderCompletionControlsProps) {
   return (
     <div className={styles.sidebarCard}>
+      <div className={styles.blockTitle}>
+        <ReceiptText size={20} />
+        <h3>Итоговый расчёт</h3>
+      </div>
       <div className={styles.prepaidBadge}>
         <CheckCircle size={14} />
         <span>Основная аренда оплачена</span>
