@@ -224,12 +224,12 @@
   padding: 0;
 }
 
-.blockContent {
+/* .blockContent {
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-
+} */
+/* 
 .blockTitle {
   display: flex;
   align-items: center;
@@ -248,7 +248,7 @@
 
 .blockTitle svg {
   color: var(--secondary);
-}
+} */
 
 .toolsListDetailed {
   display: flex;
@@ -276,9 +276,9 @@
   letter-spacing: 0.05em;
 }
 
-.financeBlockContent {
+/* .financeBlockContent {
   gap: 12px;
-}
+} */
 
 .statusCompleted {
   color: rgb(156, 163, 175);
@@ -738,148 +738,6 @@
 .badgeCompleted {
   color: #9ca3af;
   background: #6b728026;
-}
-
-.paymentsBlock {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
-}
-
-.paymentsHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-
-.paymentsHeader > span {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-
-.paymentsHeader button {
-  border: none;
-  background: transparent;
-  padding: 0;
-  color: var(--primary);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.paymentsHeader button:hover {
-  opacity: 0.8;
-}
-
-.paymentsList {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.paymentItem {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 38px 10px 12px;
-  border-radius: 8px;
-  background: var(--nav-hover-bg);
-}
-
-.paymentContent {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  min-width: 0;
-}
-
-.paymentItem strong {
-  color: #16a34a;
-  font-size: 14px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.paymentItem span {
-  color: var(--text-secondary);
-  font-size: 12px;
-  line-height: 1.4;
-  overflow-wrap: anywhere;
-}
-
-.paymentItem small {
-  flex-shrink: 0;
-  color: var(--text-muted);
-  font-size: 11px;
-  white-space: nowrap;
-}
-
-.paymentMeta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.cancelPaymentButton {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 22px;
-  height: 22px;
-  padding: 0;
-
-  border: none;
-  border-radius: 5px;
-  background: transparent;
-
-  color: var(--text-muted);
-  cursor: pointer;
-
-  transition:
-    color 0.15s ease,
-    background-color 0.15s ease;
-}
-
-.cancelPaymentButton:hover {
-  color: #dc2626;
-  background: rgba(220, 38, 38, 0.08);
-}
-
-.cancelledPayment {
-  opacity: 0.55;
-}
-
-.cancelledPayment strong,
-.cancelledPayment span {
-  text-decoration: line-through;
-}
-
-.cancelledPayment .cancelledLabel {
-  text-decoration: none;
-  color: var(--text-muted);
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.emptyExtensions {
-  padding: 12px;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 13px;
-  background: var(--bg-app);
-  border: 1px solid var(--border);
-  border-radius: 8px;
 }
 
 @media (hover: hover) {

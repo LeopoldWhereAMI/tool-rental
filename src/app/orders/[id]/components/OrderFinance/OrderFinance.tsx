@@ -4,20 +4,20 @@ import { CreditCard, X } from "lucide-react";
 import { OrderDetailsUI } from "@/types";
 import { useOrderStatusInfo } from "@/hooks/useOrderStatusInfo";
 import { useCallback, useEffect, useState } from "react";
-
 import { toast } from "sonner";
-
 import {
   getTransactions,
   Transaction,
   updateTransactionStatus,
 } from "@/services/financeService";
-import AddPaymentForm from "./AddPaymentForm/AddPaymentForm";
-import OrderExtension from "./OrderExtension/OrderExtension";
-import styles from "../page.module.css";
+import AddPaymentForm from "../AddPaymentForm/AddPaymentForm";
+import OrderExtension from "../OrderExtension/OrderExtension";
 import PaginationControls from "@/components/ui/PaginationControls/PaginationControls";
 import usePagination from "@/hooks/usePagination";
-import OrderExtensionsList from "./OrderExtension/OrderExtensionsList";
+import OrderExtensionsList from "../OrderExtension/OrderExtensionsList";
+import { calculateUnpaidExtensions } from "./helper";
+// import styles from "../../page.module.css";
+import styles from "./OrderFinance.module.css";
 
 type OrderFinanceProps = {
   totalPrice: number;
@@ -58,11 +58,7 @@ export default function OrderFinance({
 
   const parsedAdjustment = Number(adjustment);
   const safeAdjustment = isNaN(parsedAdjustment) ? 0 : parsedAdjustment;
-  const unpaidExtensions = extensions.reduce(
-    (sum, extension) => sum + (extension.amount - extension.paid_amount),
-    0,
-  );
-
+  const unpaidExtensions = calculateUnpaidExtensions(extensions);
   const additionalPayment = debtAmount + unpaidExtensions + safeAdjustment;
   const fullContractAmount = totalPrice + debtAmount + safeAdjustment;
 
@@ -121,11 +117,11 @@ export default function OrderFinance({
   }, [loadPayments]);
 
   return (
-    <div className={`${styles.infoBlock} ${styles.totalBlock}`}>
+    <div className={styles.infoBlock}>
       <div className={styles.blockTitle}>
         <CreditCard size={20} /> <h3>Продления и платежи</h3>
       </div>
-      <div className={`${styles.blockContent} ${styles.financeBlockContent}`}>
+      <div className={styles.blockContent}>
         <OrderExtension
           order={order}
           onExtensionCreated={(extension) => {

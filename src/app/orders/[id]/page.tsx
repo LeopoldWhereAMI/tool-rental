@@ -11,7 +11,7 @@ import PrintArea from "@/components/Print/PrintArea/PrintArea";
 import { mapOrderDetailsToPrint } from "@/lib/mappers/orderMapper";
 import OrderClientInfo from "./components/OrderClientInfo";
 import OrderItemsList from "./components/OrderItemsList";
-import OrderFinance from "./components/OrderFinance";
+import OrderFinance from "./components/OrderFinance/OrderFinance";
 import OrderDetailsSkeleton from "./OrderDetailsSkeleton";
 import ErrorBlock from "@/components/ui/ErrorBlock/ErrorBlock";
 import { OrderStatusJourney } from "../components/OrderStatusJourney/OrderStatusJourney";
@@ -27,6 +27,7 @@ import { processOrderMaintenance } from "@/services/inventoryService";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import CompleteOrderModal from "@/components/ui/MyModal/CompliteOrderModal";
+import { calculateUnpaidExtensions } from "./components/OrderFinance/helper";
 export default function OrderDetailsPage() {
   const { id } = useParams();
   const [order, setOrder] = useState<OrderDetailsUI | null>(null);
@@ -37,6 +38,7 @@ export default function OrderDetailsPage() {
     adjustment: 0,
     debtAmount: 0,
   });
+
   const [printData, setPrintData] = useState<OrderPrintBundle | null>(null);
   const [isPreparingPrint, setIsPreparingPrint] = useState(false);
   const [adjustment, setAdjustment] = useState<number | string>(0);
@@ -141,10 +143,14 @@ export default function OrderDetailsPage() {
       const data = await getOrderById(id as string);
 
       setOrder(data);
+      setOrder(data);
+
       if (data) {
+        const unpaidExtensions = calculateUnpaidExtensions(data.extensions);
+
         setFinanceData({
           finalAmount: data.total_price,
-          additionalPayment: 0,
+          additionalPayment: unpaidExtensions,
           adjustment: 0,
           debtAmount: 0,
         });
