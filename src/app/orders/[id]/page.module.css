@@ -980,6 +980,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-height: 250px;
 }
 
 .paymentItem {
@@ -1071,110 +1072,6 @@
   text-decoration: none;
   color: var(--text-muted);
   font-size: 11px;
-  font-weight: 600;
-}
-
-/*  */
-
-.extensionsBlock {
-  margin-top: 20px;
-}
-
-.extensionsHeader {
-  margin-bottom: 10px;
-
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-main);
-}
-
-.extensionsList {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.extensionItem {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-
-  padding: 8px 12px;
-
-  border: 1px solid var(--border);
-  border-radius: 10px;
-
-  background: var(--surface);
-}
-
-.extensionInfo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-  flex-wrap: wrap;
-}
-
-.extensionInfo strong {
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--text-main);
-}
-
-.extensionDetails {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
-.extensionRight {
-  display: flex;
-  align-items: center;
-
-  gap: 12px;
-  font-size: 12px;
-}
-
-.extensionDebt {
-  font-size: 13px;
-  font-weight: 600;
-  color: #d97706;
-}
-
-.extensionPayButton {
-  padding: 6px 12px;
-  border: none;
-  border-radius: 6px;
-  background: #2563eb;
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.extensionPayButton:hover {
-  background: #1d4ed8;
-}
-
-.extensionPayButton:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.extensionPaid {
-  padding: 5px 9px;
-
-  border-radius: 6px;
-
-  background: var(--nav-active-bg);
-  color: var(--nav-active-text);
-
-  font-size: 13px;
   font-weight: 600;
 }
 

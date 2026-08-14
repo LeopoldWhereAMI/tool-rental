@@ -1,0 +1,154 @@
+"use client";
+
+import { useState } from "react";
+import { toast } from "sonner";
+import { OrderDetailsUI } from "@/types";
+import PaginationControls from "@/components/ui/PaginationControls/PaginationControls";
+import usePagination from "@/hooks/usePagination";
+import styles from "./OrderExtension.module.css";
+
+type Extension = OrderDetailsUI["extensions"][number];
+
+type OrderExtensionsListProps = {
+  extensions: Extension[];
+  orderId: string;
+  orderNumber: OrderDetailsUI["order_number"];
+  onExtensionPaid: (extensionId: string, amount: number) => void;
+};
+
+export default function OrderExtensionsList({
+  extensions,
+  orderId,
+  orderNumber,
+  onExtensionPaid,
+}: OrderExtensionsListProps) {
+  const [isPaying, setIsPaying] = useState<string | null>(null);
+
+  const {
+    currentPage,
+    totalPages,
+    currentItems: currentExtensions,
+    handlePageChange,
+    pageLoading,
+  } = usePagination({
+    items: extensions,
+    itemsPerPage: 3,
+  });
+
+  const handlePayExtension = async (extension: Extension) => {
+    if (isPaying) return;
+
+    const remaining = extension.amount - extension.paid_amount;
+
+    if (remaining <= 0) {
+      return;
+    }
+
+    try {
+      setIsPaying(extension.id);
+
+      const response = await fetch("/api/transactions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: "income",
+          amount: remaining,
+          description: `Оплата продления по заказу #${orderNumber}`,
+          category: "OrderExtension",
+          status: "completed",
+          order_id: orderId,
+          extension_id: extension.id,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+
+      toast.success(`Продление оплачено: ${remaining} ₽`);
+
+      onExtensionPaid(extension.id, remaining);
+    } catch (error) {
+      console.error("Ошибка оплаты продления:", error);
+
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Не удалось оплатить продление",
+      );
+    } finally {
+      setIsPaying(null);
+    }
+  };
+
+  if (extensions.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className={styles.extensionsBlock}>
+      <div className={styles.extensionsHeader}>
+        <span>Продления</span>
+      </div>
+
+      <div
+        className={`${styles.extensionsList} ${
+          pageLoading || isPaying ? styles.paginationLoading : ""
+        }`}
+      >
+        {currentExtensions.map((extension) => {
+          const remaining = extension.amount - extension.paid_amount;
+          const paying = isPaying === extension.id;
+
+          return (
+            <div key={extension.id} className={styles.extensionItem}>
+              <div className={styles.extensionInfo}>
+                <strong>Продление на {extension.days} дн.</strong>
+
+                <div className={styles.extensionDetails}>
+                  <span>Сумма: {extension.amount} ₽</span>
+
+                  <span>Оплачено: {extension.paid_amount} ₽</span>
+                </div>
+              </div>
+
+              <div className={styles.extensionRight}>
+                {remaining > 0 ? (
+                  <>
+                    <span className={styles.extensionDebt}>
+                      Осталось: {remaining} ₽
+                    </span>
+
+                    <button
+                      type="button"
+                      className={styles.extensionPayButton}
+                      onClick={() => handlePayExtension(extension)}
+                      disabled={paying}
+                    >
+                      {paying ? "Оплата..." : "Оплатить"}
+                    </button>
+                  </>
+                ) : (
+                  <span className={styles.extensionPaid}>Оплачено</span>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {totalPages > 1 && (
+        <PaginationControls
+          totalPages={totalPages}
+          currentPage={currentPage}
+          clickHandler={handlePageChange}
+          compact
+        />
+      )}
+    </div>
+  );
+}

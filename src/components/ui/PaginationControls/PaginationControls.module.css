@@ -63,6 +63,39 @@
   pointer-events: none;
 }
 
+.pageBtn:disabled.active {
+  opacity: 1;
+  cursor: default;
+}
+
+/*  */
+.compact {
+  margin-top: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  gap: 6px;
+}
+
+.compact .pageInfo {
+  font-size: 12px;
+}
+
+.compact .buttonGroup {
+  gap: 4px;
+}
+
+.compact .pageBtn {
+  padding: 3px 7px;
+  min-width: 28px;
+  border-radius: 6px;
+  font-size: 11px;
+}
+
+.compact .dots {
+  padding: 3px 4px;
+  font-size: 11px;
+}
+
 @media (max-width: 480px) {
   .pagination {
     padding: 10px 12px;
@@ -73,6 +106,15 @@
     padding: 5px 8px;
     font-size: 12.5px;
     min-width: 32px;
+  }
+  .compact .pageBtn {
+    padding: 3px 7px;
+    min-width: 28px;
+    font-size: 11px;
+  }
+
+  .compact .pageInfo {
+    font-size: 12px;
   }
 }
 

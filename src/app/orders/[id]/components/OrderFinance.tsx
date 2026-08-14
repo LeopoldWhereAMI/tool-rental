@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  AlertCircle,
-  CheckCircle,
-  CreditCard,
-  ShieldCheck,
-  Banknote,
-  X,
-} from "lucide-react";
+import { CheckCircle, CreditCard, Banknote, X } from "lucide-react";
 import { OrderDetailsUI } from "@/types";
 import { useOrderStatusInfo } from "@/hooks/useOrderStatusInfo";
 import { useCallback, useEffect, useState } from "react";
@@ -27,6 +20,7 @@ import OrderExtension from "./OrderExtension/OrderExtension";
 import styles from "../page.module.css";
 import PaginationControls from "@/components/ui/PaginationControls/PaginationControls";
 import usePagination from "@/hooks/usePagination";
+import OrderExtensionsList from "./OrderExtension/OrderExtensionsList";
 
 type OrderFinanceProps = {
   totalPrice: number;
@@ -57,18 +51,7 @@ export default function OrderFinance({
     pageLoading,
   } = usePagination({
     items: payments,
-    itemsPerPage: 5,
-  });
-
-  const {
-    currentPage: extensionsPage,
-    totalPages: totalExtensionsPages,
-    currentItems: currentExtensions,
-    handlePageChange: setExtensionsPage,
-    pageLoading: extensionsPageLoading,
-  } = usePagination({
-    items: extensions,
-    itemsPerPage: 5,
+    itemsPerPage: 3,
   });
 
   const router = useRouter();
@@ -172,61 +155,6 @@ export default function OrderFinance({
     loadPayments();
   }, [loadPayments]);
 
-  const handlePayExtension = async (
-    extension: OrderDetailsUI["extensions"][number],
-  ) => {
-    try {
-      const remaining = extension.amount - extension.paid_amount;
-
-      if (remaining <= 0) {
-        return;
-      }
-
-      const response = await fetch("/api/transactions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          type: "income",
-          amount: remaining,
-          description: `Оплата продления по заказу #${order.order_number}`,
-          category: "OrderExtension",
-          status: "completed",
-          order_id: order.id,
-          extension_id: extension.id,
-        }),
-      });
-
-      const result = await response.json();
-
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-
-      toast.success(`Продление оплачено: ${remaining} ₽`);
-
-      setExtensions((prev) =>
-        prev.map((item) =>
-          item.id === extension.id
-            ? {
-                ...item,
-                paid_amount: item.paid_amount + remaining,
-              }
-            : item,
-        ),
-      );
-    } catch (error) {
-      console.error("Ошибка оплаты продления:", error);
-
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Не удалось оплатить продление",
-      );
-    }
-  };
-
   return (
     <div className={`${styles.infoBlock} ${styles.totalBlock}`}>
       <div className={styles.blockTitle}>
@@ -268,88 +196,23 @@ export default function OrderFinance({
           }}
         />
 
-        {extensions.length > 0 && (
-          <div className={styles.extensionsBlock}>
-            <div className={styles.extensionsHeader}>
-              <span>Продления</span>
-            </div>
-
-            <div
-              className={`${styles.extensionsList} ${
-                extensionsPageLoading ? styles.paginationLoading : ""
-              }`}
-            >
-              {currentExtensions.map((extension) => {
-                const remaining = extension.amount - extension.paid_amount;
-
-                return (
-                  <div key={extension.id} className={styles.extensionItem}>
-                    <div className={styles.extensionInfo}>
-                      <strong>Продление на {extension.days} дн.</strong>
-
-                      <div className={styles.extensionDetails}>
-                        <span>Сумма: {extension.amount} ₽</span>
-
-                        <span>Оплачено: {extension.paid_amount} ₽</span>
-                      </div>
-                    </div>
-
-                    <div className={styles.extensionRight}>
-                      {remaining > 0 ? (
-                        <>
-                          <span className={styles.extensionDebt}>
-                            Осталось: {remaining} ₽
-                          </span>
-
-                          <button
-                            type="button"
-                            className={styles.extensionPayButton}
-                            onClick={() => handlePayExtension(extension)}
-                          >
-                            Оплатить
-                          </button>
-                        </>
-                      ) : (
-                        <span className={styles.extensionPaid}>Оплачено</span>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            <PaginationControls
-              totalPages={totalExtensionsPages}
-              currentPage={extensionsPage}
-              clickHandler={setExtensionsPage}
-            />
-          </div>
-        )}
-
-        {debtAmount > 0 && (
-          <div className={styles.debtDetails}>
-            <div className={styles.debtHeader}>
-              <AlertCircle size={14} />
-              <span>Просрочка: {overdueDays} дн.</span>
-            </div>
-            <p className={styles.debtText}>
-              Нужно доплатить: <strong>{debtAmount} ₽</strong>
-            </p>
-          </div>
-        )}
-
-        {order.security_deposit ? (
-          <div
-            className={`${styles.depositInfo} ${currentStatus !== "completed" ? styles.highlightDeposit : ""}`}
-          >
-            <div className={styles.depositInfoLeft}>
-              <ShieldCheck size={14} />
-              <span>Вернуть залог клиенту</span>
-            </div>
-            <span className={styles.depositInfoAmount}>
-              {order.security_deposit} ₽
-            </span>
-          </div>
-        ) : null}
+        <OrderExtensionsList
+          extensions={extensions}
+          orderId={order.id}
+          orderNumber={order.order_number}
+          onExtensionPaid={(extensionId, amount) => {
+            setExtensions((prev) =>
+              prev.map((extension) =>
+                extension.id === extensionId
+                  ? {
+                      ...extension,
+                      paid_amount: extension.paid_amount + amount,
+                    }
+                  : extension,
+              ),
+            );
+          }}
+        />
 
         <div className={styles.paymentsBlock}>
           <div className={styles.paymentsHeader}>
@@ -423,6 +286,7 @@ export default function OrderFinance({
                 totalPages={totalPages}
                 currentPage={currentPage}
                 clickHandler={handlePageChange}
+                compact
               />
             </>
           )}
