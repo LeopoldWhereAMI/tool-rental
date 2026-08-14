@@ -6,6 +6,7 @@ import { OrderDetailsUI } from "@/types";
 import PaginationControls from "@/components/ui/PaginationControls/PaginationControls";
 import usePagination from "@/hooks/usePagination";
 import styles from "./OrderExtension.module.css";
+import { formatExtensionDate } from "./helper";
 
 type Extension = OrderDetailsUI["extensions"][number];
 
@@ -32,7 +33,7 @@ export default function OrderExtensionsList({
     pageLoading,
   } = usePagination({
     items: extensions,
-    itemsPerPage: 3,
+    itemsPerPage: 5,
   });
 
   const handlePayExtension = async (extension: Extension) => {
@@ -107,12 +108,16 @@ export default function OrderExtensionsList({
           return (
             <div key={extension.id} className={styles.extensionItem}>
               <div className={styles.extensionInfo}>
-                <strong>Продление на {extension.days} дн.</strong>
+                <strong className={styles.extensionAmount}>
+                  {extension.amount} ₽
+                </strong>
 
                 <div className={styles.extensionDetails}>
-                  <span>Сумма: {extension.amount} ₽</span>
+                  <span>Продление на {extension.days} дн.</span>
 
-                  <span>Оплачено: {extension.paid_amount} ₽</span>
+                  <span className={styles.extensionDate}>
+                    {formatExtensionDate(extension.created_at)}
+                  </span>
                 </div>
               </div>
 

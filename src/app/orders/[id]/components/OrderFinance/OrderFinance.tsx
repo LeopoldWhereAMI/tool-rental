@@ -53,7 +53,7 @@ export default function OrderFinance({
     pageLoading,
   } = usePagination({
     items: payments,
-    itemsPerPage: 3,
+    itemsPerPage: 5,
   });
 
   const parsedAdjustment = Number(adjustment);

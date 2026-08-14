@@ -18,7 +18,7 @@ type OrderExtensionProps = {
 export default function OrderExtension({
   order,
   onExtensionCreated,
-  onExtensionUpdated,
+  // onExtensionUpdated,
 }: OrderExtensionProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [days, setDays] = useState(1);
@@ -68,7 +68,7 @@ export default function OrderExtension({
 
       setIsOpen(false);
 
-      onExtensionCreated?.(extensionUI);
+      // onExtensionCreated?.(extensionUI);
     } catch (error) {
       console.error("Ошибка продления:", error);
       toast.error(
@@ -107,7 +107,7 @@ export default function OrderExtension({
 
       toast.success(`Продление оплачено: ${createdExtension.amount} ₽`);
 
-      onExtensionUpdated?.({
+      onExtensionCreated?.({
         ...createdExtension,
         paid_amount: createdExtension.amount,
       });
@@ -213,8 +213,10 @@ export default function OrderExtension({
                 type="button"
                 className={styles.laterButton}
                 onClick={() => {
+                  if (!createdExtension) return;
+
+                  onExtensionCreated?.(createdExtension);
                   setCreatedExtension(null);
-                  // onExtensionCreated?.();
                 }}
               >
                 Оплатить позже
