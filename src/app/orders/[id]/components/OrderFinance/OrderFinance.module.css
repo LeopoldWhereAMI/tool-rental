@@ -4,26 +4,87 @@
 }
 
 .blockTitle {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin: 0;
+  padding: 0 0 16px;
+
+  border: none;
+  border-bottom: 1px solid var(--border);
+
+  background: transparent;
+  color: var(--text-main);
+
+  cursor: pointer;
+}
+
+.blockTitleLeft {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--border);
 }
 
-.blockTitle h3 {
-  font-size: 16px;
-  font-weight: 700;
+.blockTitleLeft h3 {
   color: var(--text-main);
   margin: 0;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
-.blockTitle svg {
+.blockTitleLeft svg {
+  color: var(--secondary);
+}
+
+.blockTitleRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.blockTitleArrow {
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.blockTitleArrowOpen {
+  transform: rotate(180deg);
+}
+
+.blockTitle:hover .blockTitleRight {
   color: var(--secondary);
 }
 
 .blockContent {
+  display: grid;
+  grid-template-rows: 0fr;
+
+  opacity: 0;
+
+  transition:
+    grid-template-rows 0.25s ease,
+    opacity 0.2s ease;
+}
+
+.blockContentOpen {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.blockContentInner {
+  min-height: 0;
+  overflow: hidden;
+
   display: flex;
   flex-direction: column;
   gap: 16px;

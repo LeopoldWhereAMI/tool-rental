@@ -7,7 +7,6 @@ import PaginationControls from "@/components/ui/PaginationControls/PaginationCon
 import usePagination from "@/hooks/usePagination";
 import styles from "./OrderExtension.module.css";
 import { formatExtensionDate } from "./helper";
-import { ChevronDown } from "lucide-react";
 
 type Extension = OrderDetailsUI["extensions"][number];
 
@@ -22,10 +21,10 @@ export default function OrderExtensionsList({
   extensions,
   orderId,
   orderNumber,
+
   onExtensionPaid,
 }: OrderExtensionsListProps) {
   const [isPaying, setIsPaying] = useState<string | null>(null);
-  const [isExpanded, setIsExpanded] = useState(true);
 
   const {
     currentPage,
@@ -94,86 +93,64 @@ export default function OrderExtensionsList({
 
   return (
     <div className={styles.extensionsBlock}>
-      <button
-        type="button"
-        className={styles.extensionsHeader}
-        onClick={() => setIsExpanded((prev) => !prev)}
-      >
-        <span>{isExpanded ? "Скрыть продления" : "Показать продления"}</span>
-
-        <ChevronDown
-          size={16}
-          className={`${styles.extensionsArrow} ${
-            isExpanded ? styles.extensionsArrowOpen : ""
-          }`}
-        />
-      </button>
-
       <div
-        className={`${styles.extensionsContent} ${
-          isExpanded ? styles.extensionsContentOpen : ""
+        className={`${styles.extensionsList} ${
+          pageLoading || isPaying ? styles.paginationLoading : ""
         }`}
       >
-        <div className={styles.extensionsContentInner}>
-          <div
-            className={`${styles.extensionsList} ${
-              pageLoading || isPaying ? styles.paginationLoading : ""
-            }`}
-          >
-            {currentExtensions.map((extension) => {
-              const remaining = extension.amount - extension.paid_amount;
-              const paying = isPaying === extension.id;
+        {currentExtensions.map((extension) => {
+          const remaining = extension.amount - extension.paid_amount;
+          const paying = isPaying === extension.id;
 
-              return (
-                <div key={extension.id} className={styles.extensionItem}>
-                  <div className={styles.extensionInfo}>
-                    <strong className={styles.extensionAmount}>
-                      {extension.amount} ₽
-                    </strong>
+          return (
+            <div key={extension.id} className={styles.extensionItem}>
+              <div className={styles.extensionInfo}>
+                <strong className={styles.extensionAmount}>
+                  {extension.amount} ₽
+                </strong>
 
-                    <div className={styles.extensionDetails}>
-                      <span>Продление на {extension.days} дн.</span>
+                <div className={styles.extensionDetails}>
+                  <span>Продление на {extension.days} дн.</span>
 
-                      <span className={styles.extensionDate}>
-                        {formatExtensionDate(extension.created_at)}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className={styles.extensionRight}>
-                    {remaining > 0 ? (
-                      <>
-                        <span className={styles.extensionDebt}>
-                          Осталось: {remaining} ₽
-                        </span>
-
-                        <button
-                          type="button"
-                          className={styles.extensionPayButton}
-                          onClick={() => handlePayExtension(extension)}
-                          disabled={paying}
-                        >
-                          {paying ? "Оплата..." : "Оплатить"}
-                        </button>
-                      </>
-                    ) : (
-                      <span className={styles.extensionPaid}>Оплачено</span>
-                    )}
-                  </div>
+                  <span className={styles.extensionDate}>
+                    {formatExtensionDate(extension.created_at)}
+                  </span>
                 </div>
-              );
-            })}
-          </div>
-        </div>
-        {totalPages > 1 && (
-          <PaginationControls
-            totalPages={totalPages}
-            currentPage={currentPage}
-            clickHandler={handlePageChange}
-            compact
-          />
-        )}
+              </div>
+
+              <div className={styles.extensionRight}>
+                {remaining > 0 ? (
+                  <>
+                    <span className={styles.extensionDebt}>
+                      Осталось: {remaining} ₽
+                    </span>
+
+                    <button
+                      type="button"
+                      className={styles.extensionPayButton}
+                      onClick={() => handlePayExtension(extension)}
+                      disabled={paying}
+                    >
+                      {paying ? "Оплата..." : "Оплатить"}
+                    </button>
+                  </>
+                ) : (
+                  <span className={styles.extensionPaid}>Оплачено</span>
+                )}
+              </div>
+            </div>
+          );
+        })}
       </div>
+
+      {totalPages > 1 && (
+        <PaginationControls
+          totalPages={totalPages}
+          currentPage={currentPage}
+          clickHandler={handlePageChange}
+          compact
+        />
+      )}
     </div>
   );
 }

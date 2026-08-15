@@ -86,7 +86,7 @@ export default function OrderPayments({
         className={styles.paymentsTitle}
         onClick={() => setIsExpanded((prev) => !prev)}
       >
-        <span className={styles.paymentsTitleLeft}>
+        {/* <span className={styles.paymentsTitleLeft}>
           <CreditCard size={20} />
           <span className={styles.paymentsTitleText}>Платежи</span>
         </span>
@@ -96,16 +96,33 @@ export default function OrderPayments({
           className={`${styles.paymentsArrow} ${
             isExpanded ? styles.paymentsArrowOpen : ""
           }`}
-        />
+        /> */}
+        <span className={styles.paymentsTitleLeft}>
+          <CreditCard size={20} />
+          <span className={styles.paymentsTitleText}>Платежи</span>
+        </span>
+
+        <span className={styles.paymentsTitleRight}>
+          <span>{isExpanded ? "Скрыть платежи" : "Показать платежи"}</span>
+
+          <ChevronDown
+            size={16}
+            className={`${styles.paymentsArrow} ${
+              isExpanded ? styles.paymentsArrowOpen : ""
+            }`}
+          />
+        </span>
       </button>
 
-      <div className={styles.paymentsHeader}>
-        {!isPaymentFormOpen && (
-          <button type="button" onClick={() => setIsPaymentFormOpen(true)}>
-            + Добавить платёж
-          </button>
-        )}
-      </div>
+      {isExpanded && (
+        <div className={styles.paymentsHeader}>
+          {!isPaymentFormOpen && (
+            <button type="button" onClick={() => setIsPaymentFormOpen(true)}>
+              + Добавить платёж
+            </button>
+          )}
+        </div>
+      )}
 
       <div
         className={`${styles.paymentFormWrapper} ${

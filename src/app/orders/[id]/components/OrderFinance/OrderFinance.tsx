@@ -7,7 +7,7 @@ import OrderExtension from "../OrderExtension/OrderExtension";
 import OrderExtensionsList from "../OrderExtension/OrderExtensionsList";
 import { calculateUnpaidExtensions } from "./helper";
 import styles from "./OrderFinance.module.css";
-import { CalendarClock } from "lucide-react";
+import { CalendarClock, ChevronDown } from "lucide-react";
 
 type OrderFinanceProps = {
   totalPrice: number;
@@ -30,6 +30,7 @@ export default function OrderFinance({
 }: OrderFinanceProps) {
   const { debtAmount } = useOrderStatusInfo(order);
   const [extensions, setExtensions] = useState(order.extensions);
+  const [isExpanded, setIsExpanded] = useState(true);
   const parsedAdjustment = Number(adjustment);
   const safeAdjustment = isNaN(parsedAdjustment) ? 0 : parsedAdjustment;
   const unpaidExtensions = calculateUnpaidExtensions(extensions);
@@ -53,49 +54,73 @@ export default function OrderFinance({
 
   return (
     <div className={styles.infoBlock}>
-      <div className={styles.blockTitle}>
-        <CalendarClock size={20} /> <h3>Продления</h3>
-      </div>
-      <div className={styles.blockContent}>
-        <OrderExtension
-          order={order}
-          onExtensionCreated={(extension) => {
-            setExtensions((prev) => [...prev, extension]);
-          }}
-          onExtensionUpdated={(updatedExtension) => {
-            setExtensions((prev) =>
-              prev.map((extension) =>
-                extension.id === updatedExtension.id
-                  ? updatedExtension
-                  : extension,
-              ),
-            );
-          }}
-        />
+      <button
+        type="button"
+        className={styles.blockTitle}
+        onClick={() => setIsExpanded((prev) => !prev)}
+      >
+        <span className={styles.blockTitleLeft}>
+          <CalendarClock size={20} />
+          <h3>Продления</h3>
+        </span>
 
-        {extensions.length > 0 ? (
-          <OrderExtensionsList
-            extensions={extensions}
-            orderId={order.id}
-            orderNumber={order.order_number}
-            onExtensionPaid={(extensionId, amount) => {
+        <span className={styles.blockTitleRight}>
+          <span>{isExpanded ? "Скрыть продления" : "Показать продления"}</span>
+
+          <ChevronDown
+            size={16}
+            className={`${styles.blockTitleArrow} ${
+              isExpanded ? styles.blockTitleArrowOpen : ""
+            }`}
+          />
+        </span>
+      </button>
+      <div
+        className={`${styles.blockContent} ${
+          isExpanded ? styles.blockContentOpen : ""
+        }`}
+      >
+        <div className={styles.blockContentInner}>
+          <OrderExtension
+            order={order}
+            onExtensionCreated={(extension) => {
+              setExtensions((prev) => [...prev, extension]);
+            }}
+            onExtensionUpdated={(updatedExtension) => {
               setExtensions((prev) =>
                 prev.map((extension) =>
-                  extension.id === extensionId
-                    ? {
-                        ...extension,
-                        paid_amount: extension.paid_amount + amount,
-                      }
+                  extension.id === updatedExtension.id
+                    ? updatedExtension
                     : extension,
                 ),
               );
             }}
           />
-        ) : (
-          <div className={styles.emptyExtensions}>
-            <span>Продлений нет</span>
-          </div>
-        )}
+
+          {extensions.length > 0 ? (
+            <OrderExtensionsList
+              extensions={extensions}
+              orderId={order.id}
+              orderNumber={order.order_number}
+              onExtensionPaid={(extensionId, amount) => {
+                setExtensions((prev) =>
+                  prev.map((extension) =>
+                    extension.id === extensionId
+                      ? {
+                          ...extension,
+                          paid_amount: extension.paid_amount + amount,
+                        }
+                      : extension,
+                  ),
+                );
+              }}
+            />
+          ) : (
+            <div className={styles.emptyExtensions}>
+              <span>Продлений нет</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

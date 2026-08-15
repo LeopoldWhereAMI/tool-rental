@@ -70,6 +70,20 @@
   cursor: pointer;
 }
 
+.paymentsTitleRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.paymentsTitle:hover .paymentsTitleRight {
+  color: var(--secondary);
+}
+
 .paymentsTitleLeft {
   display: flex;
   align-items: center;
@@ -92,7 +106,7 @@
   padding: 0;
 
   color: var(--text-main);
-
+  text-transform: uppercase;
   font-size: 16px;
   font-weight: 700;
   line-height: 1.2;
@@ -101,15 +115,11 @@
 .paymentsArrow {
   flex-shrink: 0;
 
-  color: var(--text-secondary);
+  color: inherit;
 
   transition:
     transform 0.2s ease,
     color 0.2s ease;
-}
-
-.paymentsTitle:hover .paymentsArrow {
-  color: var(--text-main);
 }
 
 .paymentsArrowOpen {
@@ -142,6 +152,12 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  transition: opacity 0.15s ease;
+}
+
+.paginationLoading {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .paymentItem {
