@@ -33,6 +33,8 @@ Copy-Item -Recurse -Force ".next/static" "$standalone/.next/static"
 if (Test-Path "public") {
     Copy-Item -Recurse -Force "public" "$standalone/public"
 }
+Copy-Item ".env" "$standalone/.env" -Force
+Add-Content "$standalone/.env" 'AUTH_URL="http://194.87.94.197:3000"'
 
 Write-Step "3/7 Clean dev artifacts (otherwise archive gets huge)"
 Remove-Item -Recurse -Force ".next/dev" -ErrorAction SilentlyContinue

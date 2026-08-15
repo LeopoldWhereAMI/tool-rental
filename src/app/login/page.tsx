@@ -6,7 +6,6 @@ import { AlertCircle, CheckCircle } from "lucide-react";
 import PageContainer from "@/components/PageContainer/PageContainer";
 import { signUpAction } from "../actions/serverAuth";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 
 interface FormErrors {
@@ -25,7 +24,6 @@ export default function LoginPage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [successMessage, setSuccessMessage] = useState("");
   const [resetSent, setResetSent] = useState(false);
-  const router = useRouter();
 
   const handleForgotPassword = async () => {
     if (!email) {
@@ -118,8 +116,10 @@ export default function LoginPage() {
       if (result?.ok) {
         toast.success("Вы успешно вошли!");
         setLoading(false);
-        await router.push("/");
-        router.refresh();
+
+        if (result.url) {
+          window.location.href = result.url;
+        }
       }
     } catch (err) {
       const error = err as Error;
