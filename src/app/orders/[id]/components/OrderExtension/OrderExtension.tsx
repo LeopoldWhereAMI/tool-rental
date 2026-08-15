@@ -4,6 +4,7 @@ import { OrderDetailsUI } from "@/types";
 import { useState } from "react";
 import { toast } from "sonner";
 import styles from "./OrderExtension.module.css";
+import { useOrderStatusInfo } from "@/hooks/useOrderStatusInfo";
 
 type OrderExtensionProps = {
   order: OrderDetailsUI;
@@ -21,6 +22,7 @@ export default function OrderExtension({
 }: OrderExtensionProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const { isCompleted, isOverdue } = useOrderStatusInfo(order);
   const [days, setDays] = useState(1);
   const [isPaying, setIsPaying] = useState(false);
   const [createdExtension, setCreatedExtension] = useState<
@@ -140,9 +142,7 @@ export default function OrderExtension({
     }
   };
 
-  const isExpired = order.end_date
-    ? new Date(order.end_date) < new Date()
-    : false;
+  const isExtensionDisabled = isCompleted || isOverdue;
 
   return (
     <>
@@ -151,10 +151,20 @@ export default function OrderExtension({
           type="button"
           className={styles.openButton}
           onClick={handleOpen}
-          disabled={isExpired}
-          title={isExpired ? "Нельзя продлить просроченный заказ" : undefined}
+          disabled={isExtensionDisabled}
+          title={
+            isCompleted
+              ? "Нельзя продлить завершённый заказ"
+              : isOverdue
+                ? "Нельзя продлить просроченный заказ"
+                : undefined
+          }
         >
-          {isExpired ? "Заказ просрочен" : "Продлить аренду"}
+          {isCompleted
+            ? "Заказ завершён"
+            : isOverdue
+              ? "Заказ просрочен"
+              : "Продлить аренду"}
         </button>
 
         {isOpen && (
