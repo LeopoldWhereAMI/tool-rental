@@ -4,65 +4,6 @@ import { formatInventory } from "@/lib/formatters/inventoryFormatter";
 import { auth } from "../../../../../auth";
 import { Prisma } from "@/generated/prisma/client";
 
-// export async function GET(
-//   _request: Request,
-//   { params }: { params: Promise<{ id: string }> },
-// ) {
-//   try {
-//     const session = await auth();
-
-//     if (!session?.user?.id) {
-//       return NextResponse.json(
-//         {
-//           success: false,
-//           error: "Unauthorized",
-//         },
-//         {
-//           status: 401,
-//         },
-//       );
-//     }
-
-//     const { id } = await params;
-
-//     const item = await prisma.inventory.findFirst({
-//       where: {
-//         id,
-//         userId: session.user.id,
-//       },
-//     });
-
-//     if (!item) {
-//       return NextResponse.json(
-//         {
-//           success: false,
-//           error: "Инструмент не найден",
-//         },
-//         {
-//           status: 404,
-//         },
-//       );
-//     }
-
-//     return NextResponse.json({
-//       success: true,
-//       data: formatInventory(item),
-//     });
-//   } catch (error) {
-//     console.error("Ошибка загрузки инструмента:", error);
-
-//     return NextResponse.json(
-//       {
-//         success: false,
-//         error: "Ошибка загрузки инструмента",
-//       },
-//       {
-//         status: 500,
-//       },
-//     );
-//   }
-// }
-
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -272,8 +213,11 @@ export async function PATCH(
     if (body.purchase_price !== undefined)
       data.purchasePrice = body.purchase_price;
 
-    if (body.purchase_date !== undefined)
-      data.purchaseDate = body.purchase_date;
+    if (body.purchase_date !== undefined) {
+      data.purchaseDate = body.purchase_date
+        ? new Date(body.purchase_date).getTime()
+        : null;
+    }
 
     if (body.notes !== undefined) data.notes = body.notes;
 
