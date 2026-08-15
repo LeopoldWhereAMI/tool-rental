@@ -117,8 +117,8 @@ export default function LoginPage() {
 
       if (result?.ok) {
         toast.success("Вы успешно вошли!");
-
-        router.push("/");
+        setLoading(false);
+        await router.push("/");
         router.refresh();
       }
     } catch (err) {
