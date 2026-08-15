@@ -86,9 +86,13 @@ export default function OrderPayments({
         className={styles.paymentsTitle}
         onClick={() => setIsExpanded((prev) => !prev)}
       >
-        <span className={styles.paymentsTitleLeft}>
+        {/* <span className={styles.paymentsTitleLeft}>
           <CreditCard size={20} />
           <h3>Платежи</h3>
+        </span> */}
+        <span className={styles.paymentsTitleLeft}>
+          <CreditCard size={20} />
+          <span className={styles.paymentsTitleText}>Платежи</span>
         </span>
 
         <ChevronDown

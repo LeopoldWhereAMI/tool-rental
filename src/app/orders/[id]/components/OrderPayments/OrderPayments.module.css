@@ -70,7 +70,7 @@
   cursor: pointer;
 }
 
-.paymentsTitleLeft {
+/* .paymentsTitleLeft {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -87,6 +87,34 @@
   color: var(--text-main);
   font-size: 16px;
   font-weight: 700;
+} */
+
+.paymentsTitleLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  min-width: 0;
+}
+
+.paymentsTitleLeft svg {
+  flex-shrink: 0;
+
+  width: 20px;
+  height: 20px;
+
+  color: var(--secondary);
+}
+
+.paymentsTitleText {
+  margin: 0;
+  padding: 0;
+
+  color: var(--text-main);
+
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 .paymentsArrow {
