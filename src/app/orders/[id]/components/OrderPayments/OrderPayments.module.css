@@ -70,25 +70,6 @@
   cursor: pointer;
 }
 
-/* .paymentsTitleLeft {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.paymentsTitleLeft svg {
-  flex-shrink: 0;
-  color: var(--secondary);
-}
-
-.paymentsTitleLeft h3 {
-  margin: 0;
-
-  color: var(--text-main);
-  font-size: 16px;
-  font-weight: 700;
-} */
-
 .paymentsTitleLeft {
   display: flex;
   align-items: center;
