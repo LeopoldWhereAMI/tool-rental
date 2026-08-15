@@ -70,7 +70,7 @@ export default function AvatarUploader({ profile }: AvatarUploaderProps) {
             height={80}
             className={styles.avatar}
             priority
-            unoptimized
+            // unoptimized
           />
           <div onClick={(e) => e.stopPropagation()}>
             <DeleteAvatarButton />

@@ -26,7 +26,7 @@ export default function OrderClientInfo({ client }: OrderClientInfoProps) {
             width={52}
             height={52}
             className={styles.avatarImage}
-            unoptimized
+            // unoptimized
           />
         </div>
 

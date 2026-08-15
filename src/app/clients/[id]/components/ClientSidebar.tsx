@@ -76,7 +76,7 @@ export default function ClientSidebar({
                 width={80}
                 height={80}
                 className={styles.avatarImage}
-                unoptimized
+                // unoptimized
               />
             </div>
           </div>

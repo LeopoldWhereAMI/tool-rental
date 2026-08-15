@@ -135,7 +135,7 @@ export default function Header() {
                   width={44}
                   height={44}
                   className={styles.avatarImage}
-                  unoptimized
+                  // unoptimized
                 />
               </div>
               <ChevronDown

@@ -48,7 +48,7 @@ export default function InventoryCard({
               src={item.image_url}
               alt={item.name}
               fill
-              unoptimized
+              // unoptimized
               style={{ objectFit: "cover" }}
               className={styles.cardImageThumb}
             />

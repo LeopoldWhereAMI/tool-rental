@@ -99,7 +99,7 @@ export default function InventoryList({
                             src={item.image_url}
                             alt={item.name}
                             fill
-                            unoptimized
+                            // unoptimized
                             style={{ objectFit: "cover" }}
                             className={styles.productImage}
                             sizes="44px"

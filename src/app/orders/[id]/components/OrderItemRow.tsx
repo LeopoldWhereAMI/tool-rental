@@ -94,7 +94,7 @@ export function OrderItemRow({
               src={item.inventory.image_url}
               alt={displayName}
               fill
-              unoptimized
+              // unoptimized
               style={{ objectFit: "cover" }}
               className={styles.productImage}
               sizes="72px"

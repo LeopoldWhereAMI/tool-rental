@@ -57,7 +57,7 @@ export default function ClientRow({
               width={40}
               height={40}
               className={styles.avatarImage}
-              unoptimized
+              // unoptimized
             />
           </div>
           <div className={styles.nameInfo}>

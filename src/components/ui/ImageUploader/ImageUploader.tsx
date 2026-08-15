@@ -100,7 +100,7 @@ export default function ImageUploader({
             fill
             sizes="(max-width: 768px) 100vw, 300px"
             onLoad={() => setIsImageLoading(false)}
-            unoptimized
+            // unoptimized
           />
           {uploading && (
             <div className={styles.overlayLoader}>

@@ -12,9 +12,10 @@ import { useState } from "react";
 import styles from "./page.module.css";
 
 export default function AddInventoryPage() {
-  const router = useRouter();
   const { items: existingItems, refresh } = useInventory();
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageUrl] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const breadcrumbItems = [
     { label: "Инвентарь", href: "/inventory" },
@@ -22,6 +23,9 @@ export default function AddInventoryPage() {
   ];
 
   const onSubmit = async (data: InventoryCreateInput) => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     try {
       const result = await addInventory({
         ...data,
@@ -41,6 +45,8 @@ export default function AddInventoryPage() {
       } else {
         toast.error("Ошибка при сохранении");
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -67,8 +73,9 @@ export default function AddInventoryPage() {
               type="submit"
               form="add-inventory-form"
               className={styles.submitBtn}
+              disabled={isSubmitting}
             >
-              Добавить инструмент
+              {isSubmitting ? "Добавление..." : "Добавить инструмент"}
             </button>
           </div>
         </div>

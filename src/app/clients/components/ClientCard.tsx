@@ -59,7 +59,7 @@ export default function ClientCard({
               width={48}
               height={48}
               className={styles.cardAvatarImage}
-              unoptimized
+              // unoptimized
             />
           </div>
           <div className={styles.cardNameBlock}>
