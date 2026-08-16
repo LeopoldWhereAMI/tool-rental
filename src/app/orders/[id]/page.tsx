@@ -27,7 +27,6 @@ import { processOrderMaintenance } from "@/services/inventoryService";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import CompleteOrderModal from "@/components/ui/MyModal/CompliteOrderModal";
-import { calculateUnpaidExtensions } from "./components/OrderFinance/helper";
 import OrderPayments from "./components/OrderPayments/OrderPayments";
 import { getTransactions } from "@/services/financeService";
 
@@ -171,18 +170,6 @@ export default function OrderDetailsPage() {
         );
 
       setOrder(data);
-
-      // if (data) {
-      //   const unpaidExtensions = calculateUnpaidExtensions(data.extensions);
-
-      //   setFinanceData({
-      //     finalAmount: data.total_price,
-      //     additionalPayment: unpaidExtensions,
-      //     adjustment: 0,
-      //     debtAmount: 0,
-      //     additionalPayments,
-      //   });
-      // }
 
       if (data) {
         setFinanceData((prev) => ({
