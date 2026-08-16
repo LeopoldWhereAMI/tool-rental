@@ -179,10 +179,17 @@
 }
 
 .paymentItem strong {
-  color: #16a34a;
   font-size: 14px;
   font-weight: 700;
   white-space: nowrap;
+}
+
+.incomeAmount {
+  color: #16a34a;
+}
+
+.expenseAmount {
+  color: #dc2626;
 }
 
 .paymentItem span {

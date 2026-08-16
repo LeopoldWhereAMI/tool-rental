@@ -13,7 +13,7 @@ type OrderFinanceProps = {
   totalPrice: number;
   order: OrderDetailsUI;
   adjustment: number | string;
-
+  additionalPayments: number;
   onFinanceUpdate?: (data: {
     finalAmount: number;
     additionalPayment: number;
@@ -26,15 +26,18 @@ export default function OrderFinance({
   totalPrice,
   order,
   adjustment,
+  additionalPayments,
   onFinanceUpdate,
 }: OrderFinanceProps) {
   const { debtAmount } = useOrderStatusInfo(order);
   const [extensions, setExtensions] = useState(order.extensions);
   const [isExpanded, setIsExpanded] = useState(true);
+
   const parsedAdjustment = Number(adjustment);
   const safeAdjustment = isNaN(parsedAdjustment) ? 0 : parsedAdjustment;
   const unpaidExtensions = calculateUnpaidExtensions(extensions);
-  const additionalPayment = debtAmount + unpaidExtensions + safeAdjustment;
+  const additionalPayment =
+    debtAmount + unpaidExtensions + safeAdjustment - additionalPayments;
   const fullContractAmount = totalPrice + debtAmount + safeAdjustment;
 
   useEffect(() => {

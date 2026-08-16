@@ -29,6 +29,8 @@ import { useRouter } from "next/navigation";
 import CompleteOrderModal from "@/components/ui/MyModal/CompliteOrderModal";
 import { calculateUnpaidExtensions } from "./components/OrderFinance/helper";
 import OrderPayments from "./components/OrderPayments/OrderPayments";
+import { getTransactions } from "@/services/financeService";
+
 export default function OrderDetailsPage() {
   const { id } = useParams();
   const [order, setOrder] = useState<OrderDetailsUI | null>(null);
@@ -38,6 +40,7 @@ export default function OrderDetailsPage() {
     additionalPayment: 0,
     adjustment: 0,
     debtAmount: 0,
+    additionalPayments: 0,
   });
 
   const [printData, setPrintData] = useState<OrderPrintBundle | null>(null);
@@ -145,18 +148,47 @@ export default function OrderDetailsPage() {
       setLoading(true);
       const data = await getOrderById(id as string);
 
+      const { transactions } = await getTransactions(
+        1,
+        100,
+        undefined,
+        id as string,
+      );
+
+      const additionalPayments = transactions
+        .filter(
+          (transaction) =>
+            transaction.category === "OrderPayment" &&
+            transaction.status === "completed",
+        )
+        .reduce(
+          (sum, transaction) =>
+            sum +
+            (transaction.type === "income"
+              ? transaction.amount
+              : -transaction.amount),
+          0,
+        );
+
       setOrder(data);
-      setOrder(data);
+
+      // if (data) {
+      //   const unpaidExtensions = calculateUnpaidExtensions(data.extensions);
+
+      //   setFinanceData({
+      //     finalAmount: data.total_price,
+      //     additionalPayment: unpaidExtensions,
+      //     adjustment: 0,
+      //     debtAmount: 0,
+      //     additionalPayments,
+      //   });
+      // }
 
       if (data) {
-        const unpaidExtensions = calculateUnpaidExtensions(data.extensions);
-
-        setFinanceData({
-          finalAmount: data.total_price,
-          additionalPayment: unpaidExtensions,
-          adjustment: 0,
-          debtAmount: 0,
-        });
+        setFinanceData((prev) => ({
+          ...prev,
+          additionalPayments,
+        }));
       }
     } catch (err) {
       console.error("Ошибка загрузки заказа:", err);
@@ -188,6 +220,21 @@ export default function OrderDetailsPage() {
 
     setIsModalOpen(true);
   };
+
+  const handleFinanceUpdate = useCallback(
+    (data: {
+      finalAmount: number;
+      additionalPayment: number;
+      adjustment: number;
+      debtAmount: number;
+    }) => {
+      setFinanceData((prev) => ({
+        ...prev,
+        ...data,
+      }));
+    },
+    [],
+  );
 
   if (loading) return <OrderDetailsSkeleton />;
 
@@ -285,7 +332,9 @@ export default function OrderDetailsPage() {
                   totalPrice={order.total_price}
                   order={order}
                   adjustment={adjustment}
-                  onFinanceUpdate={setFinanceData}
+                  // onFinanceUpdate={setFinanceData}
+                  onFinanceUpdate={handleFinanceUpdate}
+                  additionalPayments={financeData.additionalPayments}
                 />
               </section>
             )}
@@ -293,6 +342,7 @@ export default function OrderDetailsPage() {
               <OrderPayments
                 orderId={order.id}
                 orderNumber={order.order_number}
+                onPaymentChanged={loadOrder}
               />
             </section>
           </div>

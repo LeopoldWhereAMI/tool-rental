@@ -247,7 +247,7 @@ model OrderExtension {
 
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
-   transactions Transaction[]
+  transactions Transaction[]
 
   @@map("order_extensions")
 }

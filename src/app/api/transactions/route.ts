@@ -2,57 +2,6 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "../../../../auth";
 
-// export async function POST(request: Request) {
-//   try {
-//     const session = await auth();
-
-//     if (!session?.user?.id) {
-//       return NextResponse.json(
-//         {
-//           success: false,
-//           error: "Unauthorized",
-//         },
-//         {
-//           status: 401,
-//         },
-//       );
-//     }
-
-//     const body = await request.json();
-
-//     const transaction = await prisma.transaction.create({
-//       data: {
-//         userId: session.user.id,
-
-//         type: body.type,
-//         amount: body.amount,
-//         description: body.description,
-//         category: body.category,
-//         status: body.status,
-
-//         orderId: body.order_id ?? null,
-//       },
-//     });
-
-//     return NextResponse.json({
-//       success: true,
-//       data: transaction,
-//     });
-//   } catch (error) {
-//     console.error("Ошибка создания транзакции:", error);
-
-//     return NextResponse.json(
-//       {
-//         success: false,
-//         error: "Ошибка создания транзакции",
-//       },
-//       {
-//         status: 500,
-//       },
-//     );
-//   }
-// }
-
 export async function POST(request: Request) {
   try {
     const session = await auth();
@@ -74,9 +23,11 @@ export async function POST(request: Request) {
     const transaction = await prisma.$transaction(async (tx) => {
       const extensionId = body.extension_id ?? null;
 
-      // Если платеж относится к продлению —
-      // сначала проверяем само продление
-      if (extensionId && body.status === "completed") {
+      if (
+        extensionId &&
+        body.status === "completed" &&
+        body.type === "income"
+      ) {
         const extension = await tx.orderExtension.findFirst({
           where: {
             id: extensionId,

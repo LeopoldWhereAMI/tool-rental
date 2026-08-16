@@ -8,15 +8,17 @@ import styles from "./AddPaymentForm.module.css";
 type AddPaymentFormProps = {
   orderId: string;
   orderNumber: string;
-
-  onPaymentAdded: () => void;
+  operation: "income" | "expense";
+  onPaymentAdded: () => void | Promise<void>;
+  onCancel: () => void;
 };
 
 export default function AddPaymentForm({
   orderId,
   orderNumber,
-
+  operation,
   onPaymentAdded,
+  onCancel,
 }: AddPaymentFormProps) {
   const [amount, setAmount] = useState("");
   const [comment, setComment] = useState("");
@@ -38,17 +40,23 @@ export default function AddPaymentForm({
 
     try {
       await createTransaction({
-        type: "income",
+        type: operation,
         amount: paymentAmount,
         description:
-          comment.trim() || `Дополнительный платёж по заказу #${orderNumber}`,
+          comment.trim() ||
+          (operation === "income"
+            ? `Дополнительный платёж по заказу #${orderNumber}`
+            : `Вычет по заказу #${orderNumber}`),
         category: "OrderPayment",
         status: "completed",
         order_id: orderId,
       });
 
-      toast.success(`Платёж ${paymentAmount} ₽ добавлен`);
-
+      toast.success(
+        operation === "income"
+          ? `Платёж ${paymentAmount} ₽ добавлен`
+          : `Вычет ${paymentAmount} ₽ добавлен`,
+      );
       setAmount("");
       setComment("");
 
@@ -99,7 +107,7 @@ export default function AddPaymentForm({
           onClick={() => {
             setAmount("");
             setComment("");
-            onPaymentAdded();
+            onCancel();
           }}
         >
           Отмена
@@ -110,7 +118,11 @@ export default function AddPaymentForm({
           className={styles.submitButton}
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Добавление..." : "Добавить платёж"}
+          {isSubmitting
+            ? "Сохранение..."
+            : operation === "income"
+              ? "Добавить платёж"
+              : "Вычесть сумму"}
         </button>
       </div>
     </form>

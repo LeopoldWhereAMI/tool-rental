@@ -18,14 +18,19 @@ import styles from "./OrderPayments.module.css";
 type OrderPaymentsProps = {
   orderId: string;
   orderNumber: OrderDetailsUI["order_number"];
+  onPaymentChanged?: () => void | Promise<void>;
 };
 
 export default function OrderPayments({
   orderId,
   orderNumber,
+  onPaymentChanged,
 }: OrderPaymentsProps) {
   const [payments, setPayments] = useState<Transaction[]>([]);
   const [paymentsLoading, setPaymentsLoading] = useState(true);
+  const [paymentOperation, setPaymentOperation] = useState<
+    "income" | "expense"
+  >("income");
   const [isPaymentFormOpen, setIsPaymentFormOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -44,9 +49,15 @@ export default function OrderPayments({
     try {
       setPaymentsLoading(true);
 
-      const result = await getTransactions(1, 100, "income", orderId);
+      const result = await getTransactions(1, 100, undefined, orderId);
 
-      setPayments(result.transactions);
+      setPayments(
+        result.transactions.filter(
+          (transaction) =>
+            transaction.category === "OrderPayment" &&
+            (transaction.type === "income" || transaction.type === "expense"),
+        ),
+      );
     } catch (error) {
       console.error("Ошибка загрузки платежей:", error);
     } finally {
@@ -70,6 +81,7 @@ export default function OrderPayments({
             toast.success("Платёж отменён");
 
             await loadPayments();
+            await onPaymentChanged?.();
           } catch (error) {
             console.error("Ошибка отмены платежа:", error);
             toast.error("Не удалось отменить платёж");
@@ -106,9 +118,27 @@ export default function OrderPayments({
       {isExpanded && (
         <div className={styles.paymentsHeader}>
           {!isPaymentFormOpen && (
-            <button type="button" onClick={() => setIsPaymentFormOpen(true)}>
-              + Добавить платёж
-            </button>
+            <>
+              <button
+                type="button"
+                onClick={() => {
+                  setPaymentOperation("income");
+                  setIsPaymentFormOpen(true);
+                }}
+              >
+                + Добавить платёж
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setPaymentOperation("expense");
+                  setIsPaymentFormOpen(true);
+                }}
+              >
+                − Вычесть сумму
+              </button>
+            </>
           )}
         </div>
       )}
@@ -122,8 +152,13 @@ export default function OrderPayments({
           <AddPaymentForm
             orderId={orderId}
             orderNumber={orderNumber}
+            operation={paymentOperation}
             onPaymentAdded={async () => {
               await loadPayments();
+              await onPaymentChanged?.();
+              setIsPaymentFormOpen(false);
+            }}
+            onCancel={() => {
               setIsPaymentFormOpen(false);
             }}
           />
@@ -152,7 +187,16 @@ export default function OrderPayments({
                   }`}
                 >
                   <div className={styles.paymentContent}>
-                    <strong>+ {payment.amount} ₽</strong>
+                    <strong
+                      className={
+                        payment.type === "expense"
+                          ? styles.expenseAmount
+                          : styles.incomeAmount
+                      }
+                    >
+                      {payment.type === "expense" ? "−" : "+"} {payment.amount}{" "}
+                      ₽
+                    </strong>
 
                     <span>{payment.description}</span>
                   </div>
