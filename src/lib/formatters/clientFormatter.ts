@@ -16,6 +16,7 @@ export function formatClient(client: ClientsListItem) {
   return {
     ...client,
 
+    created_at: client.createdAt,
     first_name: client.firstName,
     last_name: client.lastName,
     middle_name: client.middleName,
@@ -59,6 +60,7 @@ export function formatClientForResponse(client: ClientItem) {
   return {
     ...client,
 
+    created_at: client.createdAt,
     first_name: client.firstName,
     last_name: client.lastName,
     middle_name: client.middleName,
