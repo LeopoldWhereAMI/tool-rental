@@ -61,8 +61,24 @@ export async function POST(
         throw new Error("ORDER_ALREADY_COMPLETED");
       }
 
-      if (order.endDate && order.endDate < new Date()) {
-        throw new Error("ORDER_EXPIRED");
+      if (order.endDate) {
+        const now = new Date();
+
+        const today = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
+        );
+
+        const endDate = new Date(
+          order.endDate.getFullYear(),
+          order.endDate.getMonth(),
+          order.endDate.getDate(),
+        );
+
+        if (endDate < today) {
+          throw new Error("ORDER_EXPIRED");
+        }
       }
 
       if (!order.endDate) {
