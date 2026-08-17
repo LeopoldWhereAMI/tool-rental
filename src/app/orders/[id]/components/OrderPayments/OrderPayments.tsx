@@ -54,7 +54,9 @@ export default function OrderPayments({
       setPayments(
         result.transactions.filter(
           (transaction) =>
-            transaction.category === "OrderPayment" &&
+            ["Rental", "OrderPayment", "OrderExtension"].includes(
+              transaction.category ?? "",
+            ) &&
             (transaction.type === "income" || transaction.type === "expense"),
         ),
       );
@@ -89,6 +91,22 @@ export default function OrderPayments({
         },
       },
     });
+  };
+
+  const getPaymentDescription = (payment: Transaction) => {
+    if (payment.category === "Rental") {
+      return "Предоплата за аренду";
+    }
+
+    if (payment.category === "OrderExtension") {
+      return "Оплата продления";
+    }
+
+    if (payment.category === "OrderPayment") {
+      return "Оплата заказа";
+    }
+
+    return payment.description;
   };
 
   return (
@@ -198,7 +216,7 @@ export default function OrderPayments({
                       ₽
                     </strong>
 
-                    <span>{payment.description}</span>
+                    <span>{getPaymentDescription(payment)}</span>
                   </div>
 
                   <div className={styles.paymentMeta}>

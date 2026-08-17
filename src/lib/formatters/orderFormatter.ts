@@ -282,6 +282,7 @@ export function formatOrderDetails(order: OrderDetailsPayload) {
 
     extensions: order.extensions.map((extension) => ({
       id: extension.id,
+      order_item_id: extension.orderItemId,
       days: extension.days,
       amount: Number(extension.amount),
       paid_amount: Number(extension.paidAmount),

@@ -103,6 +103,7 @@ export default function OrderFinance({
           {extensions.length > 0 ? (
             <OrderExtensionsList
               extensions={extensions}
+              items={order.order_items}
               orderId={order.id}
               orderNumber={order.order_number}
               onExtensionPaid={(extensionId, amount) => {

@@ -6,6 +6,7 @@ import { OrderItemRow } from "./OrderItemRow";
 
 type OrderItemsListProps = {
   items: OrderDetailsUI["order_items"];
+  extensions: OrderDetailsUI["extensions"];
   orderStatus: string;
   orderId: string;
   onItemReturned?: () => void;
@@ -13,6 +14,7 @@ type OrderItemsListProps = {
 
 export default function OrderItemsList({
   items,
+  extensions,
   orderStatus,
   orderId,
   onItemReturned,
@@ -24,6 +26,7 @@ export default function OrderItemsList({
           <OrderItemRow
             key={item.id || index}
             item={item}
+            extensions={extensions}
             orderStatus={orderStatus}
             orderId={orderId}
             onItemReturned={onItemReturned}

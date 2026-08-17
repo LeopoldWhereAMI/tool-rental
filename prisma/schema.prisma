@@ -230,6 +230,8 @@ model OrderItem {
 
   inventory Inventory? @relation(fields: [inventoryId], references: [id])
 
+  extensions OrderExtension[]
+
   @@map("order_items")
 }
 
@@ -237,6 +239,7 @@ model OrderExtension {
   id String @id @default(uuid())
 
   orderId String @map("order_id")
+  orderItemId String @map("order_item_id")
 
   days Int
 
@@ -246,6 +249,7 @@ model OrderExtension {
   createdAt DateTime @default(now()) @map("created_at")
 
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderItem OrderItem @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
 
   transactions Transaction[]
 

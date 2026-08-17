@@ -1,7 +1,7 @@
 "use client";
 import { Check, CheckCircle, Clock, ImageIcon, Wrench, X } from "lucide-react";
 import { calculateDays, calculateItemTotal } from "@/helpers";
-import { OrderItemDetailed, OrderUI } from "@/types";
+import { OrderExtensionUI, OrderItemDetailed, OrderUI } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useOrderStatusInfo } from "@/hooks/useOrderStatusInfo";
@@ -14,6 +14,7 @@ import styles from "../page.module.css";
 
 interface OrderItemRowProps {
   item: OrderItemDetailed;
+  extensions: OrderExtensionUI[];
   orderStatus: string;
   orderId: string;
   onItemReturned?: () => void;
@@ -22,6 +23,7 @@ interface OrderItemRowProps {
 // Компонент для одной строки инструмента
 export function OrderItemRow({
   item,
+  extensions,
   orderStatus,
   orderId,
   onItemReturned,
@@ -76,6 +78,15 @@ export function OrderItemRow({
   const isItemReturned = item.item_status === "returned";
   const isCustom = item.is_custom;
 
+  const itemExtensions = extensions.filter(
+    (extension) => extension.order_item_id === item.id,
+  );
+
+  const extensionDays = itemExtensions.reduce(
+    (sum, extension) => sum + extension.days,
+    0,
+  );
+
   const displayName = isCustom
     ? item.custom_name || "Дополнительная услуга"
     : item.inventory?.name || "Инструмент";
@@ -118,6 +129,11 @@ export function OrderItemRow({
               {statusVariant && (
                 <span className={`${styles.badge} ${styles[statusVariant]}`}>
                   {statusText}
+                </span>
+              )}
+              {extensionDays > 0 && (
+                <span className={styles.extensionBadge}>
+                  Продлено на {extensionDays} дн.
                 </span>
               )}
               {isItemReturned && (

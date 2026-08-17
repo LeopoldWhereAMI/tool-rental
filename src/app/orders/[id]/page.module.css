@@ -113,6 +113,22 @@
   text-transform: uppercase;
 }
 
+.extensionBadge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 3px 8px;
+  border-radius: 6px;
+
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+
+  background: #f3e8ff;
+  color: #7e22ce;
+  border: 1px solid #e9d5ff;
+}
+
 .whiteBox,
 .sidebarCard,
 .infoBlock.wideBlock {

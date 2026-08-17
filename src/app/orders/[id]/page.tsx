@@ -287,6 +287,7 @@ export default function OrderDetailsPage() {
           <div className={styles.contentArea}>
             <OrderItemsList
               items={items}
+              extensions={order.extensions}
               orderStatus={order.status}
               orderId={order.id}
               onItemReturned={handleItemReturned}

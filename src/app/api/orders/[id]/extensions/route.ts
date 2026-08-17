@@ -23,7 +23,7 @@ export async function POST(
     const body = await request.json();
 
     const days = Number(body.days);
-    const amount = Number(body.amount);
+    const orderItemIds = body.orderItemIds;
 
     if (!Number.isInteger(days) || days <= 0) {
       return NextResponse.json(
@@ -35,11 +35,15 @@ export async function POST(
       );
     }
 
-    if (!Number.isFinite(amount) || amount < 0) {
+    if (
+      !Array.isArray(orderItemIds) ||
+      orderItemIds.length === 0 ||
+      !orderItemIds.every((id) => typeof id === "string")
+    ) {
       return NextResponse.json(
         {
           success: false,
-          error: "Некорректная сумма продления",
+          error: "Не выбраны позиции для продления",
         },
         { status: 400 },
       );
@@ -61,19 +65,29 @@ export async function POST(
         throw new Error("ORDER_ALREADY_COMPLETED");
       }
 
-      if (order.endDate) {
-        const now = new Date();
+      const orderItems = await tx.orderItem.findMany({
+        where: {
+          id: {
+            in: orderItemIds,
+          },
+          orderId,
+        },
+      });
 
-        const today = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate(),
-        );
+      if (orderItems.length !== orderItemIds.length) {
+        throw new Error("ORDER_ITEM_NOT_FOUND");
+      }
 
+      const now = new Date();
+
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+      // Проверяем, что ни одна выбранная позиция не просрочена
+      for (const orderItem of orderItems) {
         const endDate = new Date(
-          order.endDate.getFullYear(),
-          order.endDate.getMonth(),
-          order.endDate.getDate(),
+          orderItem.endDate.getFullYear(),
+          orderItem.endDate.getMonth(),
+          orderItem.endDate.getDate(),
         );
 
         if (endDate < today) {
@@ -81,42 +95,69 @@ export async function POST(
         }
       }
 
-      if (!order.endDate) {
-        throw new Error("ORDER_HAS_NO_END_DATE");
+      const extensions = [];
+
+      // Продлеваем каждую выбранную позицию
+      for (const orderItem of orderItems) {
+        const amount = orderItem.priceAtTime * days;
+
+        const newEndDate = new Date(orderItem.endDate);
+        newEndDate.setDate(newEndDate.getDate() + days);
+
+        const extension = await tx.orderExtension.create({
+          data: {
+            orderId,
+            orderItemId: orderItem.id,
+            days,
+            amount,
+            paidAmount: 0,
+          },
+        });
+
+        await tx.orderItem.update({
+          where: {
+            id: orderItem.id,
+          },
+          data: {
+            endDate: newEndDate,
+          },
+        });
+
+        extensions.push(extension);
       }
 
-      const newEndDate = new Date(order.endDate);
-      newEndDate.setDate(newEndDate.getDate() + days);
-
-      const extension = await tx.orderExtension.create({
-        data: {
-          orderId,
-          days,
-          amount,
-          paidAmount: 0,
-        },
-      });
-
-      await tx.orderItem.updateMany({
+      // Order.endDate = максимальная дата окончания всех позиций
+      const updatedOrderItems = await tx.orderItem.findMany({
         where: {
           orderId,
         },
-        data: {
-          endDate: newEndDate,
+        select: {
+          endDate: true,
         },
       });
+
+      const orderEndDate = updatedOrderItems.reduce<Date | null>(
+        (latest, item) => {
+          if (!latest || item.endDate > latest) {
+            return item.endDate;
+          }
+
+          return latest;
+        },
+        null,
+      );
 
       const updatedOrder = await tx.order.update({
         where: {
           id: orderId,
         },
         data: {
-          endDate: newEndDate,
+          endDate: orderEndDate,
         },
       });
 
       return {
-        extension,
+        extensions,
         order: updatedOrder,
       };
     });
@@ -139,6 +180,16 @@ export async function POST(
         );
       }
 
+      if (error.message === "ORDER_ITEM_NOT_FOUND") {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Позиция заказа не найдена",
+          },
+          { status: 404 },
+        );
+      }
+
       if (error.message === "ORDER_ALREADY_COMPLETED") {
         return NextResponse.json(
           {
@@ -153,17 +204,7 @@ export async function POST(
         return NextResponse.json(
           {
             success: false,
-            error: "Нельзя продлить просроченный заказ",
-          },
-          { status: 400 },
-        );
-      }
-
-      if (error.message === "ORDER_HAS_NO_END_DATE") {
-        return NextResponse.json(
-          {
-            success: false,
-            error: "У заказа отсутствует дата окончания",
+            error: "Одна или несколько выбранных позиций просрочены",
           },
           { status: 400 },
         );

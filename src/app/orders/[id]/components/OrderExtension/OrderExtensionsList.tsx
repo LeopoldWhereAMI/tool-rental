@@ -7,11 +7,13 @@ import PaginationControls from "@/components/ui/PaginationControls/PaginationCon
 import usePagination from "@/hooks/usePagination";
 import styles from "./OrderExtension.module.css";
 import { formatExtensionDate } from "./helper";
+import { payOrderExtensions } from "@/services/orderExtensionService";
 
 type Extension = OrderDetailsUI["extensions"][number];
 
 type OrderExtensionsListProps = {
   extensions: Extension[];
+  items: OrderDetailsUI["order_items"];
   orderId: string;
   orderNumber: OrderDetailsUI["order_number"];
   onExtensionPaid: (extensionId: string, amount: number) => void;
@@ -19,9 +21,9 @@ type OrderExtensionsListProps = {
 
 export default function OrderExtensionsList({
   extensions,
+  items,
   orderId,
   orderNumber,
-
   onExtensionPaid,
 }: OrderExtensionsListProps) {
   const [isPaying, setIsPaying] = useState<string | null>(null);
@@ -49,27 +51,12 @@ export default function OrderExtensionsList({
     try {
       setIsPaying(extension.id);
 
-      const response = await fetch("/api/transactions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          type: "income",
-          amount: remaining,
-          description: `Оплата продления по заказу #${orderNumber}`,
-          category: "OrderExtension",
-          status: "completed",
-          order_id: orderId,
-          extension_id: extension.id,
-        }),
+      await payOrderExtensions({
+        orderId,
+        extensionId: extension.id,
+        amount: remaining,
+        orderNumber,
       });
-
-      const result = await response.json();
-
-      if (!result.success) {
-        throw new Error(result.error);
-      }
 
       toast.success(`Продление оплачено: ${remaining} ₽`);
 
@@ -101,6 +88,11 @@ export default function OrderExtensionsList({
         {currentExtensions.map((extension) => {
           const remaining = extension.amount - extension.paid_amount;
           const paying = isPaying === extension.id;
+          const orderItem = items.find(
+            (item) => item.id === extension.order_item_id,
+          );
+
+          const inventory = orderItem?.inventory;
 
           return (
             <div key={extension.id} className={styles.extensionItem}>
@@ -110,6 +102,10 @@ export default function OrderExtensionsList({
                 </strong>
 
                 <div className={styles.extensionDetails}>
+                  <span>{inventory?.name || "Инструмент"}</span>
+
+                  {inventory?.article && <span>Арт. {inventory.article}</span>}
+
                   <span>Продление на {extension.days} дн.</span>
 
                   <span className={styles.extensionDate}>

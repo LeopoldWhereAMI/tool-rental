@@ -119,6 +119,7 @@ export interface OrderUI {
 
 export interface OrderExtensionUI {
   id: string;
+  order_item_id: string;
   days: number;
   amount: number;
   paid_amount: number;
