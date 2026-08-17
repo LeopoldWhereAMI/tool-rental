@@ -6,6 +6,7 @@ import fs from "fs/promises";
 import path from "path";
 import { auth } from "../../../../auth";
 import { prisma } from "@/lib/prisma";
+import { UPLOADS_DIR } from "@/lib/uploadPath";
 
 type UpdateProfileResult =
   | { success: true }
@@ -72,7 +73,7 @@ export async function uploadAvatarAction(
     const extension = path.extname(file.name).toLowerCase() || ".jpg";
     const fileName = `${session.user.id}${extension}`;
 
-    const uploadDir = path.join(process.cwd(), "uploads", "avatars");
+    const uploadDir = path.join(UPLOADS_DIR, "avatars");
     await fs.mkdir(uploadDir, { recursive: true });
 
     const filePath = path.join(uploadDir, fileName);
@@ -107,7 +108,7 @@ export async function deleteAvatarAction(): Promise<DeleteAvatarResult> {
       return { success: false, error: "Unauthorized" };
     }
 
-    const uploadDir = path.join(process.cwd(), "uploads", "avatars");
+    const uploadDir = path.join(UPLOADS_DIR, "avatars");
     const files = await fs.readdir(uploadDir).catch(() => []);
 
     const userFiles = files.filter((file) =>
