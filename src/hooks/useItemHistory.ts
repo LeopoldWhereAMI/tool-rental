@@ -16,7 +16,11 @@ export function useItemHistory(itemId: string) {
 
         const result = await response.json();
 
-        setRentals(result);
+        if (!result.success) {
+          throw new Error(result.error || "Ошибка загрузки истории");
+        }
+
+        setRentals(result.data);
       } catch (e) {
         console.error("Ошибка при загрузке истории:", e);
       } finally {
