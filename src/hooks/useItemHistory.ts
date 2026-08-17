@@ -4,11 +4,20 @@ import { RentalHistoryItem } from "@/types";
 export function useItemHistory(itemId: string) {
   const [rentals, setRentals] = useState<RentalHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isPageLoading, setIsPageLoading] = useState(false);
 
   useEffect(() => {
     async function loadHistory() {
+      const startTime = Date.now();
+
+      setIsPageLoading(true);
+
       try {
-        const response = await fetch(`/api/inventory/${itemId}/history`);
+        const response = await fetch(
+          `/api/inventory/${itemId}/history?page=${page}`,
+        );
 
         if (!response.ok) {
           throw new Error("Ошибка загрузки истории");
@@ -21,15 +30,32 @@ export function useItemHistory(itemId: string) {
         }
 
         setRentals(result.data);
+        setTotalPages(result.pagination.totalPages);
       } catch (e) {
         console.error("Ошибка при загрузке истории:", e);
       } finally {
         setLoading(false);
+
+        const elapsed = Date.now() - startTime;
+        const remaining = Math.max(200 - elapsed, 0);
+
+        setTimeout(() => {
+          setIsPageLoading(false);
+        }, remaining);
       }
     }
 
-    if (itemId) loadHistory();
-  }, [itemId]);
+    if (itemId) {
+      loadHistory();
+    }
+  }, [itemId, page]);
 
-  return { rentals, loading };
+  return {
+    rentals,
+    loading,
+    isPageLoading,
+    page,
+    totalPages,
+    setPage,
+  };
 }

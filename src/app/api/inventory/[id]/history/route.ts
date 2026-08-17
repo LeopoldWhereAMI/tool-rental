@@ -24,13 +24,20 @@ export async function GET(
 
     const { id } = await params;
 
-    const items = await prisma.orderItem.findMany({
-      where: {
-        inventoryId: id,
-        order: {
-          userId: session.user.id,
-        },
+    const url = new URL(_request.url);
+
+    const page = Math.max(1, Number(url.searchParams.get("page")) || 1);
+    const pageSize = 5;
+
+    const where = {
+      inventoryId: id,
+      order: {
+        userId: session.user.id,
       },
+    };
+
+    const items = await prisma.orderItem.findMany({
+      where,
       include: {
         order: {
           include: {
@@ -41,12 +48,23 @@ export async function GET(
       orderBy: {
         startDate: "desc",
       },
-      take: 5,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    });
+
+    const total = await prisma.orderItem.count({
+      where,
     });
 
     return NextResponse.json({
       success: true,
       data: items.map(formatRentalHistoryItem),
+      pagination: {
+        page,
+        pageSize,
+        total,
+        totalPages: Math.ceil(total / pageSize),
+      },
     });
   } catch (error) {
     console.error("Ошибка загрузки истории аренды:", error);

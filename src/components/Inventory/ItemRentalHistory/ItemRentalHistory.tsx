@@ -5,13 +5,15 @@ import { Clock, User, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import styles from "./ItemRentalHistory.module.css";
 import { validateOrderStatus } from "@/helpers";
+import PaginationControls from "@/components/ui/PaginationControls/PaginationControls";
 
 interface ItemRentalHistoryProps {
   itemId: string;
 }
 
 export default function ItemRentalHistory({ itemId }: ItemRentalHistoryProps) {
-  const { rentals, loading } = useItemHistory(itemId);
+  const { rentals, loading, isPageLoading, page, totalPages, setPage } =
+    useItemHistory(itemId);
 
   if (loading) {
     return (
@@ -32,38 +34,55 @@ export default function ItemRentalHistory({ itemId }: ItemRentalHistoryProps) {
 
       <div className={styles.cardContent}>
         {rentals && rentals.length > 0 ? (
-          <div className={styles.historyList}>
-            {rentals.map((rental) => (
-              <div key={rental.id} className={styles.historyItem}>
-                <div className={styles.historyMain}>
-                  <div className={styles.clientInfo}>
-                    <User size={14} className={styles.iconSecondary} />
-                    <span>{rental.client_name}</span>
+          <>
+            <div
+              className={`${styles.historyListWrapper} ${
+                isPageLoading ? styles.historyListLoading : ""
+              }`}
+            >
+              <div className={styles.historyList}>
+                {rentals.map((rental) => (
+                  <div key={rental.id} className={styles.historyItem}>
+                    <div className={styles.historyMain}>
+                      <div className={styles.clientInfo}>
+                        <User size={14} className={styles.iconSecondary} />
+                        <span>{rental.client_name}</span>
+                      </div>
+                      <span className={styles.historyPrice}>
+                        {rental.total_price?.toLocaleString()} ₽
+                      </span>
+                    </div>
+
+                    <div className={styles.historyMeta}>
+                      <span className={styles.historyDates}>
+                        {new Date(rental.start_date).toLocaleDateString(
+                          "ru-RU",
+                        )}{" "}
+                        —{" "}
+                        {new Date(rental.end_date).toLocaleDateString("ru-RU")}
+                      </span>
+                    </div>
+
+                    <div className={styles.historyActions}>
+                      <StatusBadge status={rental.status || "unknown"} />
+                      <Link
+                        href={`/orders/${rental.order_id}`}
+                        className={styles.detailsLink}
+                      >
+                        Детали <ExternalLink size={12} />
+                      </Link>
+                    </div>
                   </div>
-                  <span className={styles.historyPrice}>
-                    {rental.total_price?.toLocaleString()} ₽
-                  </span>
-                </div>
-
-                <div className={styles.historyMeta}>
-                  <span className={styles.historyDates}>
-                    {new Date(rental.start_date).toLocaleDateString("ru-RU")} —{" "}
-                    {new Date(rental.end_date).toLocaleDateString("ru-RU")}
-                  </span>
-                </div>
-
-                <div className={styles.historyActions}>
-                  <StatusBadge status={rental.status || "unknown"} />
-                  <Link
-                    href={`/orders/${rental.order_id}`}
-                    className={styles.detailsLink}
-                  >
-                    Детали <ExternalLink size={12} />
-                  </Link>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+            <PaginationControls
+              currentPage={page}
+              totalPages={totalPages}
+              clickHandler={setPage}
+              compact
+            />
+          </>
         ) : (
           <div className={styles.emptyState}>
             <p>История аренды пуста</p>
