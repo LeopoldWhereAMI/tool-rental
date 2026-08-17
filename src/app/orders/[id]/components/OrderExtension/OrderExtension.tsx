@@ -304,28 +304,32 @@ export default function OrderExtension({
                   </button>
                 ))}
               </div>
-              {selectedItems.length > 0 && (
-                <div className={styles.selectionSummary}>
-                  <span>
-                    Выбрано:{" "}
-                    <strong>
-                      {selectedItems.length}{" "}
-                      {getInstrumentWord(selectedItems.length)}
-                    </strong>
-                  </span>
+              <div className={styles.selectionSummary}>
+                {selectedItems.length > 0 ? (
+                  <>
+                    <span>
+                      Выбрано:{" "}
+                      <strong>
+                        {selectedItems.length}{" "}
+                        {getInstrumentWord(selectedItems.length)}
+                      </strong>
+                    </span>
 
-                  <span>
-                    <strong>
-                      {selectedItems.reduce(
-                        (sum, item) => sum + item.price_at_time,
-                        0,
-                      )}{" "}
-                      ₽
-                    </strong>{" "}
-                    / день
-                  </span>
-                </div>
-              )}
+                    <span>
+                      <strong>
+                        {selectedItems.reduce(
+                          (sum, item) => sum + item.price_at_time,
+                          0,
+                        )}{" "}
+                        ₽
+                      </strong>{" "}
+                      / день
+                    </span>
+                  </>
+                ) : (
+                  <span>Выберите инструменты для продления</span>
+                )}
+              </div>
             </div>
 
             <div className={styles.field}>

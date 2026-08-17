@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { readFile } from "fs/promises";
 import path from "path";
+import { UPLOADS_DIR } from "@/lib/uploadPath";
 
 export async function GET(
   _request: Request,
@@ -13,7 +14,7 @@ export async function GET(
   try {
     const { path: imagePath } = await params;
 
-    const filePath = path.join(process.cwd(), "uploads", ...imagePath);
+    const filePath = path.join(UPLOADS_DIR, ...imagePath);
 
     const file = await readFile(filePath);
 
