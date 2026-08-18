@@ -4,8 +4,8 @@ import { useState } from "react";
 import styles from "./page.module.css";
 import { Transaction } from "@/services/financeService";
 import { Banknote, Landmark, TrendingUp } from "lucide-react";
-import FinanceCard from "./components/FinanceCard";
-import TransactionTable from "./components/TransactionTable";
+import FinanceCard from "./components/FinanceCard/FinanceCard";
+import TransactionTable from "./components/TransactionTable/TransactionTable";
 import PaginationControls from "@/components/ui/PaginationControls/PaginationControls";
 import FinanceActionForm from "./components/FinanceActionForm";
 import CancelTransactionModal from "@/components/ui/MyModal/CancelTransactionModal";
@@ -24,6 +24,8 @@ export default function FinancePage() {
     currentPage,
     selectedYear,
     loading,
+    isInitialLoading,
+    transactionsLoading,
   } = state;
   const [modal, setModal] = useState<{
     open: boolean;
@@ -64,7 +66,7 @@ export default function FinancePage() {
             icon={<Landmark size={28} />}
             iconColor="#3b82f6"
             variant="blue"
-            loading={loading}
+            loading={isInitialLoading}
           />
 
           <FinanceCard
@@ -74,7 +76,7 @@ export default function FinancePage() {
             icon={<Banknote size={28} />}
             iconColor="#10b981"
             variant="green"
-            loading={loading}
+            loading={isInitialLoading}
           />
 
           <FinanceCard
@@ -89,14 +91,14 @@ export default function FinancePage() {
             icon={<TrendingUp size={28} />}
             iconColor="#d97706"
             variant="orange"
-            loading={loading}
+            loading={isInitialLoading}
           />
 
           <YearlyStatCard
             data={yearlyData}
             selectedYear={selectedYear}
             onYearChange={actions.setSelectedYear}
-            loading={loading}
+            loading={isInitialLoading}
           />
         </div>
 
@@ -104,7 +106,7 @@ export default function FinancePage() {
           <FinanceActionForm
             currentBalance={stats?.currentBalance || 0}
             onActionComplete={actions.refresh}
-            loading={loading}
+            loading={isInitialLoading}
           />
 
           <div className={styles.transactionCard}>
@@ -118,7 +120,8 @@ export default function FinancePage() {
               <>
                 <TransactionTable
                   transactions={transactions}
-                  loading={loading}
+                  isInitialLoading={isInitialLoading}
+                  isLoading={transactionsLoading}
                   onCancel={(id) =>
                     setModal({
                       open: true,

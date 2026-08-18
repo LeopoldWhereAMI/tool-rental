@@ -1,12 +1,13 @@
 import { Transaction } from "@/services/financeService";
 import { CircleDot, RotateCcw, RotateCw } from "lucide-react";
-import styles from "../page.module.css";
-import TransactionTableSkeleton from "./TransactionTableSkeleton";
+import styles from "./TransactionTable.module.css";
+import Spinner from "@/components/ui/Spinner/Spinner";
 
 interface TransactionTableProps {
   transactions: Transaction[];
   onCancel: (id: string) => void;
-  loading?: boolean;
+  isLoading?: boolean;
+  isInitialLoading?: boolean;
 }
 
 const TYPE_CONFIG = {
@@ -17,14 +18,23 @@ const TYPE_CONFIG = {
 export default function TransactionTable({
   transactions,
   onCancel,
-  loading = false,
+  isLoading = false,
+  isInitialLoading = false,
 }: TransactionTableProps) {
-  if (loading) {
-    return <TransactionTableSkeleton rows={5} />;
+  if (isInitialLoading) {
+    return (
+      <div className={styles.loadingState}>
+        <Spinner />
+      </div>
+    );
   }
 
   return (
-    <div className={styles.tableWrapper}>
+    <div
+      className={`${styles.tableWrapper} ${
+        isLoading ? styles.paginationLoading : ""
+      }`}
+    >
       <table className={styles.table}>
         <thead>
           <tr className={styles.tableHeader}>

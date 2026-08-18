@@ -14,7 +14,6 @@ import {
   createTransaction,
 } from "@/services/financeService";
 import styles from "../page.module.css";
-import Skeleton from "@/components/ui/Skeleton/Skeleton";
 
 interface FinanceActionFormProps {
   currentBalance: number;
@@ -169,23 +168,12 @@ export default function FinanceActionForm({
           </div>
 
           <div className={styles.amountHint}>
-            {type === "expense" &&
-              (loading ? (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                  }}
-                >
-                  Доступно:{" "}
-                  <Skeleton width={60} height={14} borderRadius="4px" />
-                </div>
-              ) : (
-                <span>
-                  Доступно: {currentBalance.toLocaleString("ru-RU")} ₽
-                </span>
-              ))}
+            {type === "expense" && (
+              <span>
+                Доступно:{" "}
+                {loading ? "—" : `${currentBalance.toLocaleString("ru-RU")} ₽`}
+              </span>
+            )}
           </div>
         </div>
 

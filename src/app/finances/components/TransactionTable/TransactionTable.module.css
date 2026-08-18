@@ -1,0 +1,176 @@
+.tableWrapper {
+  overflow-x: auto;
+  min-height: 324px;
+  transition: opacity 0.2s ease;
+}
+
+.paginationLoading {
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+.loadingState {
+  min-height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.tableHeader {
+  background-color: var(--table-thead);
+  border-bottom: 1px solid var(--border);
+}
+
+.tableHeader th {
+  padding: 16px 20px;
+  color: var(--text-muted);
+  font-weight: 700;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 11px;
+}
+
+.tableRow {
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.2s;
+}
+
+.tableCell {
+  padding: 16px 20px;
+  white-space: nowrap;
+}
+
+.dateBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dateMain {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.dateTime {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.descriptionBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  white-space: normal;
+}
+
+.descriptionMain {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.descriptionSub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.typeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.amountText {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.statusBadge {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pageInfo {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  min-width: 60px;
+  text-align: center;
+}
+
+.cancelBtn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+}
+
+.rowCancelled {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.rowCancelled .dateMain,
+.rowCancelled .descriptionMain,
+.rowCancelled .amountText {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.cancelledBadge {
+  font-size: 10px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+  width: fit-content;
+  margin-top: 4px;
+}
+
+.restoreBtn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: #10b981;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.restoreBtnConfirm {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .cancelBtn:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border-color: #ef4444;
+  }
+  .restoreBtn:hover {
+    background-color: rgba(16, 185, 129, 0.1);
+    border-color: #10b981;
+  }
+}

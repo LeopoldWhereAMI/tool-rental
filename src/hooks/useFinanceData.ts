@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+
 import {
   getTransactions,
   updateTransactionStatus,
@@ -13,37 +14,95 @@ export function useFinanceData(initialPage = 1, itemsPerPage = 5) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [yearlyData, setYearlyData] = useState<YearlyData[]>([]);
+
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  const [loading, setLoading] = useState(true);
 
-  const fetchAll = useCallback(async () => {
+  const [loading, setLoading] = useState(true);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [transactionsLoading, setTransactionsLoading] = useState(false);
+
+  const fetchDashboard = useCallback(async () => {
     setLoading(true);
+
     try {
-      const [dashboardRes, transRes] = await Promise.all([
-        getDashboardData(selectedYear),
-        getTransactions(currentPage, itemsPerPage),
-      ]);
-      setStats(dashboardRes.stats);
-      setYearlyData(dashboardRes.yearlyData);
-      setTransactions(transRes.transactions);
-      setTotalTransactions(transRes.total);
+      const result = await getDashboardData(selectedYear);
+
+      setStats(result.stats);
+      setYearlyData(result.yearlyData);
     } catch (error) {
-      console.error("Data fetch error:", error);
+      console.error("Dashboard fetch error:", error);
     } finally {
       setLoading(false);
     }
-  }, [currentPage, selectedYear, itemsPerPage]);
+  }, [selectedYear]);
 
+  const fetchTransactions = useCallback(async () => {
+    setTransactionsLoading(true);
+
+    try {
+      const result = await getTransactions(currentPage, itemsPerPage);
+
+      setTransactions(result.transactions);
+      setTotalTransactions(result.total);
+    } catch (error) {
+      console.error("Transactions fetch error:", error);
+    } finally {
+      setTransactionsLoading(false);
+    }
+  }, [currentPage, itemsPerPage]);
+
+  // Первоначальная загрузка
   useEffect(() => {
-    fetchAll();
-  }, [fetchAll]);
+    const loadInitialData = async () => {
+      try {
+        await Promise.all([
+          getDashboardData(selectedYear).then((result) => {
+            setStats(result.stats);
+            setYearlyData(result.yearlyData);
+          }),
+          getTransactions(currentPage, itemsPerPage).then((result) => {
+            setTransactions(result.transactions);
+            setTotalTransactions(result.total);
+          }),
+        ]);
+      } catch (error) {
+        console.error("Initial finance data fetch error:", error);
+      } finally {
+        setLoading(false);
+        setIsInitialLoading(false);
+        setTransactionsLoading(false);
+      }
+    };
+
+    loadInitialData();
+  }, []);
+
+  // Пагинация
+  useEffect(() => {
+    if (isInitialLoading) return;
+
+    fetchTransactions();
+  }, [currentPage, fetchTransactions, isInitialLoading]);
+
+  // Смена года
+  useEffect(() => {
+    if (isInitialLoading) return;
+
+    fetchDashboard();
+  }, [selectedYear, fetchDashboard, isInitialLoading]);
 
   const toggleTransactionStatus = async (tx: Transaction) => {
     const newStatus = tx.status === "cancelled" ? "completed" : "cancelled";
+
     await updateTransactionStatus(tx.id, newStatus);
-    await fetchAll();
+
+    await Promise.all([fetchDashboard(), fetchTransactions()]);
   };
+
+  const refresh = useCallback(async () => {
+    await Promise.all([fetchDashboard(), fetchTransactions()]);
+  }, [fetchDashboard, fetchTransactions]);
 
   return {
     state: {
@@ -53,13 +112,17 @@ export function useFinanceData(initialPage = 1, itemsPerPage = 5) {
       yearlyData,
       currentPage,
       selectedYear,
+
       loading,
+      isInitialLoading,
+      transactionsLoading,
     },
+
     actions: {
       setCurrentPage,
       setSelectedYear,
       toggleTransactionStatus,
-      refresh: fetchAll,
+      refresh,
     },
   };
 }

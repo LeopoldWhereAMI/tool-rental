@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { X, Phone, Loader2 } from "lucide-react";
 import { findCompanyByInn } from "@/services/dadata";
 import { CreateClientInput } from "@/types";
-import { OrderInput } from "@/lib/validators/orderSchema";
 import { ClientTypeSelector } from "@/components/Form/ClientTypeSelector/ClientTypeSelector";
 import formStyles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 import { IndividualFields } from "@/components/Form/AddOrderForm/components/OrderClientSection/IndividualFields";

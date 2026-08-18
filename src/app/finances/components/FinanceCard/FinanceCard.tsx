@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import styles from "../page.module.css";
-import Skeleton from "@/components/ui/Skeleton/Skeleton";
+import Spinner from "@/components/ui/Spinner/Spinner";
+import styles from "./FinanceCard.module.css";
 
 interface FinanceCardProps {
   title: string;
@@ -44,18 +44,15 @@ export default function FinanceCard({
       {trend && !loading && (
         <div className={`${styles.cardTrend} ${trendClass}`}>{trend}</div>
       )}
-      {loading && trend && (
-        <div className={styles.cardTrend}>
-          <Skeleton width={35} height={18} borderRadius="4px" />
-        </div>
-      )}
 
       <div className={styles.cardContent}>
         <h3 className={styles.cardTitle}>{title}</h3>
 
         <div className={styles.cardValue}>
           {loading ? (
-            <Skeleton width="120px" height={32} />
+            <div className={styles.valueLoading}>
+              <Spinner />
+            </div>
           ) : (
             <>
               {value}

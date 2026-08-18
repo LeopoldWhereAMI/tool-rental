@@ -2,7 +2,6 @@ import { useState, useMemo } from "react";
 import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 import styles from "../page.module.css";
 import { YearlyData } from "@/services/financeService";
-import Skeleton from "@/components/ui/Skeleton/Skeleton";
 
 interface YearlyStatCardProps {
   data: YearlyData[];
@@ -23,6 +22,7 @@ export default function YearlyStatCard({
     if (selectedMonth === "all") {
       return data.reduce((acc, curr) => acc + curr.income, 0);
     }
+
     return data.find((d) => d.month === selectedMonth)?.income || 0;
   }, [data, selectedMonth]);
 
@@ -38,29 +38,27 @@ export default function YearlyStatCard({
         >
           <CalendarDays size={24} />
         </div>
+
         <div className={styles.cardTrend}>
-          {loading ? (
-            <Skeleton width={100} height={24} borderRadius="6px" />
-          ) : (
-            <select
-              className={styles.miniSelect}
-              value={selectedMonth}
-              onChange={(e) =>
-                setSelectedMonth(
-                  e.target.value === "all" ? "all" : Number(e.target.value),
-                )
-              }
-            >
-              <option value="all">Весь год</option>
-              {data.map((m) => (
-                <option key={m.month} value={m.month}>
-                  {new Date(0, m.month - 1).toLocaleString("ru", {
-                    month: "long",
-                  })}
-                </option>
-              ))}
-            </select>
-          )}
+          <select
+            className={styles.miniSelect}
+            value={selectedMonth}
+            onChange={(e) =>
+              setSelectedMonth(
+                e.target.value === "all" ? "all" : Number(e.target.value),
+              )
+            }
+          >
+            <option value="all">Весь год</option>
+
+            {data.map((m) => (
+              <option key={m.month} value={m.month}>
+                {new Date(0, m.month - 1).toLocaleString("ru", {
+                  month: "long",
+                })}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -70,30 +68,29 @@ export default function YearlyStatCard({
             type="button"
             onClick={() => onYearChange(selectedYear - 1)}
             className={styles.inlineYearBtn}
-            disabled={loading}
           >
             <ChevronLeft size={14} />
           </button>
-          <h3 className={styles.cardTitle}>
-            {loading ? (
-              <Skeleton width={120} height={14} />
-            ) : (
-              `ПРИХОД ЗА ${selectedYear}`
-            )}
-          </h3>
+
+          <h3 className={styles.cardTitle}>ПРИХОД ЗА {selectedYear}</h3>
+
           <button
             type="button"
             onClick={() => onYearChange(selectedYear + 1)}
             className={styles.inlineYearBtn}
-            disabled={loading}
           >
             <ChevronRight size={14} />
           </button>
         </div>
 
-        <div className={styles.cardValue} style={{ color: "#8b5cf6" }}>
+        <div
+          className={`${styles.cardValue} ${
+            loading ? styles.cardValueLoading : ""
+          }`}
+          style={{ color: "#8b5cf6" }}
+        >
           {loading ? (
-            <Skeleton width="140px" height={32} style={{ marginTop: "4px" }} />
+            <span className={styles.valueSpinner} />
           ) : (
             <>
               +{totalIncome.toLocaleString("ru-RU")}{" "}
