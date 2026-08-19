@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { OrderUI, OrderDetailsUI } from "@/types";
 import { getActualEndDate, calculateReturnStatus } from "@/helpers";
+import { calculateOrderDebt } from "@/helpers/calculateOrderDebt";
 
 // Вспомогательная функция для безопасного форматирования
 const formatSafeDate = (dateStr: string | undefined | null) => {
@@ -60,37 +61,23 @@ export function useOrderStatusInfo(order: OrderUI | OrderDetailsUI | null) {
     // 2. Статус возврата
     const returnStatus = calculateReturnStatus(end || "", order.status || "");
 
-    // 3. Расчет просрочки
-    let overdueDays = 0;
-    let debtAmount = 0;
+    // 3. Расчёт просрочки по каждой позиции
+    const overdueDays =
+      end && returnStatus.type === "overdue"
+        ? Math.max(
+            0,
+            Math.ceil(
+              (new Date().setHours(0, 0, 0, 0) -
+                new Date(end).setHours(0, 0, 0, 0)) /
+                (1000 * 60 * 60 * 24),
+            ),
+          )
+        : 0;
 
-    if (end && returnStatus.type === "overdue") {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const endDate = new Date(end);
-      endDate.setHours(0, 0, 0, 0);
-
-      const diffTime = today.getTime() - endDate.getTime();
-      overdueDays = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
-
-      let dailyRate = 0;
-
-      if ("order_items" in order && order.order_items) {
-        dailyRate = order.order_items.reduce(
-          (sum, item) => sum + (item.price_at_time || 0),
-          0,
-        );
-      } else if ("inventory" in order && order.inventory) {
-        dailyRate = order.inventory.daily_price || 0;
-      } else if (order.tools?.length) {
-        dailyRate = order.tools.reduce(
-          (sum, item) => sum + (item.price_at_time || 0),
-          0,
-        );
-      }
-
-      debtAmount = overdueDays * dailyRate;
-    }
+    const debtAmount =
+      "order_items" in order && order.order_items
+        ? calculateOrderDebt(order)
+        : 0;
 
     // 4. Status display
     const isOverdue = returnStatus.type === "overdue";
