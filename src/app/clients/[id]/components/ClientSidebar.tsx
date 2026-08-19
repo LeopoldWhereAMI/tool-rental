@@ -53,7 +53,7 @@ export default function ClientSidebar({
         month: "long",
         day: "numeric",
       })
-    : "12 марта 2022";
+    : "-";
 
   return (
     <aside className={styles.sidebar}>

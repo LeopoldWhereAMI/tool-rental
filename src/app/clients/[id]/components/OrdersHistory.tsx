@@ -27,6 +27,10 @@ export default function OrdersHistory({
   const { currentPage, setCurrentPage, totalPages, currentItems } =
     usePagination({ items: filteredOrders, itemsPerPage: 5 });
 
+  if (orders.length === 0) {
+    return null;
+  }
+
   return (
     <section className={styles.sectionBlock}>
       <div className={styles.historyHeader}>

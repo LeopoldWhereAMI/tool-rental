@@ -41,6 +41,8 @@ export function formatClientDetails(client: ClientDetailsPayload) {
     company_name: client.companyName,
     client_type: client.clientType,
 
+    created_at: client.createdAt,
+
     is_blacklisted: client.isBlacklisted,
     blacklisted_at: client.blacklistedAt,
     blacklist_reason: client.blacklistReason,
