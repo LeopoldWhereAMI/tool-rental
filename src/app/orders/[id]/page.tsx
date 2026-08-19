@@ -1,14 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
-import { getOrderById, updateOrderStatus } from "@/services/orderService";
-import { OrderDetailsUI, OrderPrintBundle } from "@/types";
 import { getOrderDateRange, validateOrderStatus } from "@/helpers";
 import { CreditCard, Printer, Timer } from "lucide-react";
-import { useReactToPrint } from "react-to-print";
 import PrintArea from "@/components/Print/PrintArea/PrintArea";
-import { mapOrderDetailsToPrint } from "@/lib/mappers/orderMapper";
 import OrderClientInfo from "./components/OrderClientInfo";
 import OrderItemsList from "./components/OrderItemsList";
 import OrderFinance from "./components/OrderFinance/OrderFinance";
@@ -18,175 +14,48 @@ import { OrderStatusJourney } from "../components/OrderStatusJourney/OrderStatus
 import PageContainer from "@/components/PageContainer/PageContainer";
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import { PrintLoadingOverlay } from "@/components/ui/PrintLoadingOverlay/PrintLoadingOverlay";
-import { getPassport } from "@/services/passportService";
 import styles from "./page.module.css";
 import OrderNotes from "./components/OrderNotes/OrderNotes";
 import OrderCompletionControls from "./components/OrderCompletionControls/OrderCompletionControls";
-import { onOrderCompleted } from "@/helpers/financeIntegration";
-import { processOrderMaintenance } from "@/services/inventoryService";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import CompleteOrderModal from "@/components/ui/MyModal/CompliteOrderModal";
 import OrderPayments from "./components/OrderPayments/OrderPayments";
-import { getTransactions } from "@/services/financeService";
+import { useOrderDetails } from "./hooks/useOrderDetails";
+import { useOrderCompletion } from "./hooks/useOrderCompletion";
+import { useOrderPrint } from "./hooks/useOrderPrint";
 
 export default function OrderDetailsPage() {
   const { id } = useParams();
-  const [order, setOrder] = useState<OrderDetailsUI | null>(null);
-  const [loading, setLoading] = useState(true);
+
+  const { order, loading, additionalPayments, loadOrder } = useOrderDetails(id);
   const [financeData, setFinanceData] = useState({
     finalAmount: 0,
     additionalPayment: 0,
     adjustment: 0,
     debtAmount: 0,
-    additionalPayments: 0,
   });
-
-  const [printData, setPrintData] = useState<OrderPrintBundle | null>(null);
-  const [isPreparingPrint, setIsPreparingPrint] = useState(false);
-  const [adjustment, setAdjustment] = useState<number | string>(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const printRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
-
-  const handlePrintInitiation = async () => {
-    if (!order) return;
-
-    try {
-      let passport = {
-        passport_series: "",
-        passport_number: "",
-        issued_by: "",
-        issue_date: "",
-        registration_address: "",
-      };
-
-      if (order.client.client_type === "individual") {
-        const clientPassport = await getPassport(order.client.id);
-
-        if (clientPassport) {
-          passport = clientPassport;
-        }
-      }
-
-      const data = mapOrderDetailsToPrint(
-        order,
-        passport,
-        financeData.finalAmount,
-        financeData.adjustment,
-      );
-
-      setIsPreparingPrint(true);
-      setPrintData(data);
-    } catch (error) {
-      console.error("Ошибка загрузки паспорта:", error);
-      setIsPreparingPrint(false);
-    }
-  };
-
-  const handleCancelPrint = () => {
-    setIsPreparingPrint(false);
-    setPrintData(null);
-  };
-
-  const handlePrint = useReactToPrint({
-    contentRef: printRef,
-    documentTitle: `Договор_№${order?.order_number || "заказ"}`,
-    onAfterPrint: () => {
-      setPrintData(null);
-      setIsPreparingPrint(false);
+  const { completeOrder, isSubmitting } = useOrderCompletion({
+    order,
+    financeData,
+    onCompleted: async () => {
+      setIsModalOpen(false);
+      await loadOrder();
+      router.refresh();
     },
   });
+  const {
+    printData,
+    isPreparingPrint,
+    printRef,
+    handlePrintInitiation,
+    handleCancelPrint,
+    handlePrint,
+  } = useOrderPrint(order, financeData.finalAmount, financeData.adjustment);
 
-  const handleConfirm = async () => {
-    if (isSubmitting) return;
-    if (!order) return;
+  const [adjustment, setAdjustment] = useState<number | string>(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-    setIsSubmitting(true);
-
-    try {
-      await updateOrderStatus(order.id, "completed", financeData.finalAmount);
-
-      if (financeData.additionalPayment !== 0) {
-        const desc = `Доплата по заказу #${order.order_number}${
-          financeData.debtAmount > 0 ? " (просрочка)" : ""
-        }`;
-
-        await onOrderCompleted(order.id, financeData.additionalPayment, desc);
-      }
-
-      await processOrderMaintenance(order);
-
-      const isRefund = financeData.additionalPayment < 0;
-      const absAmount = Math.abs(financeData.additionalPayment);
-
-      toast.success(
-        isRefund
-          ? `Возврат ${absAmount} ₽ оформлен. Заказ закрыт.`
-          : `Доплата ${financeData.additionalPayment} ₽ принята. Заказ закрыт.`,
-      );
-
-      setIsModalOpen(false);
-
-      await loadOrder();
-
-      router.refresh();
-    } catch (err) {
-      toast.error("Ошибка при завершении заказа");
-      console.error(err);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const loadOrder = useCallback(async () => {
-    if (!id) return;
-
-    try {
-      setLoading(true);
-      const data = await getOrderById(id as string);
-
-      const { transactions } = await getTransactions(
-        1,
-        100,
-        undefined,
-        id as string,
-      );
-
-      const additionalPayments = transactions
-        .filter(
-          (transaction) =>
-            transaction.category === "OrderPayment" &&
-            transaction.status === "completed",
-        )
-        .reduce(
-          (sum, transaction) =>
-            sum +
-            (transaction.type === "income"
-              ? transaction.amount
-              : -transaction.amount),
-          0,
-        );
-
-      setOrder(data);
-
-      if (data) {
-        setFinanceData((prev) => ({
-          ...prev,
-          additionalPayments,
-        }));
-      }
-    } catch (err) {
-      console.error("Ошибка загрузки заказа:", err);
-    } finally {
-      setLoading(false);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    loadOrder();
-  }, [loadOrder]);
+  const router = useRouter();
 
   const handleItemReturned = () => {
     loadOrder();
@@ -320,9 +189,8 @@ export default function OrderDetailsPage() {
                   totalPrice={order.total_price}
                   order={order}
                   adjustment={adjustment}
-                  // onFinanceUpdate={setFinanceData}
                   onFinanceUpdate={handleFinanceUpdate}
-                  additionalPayments={financeData.additionalPayments}
+                  additionalPayments={additionalPayments}
                 />
               </section>
             )}
@@ -373,7 +241,7 @@ export default function OrderDetailsPage() {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           finalAmount={financeData.additionalPayment}
-          onConfirm={handleConfirm}
+          onConfirm={completeOrder}
           loading={isSubmitting}
         />
 

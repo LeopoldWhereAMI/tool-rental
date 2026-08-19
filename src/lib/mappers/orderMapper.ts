@@ -163,9 +163,8 @@ export function prepareOrderPayload(
   };
 }
 
-// ============================================
 // mapOrderDetailsToPrint — для существующих заказов
-// ============================================
+
 function nullToUndefined<T>(value: T | null | undefined): T | undefined {
   return value === null ? undefined : value;
 }
@@ -209,15 +208,52 @@ export function mapOrderDetailsToPrint(
   }
 
   // ✅ Поддержка кастомных позиций из БД
+  // const contractItems: ContractItem[] = order.order_items.map((item) => {
+  //   if (item.is_custom) {
+  //     return {
+  //       id: item.id,
+  //       name: item.custom_name || "Дополнительная услуга",
+  //       start_date: item.start_date,
+  //       end_date: item.end_date,
+  //       price_at_time: item.price_at_time,
+  //       daily_price: item.price_at_time,
+  //       is_custom: true,
+  //     };
+  //   }
+
+  //   if (!item.inventory) {
+  //     throw new Error(`Инструмент для позиции ${item.id} не найден`);
+  //   }
+
+  //   return {
+  //     id: item.inventory.id,
+  //     name: item.inventory.name,
+  //     serial_number: item.inventory.serial_number,
+  //     article: item.inventory.article,
+  //     start_date: item.start_date,
+  //     end_date: item.end_date,
+  //     price_at_time: item.price_at_time,
+  //     purchase_price: item.inventory.purchase_price,
+  //     daily_price: item.inventory.daily_price,
+  //     is_custom: false,
+  //   };
+  // });
+
   const contractItems: ContractItem[] = order.order_items.map((item) => {
+    const extensionAmount = order.extensions
+      .filter((extension) => extension.order_item_id === item.id)
+      .reduce((sum, extension) => sum + extension.amount, 0);
+
+    const totalItemPrice = item.price_at_time + extensionAmount;
+
     if (item.is_custom) {
       return {
         id: item.id,
         name: item.custom_name || "Дополнительная услуга",
         start_date: item.start_date,
         end_date: item.end_date,
-        price_at_time: item.price_at_time,
-        daily_price: item.price_at_time,
+        price_at_time: totalItemPrice,
+        daily_price: totalItemPrice,
         is_custom: true,
       };
     }
@@ -225,12 +261,7 @@ export function mapOrderDetailsToPrint(
     if (!item.inventory) {
       throw new Error(`Инструмент для позиции ${item.id} не найден`);
     }
-    console.log("🔍 Inventory fields:", Object.keys(item.inventory));
-    console.log("🔍 Purchase price fields:", {
-      purchase_price: item.inventory.purchase_price,
-      purchasePrice: item.inventory.purchase_price,
-      daily_price: item.inventory.daily_price,
-    });
+
     return {
       id: item.inventory.id,
       name: item.inventory.name,
@@ -238,7 +269,7 @@ export function mapOrderDetailsToPrint(
       article: item.inventory.article,
       start_date: item.start_date,
       end_date: item.end_date,
-      price_at_time: item.price_at_time,
+      price_at_time: totalItemPrice,
       purchase_price: item.inventory.purchase_price,
       daily_price: item.inventory.daily_price,
       is_custom: false,

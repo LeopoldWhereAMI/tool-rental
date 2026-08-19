@@ -276,6 +276,9 @@ export function formatOrderDetails(order: OrderDetailsPayload) {
             serial_number: item.inventory.serialNumber ?? "",
             article: item.inventory.article ?? "",
             image_url: item.inventory.imageUrl,
+            purchase_price: item.inventory.purchasePrice
+              ? Number(item.inventory.purchasePrice)
+              : 0,
           }
         : null,
     })),
