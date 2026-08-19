@@ -26,7 +26,7 @@ import CancelOrderModal from "@/components/ui/MyModal/CancelOrderModal";
 import { onOrderRefunded } from "@/helpers/financeIntegration";
 import { useSearchStore } from "../store/store";
 import { useAdaptiveView } from "@/hooks/useAdaptiveView";
-import ListSkeleton from "@/components/ui/Skeleton/ListSkeleton/ListSkeleton";
+import Spinner from "@/components/ui/Spinner/Spinner";
 
 export default function OrdersListPage() {
   const [orders, setOrders] = useState<OrderUI[]>([]);
@@ -59,7 +59,6 @@ export default function OrdersListPage() {
   });
 
   const isInitialLoading = loading && orders.length === 0;
-  const showSkeleton = isInitialLoading || pageLoading;
 
   const orderToDelete = orders.find((o) => o.id === deleteOrderId);
 
@@ -160,6 +159,15 @@ export default function OrdersListPage() {
     }
   };
 
+  if (isInitialLoading) {
+    return (
+      <div className={styles.loading}>
+        <Spinner size={22} />
+        <span>Загрузка заказов…</span>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -197,26 +205,25 @@ export default function OrdersListPage() {
         isMobile={isMobile}
       />
 
-      {showSkeleton ? (
-        <ListSkeleton viewMode={viewMode} rows={10} />
-      ) : filteredOrders.length === 0 ? (
+      {filteredOrders.length === 0 ? (
         <EmptyBlock message="Заказы не найдены" isSearch={!!query} />
       ) : (
         <>
-          <OrdersTable
-            orders={currentItems}
-            openMenuId={openMenuId}
-            anchor={anchor}
-            onToggleMenu={toggleMenu}
-            onClose={closeMenu}
-            onStatusUpdate={handleStatusUpdate}
-            onDeleteClick={(id) => {
-              setDeleteOrderId(id);
-              closeMenu();
-            }}
-            viewMode={viewMode}
-          />
-
+          <div className={` ${pageLoading ? styles.paginationLoading : ""}`}>
+            <OrdersTable
+              orders={currentItems}
+              openMenuId={openMenuId}
+              anchor={anchor}
+              onToggleMenu={toggleMenu}
+              onClose={closeMenu}
+              onStatusUpdate={handleStatusUpdate}
+              onDeleteClick={(id) => {
+                setDeleteOrderId(id);
+                closeMenu();
+              }}
+              viewMode={viewMode}
+            />
+          </div>
           <PaginationControls
             totalPages={totalPages}
             clickHandler={handlePageChange}

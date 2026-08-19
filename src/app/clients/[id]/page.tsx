@@ -2,7 +2,6 @@
 
 import { useParams } from "next/navigation";
 import ErrorBlock from "@/components/ui/ErrorBlock/ErrorBlock";
-import ClientDetailsSkeleton from "./ClientDetailsSkeleton";
 import ClientSidebar from "./components/ClientSidebar";
 import { AlertCircle, AlertTriangle } from "lucide-react";
 import ActiveOrders from "./components/ActiveOrders";
@@ -13,6 +12,7 @@ import { useMemo } from "react";
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import { getClientDisplayName } from "@/helpers/clientUtils";
 import styles from "./page.module.css";
+import Spinner from "@/components/ui/Spinner/Spinner";
 
 export default function ClientDetailsPage() {
   const { id } = useParams();
@@ -40,7 +40,17 @@ export default function ClientDetailsPage() {
     [client, isBlacklisted],
   );
 
-  if (loading) return <ClientDetailsSkeleton />;
+  if (loading) {
+    return (
+      <PageContainer>
+        <div className={styles.loading}>
+          <Spinner size={22} />
+          <span>Загрузка клиента…</span>
+        </div>
+      </PageContainer>
+    );
+  }
+
   if (!client)
     return <ErrorBlock message="Не удалось загрузить данные клиента" />;
 

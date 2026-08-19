@@ -15,6 +15,7 @@ import styles from "./page.module.css";
 import { ClientFormInput, clientSchema } from "@/lib/validators/clientSchema";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import Spinner from "@/components/ui/Spinner/Spinner";
 
 export default function EditClientPage() {
   const { id } = useParams();
@@ -81,7 +82,6 @@ export default function EditClientPage() {
 
         if (client.client_type === "individual") {
           passport = await getPassport(client.id);
-          console.log("PASSPORT:", passport);
         }
 
         reset({
@@ -160,7 +160,16 @@ export default function EditClientPage() {
     }
   };
 
-  if (loading) return <div className={styles.pageWrapper}>Загрузка...</div>;
+  if (loading) {
+    return (
+      <PageContainer>
+        <div className={styles.loading}>
+          <Spinner size={22} />
+          <span>Загрузка клиента…</span>
+        </div>
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer>

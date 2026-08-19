@@ -19,9 +19,9 @@ import { useSearchStore } from "../store/store";
 import ViewToggle from "@/components/ui/ViewToggle/ViewToggle";
 import { useAdaptiveView } from "@/hooks/useAdaptiveView";
 import { getClientDisplayName } from "@/helpers/clientUtils";
-import ListSkeleton from "@/components/ui/Skeleton/ListSkeleton/ListSkeleton";
 import { useFinanceData } from "@/hooks/useFinanceData";
 import styles from "./page.module.css";
+import Spinner from "@/components/ui/Spinner/Spinner";
 
 export default function ClientsPage() {
   const { openMenuId, anchor, toggleMenu, closeMenu } = useMenuAnchor();
@@ -48,7 +48,6 @@ export default function ClientsPage() {
   } = usePagination({ items: filtered, itemsPerPage: 10 });
 
   const isInitialLoading = loading && clients.length === 0;
-  const showSkeleton = isInitialLoading || pageLoading;
 
   const stats = useMemo(() => calculateClientStats(clients), [clients]);
 
@@ -72,6 +71,15 @@ export default function ClientsPage() {
     const success = await removeClient(deleteClientId);
     if (success) setDeleteClientId(null);
   };
+
+  if (isInitialLoading) {
+    return (
+      <div className={styles.loading}>
+        <Spinner size={22} />
+        <span>Загрузка клиентов…</span>
+      </div>
+    );
+  }
 
   if (error && !clients.length) {
     return <ErrorBlock message={error} />;
@@ -126,12 +134,9 @@ export default function ClientsPage() {
             )}
           </div>
         </div>
-        {showSkeleton ? (
-          <ListSkeleton viewMode={viewMode} rows={10} />
-        ) : (
+        <div className={pageLoading ? styles.paginationLoading : ""}>
           <ClientsTable
             clients={pagedClients}
-            loading={loading}
             openMenuId={openMenuId}
             anchor={anchor}
             onToggleMenu={toggleMenu}
@@ -142,7 +147,7 @@ export default function ClientsPage() {
             }}
             viewMode={viewMode}
           />
-        )}
+        </div>
 
         {totalPages > 1 && (
           <div className={styles.paginationFooter}>

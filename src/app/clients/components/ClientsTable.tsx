@@ -5,12 +5,10 @@ import styles from "../page.module.css";
 import { ClientWithOrders, ViewMode } from "@/types";
 import ClientCard from "./ClientCard";
 import EmptyBlock from "@/components/ui/EmptyBlock/EmptyBlock";
-import MainSceleton from "@/components/ui/Skeleton/MainSceleton";
 
 interface ClientsTableProps {
   clients: ClientWithOrders[];
   viewMode: ViewMode;
-  loading: boolean;
   openMenuId: string | null;
   anchor: { top: number; left: number } | null;
   onToggleMenu: (e: React.MouseEvent<HTMLElement>, id: string) => void;
@@ -21,7 +19,6 @@ interface ClientsTableProps {
 export default function ClientsTable({
   clients,
   viewMode,
-  loading,
   openMenuId,
   anchor,
   onToggleMenu,
@@ -35,18 +32,6 @@ export default function ClientsTable({
     onToggleMenu: (e: React.MouseEvent<HTMLElement>, id: string) =>
       onToggleMenu(e, id),
   };
-
-  if (loading && clients.length === 0) {
-    return (
-      <div
-        className={
-          viewMode === "table" ? styles.tableWrapper : styles.cardsContainer
-        }
-      >
-        <MainSceleton />
-      </div>
-    );
-  }
 
   if (clients.length === 0) {
     return <EmptyBlock isSearch={true} message="Клиенты не найдены" />;

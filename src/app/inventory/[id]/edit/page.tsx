@@ -5,7 +5,6 @@ import { updateInventory } from "@/services/inventoryService";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import ErrorBlock from "@/components/ui/ErrorBlock/ErrorBlock";
-import InventoryFormSkeleton from "@/components/Form/InventoryForm/InventoryFormSkeleton";
 import PageContainer from "@/components/PageContainer/PageContainer";
 import styles from "./page.module.css";
 import EditInventoryForm from "@/components/Form/InventoryForm/EditInventoryForm";
@@ -13,6 +12,7 @@ import { useMemo } from "react";
 import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import ItemGallery from "@/components/Inventory/ItemGallery/ItemGallery";
 import { useInventoryItem } from "@/hooks/useInventoryItem";
+import Spinner from "@/components/ui/Spinner/Spinner";
 
 export default function EditInventoryPage() {
   const router = useRouter();
@@ -62,7 +62,16 @@ export default function EditInventoryPage() {
     }
   };
 
-  if (loading) return <InventoryFormSkeleton />;
+  if (loading) {
+    return (
+      <PageContainer>
+        <div className={styles.loading}>
+          <Spinner size={22} />
+          <span>Загрузка инструмента…</span>
+        </div>
+      </PageContainer>
+    );
+  }
 
   if (error || !defaultValues) {
     return (

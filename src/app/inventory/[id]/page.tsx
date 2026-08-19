@@ -11,7 +11,7 @@ import {
   validateStatus,
   validateCategory,
 } from "@/helpers";
-import InventoryItemSkeleton from "./InventoryItemSkeleton";
+
 import ErrorBlock from "@/components/ui/ErrorBlock/ErrorBlock";
 import MaintenanceConfirmModal from "@/components/ui/MyModal/MaintenanceConfirmModal";
 import {
@@ -30,6 +30,7 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import Image from "next/image";
 import Calendar from "@/components/calendar/Calendar";
 import styles from "./page.module.css";
+import Spinner from "@/components/ui/Spinner/Spinner";
 
 export default function InventoryItemPage() {
   const [isMaintenanceModalOpen, setIsMaintenanceModalOpen] = useState(false);
@@ -69,7 +70,16 @@ export default function InventoryItemPage() {
     }
   };
 
-  if (loading) return <InventoryItemSkeleton />;
+  if (loading) {
+    return (
+      <PageContainer>
+        <div className={styles.loading}>
+          <Spinner size={22} />
+          <span>Загрузка инструмента…</span>
+        </div>
+      </PageContainer>
+    );
+  }
 
   if (error || !item) {
     return <ErrorBlock message="Инструмент не найден в базе данных" />;

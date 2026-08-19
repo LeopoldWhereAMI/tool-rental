@@ -8,7 +8,6 @@ import PrintArea from "@/components/Print/PrintArea/PrintArea";
 import OrderClientInfo from "./components/OrderClientInfo";
 import OrderItemsList from "./components/OrderItemsList";
 import OrderFinance from "./components/OrderFinance/OrderFinance";
-import OrderDetailsSkeleton from "./OrderDetailsSkeleton";
 import ErrorBlock from "@/components/ui/ErrorBlock/ErrorBlock";
 import { OrderStatusJourney } from "../components/OrderStatusJourney/OrderStatusJourney";
 import PageContainer from "@/components/PageContainer/PageContainer";
@@ -23,6 +22,7 @@ import OrderPayments from "./components/OrderPayments/OrderPayments";
 import { useOrderDetails } from "./hooks/useOrderDetails";
 import { useOrderCompletion } from "./hooks/useOrderCompletion";
 import { useOrderPrint } from "./hooks/useOrderPrint";
+import Spinner from "@/components/ui/Spinner/Spinner";
 
 export default function OrderDetailsPage() {
   const { id } = useParams();
@@ -92,7 +92,16 @@ export default function OrderDetailsPage() {
     [],
   );
 
-  if (loading) return <OrderDetailsSkeleton />;
+  if (loading) {
+    return (
+      <PageContainer>
+        <div className={styles.loading}>
+          <Spinner size={22} />
+          <span>Загрузка заказа…</span>
+        </div>
+      </PageContainer>
+    );
+  }
 
   if (!order)
     return (

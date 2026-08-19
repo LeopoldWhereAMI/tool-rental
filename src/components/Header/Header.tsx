@@ -23,6 +23,7 @@ export default function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [avatarLoading, setAvatarLoading] = useState(true);
 
   const user = session?.user;
 
@@ -39,6 +40,8 @@ export default function Header() {
       setAvatarUrl(result.data?.avatarUrl ?? null);
     } catch (error) {
       console.error("Ошибка загрузки профиля:", error);
+    } finally {
+      setAvatarLoading(false);
     }
   };
 
@@ -129,14 +132,17 @@ export default function Header() {
                 </div>
               )}
               <div className={styles.avatarWrapper}>
-                <Image
-                  src={avatar}
-                  alt="Avatar"
-                  width={44}
-                  height={44}
-                  className={styles.avatarImage}
-                  // unoptimized
-                />
+                {avatarLoading ? (
+                  <Skeleton width="44px" height="44px" borderRadius="50%" />
+                ) : (
+                  <Image
+                    src={avatar}
+                    alt="Avatar"
+                    width={44}
+                    height={44}
+                    className={styles.avatarImage}
+                  />
+                )}
               </div>
               <ChevronDown
                 size={16}

@@ -21,7 +21,7 @@ import ViewToggle from "@/components/ui/ViewToggle/ViewToggle";
 import { useAdaptiveView } from "@/hooks/useAdaptiveView";
 import usePagination from "@/hooks/usePagination";
 import PaginationControls from "@/components/ui/PaginationControls/PaginationControls";
-import ListSkeleton from "@/components/ui/Skeleton/ListSkeleton/ListSkeleton";
+import Spinner from "@/components/ui/Spinner/Spinner";
 
 export default function InventoryPage() {
   const { query, setQuery } = useSearchStore();
@@ -47,7 +47,15 @@ export default function InventoryPage() {
   });
 
   const isInitialLoading = loading && items.length === 0;
-  const showSkeleton = isInitialLoading || pageLoading;
+
+  if (isInitialLoading) {
+    return (
+      <div className={styles.loading}>
+        <Spinner size={22} />
+        <span>Загрузка инвентаря…</span>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
@@ -128,16 +136,14 @@ export default function InventoryPage() {
           </div>
         </div>
 
-        {showSkeleton ? (
-          <ListSkeleton viewMode={viewMode} rows={10} />
-        ) : (
+        <div className={pageLoading ? styles.paginationLoading : ""}>
           <InventoryTable
             items={pagedItems}
             viewMode={viewMode}
             error={error}
             refresh={refresh}
           />
-        )}
+        </div>
 
         {totalPages > 1 && (
           <div className={styles.paginationFooter}>
