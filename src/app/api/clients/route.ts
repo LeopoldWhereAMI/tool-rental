@@ -9,10 +9,8 @@ import {
 export async function GET() {
   try {
     const session = await auth();
-    console.log("SESSION:", session);
-    const user = session?.user;
 
-    console.log("USER ID:", user?.id);
+    const user = session?.user;
 
     if (!user) {
       return NextResponse.json({ message: "Не авторизован" }, { status: 401 });
@@ -35,12 +33,6 @@ export async function GET() {
         lastName: "asc",
       },
     });
-
-    console.log("CLIENTS FROM PRISMA:", clients.length);
-    console.log(
-      "CLIENT USER IDS:",
-      clients.map((client) => client.userId),
-    );
 
     const formattedClients = clients.map(formatClient);
 
