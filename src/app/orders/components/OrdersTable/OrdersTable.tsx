@@ -25,10 +25,6 @@ export default function OrdersTable({
   viewMode,
   ...menuProps
 }: OrdersTableProps) {
-  // if (orders.length === 0) {
-  //   return <EmptyBlock isSearch={true} message="Заказы не найдены" />;
-  // }
-
   if (loading) {
     return (
       <div className={styles.tableContainer}>

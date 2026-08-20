@@ -58,7 +58,7 @@ export default function InventoryPage() {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${styles.fadeIn}`}>
       <div className={styles.header}>
         <div>
           <h1 className={styles.title}>Управление инвентарем</h1>

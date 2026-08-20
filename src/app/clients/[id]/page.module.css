@@ -596,6 +596,28 @@
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fadeIn {
+  animation: pageFadeIn 0.35s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fadeIn {
+    animation: none;
+  }
+}
+
 @media (hover: hover) {
   .blacklistBtn:hover {
     background: #ef4444;

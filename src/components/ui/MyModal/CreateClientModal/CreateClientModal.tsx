@@ -10,9 +10,9 @@ import formStyles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 import { IndividualFields } from "@/components/Form/AddOrderForm/components/OrderClientSection/IndividualFields";
 import { CompanyFields } from "@/components/Form/AddOrderForm/components/OrderClientSection/CompanyFields";
 import { upsertPassport } from "@/services/passportService";
-import styles from "./CreateClientModal.module.css";
 import { ClientFormInput, clientSchema } from "@/lib/validators/clientSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import styles from "./CreateClientModal.module.css";
 
 interface CreateClientModalProps {
   isOpen: boolean;

@@ -52,50 +52,52 @@ export default function AddInventoryPage() {
 
   return (
     <PageContainer>
-      <div className={styles.header}>
-        <Breadcrumbs items={breadcrumbItems} />
-        <div className={styles.headerWrapper}>
-          <div className={styles.titleGroup}>
-            <h1 className={styles.title}>Добавление инструмента</h1>
-            <p className={styles.subtitle}>
-              Заполните необходимые данные в форме ниже
-            </p>
-          </div>
-          <div className={styles.headerActions}>
-            <button
-              type="button"
-              onClick={() => router.back()}
-              className={styles.cancelBtn}
-            >
-              Отмена
-            </button>
-            <button
-              type="submit"
-              form="add-inventory-form"
-              className={styles.submitBtn}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Добавление..." : "Добавить инструмент"}
-            </button>
+      <div className={styles.fadeIn}>
+        <div className={styles.header}>
+          <Breadcrumbs items={breadcrumbItems} />
+          <div className={styles.headerWrapper}>
+            <div className={styles.titleGroup}>
+              <h1 className={styles.title}>Добавление инструмента</h1>
+              <p className={styles.subtitle}>
+                Заполните необходимые данные в форме ниже
+              </p>
+            </div>
+            <div className={styles.headerActions}>
+              <button
+                type="button"
+                onClick={() => router.back()}
+                className={styles.cancelBtn}
+              >
+                Отмена
+              </button>
+              <button
+                type="submit"
+                form="add-inventory-form"
+                className={styles.submitBtn}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Добавление..." : "Добавить инструмент"}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <AddInventoryForm
-        onSubmit={onSubmit}
-        existingItems={existingItems}
-        defaultValues={{
-          name: "",
-          article: "",
-          category: "",
-          daily_price: 500,
-          purchase_price: null,
-          purchase_date: null,
-          notes: null,
-          serial_number: null,
-          image_url: null,
-        }}
-      />
+        <AddInventoryForm
+          onSubmit={onSubmit}
+          existingItems={existingItems}
+          defaultValues={{
+            name: "",
+            article: "",
+            category: "",
+            daily_price: 500,
+            purchase_price: null,
+            purchase_date: null,
+            notes: null,
+            serial_number: null,
+            image_url: null,
+          }}
+        />
+      </div>
     </PageContainer>
   );
 }

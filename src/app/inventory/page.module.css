@@ -110,12 +110,6 @@
   margin-bottom: 4px;
 }
 
-/* .statLabelSuffix {
-  font-size: 12px;
-  color: var(--primary);
-  margin-left: 4px;
-} */
-
 .statValue {
   font-family: var(--font-space-grotesk);
   font-size: 28px;
@@ -150,6 +144,28 @@
   display: flex;
   align-items: center;
   gap: 20px;
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fadeIn {
+  animation: pageFadeIn 0.35s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fadeIn {
+    animation: none;
+  }
 }
 
 @media (hover: hover) {

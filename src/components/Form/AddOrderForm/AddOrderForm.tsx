@@ -156,7 +156,7 @@ export default function AddOrderForm() {
             console.log("FORM ERRORS:", errors),
           )}
         >
-          <div className={styles.pageWrapper}>
+          <div className={`${styles.pageWrapper} ${styles.fadeIn}`}>
             {/* Заголовок */}
             <div className={styles.pageHeader}>
               <Breadcrumbs items={breadcrumbItems} />

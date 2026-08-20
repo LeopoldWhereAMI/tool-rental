@@ -86,7 +86,7 @@ export default function ClientsPage() {
   }
 
   return (
-    <div className={styles.pageContainer}>
+    <div className={`${styles.pageContainer} ${styles.fadeIn}`}>
       <header className={styles.header}>
         <div className={styles.titleBlock}>
           <h1 className={styles.title}>Клиенты</h1>

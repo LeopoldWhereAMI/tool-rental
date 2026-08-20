@@ -99,7 +99,7 @@ export default function InventoryItemPage() {
 
   return (
     <PageContainer>
-      <div className={styles.pageContainer}>
+      <div className={`${styles.pageContainer} ${styles.fadeIn}`}>
         <Breadcrumbs items={breadcrumbItems} />
 
         <div className={styles.headerSection}>

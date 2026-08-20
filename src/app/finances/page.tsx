@@ -52,7 +52,7 @@ export default function FinancePage() {
   const totalPages = Math.ceil(totalTransactions / ITEMS_PER_PAGE);
 
   return (
-    <>
+    <div className={`${styles.pageContainer} ${styles.fadeIn}`}>
       <div className={styles.header}>
         <h1 className={styles.title}>Управление финансами</h1>
       </div>
@@ -147,6 +147,6 @@ export default function FinancePage() {
           loading={modal.processing}
         />
       </>
-    </>
+    </div>
   );
 }

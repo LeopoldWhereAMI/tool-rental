@@ -169,7 +169,7 @@ export default function OrdersListPage() {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${styles.fadeIn}`}>
       <div className={styles.header}>
         <div>
           <h1 className={styles.title}>Заказы и бронирования</h1>
@@ -182,8 +182,8 @@ export default function OrdersListPage() {
             href="/orders/add"
             className={`${styles.btn} ${styles.primary}`}
           >
-            <PlusCircle size={16} className={styles.btnIcon} />
-            <span className={styles.btnText}>Заказ</span>
+            <PlusCircle size={18} className={styles.btnIcon} />
+            <span className={styles.btnText}>Создать заказ</span>
           </Link>
         </div>
       </div>
@@ -225,13 +225,11 @@ export default function OrdersListPage() {
               viewMode={viewMode}
             />
           </div>
-          {!loading && totalPages > 1 && (
-            <PaginationControls
-              totalPages={totalPages}
-              clickHandler={handlePageChange}
-              currentPage={currentPage}
-            />
-          )}
+          <PaginationControls
+            totalPages={totalPages}
+            clickHandler={handlePageChange}
+            currentPage={currentPage}
+          />
         </>
       )}
 

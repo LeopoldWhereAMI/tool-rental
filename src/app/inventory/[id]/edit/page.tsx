@@ -86,44 +86,46 @@ export default function EditInventoryPage() {
 
   return (
     <PageContainer>
-      <header className={styles.header}>
-        <Breadcrumbs items={breadcrumbItems} />
-        <div className={styles.headerWrapper}>
-          <div className={styles.titleGroup}>
-            <h1 className={styles.title}>Редактирование инструмента</h1>
-            <p className={styles.subtitle}>
-              Измените необходимые данные в форме ниже
-            </p>
+      <div className={styles.fadeIn}>
+        <header className={styles.header}>
+          <Breadcrumbs items={breadcrumbItems} />
+          <div className={styles.headerWrapper}>
+            <div className={styles.titleGroup}>
+              <h1 className={styles.title}>Редактирование инструмента</h1>
+              <p className={styles.subtitle}>
+                Измените необходимые данные в форме ниже
+              </p>
+            </div>
+            <div className={styles.headerActions}>
+              <button
+                type="button"
+                className={styles.cancelBtn}
+                onClick={() => router.back()}
+              >
+                Отмена
+              </button>
+              <button
+                type="submit"
+                form="edit-tool-form"
+                className={styles.submitBtn}
+              >
+                Сохранить
+              </button>
+            </div>
           </div>
-          <div className={styles.headerActions}>
-            <button
-              type="button"
-              className={styles.cancelBtn}
-              onClick={() => router.back()}
-            >
-              Отмена
-            </button>
-            <button
-              type="submit"
-              form="edit-tool-form"
-              className={styles.submitBtn}
-            >
-              Сохранить
-            </button>
-          </div>
-        </div>
-      </header>
+        </header>
 
-      <div className={styles.contentBody}>
-        <aside className={styles.leftColumn}>
-          <ItemGallery id={id} imageUrl={item?.image_url} onMutate={mutate} />
-        </aside>
-        <main className={styles.rightColumn}>
-          <EditInventoryForm
-            defaultValues={defaultValues}
-            onSubmit={onSubmit}
-          />
-        </main>
+        <div className={styles.contentBody}>
+          <aside className={styles.leftColumn}>
+            <ItemGallery id={id} imageUrl={item?.image_url} onMutate={mutate} />
+          </aside>
+          <main className={styles.rightColumn}>
+            <EditInventoryForm
+              defaultValues={defaultValues}
+              onSubmit={onSubmit}
+            />
+          </main>
+        </div>
       </div>
     </PageContainer>
   );

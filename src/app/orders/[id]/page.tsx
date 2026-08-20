@@ -115,7 +115,7 @@ export default function OrderDetailsPage() {
 
   return (
     <PageContainer>
-      <div className={styles.pageContainer}>
+      <div className={`${styles.pageContainer} ${styles.fadeIn}`}>
         <div className={styles.topNav}>
           <div className={styles.navLeft}>
             <Breadcrumbs

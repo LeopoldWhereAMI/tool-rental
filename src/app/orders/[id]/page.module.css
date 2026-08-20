@@ -250,32 +250,6 @@
   padding: 0;
 }
 
-/* .blockContent {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-} */
-/* 
-.blockTitle {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--border);
-}
-
-.blockTitle h3 {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-main);
-  margin: 0;
-}
-
-.blockTitle svg {
-  color: var(--secondary);
-} */
-
 .toolsListDetailed {
   display: flex;
   flex-direction: column;
@@ -301,10 +275,6 @@
   font-size: 11px;
   letter-spacing: 0.05em;
 }
-
-/* .financeBlockContent {
-  gap: 12px;
-} */
 
 .statusCompleted {
   color: rgb(156, 163, 175);
@@ -764,6 +734,28 @@
 .badgeCompleted {
   color: #9ca3af;
   background: #6b728026;
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fadeIn {
+  animation: pageFadeIn 0.35s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fadeIn {
+    animation: none;
+  }
 }
 
 @media (hover: hover) {

@@ -56,7 +56,7 @@ export default function ClientDetailsPage() {
 
   return (
     <PageContainer>
-      <div className={styles.wrapper}>
+      <div className={`${styles.wrapper} ${styles.fadeIn}`}>
         <div className={styles.headerWrapper}>
           <Breadcrumbs
             items={breadcrumbItems}

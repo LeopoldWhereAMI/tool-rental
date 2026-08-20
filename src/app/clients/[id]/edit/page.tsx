@@ -173,7 +173,7 @@ export default function EditClientPage() {
 
   return (
     <PageContainer>
-      <div className={styles.pageContainer}>
+      <div className={`${styles.pageContainer} ${styles.fadeIn}`}>
         <header className={styles.pageHeader}>
           <Breadcrumbs items={breadcrumbItems} />
           <h1 className={styles.pageTitle}>Редактирование профиля</h1>
