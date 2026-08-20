@@ -5,9 +5,11 @@ import { OrderUI, ViewMode } from "@/types";
 import OrderRow from "./OrderRow";
 import OrderCard from "../OrderCard/OrderCard";
 import EmptyBlock from "@/components/ui/EmptyBlock/EmptyBlock";
+import Spinner from "@/components/ui/Spinner/Spinner";
 
 interface OrdersTableProps {
   orders: OrderUI[];
+  loading: boolean;
   openMenuId: string | null;
   anchor: { top: number; left: number } | null;
   onToggleMenu: (event: React.MouseEvent<HTMLElement>, id: string) => void;
@@ -19,9 +21,27 @@ interface OrdersTableProps {
 
 export default function OrdersTable({
   orders,
+  loading,
   viewMode,
   ...menuProps
 }: OrdersTableProps) {
+  // if (orders.length === 0) {
+  //   return <EmptyBlock isSearch={true} message="Заказы не найдены" />;
+  // }
+
+  if (loading) {
+    return (
+      <div className={styles.tableContainer}>
+        <div className={styles.wrapper}>
+          {/* временно */}
+          <div className={styles.loading}>
+            <Spinner size={22} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (orders.length === 0) {
     return <EmptyBlock isSearch={true} message="Заказы не найдены" />;
   }

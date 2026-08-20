@@ -6,7 +6,7 @@ import ErrorBlock from "@/components/ui/ErrorBlock/ErrorBlock";
 import { useClients } from "@/hooks/useClients";
 import usePagination from "@/hooks/usePagination";
 import PaginationControls from "@/components/ui/PaginationControls/PaginationControls";
-import { UserPlus } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import CreateClientModal from "@/components/ui/MyModal/CreateClientModal/CreateClientModal";
 import { useMenuAnchor } from "@/components/Portal/useMenuAnchor";
 import SearchInput from "@/components/SearchInput/SearchInput";
@@ -99,8 +99,8 @@ export default function ClientsPage() {
             className={styles.addButton}
             onClick={() => setIsCreateModalOpen(true)}
           >
-            <UserPlus size={18} />
-            <span className={styles.btnText}>Добавить клиента</span>
+            <PlusCircle size={16} />
+            <span className={styles.btnText}>Клиент</span>
           </button>
         </div>
       </header>

@@ -182,8 +182,8 @@ export default function OrdersListPage() {
             href="/orders/add"
             className={`${styles.btn} ${styles.primary}`}
           >
-            <PlusCircle size={18} className={styles.btnIcon} />
-            <span className={styles.btnText}>Создать заказ</span>
+            <PlusCircle size={16} className={styles.btnIcon} />
+            <span className={styles.btnText}>Заказ</span>
           </Link>
         </div>
       </div>
@@ -212,6 +212,7 @@ export default function OrdersListPage() {
           <div className={` ${pageLoading ? styles.paginationLoading : ""}`}>
             <OrdersTable
               orders={currentItems}
+              loading={loading}
               openMenuId={openMenuId}
               anchor={anchor}
               onToggleMenu={toggleMenu}
@@ -224,11 +225,13 @@ export default function OrdersListPage() {
               viewMode={viewMode}
             />
           </div>
-          <PaginationControls
-            totalPages={totalPages}
-            clickHandler={handlePageChange}
-            currentPage={currentPage}
-          />
+          {!loading && totalPages > 1 && (
+            <PaginationControls
+              totalPages={totalPages}
+              clickHandler={handlePageChange}
+              currentPage={currentPage}
+            />
+          )}
         </>
       )}
 
