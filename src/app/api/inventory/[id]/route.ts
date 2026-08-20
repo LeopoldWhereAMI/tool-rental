@@ -45,19 +45,19 @@ export async function GET(
     }
 
     // Проверяем, находится ли инструмент сейчас в активной аренде
-    const now = new Date();
+    // const now = new Date();
 
     const activeOrderItem = await prisma.orderItem.findFirst({
       where: {
         inventoryId: id,
         userId: session.user.id,
         itemStatus: "active",
-        startDate: {
-          lte: now,
-        },
-        endDate: {
-          gte: now,
-        },
+        // startDate: {
+        //   lte: now,
+        // },
+        // endDate: {
+        //   gte: now,
+        // },
       },
       select: {
         id: true,

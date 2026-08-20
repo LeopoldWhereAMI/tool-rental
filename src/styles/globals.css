@@ -64,6 +64,7 @@ body {
   margin: 0;
   font-family: var(--font-geist-sans), sans-serif;
   overflow-x: hidden;
+  overflow-y: scroll;
   background-color: var(--bg-app);
   color: var(--text-main);
 }

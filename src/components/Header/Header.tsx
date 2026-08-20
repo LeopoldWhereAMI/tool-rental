@@ -23,6 +23,8 @@ export default function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [profileName, setProfileName] = useState<string | null>(null);
+  const [profileLoading, setProfileLoading] = useState(true);
   const [avatarLoading, setAvatarLoading] = useState(true);
 
   const user = session?.user;
@@ -38,9 +40,11 @@ export default function Header() {
       const result = await response.json();
 
       setAvatarUrl(result.data?.avatarUrl ?? null);
+      setProfileName(result.data?.fullName ?? null);
     } catch (error) {
       console.error("Ошибка загрузки профиля:", error);
     } finally {
+      setProfileLoading(false);
       setAvatarLoading(false);
     }
   };
@@ -92,7 +96,7 @@ export default function Header() {
     }
   };
 
-  const userName = user?.name || user?.email;
+  const userName = profileName || user?.name || "Пользователь";
 
   const avatar =
     avatarUrl || "https://api.dicebear.com/9.x/croodles/png?seed=Aidan";
@@ -115,7 +119,7 @@ export default function Header() {
               onClick={() => setDropdownOpen(!dropdownOpen)}
               disabled={loading}
             >
-              {authLoading ? (
+              {authLoading || profileLoading ? (
                 <div className={styles.profileInfo}>
                   <Skeleton
                     width="110px"
