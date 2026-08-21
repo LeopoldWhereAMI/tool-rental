@@ -134,7 +134,11 @@ export default function ClientsPage() {
             )}
           </div>
         </div>
-        <div className={pageLoading ? styles.paginationLoading : ""}>
+        <div
+          className={`${styles.tableArea} ${
+            pageLoading ? styles.paginationLoading : ""
+          }`}
+        >
           <ClientsTable
             clients={pagedClients}
             openMenuId={openMenuId}

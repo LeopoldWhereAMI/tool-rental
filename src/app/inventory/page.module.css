@@ -146,6 +146,10 @@
   gap: 20px;
 }
 
+.inventoryListArea {
+  min-height: 600px;
+}
+
 @keyframes pageFadeIn {
   from {
     opacity: 0;

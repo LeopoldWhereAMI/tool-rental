@@ -136,7 +136,11 @@ export default function InventoryPage() {
           </div>
         </div>
 
-        <div className={pageLoading ? styles.paginationLoading : ""}>
+        <div
+          className={`${styles.inventoryListArea} ${
+            pageLoading ? styles.paginationLoading : ""
+          }`}
+        >
           <InventoryTable
             items={pagedItems}
             viewMode={viewMode}

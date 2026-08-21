@@ -209,7 +209,11 @@ export default function OrdersListPage() {
         <EmptyBlock message="Заказы не найдены" isSearch={!!query} />
       ) : (
         <>
-          <div className={` ${pageLoading ? styles.paginationLoading : ""}`}>
+          <div
+            className={`${styles.ordersListArea} ${
+              pageLoading ? styles.paginationLoading : ""
+            }`}
+          >
             <OrdersTable
               orders={currentItems}
               loading={loading}

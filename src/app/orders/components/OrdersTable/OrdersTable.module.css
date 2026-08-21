@@ -556,14 +556,11 @@
 
 @media (hover: hover) {
   .card:hover {
-    /* background: var(--card-hover-bg); */
-    /* border-color: var(--primary); */
     transform: translateY(-4px);
     box-shadow: 0 12px 24px var(--card-hover-shadow);
   }
 
   .card:hover .cardOrderNumber,
-  /* .card:hover .cardPrice, */
   .card:hover .cardClientPhone {
     color: var(--nav-active-text);
   }
