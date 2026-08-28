@@ -152,41 +152,84 @@ export const resetMaintenanceCounter = async (id: string) => {
   return result.data;
 };
 
+// export const processOrderMaintenance = async (
+//   order: OrderUI | OrderDetailsUI,
+// ) => {
+//   const items =
+//     ("order_items" in order ? order.order_items : order.tools) || [];
+//   if (!items.length) return;
+
+//   const maintenancePromises = items.map(async (item) => {
+//     // 1. Определяем ID (используем логику глубокого поиска, которую мы отладили)
+//     let toolId: string | undefined;
+
+//     if ("inventory" in item && item.inventory) {
+//       toolId = item.inventory.id;
+//     } else if ("id" in item) {
+//       toolId = item.id;
+//     }
+
+//     if (!toolId) {
+//       console.warn("⚠️ Пропущен айтем без ID инструмента:", item);
+//       return;
+//     }
+
+//     // 2. Расчет дней (используем даты из айтема или общие из заказа)
+//     const sDate = item.start_date || order.start_date;
+//     const eDate = item.end_date || order.end_date;
+
+//     let daysToWork = 1;
+//     if (sDate && eDate) {
+//       const start = new Date(sDate);
+//       const end = new Date(eDate);
+//       const diffMs = Math.abs(end.getTime() - start.getTime());
+//       daysToWork = Math.ceil(diffMs / (1000 * 60 * 60 * 24)) || 1;
+//     }
+
+//     // 3. Используем ВАШ существующий сервис
+//     return incrementMaintenanceCounters(toolId, daysToWork);
+//   });
+
+//   return Promise.all(maintenancePromises);
+// };
+
 export const processOrderMaintenance = async (
   order: OrderUI | OrderDetailsUI,
 ) => {
   const items =
     ("order_items" in order ? order.order_items : order.tools) || [];
+
   if (!items.length) return;
 
   const maintenancePromises = items.map(async (item) => {
-    // 1. Определяем ID (используем логику глубокого поиска, которую мы отладили)
-    let toolId: string | undefined;
-
-    if ("inventory" in item && item.inventory) {
-      toolId = item.inventory.id;
-    } else if ("id" in item) {
-      toolId = item.id;
-    }
-
-    if (!toolId) {
-      console.warn("⚠️ Пропущен айтем без ID инструмента:", item);
+    // Кастомные позиции не относятся к инвентарю
+    if ("is_custom" in item && item.is_custom) {
       return;
     }
 
-    // 2. Расчет дней (используем даты из айтема или общие из заказа)
+    // Для ТО нужен именно ID Inventory
+    const toolId =
+      "inventory" in item && item.inventory ? item.inventory.id : undefined;
+
+    if (!toolId) {
+      console.warn("⚠️ Пропущен айтем без Inventory ID:", item);
+      return;
+    }
+
     const sDate = item.start_date || order.start_date;
     const eDate = item.end_date || order.end_date;
 
     let daysToWork = 1;
+
     if (sDate && eDate) {
       const start = new Date(sDate);
       const end = new Date(eDate);
+
       const diffMs = Math.abs(end.getTime() - start.getTime());
+
       daysToWork = Math.ceil(diffMs / (1000 * 60 * 60 * 24)) || 1;
     }
 
-    // 3. Используем ВАШ существующий сервис
     return incrementMaintenanceCounters(toolId, daysToWork);
   });
 
