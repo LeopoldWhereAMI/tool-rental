@@ -141,7 +141,9 @@ export async function POST(request: Request) {
             startDate: new Date(item.start_date),
             endDate: new Date(item.end_date),
 
-            priceAtTime: item.total_price ?? 0,
+            priceAtTime: item.daily_price,
+
+            totalPrice: item.total_price ?? 0,
 
             isCustom: item.is_custom ?? false,
             customName: item.custom_name ?? null,

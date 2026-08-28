@@ -39,7 +39,8 @@ export default function OrderExtension({
     OrderDetailsUI["extensions"]
   >([]);
 
-  const availableItems = order.order_items.filter((item) => !item.is_custom);
+  // const availableItems = order.order_items.filter((item) => !item.is_custom);
+  const availableItems = order.order_items;
 
   const selectedItems = availableItems.filter((item) =>
     selectedOrderItemIds.includes(item.id),
@@ -94,7 +95,7 @@ export default function OrderExtension({
     if (isCreating) return;
 
     if (selectedOrderItemIds.length === 0) {
-      toast.error("Выберите хотя бы один инструмент");
+      toast.error("Выберите хотя бы одну позицию");
       return;
     }
 
@@ -244,7 +245,7 @@ export default function OrderExtension({
 
             <div className={styles.field}>
               <div className={styles.itemsHeader}>
-                <span className={styles.label}>Инструменты для продления</span>
+                <span className={styles.label}>Позиции для продления</span>
 
                 <span className={styles.itemsCount}>
                   {selectedOrderItemIds.length} из {availableItems.length}
@@ -295,7 +296,9 @@ export default function OrderExtension({
                     </span>
 
                     <span className={styles.itemName}>
-                      {item.inventory?.name ?? "Инструмент"}
+                      {item.is_custom
+                        ? (item.custom_name ?? "Кастомная позиция")
+                        : (item.inventory?.name ?? "Инструмент")}
                     </span>
 
                     <span className={styles.itemPrice}>
