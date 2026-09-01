@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "../../../../../auth";
+// import { parseISODate } from "@/helpers/date";
 
 export async function POST(request: Request) {
   try {
@@ -36,6 +37,8 @@ export async function POST(request: Request) {
 
     const start = new Date(startDate);
     const end = new Date(endDate);
+    // const start = parseISODate(startDate);
+    // const end = parseISODate(endDate);
 
     // Конфликты с заказами
     const conflictingOrders = await prisma.orderItem.findMany({

@@ -60,6 +60,12 @@ export const updateOrderStatus = async (
   newStatus: string,
   finalPrice?: number,
 ) => {
+  console.log("UPDATE ORDER STATUS:", {
+    orderId,
+    newStatus,
+    finalPrice,
+    url: `/api/orders/${orderId}/status`,
+  });
   const response = await fetch(`/api/orders/${orderId}/status`, {
     method: "PATCH",
     headers: {
@@ -71,12 +77,18 @@ export const updateOrderStatus = async (
     }),
   });
 
+  if (!response.ok) {
+    const text = await response.text();
+
+    throw new Error(`Ошибка обновления статуса: ${response.status} ${text}`);
+  }
+
   const result = await response.json();
 
   if (!result.success) {
     throw new Error(result.error);
   }
-
+  console.log("STATUS RESPONSE:", response.status, response.url);
   return result.data;
 };
 

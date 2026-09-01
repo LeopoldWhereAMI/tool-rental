@@ -1,3 +1,5 @@
+import { toISODate } from "@/helpers/date";
+
 export async function getBookings(inventoryId: string) {
   const response = await fetch(
     `/api/bookings?inventoryId=${encodeURIComponent(inventoryId)}`,
@@ -25,8 +27,8 @@ export async function checkAvailability(
     },
     body: JSON.stringify({
       inventoryId,
-      startDate: startDate.toISOString(),
-      endDate: endDate.toISOString(),
+      startDate: toISODate(startDate),
+      endDate: toISODate(endDate),
       excludeBookingId,
     }),
   });
@@ -64,8 +66,8 @@ export async function createBooking({
       inventoryId,
       clientId,
       orderId,
-      startDate: startDate.toISOString(),
-      endDate: endDate.toISOString(),
+      startDate: toISODate(startDate),
+      endDate: toISODate(endDate),
     }),
   });
 

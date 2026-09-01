@@ -16,7 +16,7 @@ import {
 
 import { Calendar1, Check, FileText, Pencil, Phone, X } from "lucide-react";
 import { toast } from "sonner";
-import { parseISODate, toISODate } from "@/helpers/date";
+import { parseISODate } from "@/helpers/date";
 
 type Props = {
   inventoryId: string;
@@ -33,17 +33,12 @@ type Booking = {
 
 export default function Calendar({ inventoryId }: Props) {
   const [range, setRange] = useState<DateRange | undefined>();
-  // const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editNotes, setEditNotes] = useState("");
   const [editPhone, setEditPhone] = useState("");
-
-  // =========================
-  // Загрузка бронирований
-  // =========================
 
   useEffect(() => {
     fetchBookings();
@@ -59,24 +54,27 @@ export default function Calendar({ inventoryId }: Props) {
     }
   }
 
-  // =========================
-  // Disabled dates
-  // =========================
+  // const disabledDays = useMemo(() => {
+  //   return bookings
+  //     .filter((booking) => booking.status !== "cancelled")
+  //     .flatMap((booking) =>
+  //       eachDayOfInterval({
+  //         start: parseISODate(booking.start_date), // строка → Date
+  //         end: parseISODate(booking.end_date),
+  //       }),
+  //     );
+  // }, [bookings]);
 
-  const disabledDays = useMemo(() => {
+  const bookedDays = useMemo(() => {
     return bookings
       .filter((booking) => booking.status !== "cancelled")
       .flatMap((booking) =>
         eachDayOfInterval({
-          start: parseISODate(booking.start_date), // строка → Date
+          start: parseISODate(booking.start_date),
           end: parseISODate(booking.end_date),
         }),
       );
   }, [bookings]);
-
-  // =========================
-  // Выбор диапазона
-  // =========================
 
   async function handleSelect(selectedRange: DateRange | undefined) {
     setError("");
@@ -105,7 +103,6 @@ export default function Calendar({ inventoryId }: Props) {
     }
   }
 
-  // Создание бронирования
   function handleBooking() {
     if (!range?.from || !range?.to) return;
 
@@ -123,7 +120,7 @@ export default function Calendar({ inventoryId }: Props) {
           try {
             await createBooking({
               inventoryId,
-              // clientId: selectedClientId,
+
               startDate,
               endDate,
             });
@@ -170,21 +167,18 @@ export default function Calendar({ inventoryId }: Props) {
     });
   }
 
-  // Начать редактирование
   function startEdit(booking: Booking) {
     setEditingId(booking.id);
     setEditNotes(booking.notes || "");
     setEditPhone(booking.phone || "");
   }
 
-  // Отменить редактирование
   function cancelEdit() {
     setEditingId(null);
     setEditNotes("");
     setEditPhone("");
   }
 
-  // Сохранить изменения
   async function saveEdit(bookingId: string) {
     try {
       await updateBooking(bookingId, {
@@ -212,7 +206,13 @@ export default function Calendar({ inventoryId }: Props) {
           mode="range"
           selected={range}
           onSelect={handleSelect}
-          disabled={disabledDays}
+          disabled={bookedDays}
+          modifiers={{
+            booked: bookedDays,
+          }}
+          modifiersClassNames={{
+            booked: styles.bookedDay,
+          }}
           showOutsideDays
           locale={ru}
           weekStartsOn={1}
@@ -220,7 +220,6 @@ export default function Calendar({ inventoryId }: Props) {
         {range?.from && range?.to && (
           <div className={styles.selectedRange}>
             <p>Выбран диапазон:</p>
-            <p>{/* {toISODate(range.from)} — {toISODate(range.to)} */}</p>
             {format(range.from, "dd.MM.yyyy")} —{" "}
             {format(range.to, "dd.MM.yyyy")}
             <button
@@ -234,7 +233,6 @@ export default function Calendar({ inventoryId }: Props) {
         )}
         {error && <p className={styles.error}>{error}</p>}
 
-        {/* Список бронирований */}
         <div className={styles.bookingsSection}>
           {bookings.length ? (
             <h3 className={styles.sectionTitle}>Бронирования:</h3>
@@ -258,7 +256,6 @@ export default function Calendar({ inventoryId }: Props) {
                 </span>
               </div>
 
-              {/* Режим редактирования */}
               {editingId === booking.id ? (
                 <div className={styles.editForm}>
                   <div className={styles.inputGroup}>
@@ -297,7 +294,6 @@ export default function Calendar({ inventoryId }: Props) {
                   </div>
                 </div>
               ) : (
-                /* Режим просмотра */
                 <div className={styles.bookingInfo}>
                   {booking.phone && (
                     <div className={styles.infoRow}>

@@ -44,7 +44,7 @@ export default function AddOrderForm() {
     watch,
   } = useForm<OrderInput>({
     resolver: zodResolver(orderSchema),
-    mode: "onTouched",
+    mode: "onChange",
     defaultValues: {
       items: [
         {

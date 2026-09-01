@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { formatBooking } from "@/lib/formatters/bookingFormatter";
 import { auth } from "../../../../auth";
+// import { parseISODate } from "@/helpers/date";
 
 type CreateBookingParams = {
   inventoryId: string;
@@ -132,6 +133,8 @@ export async function POST(request: Request) {
         orderId: body.orderId ?? null,
         startDate: new Date(body.startDate),
         endDate: new Date(body.endDate),
+        // startDate: parseISODate(body.startDate),
+        // endDate: parseISODate(body.endDate),
         status: "pending",
       },
     });

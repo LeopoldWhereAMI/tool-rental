@@ -145,7 +145,6 @@
   padding-right: 36px;
 }
 
-/* Input with icon */
 .inputWithIcon {
   position: relative;
 }
@@ -235,7 +234,6 @@
   font-size: 12px;
 }
 
-/* Бейдж клиента в черном списке */
 .foundBadge.blacklisted {
   background-color: #fef2f2;
   border-color: #fecaca;
@@ -247,19 +245,16 @@
   border-color: #ef4444 !important;
 }
 
-/* Метка (ЧС) */
 .blacklistLabel {
   color: #ef4444;
   font-weight: 700;
   margin-left: 4px;
 }
 
-/* Иконка для заблокированного пользователя */
 .errorIcon {
   color: #dc2626;
 }
 
-/* Опционально: общая плашка под инпутом, если номер совпал на 100% */
 .warningBanner {
   background-color: #dc2626;
   color: white;
@@ -524,99 +519,6 @@
   cursor: not-allowed;
 }
 
-/* toggle */
-.modeToggle {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-  padding: 4px;
-  background: var(--table-thead);
-  border-radius: 10px;
-  border: 1px solid var(--border);
-}
-
-.modeBtn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 8px;
-  background: transparent;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.2s;
-  flex: 1;
-  justify-content: center;
-}
-
-.modeBtn:hover {
-  color: var(--text-secondary);
-  background: rgba(59, 130, 246, 0.06);
-}
-
-.modeBtnActive {
-  background: var(--surface);
-  color: var(--primary);
-  font-weight: 600;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.modeBtn svg {
-  width: 16px;
-  height: 16px;
-}
-
-/* ============================================
-   СТИЛИ ДЛЯ КАСТОМНЫХ ПОЛЕЙ
-   ============================================ */
-
-.customInput {
-  width: 100%;
-  background: var(--table-thead);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 11px 14px;
-  font-size: 14px;
-  color: var(--text-main);
-  outline: none;
-  transition:
-    border-color 0.15s,
-    box-shadow 0.15s;
-  box-sizing: border-box;
-  font-family: inherit;
-}
-
-.customInput:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
-}
-
-.customInput::placeholder {
-  color: var(--text-muted);
-  font-weight: 400;
-}
-
-.priceInputWrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.priceInputWrapper input {
-  flex: 1;
-}
-
-.priceInputWrapper span {
-  color: var(--text-muted);
-  font-size: 13px;
-  white-space: nowrap;
-  font-weight: 500;
-}
-
-/* modal */
 .inventoryModalOverlay {
   position: fixed;
   inset: 0;
@@ -809,7 +711,6 @@
   border-color: var(--primary);
   background: var(--card-hover-bg);
   box-shadow: 0 4px 14px var(--card-hover-shadow);
-  /* transform: translateY(-1px); */
 }
 
 .inventoryModalImage {
@@ -870,12 +771,10 @@
 @keyframes pageFadeIn {
   from {
     opacity: 0;
-    transform: translateY(6px);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -889,154 +788,10 @@
   }
 }
 
-@media (max-width: 600px) {
-  .modeToggle {
-    gap: 4px;
-    padding: 3px;
-  }
-
-  .modeBtn {
-    padding: 6px 10px;
-    font-size: 12px;
-    gap: 4px;
-  }
-
-  .modeBtn svg {
-    width: 14px;
-    height: 14px;
-  }
-}
-
-@media (max-width: 900px) {
-  .itemGrid,
-  .itemGridCustom {
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-  }
-
-  /* Инструмент — на всю ширину */
-  .itemGrid > *:first-child {
-    grid-column: 1 / -1;
-  }
-
-  /* Кастомные: название + цена рядом, на всю ширину */
-  .itemGridCustom > *:nth-child(1),
-  .itemGridCustom > *:nth-child(2) {
-    grid-column: auto;
-  }
-  .itemGridCustom > *:nth-child(1) {
-    grid-column: 1 / 2;
-  }
-  .itemGridCustom > *:nth-child(2) {
-    grid-column: 2 / 4;
-  }
-
-  /* Даты в одну строку */
-  .itemGrid > *:nth-child(3),
-  .itemGrid > *:nth-child(4) {
-    grid-column: auto;
-  }
-
-  .removeBtn {
-    justify-self: end;
-    margin-top: 0;
-  }
-}
-
-/* ============================================
-   АДАПТИВ — МОБИЛКА (≤600px)
-   ============================================ */
-@media (max-width: 600px) {
-  .itemGrid,
-  .itemGridCustom {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .itemGrid > *,
-  .itemGridCustom > * {
-    width: 100%;
-  }
-
-  .modeToggle {
-    order: -1;
-    margin-bottom: 8px;
-  }
-
-  .removeBtn {
-    align-self: flex-end;
-    margin-top: 4px;
-  }
-}
-/*  */
-
 @media print {
   .noPrint {
     display: none;
   }
-}
-
-.itemRow {
-  margin-bottom: 10px;
-}
-
-.itemGridSingleCol {
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
-}
-
-.itemGridSingleCol > div:first-child {
-  flex: 1;
-}
-
-.itemRow {
-  padding-bottom: 16px;
-  margin-bottom: 16px;
-  border-bottom: 1px solid var(--border);
-}
-
-.itemRow:last-of-type {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-.itemGrid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 56px 38px;
-  gap: 10px;
-  align-items: flex-end;
-}
-
-.itemGridCustom {
-  grid-template-columns: 1.5fr 1fr 1fr 1fr 56px 38px;
-}
-
-.removeBtn {
-  width: 38px;
-  height: 42px;
-  margin-left: 18px;
-  background: var(--table-thead);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  color: #475569;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    background-color 0.15s,
-    color 0.15s,
-    border-color 0.15s;
-  flex-shrink: 0;
-}
-
-.removeBtn:hover {
-  background-color: rgba(239, 68, 68, 0.1);
-  border-color: rgba(239, 68, 68, 0.3);
-  color: #ef4444;
 }
 
 .passportGrid {
@@ -1120,7 +875,6 @@
   pointer-events: none;
 }
 
-/* Обеспечительный платёж в OrderFinance */
 .depositInfo {
   display: flex;
   justify-content: space-between;
@@ -1151,30 +905,6 @@
   color: #f59e0b;
 }
 
-.itemGrid > div {
-  position: relative;
-  padding-bottom: 20px;
-}
-
-.itemGrid [class*="errorText"],
-.itemGrid [class*="error"] {
-  position: absolute;
-  bottom: 2px;
-  left: 0;
-  white-space: nowrap;
-  font-size: 11px;
-}
-
-.itemGrid .removeBtn {
-  padding-bottom: 20px;
-}
-
-.itemGrid .removeBtn {
-  height: 42px;
-  padding: 0;
-  margin-bottom: 20px;
-}
-
 .fieldsContainer {
   position: relative;
   transition: all 0.3s ease;
@@ -1187,7 +917,7 @@
   justify-content: center;
   padding: 40px 0;
   gap: 12px;
-  color: var(--text-secondary); /* или твой цвет текста */
+  color: var(--text-secondary);
   animation: fadeIn 0.2s ease-out;
 }
 
@@ -1198,27 +928,18 @@
   transform: translateY(-50%);
   pointer-events: none;
   z-index: 5;
-  color: var(--primary-color); /* чтобы спиннер был в цвет бренда */
+  color: var(--primary-color);
 }
 
-/* Специальное положение для textarea */
 .spinnerTop {
   top: 12px;
-  transform: none; /* Убираем центрирование по вертикали */
+  transform: none;
 }
 
 .textarea {
   min-height: 80px;
-  padding-right: 36px; /* Чтобы текст не заходил под спиннер */
+  padding-right: 36px;
   resize: vertical;
-}
-
-.disabledInput:disabled {
-  background: var(--nav-hover-bg);
-  border-color: var(--border);
-  color: var(--text-muted);
-  cursor: not-allowed;
-  opacity: 0.6;
 }
 
 @keyframes fadeIn {
@@ -1230,7 +951,6 @@
   }
 }
 
-/* adaptive */
 @media (max-width: 900px) {
   .pageWrapper {
     grid-template-columns: 1fr;
@@ -1239,7 +959,6 @@
 
   .sidebar {
     position: static;
-    /* order: -1; */
   }
 
   .nameGrid {
@@ -1257,22 +976,6 @@
   }
 }
 
-@media (max-width: 600px) {
-  .itemGrid {
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-
-  .itemGrid > div:first-child {
-    grid-column: 1 / -1;
-  }
-
-  .removeBtn {
-    margin-bottom: 10px;
-    height: 40px;
-  }
-}
-
 @media (max-width: 400px) {
   .pageWrapper {
     padding: 12px;
@@ -1284,24 +987,6 @@
 
   .pageTitle {
     font-size: 22px;
-  }
-
-  .itemGrid {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 4px;
-  }
-
-  .itemGrid > div {
-    padding-bottom: 16px;
-  }
-
-  .itemRowControls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: -8px;
   }
 
   .totalAmountValue {

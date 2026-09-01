@@ -11,16 +11,16 @@ import {
   UseFormSetValue,
   useWatch,
 } from "react-hook-form";
-import { Calendar, Trash2, Package, PenLine } from "lucide-react";
+import { Calendar, Trash2, Package, Search, Check } from "lucide-react";
+
 import FormField from "@/components/Form/FormField/FormField";
-import styles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 import InputWithIcon from "@/components/Form/InputWithIcon/InputWithIcon";
 import DaysBox from "../DaysBox/DaysBox";
 import OrderInventorySelectModal from "../OrderInventorySelect/OrderInventorySelectModal";
+import styles from "./OrderItemRow.module.css";
 
 type OrderItemRowProps = {
   index: number;
-  fieldId: string;
   control: Control<OrderInput>;
   register: UseFormRegister<OrderInput>;
   errors: FieldErrors<OrderInput>;
@@ -33,7 +33,6 @@ type OrderItemRowProps = {
 
 export default function OrderItemRow({
   index,
-  fieldId,
   control,
   register,
   errors,
@@ -43,142 +42,209 @@ export default function OrderItemRow({
   onRemove,
   canRemove,
 }: OrderItemRowProps) {
-  const currentItem = useWatch({ control, name: `items.${index}` });
+  const currentItem = useWatch({
+    control,
+    name: `items.${index}`,
+  });
 
-  // Определяем начальный режим по наличию inventory_id
-  const initialMode: "inventory" | "custom" = currentItem?.inventory_id
-    ? "custom"
-    : "inventory";
-  const [mode, setMode] = useState<"inventory" | "custom">(initialMode);
+  const [manualEntry, setManualEntry] = useState(false);
 
-  const handleModeChange = (newMode: "inventory" | "custom") => {
-    setMode(newMode);
-    if (newMode === "inventory") {
-      // Очищаем кастомные поля
-      setValue(`items.${index}.custom_name`, undefined);
-      setValue(`items.${index}.custom_price`, undefined);
-      setValue(`items.${index}.custom_description`, undefined);
-    } else {
-      // Очищаем inventory_id
-      setValue(`items.${index}.inventory_id`, "");
-      clearErrors(`items.${index}.inventory_id`);
-    }
+  const hasInventory = Boolean(currentItem?.inventory_id);
+
+  const hasCustomName = Boolean(currentItem?.custom_name?.trim());
+
+  const hasCustomPrice =
+    currentItem?.custom_price !== undefined &&
+    currentItem?.custom_price !== null;
+
+  const hasCustom = hasCustomName && hasCustomPrice;
+  const isCustomView = !hasInventory && (manualEntry || hasCustom);
+
+  const isFilled = hasInventory || hasCustom;
+
+  const isCustomComplete =
+    isCustomView &&
+    hasCustomName &&
+    hasCustomPrice &&
+    Boolean(currentItem?.start_date) &&
+    Boolean(currentItem?.end_date);
+
+  const switchToManual = () => {
+    setManualEntry(true);
   };
 
+  const switchToSearch = () => {
+    setValue(`items.${index}.custom_name`, undefined);
+    setValue(`items.${index}.custom_price`, undefined);
+    setValue(`items.${index}.custom_description`, undefined);
+
+    setManualEntry(false);
+  };
+
+  // Ошибки конкретных полей
+  const customNameError = Boolean(errors.items?.[index]?.custom_name);
+  const customPriceError = Boolean(errors.items?.[index]?.custom_price);
+  const inventoryError = Boolean(errors.items?.[index]?.inventory_id);
+  const startDateError = Boolean(errors.items?.[index]?.start_date);
+  const endDateError = Boolean(errors.items?.[index]?.end_date);
+
   return (
-    <div key={fieldId} className={styles.itemRow}>
-      {/* Переключатель режима — ВНЕ grid */}
-      <div className={styles.modeToggle}>
-        <button
-          type="button"
-          className={`${styles.modeBtn} ${mode === "inventory" ? styles.modeBtnActive : ""}`}
-          onClick={() => handleModeChange("inventory")}
-        >
-          <Package size={14} />
-          Из склада
-        </button>
-        <button
-          type="button"
-          className={`${styles.modeBtn} ${mode === "custom" ? styles.modeBtnActive : ""}`}
-          onClick={() => handleModeChange("custom")}
-        >
-          <PenLine size={14} />
-          Вручную
-        </button>
+    <div
+      className={`${styles.itemCard} ${isFilled ? styles.itemCardFilled : ""}`}
+    >
+      {/* Верхняя строка */}
+      <div className={styles.itemHeader}>
+        <div className={styles.itemTitle}>
+          <span className={styles.itemNumber}>
+            <Package size={12} />
+            {index + 1}
+          </span>
+
+          <span className={styles.itemType}>
+            {isCustomView ? "Ручная позиция" : "Инструмент"}
+          </span>
+        </div>
+
+        {canRemove && (
+          <button
+            type="button"
+            onClick={onRemove}
+            className={styles.itemRemoveBtn}
+            aria-label="Удалить позицию"
+          >
+            <Trash2 size={14} />
+          </button>
+        )}
       </div>
 
-      {/* Grid с условным классом для режима */}
+      {/* Поля */}
       <div
-        className={`${styles.itemGrid} ${mode === "custom" ? styles.itemGridCustom : ""}`}
+        className={`${styles.fieldsRow} ${
+          isCustomView ? styles.fieldsRowCustom : ""
+        }`}
+        key={isCustomView ? "custom" : "inventory"}
       >
-        {mode === "inventory" ? (
-          <FormField
-            id={`items.${index}.inventory_id`}
-            label="Инструмент"
-            error={errors.items?.[index]?.inventory_id?.message}
-          >
-            <OrderInventorySelectModal
-              index={index}
-              control={control}
-              register={register}
-              setValue={setValue}
-              clearErrors={clearErrors}
-              inventory={inventory}
-            />
-          </FormField>
-        ) : (
-          <>
-            <FormField
-              id={`items.${index}.custom_name`}
-              label="Название"
-              error={errors.items?.[index]?.custom_name?.message}
-            >
-              <input
-                {...register(`items.${index}.custom_name` as const)}
-                className={styles.customInput}
-                placeholder="Например: Цепь пильная"
-              />
-            </FormField>
+        {/* Название / инструмент */}
+        <div className={styles.field}>
+          {isCustomView ? (
+            <FormField id={`items.${index}.custom_name`} label="Название">
+              <div className={styles.customNameWrapper}>
+                <input
+                  {...register(`items.${index}.custom_name` as const)}
+                  className={`${styles.customInput} ${
+                    isCustomComplete ? styles.customNameComplete : ""
+                  } ${customNameError ? styles.inputError : ""}`}
+                  placeholder="Например: Цепь пильная"
+                />
 
-            <FormField
-              id={`items.${index}.custom_price`}
-              label="Цена/сут"
-              error={errors.items?.[index]?.custom_price?.message}
-            >
+                {isCustomComplete && (
+                  <span className={styles.completeCheck}>
+                    <Check size={12} strokeWidth={2.5} />
+                  </span>
+                )}
+              </div>
+            </FormField>
+          ) : (
+            <FormField id={`items.${index}.inventory_id`} label="Инструмент">
+              <div className={inventoryError ? styles.selectError : undefined}>
+                <OrderInventorySelectModal
+                  index={index}
+                  control={control}
+                  register={register}
+                  setValue={setValue}
+                  clearErrors={clearErrors}
+                  inventory={inventory}
+                />
+              </div>
+            </FormField>
+          )}
+        </div>
+
+        {/* Цена — только для ручной позиции */}
+        {isCustomView && (
+          <div className={styles.field}>
+            <FormField id={`items.${index}.custom_price`} label="Цена/сут">
               <div className={styles.priceInputWrapper}>
                 <input
                   {...register(`items.${index}.custom_price` as const, {
-                    setValueAs: (v) => (v === "" ? undefined : Number(v)),
+                    setValueAs: (value) =>
+                      value === "" ? undefined : Number(value),
                   })}
                   type="number"
                   min="0"
-                  className={styles.customInput}
+                  className={`${styles.customInput} ${
+                    isCustomComplete ? styles.customInputFilled : ""
+                  } ${customPriceError ? styles.inputError : ""}`}
                   placeholder="0"
                 />
+
                 <span>₽</span>
               </div>
             </FormField>
-          </>
+          </div>
         )}
 
-        <FormField
-          id={`items.${index}.start_date`}
-          label="Начало"
-          error={errors.items?.[index]?.start_date?.message}
-        >
-          <InputWithIcon
-            type="date"
-            id={`items.${index}.start_date`}
-            icon={Calendar}
-            register={register(`items.${index}.start_date` as const)}
-          />
-        </FormField>
+        {/* Начало */}
+        <div className={styles.field}>
+          <FormField id={`items.${index}.start_date`} label="Начало">
+            <InputWithIcon
+              type="date"
+              id={`items.${index}.start_date`}
+              icon={Calendar}
+              className={`${isCustomComplete ? styles.customInputFilled : ""} ${
+                startDateError ? styles.inputError : ""
+              }`}
+              register={register(`items.${index}.start_date` as const)}
+            />
+          </FormField>
+        </div>
 
-        <FormField
-          id={`items.${index}.end_date`}
-          label="Возврат"
-          error={errors.items?.[index]?.end_date?.message}
-        >
-          <InputWithIcon
-            type="date"
-            id={`items.${index}.end_date`}
-            icon={Calendar}
-            disabled={mode === "inventory" && !currentItem?.inventory_id}
-            className={
-              mode === "inventory" && !currentItem?.inventory_id
-                ? styles.disabledInput
-                : ""
-            }
-            register={register(`items.${index}.end_date` as const)}
-          />
-        </FormField>
+        {/* Возврат */}
+        <div className={styles.field}>
+          <FormField id={`items.${index}.end_date`} label="Возврат">
+            <InputWithIcon
+              type="date"
+              id={`items.${index}.end_date`}
+              icon={Calendar}
+              disabled={!isCustomView && !hasInventory}
+              className={`${!isCustomView && !hasInventory ? styles.disabledInput : ""} ${
+                isCustomComplete ? styles.customInputFilled : ""
+              } ${endDateError ? styles.inputError : ""}`}
+              register={register(`items.${index}.end_date` as const)}
+            />
+          </FormField>
+        </div>
 
-        <DaysBox index={index} control={control} setValue={setValue} />
+        {/* Дни */}
+        <div className={styles.daysField}>
+          <FormField id={`items.${index}.days`}>
+            <DaysBox index={index} control={control} setValue={setValue} />
+          </FormField>
+        </div>
+      </div>
 
-        {canRemove && (
-          <button type="button" onClick={onRemove} className={styles.removeBtn}>
-            <Trash2 size={18} />
+      {/* Нижняя ссылка */}
+      <div className={styles.rowFooter}>
+        {isCustomView ? (
+          <button
+            type="button"
+            className={styles.linkBtn}
+            onClick={switchToSearch}
+          >
+            <Search size={11} />
+            Искать на складе
           </button>
+        ) : (
+          !hasInventory && (
+            <button
+              type="button"
+              className={styles.linkBtn}
+              onClick={switchToManual}
+            >
+              <span className={styles.plus}>+</span>
+              Добавить вручную
+            </button>
+          )
         )}
       </div>
     </div>

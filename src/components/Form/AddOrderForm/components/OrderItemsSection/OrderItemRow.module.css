@@ -1,0 +1,428 @@
+.itemCard {
+  position: relative;
+
+  padding: 10px 12px;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background: var(--surface);
+
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.itemCard + .itemCard {
+  margin-top: 7px;
+}
+
+.itemCardFilled {
+  border-color: rgba(59, 130, 246, 0.35);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.05);
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.itemHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 24px;
+  margin-bottom: 6px;
+}
+
+.itemTitle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.itemNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+
+  height: 20px;
+  min-width: 20px;
+  padding: 0 5px;
+
+  border-radius: 6px;
+
+  background: var(--nav-active-bg);
+  color: var(--primary);
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.itemType {
+  color: var(--text-muted);
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* =========================
+   REMOVE
+========================= */
+
+.itemRemoveBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  flex-shrink: 0;
+
+  border: 1px solid var(--border);
+  border-radius: 7px;
+
+  background: var(--table-thead);
+  color: var(--text-muted);
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.itemRemoveBtn:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+/* =========================
+   FIELDS
+========================= */
+
+.fieldsRow {
+  display: grid;
+  grid-template-columns:
+    minmax(260px, 2fr)
+    minmax(130px, 1fr)
+    minmax(130px, 1fr)
+    70px;
+  gap: 8px;
+  align-items: end;
+}
+
+.fieldsRowCustom {
+  grid-template-columns:
+    minmax(180px, 1.45fr)
+    minmax(90px, 0.7fr)
+    minmax(130px, 1fr)
+    minmax(130px, 1fr)
+    70px;
+}
+
+.field :global(input),
+.daysField input {
+  min-height: 42px;
+  box-sizing: border-box;
+}
+
+/* Ошибки */
+/* .field :global([class*="errorMessage"]),
+.daysField :global([class*="errorMessage"]) {
+  position: absolute;
+  left: 15;
+  bottom: 15px;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 1.2;
+} */
+
+/* =========================
+   CUSTOM INPUT
+========================= */
+
+.customNameWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.customNameWrapper .customInput {
+  padding-right: 38px;
+}
+
+.customInput {
+  width: 100%;
+  height: 36px;
+  box-sizing: border-box;
+
+  padding: 0 10px;
+
+  background-color: var(--table-thead) !important;
+  color: var(--text-main);
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  outline: none;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.customInput:focus {
+  background-color: var(--table-thead) !important;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.customInput::placeholder {
+  color: var(--text-muted);
+}
+
+.inputError {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.08);
+}
+
+.inputError:focus {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.selectError {
+  border: 1px solid #ef4444;
+  border-radius: 8px;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.08);
+}
+
+/* =========================
+   ГОТОВАЯ НАЗВАНИЕ
+========================= */
+
+.customNameComplete {
+  background: #3b82f612 !important;
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+.customNameComplete:focus {
+  background: #3b82f612 !important;
+  border-color: #3b82f6;
+
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* =========================
+   CHECK
+========================= */
+
+.completeCheck {
+  position: absolute;
+
+  top: 50%;
+  right: 9px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+
+  transform: translateY(-50%);
+
+  border-radius: 50%;
+
+  background: var(--primary);
+  color: #fff;
+
+  pointer-events: none;
+}
+
+/* =========================
+   COMPLETE INPUTS
+========================= */
+
+input.customInputFilled,
+textarea.customInputFilled {
+  background: #3b82f612 !important;
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+/* =========================
+   PRICE
+========================= */
+
+.priceInputWrapper {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+}
+
+.priceInputWrapper input {
+  flex: 1;
+  min-width: 0;
+}
+
+.priceInputWrapper span {
+  color: var(--text-muted);
+
+  font-size: 12px;
+  font-weight: 500;
+
+  white-space: nowrap;
+}
+
+/* =========================
+   DISABLED
+========================= */
+
+.disabledInput:disabled {
+  background: var(--nav-hover-bg);
+
+  border-color: var(--border);
+
+  color: var(--text-muted);
+
+  cursor: not-allowed;
+
+  opacity: 0.6;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.rowFooter {
+  display: flex;
+  justify-content: flex-end;
+
+  min-height: 14px;
+
+  margin-top: 3px;
+}
+
+.linkBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  padding: 2px 2px 0 2px;
+
+  border: none;
+  background: none;
+
+  /* color: var(--text-muted); */
+
+  font-size: 13px;
+
+  cursor: pointer;
+
+  transition:
+    color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.linkBtn:hover {
+  color: var(--primary);
+
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.plus {
+  font-size: 15px;
+  line-height: 10px;
+  color: var(--primary);
+}
+
+/* =========================
+   ANIMATION
+========================= */
+
+.fieldsRow {
+  animation: contentIn 0.15s ease-out;
+}
+
+@keyframes contentIn {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fieldsRow {
+    animation: none;
+  }
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+  .fieldsRow,
+  .fieldsRowCustom {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .daysField {
+    max-width: 100px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+  .itemCard {
+    padding: 9px 10px;
+  }
+
+  .fieldsRow,
+  .fieldsRowCustom {
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+  }
+
+  .field:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .rowFooter {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .fieldsRow,
+  .fieldsRowCustom {
+    grid-template-columns: 1fr;
+  }
+
+  .field:first-child {
+    grid-column: auto;
+  }
+
+  .daysField {
+    max-width: none;
+  }
+}
