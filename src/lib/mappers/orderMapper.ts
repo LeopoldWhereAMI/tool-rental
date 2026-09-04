@@ -7,9 +7,6 @@ import {
   CreateOrderParams,
 } from "@/types";
 
-// ============================================
-// mapOrderToPrintBundle — для новых заказов
-// ============================================
 export function mapOrderToPrintBundle(
   formData: OrderInput,
   inventoryMap: InventoryMap,
@@ -155,10 +152,13 @@ export function prepareOrderPayload(
     return sum + (inv?.daily_price || 0) * days;
   }, 0);
 
+  const priceAdjustment = formData.price_adjustment || 0;
+
   return {
     client_id: clientId,
     items,
-    total_price: rentalTotal,
+    total_price: rentalTotal + priceAdjustment,
+    price_adjustment: priceAdjustment,
     security_deposit: formData.security_deposit || null,
   };
 }
@@ -206,38 +206,6 @@ export function mapOrderDetailsToPrint(
     clientBundle.ogrn = nullToUndefined(client.ogrn);
     clientBundle.legal_address = nullToUndefined(client.legal_address);
   }
-
-  // ✅ Поддержка кастомных позиций из БД
-  // const contractItems: ContractItem[] = order.order_items.map((item) => {
-  //   if (item.is_custom) {
-  //     return {
-  //       id: item.id,
-  //       name: item.custom_name || "Дополнительная услуга",
-  //       start_date: item.start_date,
-  //       end_date: item.end_date,
-  //       price_at_time: item.price_at_time,
-  //       daily_price: item.price_at_time,
-  //       is_custom: true,
-  //     };
-  //   }
-
-  //   if (!item.inventory) {
-  //     throw new Error(`Инструмент для позиции ${item.id} не найден`);
-  //   }
-
-  //   return {
-  //     id: item.inventory.id,
-  //     name: item.inventory.name,
-  //     serial_number: item.inventory.serial_number,
-  //     article: item.inventory.article,
-  //     start_date: item.start_date,
-  //     end_date: item.end_date,
-  //     price_at_time: item.price_at_time,
-  //     purchase_price: item.inventory.purchase_price,
-  //     daily_price: item.inventory.daily_price,
-  //     is_custom: false,
-  //   };
-  // });
 
   const contractItems: ContractItem[] = order.order_items.map((item) => {
     const extensionAmount = order.extensions

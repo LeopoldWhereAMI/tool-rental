@@ -224,6 +224,8 @@ export function formatOrderDetails(order: OrderDetailsPayload) {
 
     total_price: order.totalPrice ? Number(order.totalPrice) : 0,
 
+    price_adjustment: Number(order.priceAdjustment ?? 0),
+
     security_deposit: order.securityDeposit ? Number(order.securityDeposit) : 0,
 
     start_date: order.startDate?.toISOString() ?? tools[0]?.start_date ?? "",

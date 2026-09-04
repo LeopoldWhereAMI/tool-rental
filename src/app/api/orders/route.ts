@@ -30,6 +30,7 @@ export async function GET() {
       select: {
         id: true,
         totalPrice: true,
+        priceAdjustment: true,
         startDate: true,
         endDate: true,
         orderNumber: true,
@@ -127,6 +128,7 @@ export async function POST(request: Request) {
         clientId: body.client_id,
         totalPrice: body.total_price,
         securityDeposit: body.security_deposit,
+        priceAdjustment: body.price_adjustment ?? null,
         status: "active",
         orderNumber: String(nextOrderNumber),
         startDate: new Date(body.items[0].start_date),

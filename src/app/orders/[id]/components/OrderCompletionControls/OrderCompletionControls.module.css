@@ -172,3 +172,54 @@
     transform: translateY(0);
   }
 }
+/*  */
+.orderSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.summaryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.summaryRow span:last-child {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.discount {
+  color: #10b981 !important;
+}
+
+.surcharge {
+  color: #f59e0b !important;
+}
+
+.summaryTotal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 4px;
+  padding-top: 9px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text-main);
+}
+
+.summaryTotal strong {
+  font-family: var(--font-space-grotesk);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--price-color);
+}

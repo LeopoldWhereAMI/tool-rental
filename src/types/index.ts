@@ -68,6 +68,7 @@ export interface OrderUI {
   order_number: string;
   status: string;
   total_price: number;
+  price_adjustment?: number | null;
   start_date: string;
   end_date: string;
   actual_end_date?: string | null;
@@ -194,6 +195,7 @@ export interface CreateOrderParams {
   client_id: string;
   total_price: number;
   security_deposit: number | null;
+  price_adjustment?: number | null;
   items: {
     id: string;
     daily_price: number;

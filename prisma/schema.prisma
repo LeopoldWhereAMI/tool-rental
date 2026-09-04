@@ -182,6 +182,7 @@ model Order {
 
   totalPrice      Decimal? @map("total_price")
   securityDeposit Decimal? @map("security_deposit")
+  priceAdjustment Decimal? @map("price_adjustment") 
 
   orderNumber String @map("order_number")
 

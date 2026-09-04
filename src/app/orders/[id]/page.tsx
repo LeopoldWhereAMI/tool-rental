@@ -112,7 +112,10 @@ export default function OrderDetailsPage() {
   const statusClass = styles[statusInfo.className as keyof typeof styles] || "";
 
   const items = order.order_items;
-
+  console.log("ORDER PRICE:", {
+    totalPrice: order.total_price,
+    priceAdjustment: order.price_adjustment,
+  });
   return (
     <PageContainer>
       <div className={`${styles.pageContainer} ${styles.fadeIn}`}>
@@ -215,6 +218,8 @@ export default function OrderDetailsPage() {
           <aside className={styles.sidebar}>
             {order.status !== "completed" && (
               <OrderCompletionControls
+                totalPrice={order.total_price}
+                priceAdjustment={order.price_adjustment ?? 0}
                 adjustment={adjustment}
                 onAdjustmentChange={setAdjustment}
                 additionalPayment={financeData.additionalPayment}

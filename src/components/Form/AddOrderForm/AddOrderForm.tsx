@@ -25,6 +25,7 @@ import { PrintLoadingOverlay } from "@/components/ui/PrintLoadingOverlay/PrintLo
 import { getClientDisplayName } from "@/helpers/clientUtils";
 import { upsertPassport } from "@/services/passportService";
 import styles from "./AddOrderForm.module.css";
+import PriceAdjustmentSection from "./components/PriceAdjustmentSection/PriceAdjustmentSection";
 
 export default function AddOrderForm() {
   const { inventory, inventoryMap, clients } = useInventoryAndClients();
@@ -54,6 +55,7 @@ export default function AddOrderForm() {
         },
       ],
       security_deposit: undefined,
+      price_adjustment: undefined,
       client_type: "individual",
     },
   });
@@ -94,6 +96,17 @@ export default function AddOrderForm() {
   const totalAmount = useMemo(() => {
     return calcOrderTotalFromItems(watchedItems, inventoryMap);
   }, [watchedItems, inventoryMap]);
+
+  const priceAdjustment = useWatch({
+    control,
+    name: "price_adjustment",
+    defaultValue: 0,
+  });
+
+  const finalTotal =
+    totalAmount +
+    (Number(securityDeposit) || 0) +
+    (Number(priceAdjustment) || 0);
 
   const handleFormSubmit = async (data: OrderInput) => {
     try {
@@ -258,21 +271,32 @@ export default function AddOrderForm() {
                     <span className={styles.depositCurrency}>₽</span>
                   </div>
                 </div>
+                {/*  */}
+                <PriceAdjustmentSection
+                  setValue={setValue}
+                  totalAmount={totalAmount}
+                  key={createdOrderId ?? "new"}
+                />
 
                 {/* Итоговая сумма с учётом депозита */}
                 <div className={styles.totalRow}>
                   <div className={styles.totalLabel}>Итого к оплате</div>
                   <div className={styles.totalAmount}>
                     <div className={styles.totalAmountValue}>
-                      {totalAmount > 0
-                        ? `${totalAmount + (Number(securityDeposit) || 0)} ₽`
-                        : ""}
+                      {totalAmount > 0 ? `${finalTotal} ₽` : ""}
                     </div>
                     {totalAmount > 0 && (
                       <div className={styles.totalAmountNote}>
-                        {securityDeposit
-                          ? `аренда + залог ${securityDeposit} ₽`
-                          : "за весь период"}
+                        {[
+                          securityDeposit ? `залог ${securityDeposit} ₽` : null,
+                          priceAdjustment
+                            ? priceAdjustment > 0
+                              ? `наценка ${priceAdjustment} ₽`
+                              : `скидка ${Math.abs(priceAdjustment)} ₽`
+                            : null,
+                        ]
+                          .filter(Boolean)
+                          .join(", ") || "за весь период"}
                       </div>
                     )}
                   </div>
@@ -280,7 +304,7 @@ export default function AddOrderForm() {
 
                 <button
                   type="submit"
-                  disabled={isSubmitting || totalAmount <= 0}
+                  disabled={isSubmitting || finalTotal <= 0}
                   className={styles.submitBtn}
                   style={{ marginTop: "20px" }}
                 >
