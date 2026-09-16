@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
         pathname: "/9.x/**",
       },
     ],
+    localPatterns: [
+      {
+        pathname: "/api/images/**",
+      },
+    ],
   },
   async headers() {
     return [

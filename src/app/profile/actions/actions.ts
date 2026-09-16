@@ -46,6 +46,58 @@ export async function updateProfileAction(
 
 type UploadAvatarResult = { success: true } | { success: false; error: string };
 
+// export async function uploadAvatarAction(
+//   formData: FormData,
+// ): Promise<UploadAvatarResult> {
+//   try {
+//     const session = await auth();
+
+//     if (!session?.user?.id) {
+//       return { success: false, error: "Unauthorized" };
+//     }
+
+//     const file = formData.get("avatar");
+
+//     if (!(file instanceof File)) {
+//       return { success: false, error: "Файл не выбран" };
+//     }
+
+//     if (!file.type.startsWith("image/")) {
+//       return { success: false, error: "Можно загружать только изображения" };
+//     }
+
+//     if (file.size > 2 * 1024 * 1024) {
+//       return { success: false, error: "Максимальный размер — 2MB" };
+//     }
+
+//     const extension = path.extname(file.name).toLowerCase() || ".jpg";
+//     const fileName = `${session.user.id}${extension}`;
+
+//     const uploadDir = path.join(UPLOADS_DIR, "avatars");
+//     await fs.mkdir(uploadDir, { recursive: true });
+
+//     const filePath = path.join(uploadDir, fileName);
+
+//     const buffer = Buffer.from(await file.arrayBuffer());
+//     await fs.writeFile(filePath, buffer);
+
+//     const avatarUrl = `/api/images/avatars/${fileName}`;
+//     await prisma.profile.update({
+//       where: { id: session.user.id },
+//       data: { avatarUrl },
+//     });
+
+//     revalidatePath("/profile");
+
+//     return { success: true };
+//   } catch (error) {
+//     return {
+//       success: false,
+//       error: error instanceof Error ? error.message : "Неизвестная ошибка",
+//     };
+//   }
+// }
+
 export async function uploadAvatarAction(
   formData: FormData,
 ): Promise<UploadAvatarResult> {
@@ -76,12 +128,24 @@ export async function uploadAvatarAction(
     const uploadDir = path.join(UPLOADS_DIR, "avatars");
     await fs.mkdir(uploadDir, { recursive: true });
 
+    // Удаляем все старые файлы этого пользователя (на случай смены расширения)
+    const existingFiles = await fs.readdir(uploadDir).catch(() => []);
+    const staleFiles = existingFiles.filter(
+      (f) => f.startsWith(`${session.user.id}.`) && f !== fileName,
+    );
+    for (const f of staleFiles) {
+      await fs.unlink(path.join(uploadDir, f)).catch(() => {});
+    }
+
     const filePath = path.join(uploadDir, fileName);
 
     const buffer = Buffer.from(await file.arrayBuffer());
     await fs.writeFile(filePath, buffer);
 
-    const avatarUrl = `/api/images/avatars/${fileName}`;
+    // Cache-busting: версия по времени загрузки
+    const version = Date.now();
+    const avatarUrl = `/api/images/avatars/${fileName}?v=${version}`;
+
     await prisma.profile.update({
       where: { id: session.user.id },
       data: { avatarUrl },

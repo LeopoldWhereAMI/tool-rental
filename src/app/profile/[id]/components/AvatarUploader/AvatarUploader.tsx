@@ -64,13 +64,14 @@ export default function AvatarUploader({ profile }: AvatarUploaderProps) {
       {profile?.avatarUrl ? (
         <>
           <Image
+            key={profile.avatarUrl}
             src={profile.avatarUrl}
             alt="Avatar"
             width={80}
             height={80}
             className={styles.avatar}
             priority
-            // unoptimized
+            unoptimized
           />
           <div onClick={(e) => e.stopPropagation()}>
             <DeleteAvatarButton />
