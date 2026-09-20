@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -42,10 +42,9 @@ export default function AddOrderForm() {
     control,
     formState: { errors, isSubmitting },
     reset,
-    watch,
   } = useForm<OrderInput>({
     resolver: zodResolver(orderSchema),
-    mode: "onChange",
+    mode: "onBlur",
     defaultValues: {
       items: [
         {
@@ -59,15 +58,6 @@ export default function AddOrderForm() {
       client_type: "individual",
     },
   });
-
-  useEffect(() => {
-    const subscription = watch((value, { name }) => {
-      if (name && errors[name as keyof OrderInput]) {
-        clearErrors(name as keyof OrderInput);
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [watch, errors, clearErrors]);
 
   const printRef = useRef<HTMLDivElement>(null);
 

@@ -41,9 +41,6 @@ const orderItemSchema = z
       });
     }
 
-    // Если выбрана ручная позиция — inventory_id не нужен
-    // Если выбран складской инструмент — custom-поля не нужны.
-
     if (
       item.start_date &&
       item.end_date &&

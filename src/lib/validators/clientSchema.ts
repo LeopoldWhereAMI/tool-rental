@@ -1,17 +1,42 @@
 import { z } from "zod";
 
+const phoneSchema = z
+  .string()
+  .transform((val) => val.replace(/[\s\-()]/g, ""))
+  .superRefine((val, ctx) => {
+    if (!/^\+?\d+$/.test(val)) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Только цифры, допустим ведущий +",
+      });
+      return;
+    }
+    const digits = val.replace("+", "");
+    if (!/^[78]/.test(digits)) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Номер должен начинаться с +7, 7 или 8",
+      });
+    } else if (digits.length > 11) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Слишком много цифр, должно быть 11",
+      });
+    } else if (digits.length < 11) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Слишком мало цифр, должно быть 11",
+      });
+    }
+  });
+
 export const individualClientSchema = z.object({
   client_type: z.literal("individual"),
   last_name: z.string().min(2, "Минимум 2 символа"),
   first_name: z.string().min(2, "Минимум 2 символа"),
   middle_name: z.string().min(2, "Минимум 2 символа").optional(),
-  phone: z
-    .string()
-    .transform((val) => val.replace(/\s/g, ""))
-    .refine(
-      (val) => /^\+?[78]\d{10}$/.test(val),
-      "Введите номер в формате +79991234567 или 89991234567",
-    ),
+
+  phone: phoneSchema,
   passport_series: z
     .string()
     .transform((val) => val.replace(/\s/g, ""))
@@ -57,14 +82,8 @@ export const legalClientSchema = z.object({
     .pipe(z.string().max(15, "Не более 15 цифр").regex(/^\d+$/, "Только цифры"))
     .optional(),
   legal_address: z.string().min(1, "Укажите юридический адрес"),
-  phone: z
-    .string()
-    .transform((val) => val.replace(/\s/g, ""))
-    .refine(
-      (val) => /^\+?[78]\d{10}$/.test(val),
-      "Введите номер в формате +79991234567 или 89991234567",
-    )
-    .optional(),
+
+  phone: z.union([z.literal(""), phoneSchema]).optional(),
 });
 
 export const clientSchema = z.discriminatedUnion("client_type", [
