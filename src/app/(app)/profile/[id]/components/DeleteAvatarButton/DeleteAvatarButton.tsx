@@ -1,10 +1,10 @@
 "use client";
 
-import { deleteAvatarAction } from "@/app/profile/actions/actions";
 import { toast } from "sonner";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import styles from "../../page.module.css";
+import { deleteAvatarAction } from "../../../actions/actions";
 
 export default function DeleteAvatarButton() {
   const [isPending, startTransition] = useTransition();

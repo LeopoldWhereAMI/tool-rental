@@ -4,10 +4,11 @@ import Image from "next/image";
 import DeleteAvatarButton from "../DeleteAvatarButton/DeleteAvatarButton";
 import { UserProfile } from "@/types";
 import { useRef, useState } from "react";
-import { uploadAvatarAction } from "@/app/profile/actions/actions";
+
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import styles from "../../page.module.css";
+import { uploadAvatarAction } from "../../../actions/actions";
 
 type AvatarUploaderProps = {
   profile: UserProfile;

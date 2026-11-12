@@ -15,13 +15,14 @@ import { useFilteredClients } from "@/hooks/useFilteredClients";
 import { ClientsStats } from "./components/ClientsStats";
 import ClientsTable from "./components/ClientsTable";
 import { calculateClientStats } from "@/helpers";
-import { useSearchStore } from "../store/store";
+
 import ViewToggle from "@/components/ui/ViewToggle/ViewToggle";
 import { useAdaptiveView } from "@/hooks/useAdaptiveView";
 import { getClientDisplayName } from "@/helpers/clientUtils";
 import { useFinanceData } from "@/hooks/useFinanceData";
 import styles from "./page.module.css";
 import Spinner from "@/components/ui/Spinner/Spinner";
+import { useSearchStore } from "@/app/store/store";
 
 export default function ClientsPage() {
   const { openMenuId, anchor, toggleMenu, closeMenu } = useMenuAnchor();
@@ -29,7 +30,7 @@ export default function ClientsPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const { clients, loading, error, addClient, removeClient } = useClients();
   const { query, setQuery } = useSearchStore();
-  const { state: finance, actions: financeActions } = useFinanceData();
+  const { state: finance } = useFinanceData();
   const { viewMode, setViewMode, isMobile } = useAdaptiveView("clients");
   const {
     filtered,

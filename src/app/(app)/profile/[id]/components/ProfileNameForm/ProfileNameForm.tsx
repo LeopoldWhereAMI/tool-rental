@@ -1,10 +1,10 @@
 "use client";
 
-import { updateProfileAction } from "@/app/profile/actions/actions";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Save } from "lucide-react";
 import styles from "./ProfileNameForm.module.css";
+import { updateProfileAction } from "../../../actions/actions";
 
 interface Props {
   defaultName: string;

@@ -4,9 +4,10 @@ import { updateProfile } from "@/services/profileService";
 import { revalidatePath } from "next/cache";
 import fs from "fs/promises";
 import path from "path";
-import { auth } from "../../../../auth";
+
 import { prisma } from "@/lib/prisma";
 import { UPLOADS_DIR } from "@/lib/uploadPath";
+import { auth } from "../../../../../auth";
 
 type UpdateProfileResult =
   | { success: true }

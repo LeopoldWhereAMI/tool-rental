@@ -10,7 +10,7 @@ import {
   Wrench,
   PlusCircle,
 } from "lucide-react";
-import { useSearchStore } from "../store/store";
+
 import Link from "next/link";
 import InventoryFilters from "@/components/Inventory/InventoryFilters/InventoryFilters";
 import SearchInput from "@/components/SearchInput/SearchInput";
@@ -22,6 +22,7 @@ import { useAdaptiveView } from "@/hooks/useAdaptiveView";
 import usePagination from "@/hooks/usePagination";
 import PaginationControls from "@/components/ui/PaginationControls/PaginationControls";
 import Spinner from "@/components/ui/Spinner/Spinner";
+import { useSearchStore } from "@/app/store/store";
 
 export default function InventoryPage() {
   const { query, setQuery } = useSearchStore();
