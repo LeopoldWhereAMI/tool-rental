@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { AlertCircle, CheckCircle } from "lucide-react";
-import PageContainer from "@/components/PageContainer/PageContainer";
-import { signUpAction } from "../actions/serverAuth";
+// import PageContainer from "@/components/PageContainer/PageContainer";
+import { signUpAction } from "../../actions/serverAuth";
 import { signIn } from "next-auth/react";
 import styles from "./page.module.css";
 
@@ -107,8 +107,17 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        setErrors({ form: result.error });
-        toast.error(result.error);
+        const errorMessages: Record<string, string> = {
+          CredentialsSignin: "Неверный email или пароль",
+          Configuration: "Ошибка конфигурации авторизации",
+          AccessDenied: "Доступ запрещён",
+        };
+
+        const errorMessage =
+          errorMessages[result.error] || "Не удалось выполнить вход";
+
+        setErrors({ form: errorMessage });
+        toast.error(errorMessage);
         setLoading(false);
         return;
       }
@@ -168,83 +177,98 @@ export default function LoginPage() {
   };
 
   return (
-    <PageContainer>
-      <div className={styles.card}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>{isSignUp ? "Регистрация" : "Вход"}</h1>
-          <p className={styles.subtitle}>
-            {isSignUp ? "Создайте новый аккаунт" : "Войдите в ваш аккаунт"}
-          </p>
+    <div className={styles.card}>
+      <div className={styles.header}>
+        <h2
+          key={isSignUp ? "signup-title" : "login-title"}
+          className={`${styles.title} ${styles.textEnter}`}
+        >
+          {isSignUp ? "Регистрация" : "Вход"}
+        </h2>
+
+        <p
+          key={isSignUp ? "signup-subtitle" : "login-subtitle"}
+          className={`${styles.subtitle} ${styles.textEnter}`}
+        >
+          {isSignUp ? "Создайте новый аккаунт" : "Войдите в ваш аккаунт"}
+        </p>
+      </div>
+
+      {successMessage && (
+        <div className={styles.success}>
+          <CheckCircle size={16} />
+          {successMessage}
+        </div>
+      )}
+
+      {errors.form && (
+        <div className={styles.error} style={{ marginBottom: "20px" }}>
+          <AlertCircle size={16} />
+          {errors.form}
+        </div>
+      )}
+
+      <form onSubmit={isSignUp ? handleSignUp : handleLogin}>
+        <div className={styles.formGroup}>
+          <label className={styles.label} htmlFor="email">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            className={styles.input}
+            placeholder="your@email.com"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (errors.email) setErrors({ ...errors, email: "" });
+            }}
+            disabled={loading}
+          />
+          {errors.email && (
+            <div className={styles.error}>
+              <AlertCircle size={14} />
+              {errors.email}
+            </div>
+          )}
         </div>
 
-        {successMessage && (
-          <div className={styles.success}>
-            <CheckCircle size={16} />
-            {successMessage}
-          </div>
-        )}
+        <div className={styles.formGroup}>
+          <label className={styles.label} htmlFor="password">
+            Пароль
+          </label>
+          <input
+            id="password"
+            type="password"
+            className={styles.input}
+            placeholder="Минимум 6 символов"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              if (errors.password) setErrors({ ...errors, password: "" });
+            }}
+            disabled={loading}
+          />
+          {errors.password && (
+            <div className={styles.error}>
+              <AlertCircle size={14} />
+              {errors.password}
+            </div>
+          )}
+        </div>
 
-        {errors.form && (
-          <div className={styles.error} style={{ marginBottom: "20px" }}>
-            <AlertCircle size={16} />
-            {errors.form}
-          </div>
-        )}
-
-        <form onSubmit={isSignUp ? handleSignUp : handleLogin}>
-          <div className={styles.formGroup}>
-            <label className={styles.label} htmlFor="email">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              className={styles.input}
-              placeholder="your@email.com"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                if (errors.email) setErrors({ ...errors, email: "" });
-              }}
-              disabled={loading}
-            />
-            {errors.email && (
-              <div className={styles.error}>
-                <AlertCircle size={14} />
-                {errors.email}
-              </div>
-            )}
-          </div>
-
-          <div className={styles.formGroup}>
-            <label className={styles.label} htmlFor="password">
-              Пароль
-            </label>
-            <input
-              id="password"
-              type="password"
-              className={styles.input}
-              placeholder="Минимум 6 символов"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                if (errors.password) setErrors({ ...errors, password: "" });
-              }}
-              disabled={loading}
-            />
-            {errors.password && (
-              <div className={styles.error}>
-                <AlertCircle size={14} />
-                {errors.password}
-              </div>
-            )}
-          </div>
-
-          {isSignUp && (
+        <div
+          className={`${styles.confirmPasswordWrapper} ${
+            isSignUp ? styles.expanded : ""
+          }`}
+          aria-hidden={!isSignUp}
+        >
+          <div className={styles.confirmPasswordInner}>
             <div className={styles.formGroup}>
               <label className={styles.label} htmlFor="confirmPassword">
                 Подтвердите пароль
               </label>
+
               <input
                 id="confirmPassword"
                 type="password"
@@ -256,66 +280,69 @@ export default function LoginPage() {
                   if (errors.confirmPassword)
                     setErrors({ ...errors, confirmPassword: "" });
                 }}
-                disabled={loading}
+                disabled={loading || !isSignUp}
+                tabIndex={isSignUp ? 0 : -1}
               />
-              {errors.confirmPassword && (
+
+              {errors.confirmPassword && isSignUp && (
                 <div className={styles.error}>
                   <AlertCircle size={14} />
                   {errors.confirmPassword}
                 </div>
               )}
             </div>
-          )}
-
-          <div className={styles.buttonGroup}>
-            <button
-              type="submit"
-              className={styles.buttonPrimary}
-              disabled={loading}
-            >
-              {loading
-                ? "Загрузка..."
-                : isSignUp
-                  ? "Зарегистрироваться"
-                  : "Войти"}
-            </button>
-            {!isSignUp && (
-              <button
-                type="button"
-                className={styles.forgotBtn}
-                onClick={handleForgotPassword}
-                disabled={loading}
-              >
-                Забыли пароль?
-              </button>
-            )}
-
-            {resetSent && (
-              <p className={styles.resetSentMsg}>
-                Письмо отправлено на {email}. Проверьте почту.
-              </p>
-            )}
           </div>
-        </form>
+        </div>
 
-        <div className={styles.toggleText}>
-          {isSignUp ? "Уже есть аккаунт?" : "Нет аккаунта?"}{" "}
+        <div className={styles.buttonGroup}>
           <button
-            className={styles.toggleButton}
-            onClick={() => {
-              setIsSignUp(!isSignUp);
-              setEmail("");
-              setPassword("");
-              setConfirmPassword("");
-              setErrors({});
-              setSuccessMessage("");
-            }}
+            type="submit"
+            className={styles.buttonPrimary}
             disabled={loading}
           >
-            {isSignUp ? "Войти" : "Зарегистрироваться"}
+            {loading
+              ? "Загрузка..."
+              : isSignUp
+                ? "Зарегистрироваться"
+                : "Войти"}
           </button>
+
+          {!isSignUp && (
+            <button
+              type="button"
+              className={styles.forgotBtn}
+              onClick={handleForgotPassword}
+              disabled={loading}
+            >
+              Забыли пароль?
+            </button>
+          )}
+
+          {resetSent && (
+            <p className={styles.resetSentMsg}>
+              Письмо отправлено на {email}. Проверьте почту.
+            </p>
+          )}
         </div>
+      </form>
+
+      <div className={styles.toggleText}>
+        {isSignUp ? "Уже есть аккаунт?" : "Нет аккаунта?"}{" "}
+        <button
+          className={styles.toggleButton}
+          onClick={() => {
+            setIsSignUp(!isSignUp);
+            setEmail("");
+            setPassword("");
+            setConfirmPassword("");
+            setErrors({});
+            setSuccessMessage("");
+          }}
+          disabled={loading}
+        >
+          {isSignUp ? "Войти" : "Зарегистрироваться"}
+        </button>
       </div>
-    </PageContainer>
+    </div>
   );
 }

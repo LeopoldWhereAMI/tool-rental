@@ -24,9 +24,9 @@ import { PlusCircle } from "lucide-react";
 import { calculateReturnStatus, getActualEndDate } from "@/helpers";
 import CancelOrderModal from "@/components/ui/MyModal/CancelOrderModal";
 import { onOrderRefunded } from "@/helpers/financeIntegration";
-import { useSearchStore } from "../store/store";
 import { useAdaptiveView } from "@/hooks/useAdaptiveView";
 import Spinner from "@/components/ui/Spinner/Spinner";
+import { useSearchStore } from "@/app/store/store";
 
 export default function OrdersListPage() {
   const [orders, setOrders] = useState<OrderUI[]>([]);

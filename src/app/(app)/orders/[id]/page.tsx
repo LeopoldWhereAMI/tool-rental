@@ -112,10 +112,7 @@ export default function OrderDetailsPage() {
   const statusClass = styles[statusInfo.className as keyof typeof styles] || "";
 
   const items = order.order_items;
-  console.log("ORDER PRICE:", {
-    totalPrice: order.total_price,
-    priceAdjustment: order.price_adjustment,
-  });
+
   return (
     <PageContainer>
       <div className={`${styles.pageContainer} ${styles.fadeIn}`}>
