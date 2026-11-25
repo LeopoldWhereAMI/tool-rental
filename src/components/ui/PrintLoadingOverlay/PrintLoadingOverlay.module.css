@@ -14,16 +14,58 @@
 }
 
 .card {
-  background: #1e293b; /* Slate 800 */
-  padding: 2.5rem;
-  border-radius: 1.5rem;
-  border: 1px solid #334155;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   align-items: center;
   max-width: 400px;
+  background: #1e293b;
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  border: 1px solid #334155;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   text-align: center;
+}
+
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.closeButton:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.cancelButton {
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.cancelButton:hover {
+  color: #dc2626;
+}
+
+.cancelButton:active {
+  transform: scale(0.98);
 }
 
 .iconWrapper {
@@ -63,6 +105,7 @@
 .progressBar {
   width: 100%;
   height: 4px;
+  margin-bottom: 8px;
   background: #334155;
   border-radius: 2px;
   overflow: hidden;

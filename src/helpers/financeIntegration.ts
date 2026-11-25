@@ -13,20 +13,15 @@ export async function onOrderCompleted(
   itemDescription: string,
 ) {
   try {
-    // 1. Проверяем, является ли сумма отрицательной (скидка/возврат разницы)
     const isNegative = totalPrice < 0;
 
     const transaction = await createTransaction({
-      // 2. Если число отрицательное — ставим 'expense', если положительное — 'income'
       type: isNegative ? "expense" : "income",
 
-      // 3. В базу для типа 'expense' лучше записывать положительное число (модуль)
-      // так как логика отображения минуса обычно привязана к самому типу расхода
       amount: Math.abs(totalPrice),
 
       description: itemDescription,
 
-      // 4. Меняем категорию для чистоты аналитики
       category: isNegative ? "Discount/Refund" : "Rental",
 
       status: "completed",

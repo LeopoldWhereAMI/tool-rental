@@ -43,6 +43,15 @@
   transition: border 0.3s ease;
 }
 
+.historyListWrapper {
+  transition: opacity 0.15s ease;
+}
+
+.historyListLoading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .historyMain {
   display: flex;
   justify-content: space-between;

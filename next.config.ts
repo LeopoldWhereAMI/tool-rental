@@ -3,13 +3,21 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
   reactCompiler: true,
+  serverExternalPackages: ["@prisma/client", "@prisma/adapter-pg", "pg"],
+  outputFileTracingIncludes: {
+    "/**": ["./src/generated/prisma/**/*"],
+  },
   images: {
-    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "api.xn--46-6kcay4al8ahci5n.xn--p1ai",
-        pathname: "/storage/v1/object/public/**",
+        hostname: "api.dicebear.com",
+        pathname: "/9.x/**",
+      },
+    ],
+    localPatterns: [
+      {
+        pathname: "/api/images/**",
       },
     ],
   },

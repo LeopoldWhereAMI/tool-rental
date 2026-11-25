@@ -1,0 +1,164 @@
+.toolSearchTrigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  background: var(--table-thead);
+  color: var(--text-muted);
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 0.15s,
+    color 0.15s;
+  font-family: inherit;
+}
+
+.toolSearchTrigger:hover {
+  border-color: var(--primary);
+  color: var(--text-secondary);
+}
+
+.toolChip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 6px 8px;
+  box-sizing: border-box;
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  border-radius: 10px;
+  background: rgba(59, 130, 246, 0.07);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 0.15s,
+    background-color 0.15s;
+}
+
+.toolChip:hover {
+  border-color: var(--primary);
+  background: rgba(59, 130, 246, 0.11);
+}
+
+.toolChipImage {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--nav-hover-bg);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 7px;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.toolChipImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.toolChipInfo {
+  min-width: 0;
+  flex: 1;
+  line-height: 1.25;
+}
+
+.toolChipName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toolChipMeta {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 1px;
+}
+
+.toolChipCheck {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+}
+
+.resetBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--table-thead);
+  color: #475569;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.resetBtn:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+.inventoryModalItemActive {
+  border-color: var(--primary) !important;
+  background: rgba(59, 130, 246, 0.07);
+}
+
+.inventoryStats {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 20px 14px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.statItem strong {
+  color: var(--text-main);
+  font-weight: 700;
+  margin-right: 3px;
+}
+
+.statFree strong {
+  color: #22c55e;
+}
+
+.statRented strong {
+  color: #3b82f6;
+}
+
+.statBooked strong {
+  color: #d97706;
+}
+
+.statDivider {
+  width: 1px;
+  height: 12px;
+  background: var(--border);
+}

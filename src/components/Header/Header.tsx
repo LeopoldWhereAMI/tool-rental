@@ -1,18 +1,15 @@
 "use client";
 
-import styles from "./Header.module.css";
 import { ChevronDown } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
-import {} from "@/app/actions/auth";
 import { toast } from "sonner";
 import Image from "next/image";
 import Skeleton from "../ui/Skeleton/Skeleton";
 import Logo from "../ui/Logo/Logo";
 import dynamic from "next/dynamic";
-import { useAuth } from "@/providers/AuthProvider";
 import DropdownMenu from "./DropdownMenu/DropdownMenu";
-import { logoutAction } from "@/app/actions/serverAuth";
+import { useSession, signOut } from "next-auth/react";
+import styles from "./Header.module.css";
 
 const ThemeToggle = dynamic(() => import("../ui/ThemeToggle/ThemeToggle"), {
   ssr: false,
@@ -21,11 +18,52 @@ const ThemeToggle = dynamic(() => import("../ui/ThemeToggle/ThemeToggle"), {
 });
 
 export default function Header() {
-  const router = useRouter();
-  const { user, profile, loading: authLoading } = useAuth();
+  const { data: session, status } = useSession();
   const [loading, setLoading] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [profileName, setProfileName] = useState<string | null>(null);
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [avatarLoading, setAvatarLoading] = useState(true);
+
+  const user = session?.user;
+
+  const authLoading = status === "loading";
+
+  const loadProfile = async () => {
+    try {
+      const response = await fetch("/api/profile");
+
+      if (!response.ok) return;
+
+      const result = await response.json();
+
+      setAvatarUrl(result.data?.avatarUrl ?? null);
+      setProfileName(result.data?.fullName ?? null);
+    } catch (error) {
+      console.error("Ошибка загрузки профиля:", error);
+    } finally {
+      setProfileLoading(false);
+      setAvatarLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    loadProfile();
+
+    const handleAvatarUpdated = () => {
+      loadProfile();
+    };
+
+    window.addEventListener("avatar-updated", handleAvatarUpdated);
+
+    return () => {
+      window.removeEventListener("avatar-updated", handleAvatarUpdated);
+    };
+  }, [user?.id]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -43,25 +81,25 @@ export default function Header() {
 
   const handleLogout = async () => {
     setLoading(true);
+
     try {
-      const result = await logoutAction();
-      if (result.success) {
-        toast.success("Вы вышли из аккаунта");
-        router.push("/login");
-      }
+      await signOut({
+        callbackUrl: "/login",
+      });
+
+      toast.success("Вы вышли из аккаунта");
     } catch (error) {
-      console.error("Logout error:", error);
+      console.error(error);
       toast.error("Ошибка при выходе");
     } finally {
       setLoading(false);
     }
   };
 
-  const userName = profile?.full_name || user?.email;
+  const userName = profileName || user?.name || "Пользователь";
 
   const avatar =
-    profile?.avatar_url ||
-    "https://api.dicebear.com/9.x/croodles/png?seed=Aidan";
+    avatarUrl || "https://api.dicebear.com/9.x/croodles/png?seed=Aidan";
 
   return (
     <header className={styles.header}>
@@ -81,7 +119,7 @@ export default function Header() {
               onClick={() => setDropdownOpen(!dropdownOpen)}
               disabled={loading}
             >
-              {authLoading ? (
+              {authLoading || profileLoading ? (
                 <div className={styles.profileInfo}>
                   <Skeleton
                     width="110px"
@@ -98,14 +136,18 @@ export default function Header() {
                 </div>
               )}
               <div className={styles.avatarWrapper}>
-                <Image
-                  src={avatar}
-                  alt="Avatar"
-                  width={44}
-                  height={44}
-                  className={styles.avatarImage}
-                  unoptimized
-                />
+                {avatarLoading ? (
+                  <Skeleton width="44px" height="44px" borderRadius="50%" />
+                ) : (
+                  <Image
+                    src={avatar}
+                    alt="Avatar"
+                    width={44}
+                    height={44}
+                    className={styles.avatarImage}
+                    unoptimized
+                  />
+                )}
               </div>
               <ChevronDown
                 size={16}

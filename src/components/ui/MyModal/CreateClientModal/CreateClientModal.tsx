@@ -5,12 +5,13 @@ import { useForm } from "react-hook-form";
 import { X, Phone, Loader2 } from "lucide-react";
 import { findCompanyByInn } from "@/services/dadata";
 import { CreateClientInput } from "@/types";
-import { OrderInput } from "@/lib/validators/orderSchema";
 import { ClientTypeSelector } from "@/components/Form/ClientTypeSelector/ClientTypeSelector";
 import formStyles from "@/components/Form/AddOrderForm/AddOrderForm.module.css";
 import { IndividualFields } from "@/components/Form/AddOrderForm/components/OrderClientSection/IndividualFields";
 import { CompanyFields } from "@/components/Form/AddOrderForm/components/OrderClientSection/CompanyFields";
 import { upsertPassport } from "@/services/passportService";
+import { ClientFormInput, clientSchema } from "@/lib/validators/clientSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import styles from "./CreateClientModal.module.css";
 
 interface CreateClientModalProps {
@@ -35,7 +36,9 @@ export default function CreateClientModal({
     setValue,
     control,
     formState: { errors },
-  } = useForm<OrderInput>({
+  } = useForm<ClientFormInput>({
+    resolver: zodResolver(clientSchema),
+    mode: "onBlur",
     defaultValues: {
       client_type: "individual",
     },
@@ -76,7 +79,7 @@ export default function CreateClientModal({
 
   if (!isOpen) return null;
 
-  const onSubmit = async (data: OrderInput) => {
+  const onSubmit = async (data: ClientFormInput) => {
     setLoading(true);
 
     let submitData: CreateClientInput;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -8,7 +8,6 @@ import { OrderInput, orderSchema } from "@/lib/validators/orderSchema";
 import { upsertClient } from "@/services/clientsService";
 import { createOrder } from "@/services/orderService";
 import { OrderPrintBundle } from "@/types";
-import styles from "./AddOrderForm.module.css";
 import PrintArea from "@/components/Print/PrintArea/PrintArea";
 import { useInventoryAndClients } from "@/hooks/useInventoryAndClients";
 import { usePrintAfterSubmit } from "@/hooks/usePrintAfterSubmit";
@@ -25,11 +24,13 @@ import { onOrderCompleted } from "@/helpers/financeIntegration";
 import { PrintLoadingOverlay } from "@/components/ui/PrintLoadingOverlay/PrintLoadingOverlay";
 import { getClientDisplayName } from "@/helpers/clientUtils";
 import { upsertPassport } from "@/services/passportService";
+import styles from "./AddOrderForm.module.css";
+import PriceAdjustmentSection from "./components/PriceAdjustmentSection/PriceAdjustmentSection";
 
 export default function AddOrderForm() {
   const { inventory, inventoryMap, clients } = useInventoryAndClients();
   const [isPreparingPrint, setIsPreparingPrint] = useState(false);
-
+  const [createdOrderId, setCreatedOrderId] = useState<string | null>(null);
   const [lastOrderForPrint, setLastOrderForPrint] =
     useState<OrderPrintBundle | null>(null);
 
@@ -41,10 +42,9 @@ export default function AddOrderForm() {
     control,
     formState: { errors, isSubmitting },
     reset,
-    watch,
   } = useForm<OrderInput>({
     resolver: zodResolver(orderSchema),
-    mode: "onTouched",
+    mode: "onBlur",
     defaultValues: {
       items: [
         {
@@ -54,25 +54,27 @@ export default function AddOrderForm() {
         },
       ],
       security_deposit: undefined,
+      price_adjustment: undefined,
       client_type: "individual",
     },
   });
 
-  useEffect(() => {
-    const subscription = watch((value, { name }) => {
-      if (name && errors[name as keyof OrderInput]) {
-        clearErrors(name as keyof OrderInput);
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [watch, errors, clearErrors]);
-
   const printRef = useRef<HTMLDivElement>(null);
 
-  const { handlePrint } = usePrintAfterSubmit(printRef, () => {
+  const { handlePrint } = usePrintAfterSubmit(
+    printRef,
+    () => {
+      setLastOrderForPrint(null);
+      setIsPreparingPrint(false);
+    },
+    createdOrderId,
+  );
+
+  const handleCancelPrint = () => {
     setLastOrderForPrint(null);
     setIsPreparingPrint(false);
-  });
+    toast.info("Печать отменена");
+  };
 
   const watchedItems = useWatch({ control, name: "items" });
   const securityDeposit = useWatch({
@@ -84,6 +86,17 @@ export default function AddOrderForm() {
   const totalAmount = useMemo(() => {
     return calcOrderTotalFromItems(watchedItems, inventoryMap);
   }, [watchedItems, inventoryMap]);
+
+  const priceAdjustment = useWatch({
+    control,
+    name: "price_adjustment",
+    defaultValue: 0,
+  });
+
+  const finalTotal =
+    totalAmount +
+    (Number(securityDeposit) || 0) +
+    (Number(priceAdjustment) || 0);
 
   const handleFormSubmit = async (data: OrderInput) => {
     try {
@@ -101,7 +114,9 @@ export default function AddOrderForm() {
       }
       const orderPayload = prepareOrderPayload(client.id, data, inventoryMap);
       const savedOrder = await createOrder(orderPayload);
+      setCreatedOrderId(savedOrder.id);
       const finalInitialAmount = orderPayload.total_price;
+
       const clientDisplayName = getClientDisplayName(client);
       const financeDescription = `Предоплата по заказу #${savedOrder.order_number}: ${clientDisplayName}`;
 
@@ -110,6 +125,7 @@ export default function AddOrderForm() {
         finalInitialAmount,
         financeDescription,
       );
+
       const printData = mapOrderToPrintBundle(
         data,
         inventoryMap,
@@ -143,7 +159,7 @@ export default function AddOrderForm() {
             console.log("FORM ERRORS:", errors),
           )}
         >
-          <div className={styles.pageWrapper}>
+          <div className={`${styles.pageWrapper} ${styles.fadeIn}`}>
             {/* Заголовок */}
             <div className={styles.pageHeader}>
               <Breadcrumbs items={breadcrumbItems} />
@@ -189,7 +205,6 @@ export default function AddOrderForm() {
                   clearErrors={clearErrors}
                   setValue={setValue}
                   inventory={inventory}
-                  // totalAmount={totalAmount}
                 />
               </div>
             </div>
@@ -246,21 +261,32 @@ export default function AddOrderForm() {
                     <span className={styles.depositCurrency}>₽</span>
                   </div>
                 </div>
+                {/*  */}
+                <PriceAdjustmentSection
+                  setValue={setValue}
+                  totalAmount={totalAmount}
+                  key={createdOrderId ?? "new"}
+                />
 
                 {/* Итоговая сумма с учётом депозита */}
                 <div className={styles.totalRow}>
                   <div className={styles.totalLabel}>Итого к оплате</div>
                   <div className={styles.totalAmount}>
                     <div className={styles.totalAmountValue}>
-                      {totalAmount > 0
-                        ? `${totalAmount + (Number(securityDeposit) || 0)} ₽`
-                        : ""}
+                      {totalAmount > 0 ? `${finalTotal} ₽` : ""}
                     </div>
                     {totalAmount > 0 && (
                       <div className={styles.totalAmountNote}>
-                        {securityDeposit
-                          ? `аренда + залог ${securityDeposit} ₽`
-                          : "за весь период"}
+                        {[
+                          securityDeposit ? `залог ${securityDeposit} ₽` : null,
+                          priceAdjustment
+                            ? priceAdjustment > 0
+                              ? `наценка ${priceAdjustment} ₽`
+                              : `скидка ${Math.abs(priceAdjustment)} ₽`
+                            : null,
+                        ]
+                          .filter(Boolean)
+                          .join(", ") || "за весь период"}
                       </div>
                     )}
                   </div>
@@ -268,7 +294,7 @@ export default function AddOrderForm() {
 
                 <button
                   type="submit"
-                  disabled={isSubmitting || totalAmount <= 0}
+                  disabled={isSubmitting || finalTotal <= 0}
                   className={styles.submitBtn}
                   style={{ marginTop: "20px" }}
                 >
@@ -296,7 +322,10 @@ export default function AddOrderForm() {
           </div>
         </form>
       </div>
-      <PrintLoadingOverlay isVisible={isPreparingPrint} />
+      <PrintLoadingOverlay
+        isVisible={isPreparingPrint}
+        onCancel={handleCancelPrint}
+      />
       {lastOrderForPrint && (
         <PrintArea
           data={lastOrderForPrint}

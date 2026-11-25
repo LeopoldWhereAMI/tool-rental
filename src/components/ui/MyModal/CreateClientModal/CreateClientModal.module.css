@@ -12,10 +12,11 @@
     background-color 0.3s ease-out,
     backdrop-filter 0.3s ease-out;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   z-index: 2000;
-  padding: 20px;
+  padding: 40px 20px;
+  overflow-y: auto;
 }
 
 .modal {
@@ -24,7 +25,7 @@
   padding: 32px;
   border-radius: 16px;
   width: 100%;
-  max-width: 550px;
+  max-width: 700px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   position: relative;
   animation: modalAppear 0.3s cubic-bezier(0.16, 1, 0.3, 1);

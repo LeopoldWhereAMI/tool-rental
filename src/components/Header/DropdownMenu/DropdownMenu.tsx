@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styles from "./DropdownMenu.module.css";
 import { LogOut, User } from "lucide-react";
+import { toast } from "sonner";
 
 type DropdownMenuProps = {
   onClose: () => void;
@@ -15,6 +16,20 @@ export default function DropdownMenu({
   handleLogout,
   loading,
 }: DropdownMenuProps) {
+  const handleLogoutWithConfirm = () => {
+    toast.warning("Вы уверены, что хотите выйти?", {
+      action: {
+        label: "Да",
+        onClick: () => handleLogout(),
+      },
+      cancel: {
+        label: "Нет",
+        onClick: () => {},
+      },
+      duration: Infinity,
+      position: "top-center",
+    });
+  };
   return (
     <ul className={styles.dropdown}>
       <li className={styles.dropdownItem}>
@@ -30,7 +45,7 @@ export default function DropdownMenu({
       <li className={styles.dropdownItem}>
         <button
           className={styles.dropdownItemLogout}
-          onClick={handleLogout}
+          onClick={handleLogoutWithConfirm}
           disabled={loading}
         >
           <LogOut size={16} />

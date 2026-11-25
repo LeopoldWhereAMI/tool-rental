@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import styles from "./RentalReceiptEditor.module.css";
 import RentalReceiptPrint from "../RentalReceiptPrint/RentalReceiptPrint";
@@ -13,12 +13,28 @@ type Item = {
 };
 
 export default function RentalReceiptEditor() {
+  const [showPreview, setShowPreview] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [organizationName, setOrganizationName] = useState("Мастерская №1");
   const [items, setItems] = useState<Item[]>([
     { name: "", quantity: 1, price: 0 },
   ]);
 
   const printRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 640);
+    };
+
+    checkMobile();
+
+    window.addEventListener("resize", checkMobile);
+
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+    };
+  }, []);
 
   const addItem = () => {
     setItems([...items, { name: "", quantity: 1, price: 0 }]);
@@ -49,6 +65,9 @@ export default function RentalReceiptEditor() {
 
   const calculateTotal = (item: Item) => item.quantity * item.price;
   const grandTotal = items.reduce((sum, item) => sum + calculateTotal(item), 0);
+  const hasItems = items.some(
+    (item) => item.name.trim() !== "" && item.price > 0,
+  );
 
   return (
     <div className={styles.card}>
@@ -80,7 +99,7 @@ export default function RentalReceiptEditor() {
               <tbody>
                 {items.map((item, index) => (
                   <tr key={index}>
-                    <td>
+                    <td data-label="Наименование">
                       <input
                         className={styles.tableInput}
                         value={item.name}
@@ -90,10 +109,10 @@ export default function RentalReceiptEditor() {
                         placeholder="Описание услуги"
                       />
                     </td>
-                    <td className={styles.colQty}>
+                    <td className={styles.colQty} data-label="Количество">
                       <input
                         type="number"
-                        className={`${styles.tableInput} ${styles.colQty}`}
+                        className={`${styles.tableInput} `}
                         value={item.quantity}
                         min="1"
                         onChange={(e) =>
@@ -101,10 +120,10 @@ export default function RentalReceiptEditor() {
                         }
                       />
                     </td>
-                    <td className={styles.colPrice}>
+                    <td className={styles.colPrice} data-label="Цена">
                       <input
                         type="number"
-                        className={`${styles.tableInput} ${styles.colPrice}`}
+                        className={`${styles.tableInput} `}
                         value={item.price}
                         min="0"
                         onChange={(e) =>
@@ -112,10 +131,10 @@ export default function RentalReceiptEditor() {
                         }
                       />
                     </td>
-                    <td className={styles.colTotal}>
+                    <td className={styles.colTotal} data-label="Сумма">
                       {calculateTotal(item).toLocaleString()} ₽
                     </td>
-                    <td className={styles.colAction}>
+                    <td className={styles.colAction} data-label="">
                       <button
                         type="button"
                         onClick={() => deleteItem(index)}
@@ -144,37 +163,48 @@ export default function RentalReceiptEditor() {
               borderTop: "1px solid var(--border)",
             }}
           >
-            <button onClick={handlePrint} className={styles.printBtn}>
+            <button
+              onClick={handlePrint}
+              className={styles.printBtn}
+              disabled={!hasItems}
+              title={
+                !hasItems
+                  ? "Добавьте хотя бы одну услугу с названием и ценой"
+                  : "Распечатать акт"
+              }
+            >
               <PrinterIcon size={18} />
               Распечатать акт ({grandTotal.toLocaleString()} ₽)
             </button>
           </div>
         </div>
 
-        {/* Скрытый блок для печати */}
-        {/* <div className={styles.printWrapper}>
-          <div ref={printRef}>
-            <RentalReceiptPrint
-              organizationName={organizationName}
-              items={items}
-              date={new Date().toLocaleDateString("ru-RU")}
-            />
-          </div>
-        </div> */}
+        {!isMobile && (
+          <button
+            type="button"
+            onClick={() => setShowPreview((prev) => !prev)}
+            className={styles.previewToggle}
+          >
+            {showPreview ? "Скрыть предпросмотр" : "Показать предпросмотр"}
+          </button>
+        )}
 
         {/* Предпросмотр чека — всегда виден */}
-        <div className={styles.previewSection}>
-          <h3 className={styles.previewTitle}>Предпросмотр товарного чека</h3>
-          <div className={styles.previewContainer}>
-            <div ref={printRef}>
-              <RentalReceiptPrint
-                organizationName={organizationName}
-                items={items}
-                date={new Date().toLocaleDateString("ru-RU")}
-              />
+        {showPreview && !isMobile && (
+          <div className={styles.previewSection}>
+            <h3 className={styles.previewTitle}>Предпросмотр товарного чека</h3>
+
+            <div className={styles.previewContainer}>
+              <div ref={printRef}>
+                <RentalReceiptPrint
+                  organizationName={organizationName}
+                  items={items}
+                  date={new Date().toLocaleDateString("ru-RU")}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

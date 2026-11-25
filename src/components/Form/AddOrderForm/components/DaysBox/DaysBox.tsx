@@ -32,7 +32,7 @@ export default function DaysBox({ index, control, setValue }: Props) {
 
   return (
     <div className={styles.daysBox}>
-      <span className={styles.label}>дней</span>
+      <span className={styles.label}>Дней</span>
 
       <input
         type="number"

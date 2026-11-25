@@ -1,0 +1,103 @@
+"use client";
+
+import { useParams } from "next/navigation";
+import ErrorBlock from "@/components/ui/ErrorBlock/ErrorBlock";
+import ClientSidebar from "./components/ClientSidebar";
+import { AlertCircle, AlertTriangle } from "lucide-react";
+import ActiveOrders from "./components/ActiveOrders";
+import OrdersHistory from "./components/OrdersHistory";
+import { useClientDetails } from "@/hooks/useClientDetails";
+import PageContainer from "@/components/PageContainer/PageContainer";
+import { useMemo } from "react";
+import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
+import { getClientDisplayName } from "@/helpers/clientUtils";
+import styles from "./page.module.css";
+import Spinner from "@/components/ui/Spinner/Spinner";
+
+export default function ClientDetailsPage() {
+  const { id } = useParams();
+  const { client, loading, insights, activeOrders, historyOrders } =
+    useClientDetails(id as string);
+
+  const isBlacklisted = client?.is_blacklisted;
+
+  const breadcrumbItems = useMemo(
+    () => [
+      { label: "Клиенты", href: "/clients" },
+      {
+        label: (
+          <span className={styles.breadcrumbLabelWithIcon}>
+            {isBlacklisted && (
+              <span className={styles.breadcrumbBlacklistDot}>
+                <AlertCircle size={12} strokeWidth={3} />
+              </span>
+            )}
+            {client ? getClientDisplayName(client) : "Загрузка..."}
+          </span>
+        ),
+      },
+    ],
+    [client, isBlacklisted],
+  );
+
+  if (loading) {
+    return (
+      <PageContainer>
+        <div className={styles.loading}>
+          <Spinner size={22} />
+          <span>Загрузка клиента…</span>
+        </div>
+      </PageContainer>
+    );
+  }
+
+  if (!client)
+    return <ErrorBlock message="Не удалось загрузить данные клиента" />;
+
+  return (
+    <PageContainer>
+      <div className={`${styles.wrapper} ${styles.fadeIn}`}>
+        <div className={styles.headerWrapper}>
+          <Breadcrumbs
+            items={breadcrumbItems}
+            className={styles.breadcrumbLabelWithIcon}
+          />
+        </div>
+
+        <div className={styles.container}>
+          <div className={styles.mainContent}>
+            {isBlacklisted && (
+              <div className={styles.blacklistBanner}>
+                <div className={styles.blacklistIconWrapper}>
+                  <AlertTriangle size={20} />
+                </div>
+                <div>
+                  <h4 className={styles.blacklistBannerTitle}>
+                    Аккаунт заблокирован
+                  </h4>
+                  <p className={styles.blacklistBannerText}>
+                    Этот клиент находится в чёрном списке. Смотри причину
+                    блокировки в боковой панели.
+                  </p>
+                </div>
+              </div>
+            )}
+            <ActiveOrders orders={activeOrders} />
+            <OrdersHistory
+              orders={historyOrders}
+              clientName={getClientDisplayName(client)}
+            />
+          </div>
+
+          <div className={styles.sidebarWrapper}>
+            <ClientSidebar
+              client={client}
+              totalSpent={insights.totalSpent || 0}
+              insights={insights}
+            />
+          </div>
+        </div>
+      </div>
+    </PageContainer>
+  );
+}

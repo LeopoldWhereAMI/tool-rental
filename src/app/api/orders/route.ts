@@ -1,0 +1,179 @@
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { auth } from "../../../../auth";
+import { formatOrder } from "@/lib/formatters/orderFormatter";
+import { CreateOrderParams } from "@/types";
+
+export async function GET() {
+  try {
+    const session = await auth();
+
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Unauthorized",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
+
+    const orders = await prisma.order.findMany({
+      where: {
+        userId: session.user.id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        totalPrice: true,
+        priceAdjustment: true,
+        startDate: true,
+        endDate: true,
+        orderNumber: true,
+        status: true,
+
+        client: {
+          select: {
+            id: true,
+            lastName: true,
+            firstName: true,
+            middleName: true,
+            phone: true,
+            clientType: true,
+            companyName: true,
+          },
+        },
+
+        items: {
+          select: {
+            id: true,
+            priceAtTime: true,
+            startDate: true,
+            endDate: true,
+
+            isCustom: true,
+            customName: true,
+
+            inventory: {
+              select: {
+                id: true,
+                name: true,
+                serialNumber: true,
+                imageUrl: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: orders.map(formatOrder),
+    });
+  } catch (error) {
+    console.error("Ошибка загрузки заказов:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Ошибка загрузки заказов",
+      },
+      {
+        status: 500,
+      },
+    );
+  }
+}
+
+export async function POST(request: Request) {
+  try {
+    const session = await auth();
+
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Unauthorized",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
+
+    const body = (await request.json()) as CreateOrderParams;
+
+    const lastOrder = await prisma.order.findFirst({
+      where: {
+        userId: session.user.id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        orderNumber: true,
+      },
+    });
+
+    const nextOrderNumber = lastOrder ? Number(lastOrder.orderNumber) + 1 : 1;
+
+    const order = await prisma.order.create({
+      data: {
+        userId: session.user.id,
+        clientId: body.client_id,
+        totalPrice: body.total_price,
+        securityDeposit: body.security_deposit,
+        priceAdjustment: body.price_adjustment ?? null,
+        status: "active",
+        orderNumber: String(nextOrderNumber),
+        startDate: new Date(body.items[0].start_date),
+        endDate: new Date(body.items[0].end_date),
+
+        items: {
+          create: body.items.map((item) => ({
+            inventoryId: item.is_custom ? null : item.id,
+
+            userId: session.user.id,
+
+            startDate: new Date(item.start_date),
+            endDate: new Date(item.end_date),
+
+            priceAtTime: item.daily_price,
+
+            totalPrice: item.total_price ?? 0,
+
+            isCustom: item.is_custom ?? false,
+            customName: item.custom_name ?? null,
+
+            itemStatus: "active",
+          })),
+        },
+      },
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        id: order.id,
+        order_number: order.orderNumber,
+      },
+    });
+  } catch (error) {
+    console.error("Ошибка создания заказа:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Ошибка создания заказа",
+      },
+      {
+        status: 500,
+      },
+    );
+  }
+}

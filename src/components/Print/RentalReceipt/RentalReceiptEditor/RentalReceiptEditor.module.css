@@ -270,6 +270,12 @@
   transform: translateY(0);
 }
 
+.printBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
 /* Скрываем превью на экране */
 .printWrapper {
   display: none;
@@ -290,6 +296,17 @@
 }
 
 /* ===================== PREVIEW ===================== */
+.previewToggle {
+  margin-top: 20px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-main);
+  cursor: pointer;
+  font-size: 14px;
+}
+
 .previewSection {
   margin-top: 32px;
   padding-top: 24px;
@@ -321,18 +338,6 @@
   overflow: hidden;
 }
 
-/* Адаптив предпросмотра */
-@media (max-width: 640px) {
-  .previewSection {
-    margin-top: 24px;
-    padding-top: 20px;
-  }
-
-  .previewContainer {
-    padding: 16px;
-  }
-}
-
 @media print {
   .previewSection {
     display: none !important; /* скрываем предпросмотр при печати */
@@ -345,54 +350,215 @@
 }
 
 /* Адаптивность для мобильных */
-@media (max-width: 640px) {
-  .formSection {
-    padding: 16px;
+
+/* ================= MOBILE ADAPTIVE ================= */
+
+@media (max-width: 768px) {
+  .wrapper {
+    gap: 16px;
   }
 
-  .itemsTable thead {
-    display: none; /* Скрываем заголовки на очень маленьких экранах, если нужно */
+  .card {
+    padding: 12px;
+    border-radius: 10px;
   }
 
-  .itemsTable,
-  .itemsTable tbody,
-  .itemsTable tr,
-  .itemsTable td {
-    display: block;
+  .cardTitle {
+    font-size: 16px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+  }
+
+  .formHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .inputGroup {
+    max-width: 100%;
     width: 100%;
   }
 
+  .inputGroup input {
+    width: 100%;
+    padding: 12px;
+  }
+
+  /* ===== TABLE MOBILE ===== */
+
+  .itemsTable {
+    display: block;
+    border: none;
+    background: transparent;
+    margin-top: 16px;
+  }
+
+  .itemsTable thead {
+    display: none;
+  }
+
+  .itemsTable tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
   .itemsTable tr {
-    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 12px;
     background: var(--surface);
   }
 
   .itemsTable td {
-    text-align: right;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--filter-hover-bg);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border: none;
+    padding: 0;
+    width: 100%;
   }
 
   .itemsTable td::before {
     content: attr(data-label);
-    font-weight: 600;
     color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .tableInput {
+    width: 60%;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-align: right;
+  }
+
+  .itemsTable td:first-child .tableInput {
     text-align: left;
   }
 
-  .col-action {
-    justify-content: flex-end;
+  .itemsTable td.colTotal {
+    justify-content: space-between;
+    text-align: right;
+    padding-right: 0;
   }
 
-  .table-container-mobile {
+  .itemsTable .colQty,
+  .itemsTable .colPrice,
+  .itemsTable .colTotal,
+  .itemsTable .colAction {
+    width: 100%;
+    text-align: right;
+  }
+
+  .btnIcon {
+    margin-left: auto;
+  }
+
+  .btnAddRow {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .printBtn {
+    width: 100%;
+    font-size: 13px;
+    padding: 12px;
+  }
+
+  /* ===== PREVIEW ===== */
+
+  .previewSection {
+    margin-top: 20px;
+    padding-top: 16px;
+  }
+
+  .previewContainer {
+    padding: 12px;
+    border-radius: 10px;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+  }
+
+  .previewContainer > div {
+    min-width: 650px;
+    transform-origin: top left;
+  }
+}
+
+/* маленькие телефоны */
+@media (max-width: 400px) {
+  .wrapper {
+    gap: 12px;
+  }
+
+  .card {
+    padding: 10px;
+  }
+
+  .inputGroup label {
+    font-size: 13px;
+  }
+
+  .inputGroup input {
+    font-size: 13px;
+  }
+
+  .tableInput {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .btnAddRow {
+    font-size: 13px;
+    padding: 9px;
+  }
+
+  .printBtn {
+    font-size: 12px;
+  }
+
+  .previewContainer {
+    padding: 8px;
+  }
+}
+
+/* совсем маленькие 320-360px */
+@media (max-width: 360px) {
+  .tableInput {
+    width: 55%;
+  }
+
+  .itemsTable tr {
+    padding: 10px;
+  }
+
+  .btnIcon {
+    padding: 4px;
+  }
+
+  .previewTitle {
+    font-size: 14px;
+  }
+}
+
+/* PRINT */
+@media print {
+  .previewSection {
+    display: none !important;
+  }
+
+  .printWrapper {
+    display: block !important;
+  }
+
+  body {
+    background: white;
   }
 }
 

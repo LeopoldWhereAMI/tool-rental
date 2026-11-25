@@ -1,3 +1,9 @@
+.paginationLoading {
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
 .pageWrapper {
   display: grid;
   grid-template-columns: 1fr 320px;
@@ -139,7 +145,6 @@
   padding-right: 36px;
 }
 
-/* Input with icon */
 .inputWithIcon {
   position: relative;
 }
@@ -229,7 +234,6 @@
   font-size: 12px;
 }
 
-/* Бейдж клиента в черном списке */
 .foundBadge.blacklisted {
   background-color: #fef2f2;
   border-color: #fecaca;
@@ -241,19 +245,16 @@
   border-color: #ef4444 !important;
 }
 
-/* Метка (ЧС) */
 .blacklistLabel {
   color: #ef4444;
   font-weight: 700;
   margin-left: 4px;
 }
 
-/* Иконка для заблокированного пользователя */
 .errorIcon {
   color: #dc2626;
 }
 
-/* Опционально: общая плашка под инпутом, если номер совпал на 100% */
 .warningBanner {
   background-color: #dc2626;
   color: white;
@@ -518,246 +519,279 @@
   cursor: not-allowed;
 }
 
-/* toggle */
-.modeToggle {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-  padding: 4px;
-  background: var(--table-thead);
-  border-radius: 10px;
-  border: 1px solid var(--border);
-}
+.inventoryModalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
 
-.modeBtn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: var(--backdrop-color);
+  backdrop-filter: blur(var(--backdrop-blur));
+  animation: modalOverlayIn 0.2s ease-out;
+}
+
+.inventoryModal {
+  width: min(760px, 100%);
+  max-height: 80vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.22),
+    0 4px 12px rgba(0, 0, 0, 0.08);
+
+  overflow: hidden;
+  animation: modalIn 0.2s ease-out;
+}
+
+@keyframes modalOverlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.inventoryModalOverlay.closing {
+  animation: modalOverlayOut 0.2s ease-in forwards;
+}
+
+.inventoryModal.closing {
+  animation: modalOut 0.2s ease-in forwards;
+}
+
+@keyframes modalOverlayOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes modalOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+
+.inventoryModalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.inventoryModalHeader h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.inventoryModalClose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   background: transparent;
-  font-size: 13px;
-  font-weight: 500;
   color: var(--text-muted);
   cursor: pointer;
-  transition: all 0.2s;
-  flex: 1;
-  justify-content: center;
 }
 
-.modeBtn:hover {
-  color: var(--text-secondary);
-  background: rgba(59, 130, 246, 0.06);
+.inventoryModalClose:hover {
+  background: var(--nav-hover-bg);
+  color: var(--text);
 }
 
-.modeBtnActive {
-  background: var(--surface);
-  color: var(--primary);
-  font-weight: 600;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.modeBtn svg {
-  width: 16px;
-  height: 16px;
-}
-
-/* ============================================
-   СТИЛИ ДЛЯ КАСТОМНЫХ ПОЛЕЙ
-   ============================================ */
-
-.customInput {
-  width: 100%;
-  background: var(--table-thead);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 11px 14px;
-  font-size: 14px;
-  color: var(--text-main);
-  outline: none;
-  transition:
-    border-color 0.15s,
-    box-shadow 0.15s;
-  box-sizing: border-box;
-  font-family: inherit;
-}
-
-.customInput:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
-}
-
-.customInput::placeholder {
-  color: var(--text-muted);
-  font-weight: 400;
-}
-
-.priceInputWrapper {
+.inventorySearch {
   display: flex;
   align-items: center;
-  gap: 8px;
-}
+  gap: 10px;
 
-.priceInputWrapper input {
-  flex: 1;
-}
+  margin: 16px 20px;
+  padding: 10px 12px;
 
-.priceInputWrapper span {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  background: var(--card-color);
   color: var(--text-muted);
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.inventorySearch:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(80, 72, 229, 0.12);
+}
+
+.inventorySearch input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.inventoryModalList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 0 20px 20px;
+
+  height: clamp(400px, 55vh, 700px);
+
+  overflow-y: auto;
+}
+
+.inventoryModalItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  width: 100%;
+  padding: 10px;
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  background: var(--card-color);
+
+  text-align: left;
+  cursor: pointer;
+
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.inventoryModalItem:hover {
+  border-color: var(--primary);
+  background: var(--card-hover-bg);
+  box-shadow: 0 4px 14px var(--card-hover-shadow);
+}
+
+.inventoryModalImage {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+  border-radius: 8px;
+
+  background: var(--nav-hover-bg);
+  border: 1px solid var(--border);
+
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.inventoryModalImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.inventoryModalInfo {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inventoryModalInfo strong {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.inventoryModalInfo span {
+  color: var(--text-secondary);
   font-size: 13px;
-  white-space: nowrap;
-  font-weight: 500;
 }
 
-@media (max-width: 600px) {
-  .modeToggle {
-    gap: 4px;
-    padding: 3px;
-  }
-
-  .modeBtn {
-    padding: 6px 10px;
-    font-size: 12px;
-    gap: 4px;
-  }
-
-  .modeBtn svg {
-    width: 14px;
-    height: 14px;
-  }
+.inventoryModalInfo small {
+  color: #d97706;
+  font-size: 12px;
 }
 
-@media (max-width: 900px) {
-  .itemGrid,
-  .itemGridCustom {
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
+.inventoryEmpty {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
   }
 
-  /* Инструмент — на всю ширину */
-  .itemGrid > *:first-child {
-    grid-column: 1 / -1;
-  }
-
-  /* Кастомные: название + цена рядом, на всю ширину */
-  .itemGridCustom > *:nth-child(1),
-  .itemGridCustom > *:nth-child(2) {
-    grid-column: auto;
-  }
-  .itemGridCustom > *:nth-child(1) {
-    grid-column: 1 / 2;
-  }
-  .itemGridCustom > *:nth-child(2) {
-    grid-column: 2 / 4;
-  }
-
-  /* Даты в одну строку */
-  .itemGrid > *:nth-child(3),
-  .itemGrid > *:nth-child(4) {
-    grid-column: auto;
-  }
-
-  .removeBtn {
-    justify-self: end;
-    margin-top: 0;
+  to {
+    opacity: 1;
   }
 }
 
-/* ============================================
-   АДАПТИВ — МОБИЛКА (≤600px)
-   ============================================ */
-@media (max-width: 600px) {
-  .itemGrid,
-  .itemGridCustom {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
+.fadeIn {
+  animation: pageFadeIn 0.35s ease-out both;
+}
 
-  .itemGrid > *,
-  .itemGridCustom > * {
-    width: 100%;
-  }
-
-  .modeToggle {
-    order: -1;
-    margin-bottom: 8px;
-  }
-
-  .removeBtn {
-    align-self: flex-end;
-    margin-top: 4px;
+@media (prefers-reduced-motion: reduce) {
+  .fadeIn {
+    animation: none;
   }
 }
-/*  */
 
 @media print {
   .noPrint {
     display: none;
   }
-}
-
-.itemRow {
-  margin-bottom: 10px;
-}
-
-.itemGridSingleCol {
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
-}
-
-.itemGridSingleCol > div:first-child {
-  flex: 1;
-}
-
-.itemRow {
-  padding-bottom: 16px;
-  margin-bottom: 16px;
-  border-bottom: 1px solid var(--border);
-}
-
-.itemRow:last-of-type {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-.itemGrid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 56px 38px;
-  gap: 10px;
-  align-items: flex-end;
-}
-
-.itemGridCustom {
-  grid-template-columns: 1.5fr 1fr 1fr 1fr 56px 38px;
-}
-
-.removeBtn {
-  width: 38px;
-  height: 42px;
-  margin-left: 18px;
-  background: var(--table-thead);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  color: #475569;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    background-color 0.15s,
-    color 0.15s,
-    border-color 0.15s;
-  flex-shrink: 0;
-}
-
-.removeBtn:hover {
-  background-color: rgba(239, 68, 68, 0.1);
-  border-color: rgba(239, 68, 68, 0.3);
-  color: #ef4444;
 }
 
 .passportGrid {
@@ -841,7 +875,6 @@
   pointer-events: none;
 }
 
-/* Обеспечительный платёж в OrderFinance */
 .depositInfo {
   display: flex;
   justify-content: space-between;
@@ -872,30 +905,6 @@
   color: #f59e0b;
 }
 
-.itemGrid > div {
-  position: relative;
-  padding-bottom: 20px;
-}
-
-.itemGrid [class*="errorText"],
-.itemGrid [class*="error"] {
-  position: absolute;
-  bottom: 2px;
-  left: 0;
-  white-space: nowrap;
-  font-size: 11px;
-}
-
-.itemGrid .removeBtn {
-  padding-bottom: 20px;
-}
-
-.itemGrid .removeBtn {
-  height: 42px;
-  padding: 0;
-  margin-bottom: 20px;
-}
-
 .fieldsContainer {
   position: relative;
   transition: all 0.3s ease;
@@ -908,7 +917,7 @@
   justify-content: center;
   padding: 40px 0;
   gap: 12px;
-  color: var(--text-secondary); /* или твой цвет текста */
+  color: var(--text-secondary);
   animation: fadeIn 0.2s ease-out;
 }
 
@@ -919,27 +928,18 @@
   transform: translateY(-50%);
   pointer-events: none;
   z-index: 5;
-  color: var(--primary-color); /* чтобы спиннер был в цвет бренда */
+  color: var(--primary-color);
 }
 
-/* Специальное положение для textarea */
 .spinnerTop {
   top: 12px;
-  transform: none; /* Убираем центрирование по вертикали */
+  transform: none;
 }
 
 .textarea {
   min-height: 80px;
-  padding-right: 36px; /* Чтобы текст не заходил под спиннер */
+  padding-right: 36px;
   resize: vertical;
-}
-
-.disabledInput:disabled {
-  background: var(--nav-hover-bg);
-  border-color: var(--border);
-  color: var(--text-muted);
-  cursor: not-allowed;
-  opacity: 0.6;
 }
 
 @keyframes fadeIn {
@@ -951,7 +951,6 @@
   }
 }
 
-/* adaptive */
 @media (max-width: 900px) {
   .pageWrapper {
     grid-template-columns: 1fr;
@@ -960,7 +959,6 @@
 
   .sidebar {
     position: static;
-    /* order: -1; */
   }
 
   .nameGrid {
@@ -978,22 +976,6 @@
   }
 }
 
-@media (max-width: 600px) {
-  .itemGrid {
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-
-  .itemGrid > div:first-child {
-    grid-column: 1 / -1;
-  }
-
-  .removeBtn {
-    margin-bottom: 10px;
-    height: 40px;
-  }
-}
-
 @media (max-width: 400px) {
   .pageWrapper {
     padding: 12px;
@@ -1005,24 +987,6 @@
 
   .pageTitle {
     font-size: 22px;
-  }
-
-  .itemGrid {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 4px;
-  }
-
-  .itemGrid > div {
-    padding-bottom: 16px;
-  }
-
-  .itemRowControls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: -8px;
   }
 
   .totalAmountValue {

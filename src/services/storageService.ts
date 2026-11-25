@@ -8,6 +8,10 @@ export const uploadInventoryImage = async (file: File) => {
       body: formData,
     });
 
+    if (!response.ok) {
+      throw new Error("Ошибка загрузки изображения");
+    }
+
     const data = await response.json();
 
     if (!data.success) throw new Error(data.error);
@@ -21,16 +25,19 @@ export const uploadInventoryImage = async (file: File) => {
   }
 };
 
-export const deleteImageByUrl = async (url: string | null) => {
-  if (!url) return;
-
+export const deleteInventoryImage = async (id: string) => {
   try {
-    await fetch("/api/delete-image", {
+    const response = await fetch(`/api/inventory/${id}/image`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ path: url }),
     });
+
+    if (!response.ok) {
+      throw new Error("Ошибка удаления изображения");
+    }
+
+    return true;
   } catch (error) {
-    console.error("Ошибка при удалении файла из Storage:", error);
+    console.error("Ошибка удаления изображения:", error);
+    throw error;
   }
 };

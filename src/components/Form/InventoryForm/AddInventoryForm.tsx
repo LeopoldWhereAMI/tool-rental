@@ -1,6 +1,5 @@
 "use client";
 
-import styles from "./InventoryForm.module.css";
 import FormField from "../FormField/FormField";
 import { useForm } from "react-hook-form";
 import {
@@ -20,6 +19,7 @@ import {
 import useInventoryForm from "@/hooks/useInventoryForm";
 import InputWithIcon from "../InputWithIcon/InputWithIcon";
 import { InventoryFormValues, InventoryItemBase } from "./inventoryFormTypes";
+import styles from "./InventoryForm.module.css";
 
 type InventoryFormProps = {
   defaultValues: InventoryFormValues;

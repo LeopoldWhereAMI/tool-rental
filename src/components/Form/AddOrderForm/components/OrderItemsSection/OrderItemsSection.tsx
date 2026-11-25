@@ -50,7 +50,6 @@ export default function OrderItemsSection({
         <OrderItemRow
           key={field.id}
           index={index}
-          fieldId={field.id}
           control={control}
           register={register}
           errors={errors}
@@ -68,11 +67,16 @@ export default function OrderItemsSection({
           isAllToolsSelected && watchedItems?.every((i) => i.inventory_id)
         }
         onClick={() =>
-          append({
-            inventory_id: "",
-            start_date: new Date().toISOString().split("T")[0],
-            end_date: "",
-          })
+          append(
+            {
+              inventory_id: "",
+              start_date: new Date().toISOString().split("T")[0],
+              end_date: "",
+            },
+            {
+              shouldFocus: false,
+            },
+          )
         }
         className={styles.addToolBtn}
       >

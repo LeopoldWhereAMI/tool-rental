@@ -34,9 +34,63 @@
   box-sizing: border-box;
 }
 
-/* =========================
-   CALENDAR FULL WIDTH FIX
-========================= */
+/*  */
+/* Забронированные дни */
+.container :global(.rdp-day).bookedDay {
+  background: rgba(239, 68, 68, 0.14);
+  border-radius: 14px;
+  opacity: 1;
+}
+
+.container :global(.rdp-day).bookedDay .rdp-day_button {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+
+  background: rgba(239, 68, 68, 0.18);
+  color: #ff6b6b;
+  font-weight: 700;
+
+  border: 1px solid rgba(239, 68, 68, 0.45);
+
+  box-shadow:
+    inset 0 0 0 1px rgba(239, 68, 68, 0.08),
+    0 2px 8px rgba(239, 68, 68, 0.12);
+}
+
+/* Небольшой маркер занятости */
+.container :global(.rdp-day).bookedDay .rdp-day_button::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+
+  background: #ef4444;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+}
+
+/* Hover забронированного дня */
+.container :global(.rdp-day).bookedDay .rdp-day_button:hover {
+  background: rgba(239, 68, 68, 0.28);
+  border-color: rgba(239, 68, 68, 0.65);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+/* Чтобы забронированный день не выглядел как disabled-серый */
+.container :global(.rdp-day).bookedDay {
+  color: #ff6b6b;
+}
+
+.container :global(.rdp-day).bookedDay :global(.rdp-day_button) {
+  opacity: 1;
+}
+/*  */
 
 .container :global(.rdp) {
   --rdp-accent-color: var(--primary);
@@ -50,7 +104,6 @@
   color: var(--text-main);
 }
 
-/* Обёртка месяцев */
 .container :global(.rdp-months) {
   width: 100%;
   max-width: 100%;
@@ -60,7 +113,6 @@
   flex-shrink: 1;
 }
 
-/* Сам месяц */
 .container :global(.rdp-month) {
   width: 100%;
   max-width: 100%;
@@ -71,7 +123,6 @@
   border-bottom: 1px solid var(--border);
 }
 
-/* Таблица календаря */
 .container :global(.rdp-table) {
   width: 100% !important;
   max-width: 100% !important;
@@ -80,7 +131,6 @@
   border-spacing: 6px;
 }
 
-/* Заголовок месяца */
 .container :global(.rdp-caption) {
   margin-bottom: 20px;
   padding: 0 8px;
@@ -96,12 +146,10 @@
   font-size: 16px;
 }
 
-/* Навигация */
 .container :global(.rdp-nav) {
   gap: 8px;
 }
 
-/* Кнопки навигации */
 .container :global(.rdp-button_previous),
 .container :global(.rdp-button_next) {
   width: 36px;
@@ -129,13 +177,11 @@
   background: rgba(80, 72, 229, 0.18);
 }
 
-/* Все недели вместе */
 .container :global(.rdp-weeks) {
   width: 100% !important;
   max-width: 100% !important;
 }
 
-/* Недели */
 .container :global(.rdp-weekdays) {
   width: 100% !important;
   display: grid !important;
@@ -144,7 +190,6 @@
   color: var(--text-muted);
 }
 
-/* Дни недели */
 .container :global(.rdp-weekday) {
   text-align: center;
   padding-bottom: 14px;
@@ -154,7 +199,6 @@
   letter-spacing: 0.05em;
 }
 
-/* Ряд дней */
 .container :global(.rdp-week) {
   display: grid !important;
   grid-template-columns: repeat(7, 1fr) !important;
@@ -162,7 +206,6 @@
   margin-top: 6px;
 }
 
-/* День */
 .container :global(.rdp-day) {
   width: 100%;
   aspect-ratio: 1 / 1;
@@ -173,14 +216,12 @@
   transition: all 0.18s ease;
 }
 
-/* Сегодняшний день */
 .container :global(.rdp-today) :global(.rdp-day_button) {
   position: relative;
   font-weight: 700;
   color: var(--primary);
 }
 
-/* Точка под сегодняшним числом */
 .container :global(.rdp-today) :global(.rdp-day_button)::after {
   content: "";
   position: absolute;
@@ -193,12 +234,10 @@
   background: var(--primary);
 }
 
-/* При выборе диапазона — убираем точку, чтобы не мешала */
 .container :global(.rdp-selected) :global(.rdp-day_button)::after {
   display: none;
 }
 
-/* Кнопка дня */
 .container :global(.rdp-day_button) {
   width: 100%;
   height: 100%;
@@ -219,10 +258,6 @@
   color: var(--text-muted);
   opacity: 0.5;
 }
-
-/* =========================
-   Selected range block
-========================= */
 
 .selectedRange {
   margin-top: 24px;
@@ -245,10 +280,6 @@
   font-weight: 600;
   color: var(--text-secondary);
 }
-
-/* =========================
-   Buttons
-========================= */
 
 .bookButton {
   margin-top: 16px;
@@ -279,10 +310,6 @@
   transform: none;
 }
 
-/* =========================
-   Error
-========================= */
-
 .error {
   margin-top: 16px;
   padding: 14px 16px;
@@ -293,10 +320,6 @@
   font-size: 14px;
   font-weight: 500;
 }
-
-/* =========================
-   Select
-========================= */
 
 .select {
   width: 100%;
@@ -323,10 +346,6 @@
   color: var(--text-muted);
 }
 
-/* =========================
-   Bookings
-========================= */
-
 .bookingsSection {
   margin-top: 28px;
 }
@@ -337,10 +356,6 @@
   font-weight: 700;
   color: var(--text-secondary);
 }
-
-/* =========================
-   Booking Item — Grid Layout
-========================= */
 
 .bookingItem {
   display: grid;
@@ -368,10 +383,6 @@
   border-color: rgba(80, 72, 229, 0.2);
 }
 
-/* =========================
-   Dates Block
-========================= */
-
 .bookingDates {
   grid-column: 1;
   grid-row: 1;
@@ -386,10 +397,6 @@
 .bookingDates span {
   line-height: 1.4;
 }
-
-/* =========================
-   Info Block (phone + notes)
-========================= */
 
 .bookingInfo {
   grid-column: 1;
@@ -410,10 +417,6 @@
 .infoRow svg {
   flex-shrink: 0;
 }
-
-/* =========================
-   Edit Form
-========================= */
 
 .editForm {
   grid-column: 1 / -1;
@@ -466,10 +469,6 @@
   margin-top: 4px;
 }
 
-/* =========================
-   Actions Block (buttons)
-========================= */
-
 .bookingActions {
   grid-column: 2;
   grid-row: 1 / -1;
@@ -479,10 +478,6 @@
   align-items: flex-end;
   justify-content: center;
 }
-
-/* =========================
-   Buttons
-========================= */
 
 .saveButton,
 .cancelEditButton,
@@ -548,9 +543,6 @@
   transform: translateY(-1px);
 }
 
-/* =========================
-   Mobile
-========================= */
 @media (max-width: 768px) {
   .cardContent {
     padding: 12px 16px;
@@ -561,7 +553,7 @@
   }
 
   .container :global(.rdp-table) {
-    border-spacing: 3px; /* меньше зазор между днями */
+    border-spacing: 3px;
   }
 
   .container :global(.rdp-day) {
@@ -601,20 +593,14 @@
     grid-row: 2;
   }
 
-  /* .inputGroup {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
-  } */
-
   .inputGroup svg {
-    display: none; /* убираем иконки на мобильных, экономим место */
+    display: none;
   }
 
   .editInput {
     width: 100%;
     padding: 12px 14px;
-    font-size: 16px; /* 16px чтобы iOS не зумил input при фокусе */
+    font-size: 16px;
     border-radius: 12px;
   }
 
@@ -683,7 +669,7 @@
 
 @media (max-width: 380px) {
   .container :global(.rdp-table) {
-    border-spacing: 2px; /* сильно уменьшаем расстояние */
+    border-spacing: 2px;
   }
 
   .container :global(.rdp-day),
@@ -716,7 +702,7 @@
 
   .editInput {
     padding: 10px 12px;
-    font-size: 16px; /* обязательно 16px для iOS */
+    font-size: 16px;
   }
 
   .editActions {

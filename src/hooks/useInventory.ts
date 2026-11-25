@@ -1,4 +1,4 @@
-import { useAuth } from "@/providers/AuthProvider";
+import { useSession } from "next-auth/react";
 import { loadInventory } from "@/services/inventoryService";
 import { InventoryUI } from "@/types";
 import { useMemo } from "react";
@@ -22,7 +22,9 @@ const fetcher = async (): Promise<InventoryUI[]> => {
 };
 
 export const useInventory = () => {
-  const { user } = useAuth();
+  const { data: session } = useSession();
+
+  const user = session?.user;
   const userId = user?.id;
 
   const { data, error, isLoading, mutate } = useSWR(

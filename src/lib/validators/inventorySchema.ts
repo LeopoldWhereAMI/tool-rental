@@ -45,9 +45,10 @@ export const inventoryCreateSchema = z.object({
     .max(1000, "Примечание не должно превышать 1000 символов")
     .optional()
     .nullable(),
+
+  image_url: z.string().nullable().optional(),
 });
 
-// Схема для полной записи из Supabase
 export const inventoryRecordSchema = inventoryCreateSchema.extend({
   id: z.string(),
   created_at: z.string(), // ISO string

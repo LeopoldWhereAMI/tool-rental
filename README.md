@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RentApp — Tool Rental Management System
 
-## Getting Started
+A full-stack web application for managing a tool rental business. The application provides a centralized workspace for managing clients, inventory, rental orders, bookings, payments, and financial records.
 
-First, run the development server:
+## Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+RentApp was developed to manage day-to-day operations of a real tool rental business.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application combines client management, inventory tracking, rental operations, and financial accounting in a single system.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Client management** — manage client profiles and customer information.
+- **Inventory management** — maintain equipment catalog and inventory records.
+- **Rental orders** — create and manage rental orders.
+- **Bookings** — handle equipment reservations.
+- **Financial management** — track payments, additional charges, discounts, and outstanding balances.
+- **Documents** — manage rental-related documentation.
+- **Image uploads** — upload and display equipment images.
 
-## Learn More
+## Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+### Frontend
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Next.js
+- React
+- TypeScript
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Backend
 
-## Deploy on Vercel
+- Next.js server-side functionality
+- NextAuth.js
+- Prisma ORM
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Database
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- PostgreSQL
+
+### Infrastructure
+
+- Docker (local development database)
+- Linux VPS
+- PM2
+- Nginx
+- SSH / SCP
+
+## Technical Implementation
+
+- Designed and maintained a relational database schema using Prisma.
+- Implemented server-side logic and database operations.
+- Migrated the database from Supabase to self-hosted PostgreSQL.
+- Configured a local PostgreSQL environment using Docker.
+- Implemented file uploads and inventory image handling.
+- Configured production deployment using Next.js standalone output.
+- Created custom PowerShell and Bash deployment scripts.
+- Implemented atomic deployment with health checks and automatic rollback.
+- Configured production process management using PM2.
+
+## Deployment
+
+The application is deployed to a Linux VPS.
+
+Production deployment is automated using custom PowerShell and Bash scripts. The process includes building the application, preparing deployment files, transferring the build via SSH, restarting the application, checking availability, and rolling back if deployment fails.
+
+Detailed deployment instructions are available in [DEPLOY.md](./DEPLOY.md).
+
+## Project
+
+Developed independently as a full-stack application for a real tool rental business.

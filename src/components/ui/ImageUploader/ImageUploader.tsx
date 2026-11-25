@@ -1,21 +1,23 @@
 "use client";
 
 import {
-  deleteImageByUrl,
+  deleteInventoryImage,
   uploadInventoryImage,
 } from "@/services/storageService";
 import { ImagePlus, Loader2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import styles from "./ImageUploader.module.css";
 import Image from "next/image";
+import styles from "./ImageUploader.module.css";
 
 type ImageUploaderProps = {
+  inventoryId: string;
   currentImageUrl?: string | null;
   onUploadSuccess: (url: string) => Promise<void>;
 };
 
 export default function ImageUploader({
+  inventoryId,
   onUploadSuccess,
   currentImageUrl,
 }: ImageUploaderProps) {
@@ -62,12 +64,16 @@ export default function ImageUploader({
   const handleRemove = async (e: React.MouseEvent) => {
     e.preventDefault();
 
+    if (!inventoryId) {
+      throw new Error("Нет ID инструмента");
+    }
+
     if (preview) {
       try {
         setUploading(true);
-        await deleteImageByUrl(preview);
+        await deleteInventoryImage(inventoryId);
         setPreview(null);
-        await onUploadSuccess("");
+
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
@@ -94,7 +100,7 @@ export default function ImageUploader({
             fill
             sizes="(max-width: 768px) 100vw, 300px"
             onLoad={() => setIsImageLoading(false)}
-            unoptimized
+            // unoptimized
           />
           {uploading && (
             <div className={styles.overlayLoader}>

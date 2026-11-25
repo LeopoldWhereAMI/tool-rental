@@ -1,0 +1,140 @@
+"use client";
+
+import styles from "./InventoryTable.module.css";
+import { validateCategory, validateStatus } from "@/helpers";
+import { EllipsisVertical, Eye, Image as ImageIcon } from "lucide-react";
+import Image from "next/image";
+import { InventoryUI } from "@/types";
+import ActionsMenu from "@/components/ui/ActionsMenu/ActionsMenu";
+import Link from "next/link";
+import MaintenanceProgress from "@/components/MaintenanceProgress/MaintenanceProgress";
+
+type InventoryCardProps = {
+  item: InventoryUI;
+  openMenuId: string | null;
+  anchor: { top: number; left: number } | null;
+  toggleMenu: (e: React.MouseEvent, id: string) => void;
+  closeMenu: () => void;
+  setDeleteItemId: (id: string) => void;
+};
+
+const getStatusClass = (status: string) => {
+  switch (status) {
+    case "available":
+      return styles.statusAvailable;
+    case "rented":
+      return styles.statusRented;
+    case "maintenance":
+      return styles.statusMaintenance;
+    default:
+      return styles.statusDefault;
+  }
+};
+
+export default function InventoryCard({
+  item,
+  openMenuId,
+  anchor,
+  toggleMenu,
+  closeMenu,
+  setDeleteItemId,
+}: InventoryCardProps) {
+  return (
+    <div className={styles.card}>
+      <div className={styles.cardHeader}>
+        <div className={styles.cardImageThumbnail}>
+          {item.image_url ? (
+            <Image
+              src={item.image_url}
+              alt={item.name}
+              fill
+              // unoptimized
+              style={{ objectFit: "cover" }}
+              className={styles.cardImageThumb}
+            />
+          ) : (
+            <div className={styles.cardImageThumbPlaceholder}>
+              <ImageIcon size={18} color="#64748b" />
+            </div>
+          )}
+        </div>
+
+        <div className={styles.cardArticleBlock}>
+          <span className={styles.cardArticleLabel}>Артикул</span>
+          <p className={styles.cardProductId}>
+            {item.article || item.serial_number}
+          </p>
+        </div>
+
+        <div className={styles.cardActions}>
+          <Link href={`/inventory/${item.id}`} className={styles.cardViewBtn}>
+            <Eye size={18} />
+          </Link>
+          <button
+            data-menu-trigger={item.id}
+            className={styles.cardMenuBtn}
+            onClick={(e) => toggleMenu(e, item.id)}
+          >
+            <EllipsisVertical size={18} />
+          </button>
+          {openMenuId === item.id && (
+            <ActionsMenu
+              id={item.id}
+              anchor={anchor}
+              currentStatus={item.status}
+              onClose={closeMenu}
+              onDeleteClick={() => {
+                setDeleteItemId(item.id);
+                closeMenu();
+              }}
+              type="inventory"
+            />
+          )}
+        </div>
+      </div>
+
+      <h3 className={styles.cardProductName}>{item.name}</h3>
+
+      <div className={styles.cardSection}>
+        <div className={styles.cardBadges}>
+          <span className={styles.cardCategoryBadge}>
+            {item.category && validateCategory(item.category)}
+          </span>
+          {item.status && (
+            <span
+              className={`${styles.cardStatusBadge} ${getStatusClass(
+                item.status,
+              )}`}
+            >
+              <span className={styles.statusDot}></span>
+              {validateStatus(item.status)}
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className={styles.cardSectionPrice}>
+        <span className={styles.cardSectionLabel}>Цена</span>
+        <div className={styles.cardPrice}>
+          {item.daily_price} ₽
+          <span className={styles.cardPricePeriod}> / сут</span>
+        </div>
+      </div>
+
+      <div className={styles.cardSection}>
+        <span className={styles.cardSectionLabel}>
+          Техническое обслуживание
+        </span>
+        <div
+          className={styles.cardMaintenanceWrapper}
+          style={{ marginTop: "8px" }}
+        >
+          <MaintenanceProgress
+            current={item.work_days_count || 0}
+            interval={item.maintenance_interval_days || 30}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}

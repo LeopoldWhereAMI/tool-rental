@@ -5,19 +5,39 @@ type PaginationControlsProps = {
   totalPages: number;
   currentPage: number;
   clickHandler: (page: number) => void;
+  className?: string;
+  compact?: boolean;
 };
 
 export default function PaginationControls({
   totalPages,
   clickHandler,
   currentPage,
+  className,
+  compact = false,
 }: PaginationControlsProps) {
   if (totalPages <= 1) return null;
 
   const getPages = () => {
+    if (compact) {
+      if (totalPages <= 4) {
+        return Array.from({ length: totalPages }, (_, i) => i + 1);
+      }
+
+      if (currentPage <= 3) {
+        return [1, 2, 3, "...", totalPages];
+      }
+
+      if (currentPage >= totalPages - 2) {
+        return [1, "...", totalPages - 2, totalPages - 1, totalPages];
+      }
+
+      return [1, "...", currentPage, "...", totalPages];
+    }
+
     const pages: (number | string)[] = [];
 
-    const maxVisible = 3; // сколько кнопок показывать
+    const maxVisible = 3;
     let start = Math.max(1, currentPage - 2);
     const end = Math.min(totalPages, start + maxVisible - 1);
 
@@ -39,13 +59,18 @@ export default function PaginationControls({
   };
 
   return (
-    <div className={styles.pagination}>
+    <div
+      className={`${styles.pagination} ${
+        compact ? styles.compact : ""
+      } ${className ?? ""}`}
+    >
       <div className={styles.pageInfo}>
         Стр <strong>{currentPage}</strong> из {totalPages}
       </div>
 
       <div className={styles.buttonGroup}>
         <button
+          type="button"
           className={styles.pageBtn}
           onClick={() => clickHandler(currentPage - 1)}
           disabled={currentPage === 1}
@@ -60,6 +85,7 @@ export default function PaginationControls({
             </span>
           ) : (
             <button
+              type="button"
               key={index}
               onClick={() => clickHandler(Number(page))}
               className={`${styles.pageBtn} ${
@@ -72,6 +98,7 @@ export default function PaginationControls({
         )}
 
         <button
+          type="button"
           className={styles.pageBtn}
           onClick={() => clickHandler(currentPage + 1)}
           disabled={currentPage === totalPages}

@@ -1,0 +1,915 @@
+.loading {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.paginationLoading {
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.cardsContainer {
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+  padding-bottom: 10px;
+  display: grid;
+}
+
+.left {
+  max-width: 448px;
+  width: 100%;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.pageContainer {
+  min-height: 100vh;
+}
+
+.header {
+  min-height: 125px;
+  padding: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 12px;
+  max-width: 42rem;
+}
+
+.addButton {
+  background-color: var(--primary);
+  color: white;
+  height: 42px;
+  padding: 0 20px;
+  min-width: 165px;
+  border-radius: 8px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  /* padding: 32px 32px 0 32px; */
+}
+
+.statCard {
+  min-height: 160px;
+  height: 100%;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--kpi-shadow);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.statLabel {
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.statValue {
+  color: var(--text-secondary);
+  font-size: 30px;
+  font-weight: 700;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.trendUp {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #34d399;
+  font-weight: 600;
+}
+
+.trendWrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.trendPositive {
+  color: #10b981;
+}
+
+.trendNegative {
+  color: #f59e0b;
+}
+
+.trendWrapper span {
+  opacity: 0.9;
+}
+
+.tableCard {
+  margin: 32px 0;
+  min-height: 600px;
+}
+
+.tableArea {
+  min-height: 600px;
+}
+
+.tableControls {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 10px;
+  padding: 16px 16px 16px 32px;
+  display: flex;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: var(--surface);
+  box-shadow:
+    0 0 1px #0000001a,
+    0 0 20px #0000000d,
+    0 0 5px #0000000d;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  table-layout: auto;
+}
+
+.table th {
+  background-color: var(--table-thead);
+  padding: 16px 24px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+}
+
+.row {
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.2s;
+}
+
+.row:hover {
+  background-color: var(--nav-hover-bg);
+}
+
+.row td {
+  padding: 16px 24px;
+  white-space: nowrap;
+}
+
+.row td:last-child {
+  padding-right: 24px;
+}
+
+.nameCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatarWrapper {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  border: 2px solid var(--border);
+  overflow: hidden;
+}
+
+.nameHeaderWrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.itemName {
+  display: block;
+  color: var(--text-main);
+  font-weight: 400;
+  font-size: 14px;
+  text-decoration: none;
+  text-transform: capitalize;
+}
+
+.subText {
+  color: var(--text-muted);
+  opacity: 0.8;
+  font-size: 12px;
+}
+
+.contactPhone {
+  color: var(--secondary);
+  text-decoration: none;
+  font-size: 14px;
+  cursor: default;
+}
+
+.ordersCell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.totalOrders {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.activeOrders {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.hasActive {
+  color: var(--secondary);
+}
+
+.noActive {
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+.statusBadge,
+.loyaltyBadge {
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  border: 1px solid transparent;
+}
+
+.statusActive {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.statusIdle {
+  background-color: rgba(148, 163, 184, 0.1);
+  color: var(--text-muted);
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+.statusVip {
+  background-color: rgba(168, 85, 247, 0.1);
+  color: #c084fc;
+  border-color: rgba(168, 85, 247, 0.2);
+}
+
+.statusRegular {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #60a5fa;
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.statusNew {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.statusBlacklistedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  background-color: rgba(234, 88, 12, 0.15);
+  color: #f97316;
+  border: 1px solid rgba(249, 115, 22, 0.4);
+}
+
+.statusBlacklistedBadge svg {
+  width: 14px;
+  height: 14px;
+  color: #f97316;
+  flex-shrink: 0;
+}
+
+.actionsCell {
+  text-align: right;
+  width: 100px;
+  min-width: 100px;
+}
+
+.actionsWrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+}
+
+.viewButton,
+.actionButton {
+  cursor: pointer;
+  width: 38px;
+  height: 38px;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-radius: 8px;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+}
+
+.viewButton:hover,
+.actionButton:hover {
+  color: var(--text-main);
+  background-color: var(--border);
+}
+
+.viewButton svg,
+.actionButton svg {
+  display: block;
+}
+
+.rowBlacklisted {
+  opacity: 0.6;
+  background-color: rgba(245, 158, 11, 0.03);
+  transition:
+    opacity 0.3s ease,
+    background-color 0.2s ease;
+}
+
+.rowBlacklisted:hover {
+  opacity: 1;
+  background-color: rgba(245, 158, 11, 0.05);
+}
+
+.avatarBlocked {
+  border-color: rgba(43, 91, 238, 0.08) !important;
+  filter: grayscale(0.7) brightness(0.85);
+}
+
+.blacklistAlert {
+  color: #f97316;
+  flex-shrink: 0;
+}
+
+.blockedName {
+  color: #f1f5f9;
+}
+
+.card {
+  /* background: var(--surface); */
+  background-color: var(--card-color);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.3s ease;
+}
+
+.cardBlacklisted {
+  background: rgba(239, 68, 68, 0.05);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--table-thead);
+  margin: -16px -16px 0 -16px;
+  padding: 12px 16px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cardBlacklisted .cardHeader {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-bottom-color: rgba(239, 68, 68, 0.2);
+}
+
+.cardBlacklisted .cardHeader .cardArticleLabel,
+.cardBlacklisted .cardHeader .cardProductId {
+  color: #ef4444;
+  opacity: 0.8;
+}
+
+.cardAvatarBlock {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.cardAvatarWrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.cardAvatarBlocked {
+  opacity: 0.5;
+}
+
+.cardAvatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardNameBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.cardNameHeaderWrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cardBlacklistAlert {
+  color: #ef4444;
+  flex-shrink: 0;
+}
+
+.cardItemName {
+  color: var(--text-main);
+  font-size: 13px;
+  font-weight: 400;
+  text-decoration: none;
+  line-height: 1.3;
+  word-break: break-word;
+  transition: color 0.3s;
+  text-transform: capitalize;
+}
+
+.cardItemName:active {
+  color: #3b82f6;
+}
+
+.cardBlockedName {
+  color: #64748b;
+  text-decoration: line-through;
+}
+
+.cardSubText {
+  color: var(--text-secondary);
+  font-size: 11px;
+  margin: 0;
+}
+
+.cardActions {
+  display: flex;
+  gap: 8px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.cardViewBtn,
+.cardMenuBtn {
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  background: none;
+  border-radius: 6px;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  transition: all 0.3s;
+  display: flex;
+}
+
+.cardViewBtn:active,
+.cardMenuBtn:active {
+  color: #ffffff;
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.cardSection {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 8px 0;
+}
+
+.cardSection:not(:last-child) {
+  border-bottom: 1px solid var(--border);
+}
+
+.cardSectionLabel {
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cardContactPhone {
+  color: var(--secondary);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  font-family: var(--font-space-grotesk);
+  transition: color 0.3s;
+}
+
+.cardContactPhone:active {
+  color: #60a5fa;
+}
+
+.cardOrdersInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cardTotalOrders {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.cardActiveOrders {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.cardHasActive {
+  color: #10b981;
+}
+
+.cardNoActive {
+  color: #64748b;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+  margin-top: auto;
+}
+
+.cardStatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cardStatusActive {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.cardStatusIdle {
+  background: rgba(148, 163, 184, 0.1);
+  color: var(--text-muted);
+}
+
+.cardStatusBlacklistedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  white-space: nowrap;
+}
+
+.cardLoyaltyBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cardLoyaltyBadge.bronze {
+  background: rgba(180, 83, 9, 0.15);
+  color: #b45309;
+}
+
+.cardLoyaltyBadge.silver {
+  background: rgba(100, 116, 139, 0.15);
+  color: #94a3b8;
+}
+
+.cardLoyaltyBadge.gold {
+  background: rgba(217, 119, 6, 0.15);
+  color: #d97706;
+}
+
+.cardLoyaltyBadge.platinum {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fadeIn {
+  animation: pageFadeIn 0.35s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fadeIn {
+    animation: none;
+  }
+}
+
+@media (hover: hover) {
+  .addButton:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 6px 20px rgba(43, 91, 238, 0.5);
+    transform: translateY(-2px);
+  }
+
+  .addButton:active {
+    transform: translateY(0);
+  }
+
+  .contactPhone:hover {
+    color: #3b82f6;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .statCard:hover {
+    box-shadow: var(--kpi-shadow-hover);
+    transform: translateY(-3px);
+  }
+
+  .card:hover {
+    /* background: var(--card-hover-bg); */
+    /* border-color: var(--primary); */
+    box-shadow: 0 12px 24px var(--card-hover-shadow);
+    transform: translateY(-4px);
+  }
+
+  .card:hover .cardAvatarWrapper {
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+  }
+
+  /* .card:hover .cardItemName {
+    color: #60a5fa;
+  } */
+
+  .card:hover .cardContactPhone {
+    color: #60a5fa;
+  }
+
+  .cardContactPhone:hover {
+    text-decoration: underline !important;
+  }
+
+  .card:hover .cardStatusBadge,
+  .card:hover .cardLoyaltyBadge,
+  .card:hover .cardStatusBlacklistedBadge {
+    filter: brightness(1.15);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .card:hover .cardHasActive {
+    color: #34d399;
+    text-shadow: 0 0 8px rgba(52, 211, 153, 0.3);
+  }
+
+  .cardBlacklisted:hover {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: #ef4444;
+  }
+
+  .cardBlacklisted:hover .cardBlacklistAlert {
+    transform: scale(1.2);
+    transition: transform 0.3s ease;
+  }
+
+  .cardViewBtn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background-color: color-mix(in srgb, var(--primary), transparent 92%);
+  }
+  .cardMenuBtn:hover {
+    color: var(--text-main);
+    transform: translateY(-1px);
+  }
+}
+
+@media (max-width: 1300px) {
+  .tableControls {
+    margin-bottom: 16px;
+  }
+
+  .cardsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    padding: 0;
+  }
+
+  .cardsEmpty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 20px;
+    color: #64748b;
+    font-size: 14px;
+  }
+
+  .cardsLoading {
+    grid-column: 1 / -1;
+  }
+
+  .contactPhone {
+    color: #3b82f6;
+    text-decoration: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .tableControls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 780px) {
+  .header {
+    min-height: 0;
+    padding: 16px;
+    gap: 12px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .btnWrapper {
+    width: 100%;
+  }
+
+  .addButton {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .btnTextHidden {
+    display: none;
+  }
+
+  .cardsContainer {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 671px) {
+  .statsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 20px;
+    padding: 16px 16px 0;
+  }
+
+  .statCard {
+    padding: 16px;
+  }
+
+  .statValue {
+    font-size: 22px;
+  }
+
+  .tableCard {
+    margin: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .subtitle {
+    display: none;
+  }
+
+  .cardsContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .cardItemName {
+    font-size: 12px;
+  }
+
+  .cardContactPhone {
+    font-size: 12px;
+  }
+
+  .cardTotalOrders {
+    font-size: 12px;
+  }
+
+  .cardStatusBadge,
+  .cardStatusBlacklistedBadge,
+  .cardLoyaltyBadge {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+}
+
+@media (max-width: 360px) {
+}

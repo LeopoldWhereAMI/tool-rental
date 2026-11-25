@@ -1,0 +1,103 @@
+"use client";
+
+import { InventoryCreateInput } from "@/lib/validators/inventorySchema";
+import { addInventory } from "@/services/inventoryService";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import AddInventoryForm from "@/components/Form/InventoryForm/AddInventoryForm";
+import PageContainer from "@/components/PageContainer/PageContainer";
+import Breadcrumbs from "@/components/ui/Breadcrumbs/Breadcrumbs";
+import { useInventory } from "@/hooks/useInventory";
+import { useState } from "react";
+import styles from "./page.module.css";
+
+export default function AddInventoryPage() {
+  const { items: existingItems, refresh } = useInventory();
+  const [imageUrl] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+
+  const breadcrumbItems = [
+    { label: "Инвентарь", href: "/inventory" },
+    { label: "Добавление инструмента" },
+  ];
+
+  const onSubmit = async (data: InventoryCreateInput) => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
+    try {
+      const result = await addInventory({
+        ...data,
+        image_url: imageUrl,
+      });
+
+      if (result) {
+        toast.success("Инструмент добавлен!");
+        refresh();
+        router.push("/inventory");
+      }
+    } catch (err: unknown) {
+      const error = err as { code?: string };
+
+      if (error.code === "P2002") {
+        toast.error(`Артикул "${data.article}" уже занят!`);
+      } else {
+        toast.error("Ошибка при сохранении");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <PageContainer>
+      <div className={styles.fadeIn}>
+        <div className={styles.header}>
+          <Breadcrumbs items={breadcrumbItems} />
+          <div className={styles.headerWrapper}>
+            <div className={styles.titleGroup}>
+              <h1 className={styles.title}>Добавление инструмента</h1>
+              <p className={styles.subtitle}>
+                Заполните необходимые данные в форме ниже
+              </p>
+            </div>
+            <div className={styles.headerActions}>
+              <button
+                type="button"
+                onClick={() => router.back()}
+                className={styles.cancelBtn}
+              >
+                Отмена
+              </button>
+              <button
+                type="submit"
+                form="add-inventory-form"
+                className={styles.submitBtn}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Добавление..." : "Добавить инструмент"}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <AddInventoryForm
+          onSubmit={onSubmit}
+          existingItems={existingItems}
+          defaultValues={{
+            name: "",
+            article: "",
+            category: "",
+            daily_price: 500,
+            purchase_price: null,
+            purchase_date: null,
+            notes: null,
+            serial_number: null,
+            image_url: null,
+          }}
+        />
+      </div>
+    </PageContainer>
+  );
+}
