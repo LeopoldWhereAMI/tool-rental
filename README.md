@@ -8,6 +8,14 @@ RentApp was developed to manage day-to-day operations of a real tool rental busi
 
 The application combines client management, inventory tracking, rental operations, and financial accounting in a single system.
 
+## Screenshots
+
+![Main](./screenshots/main.png)
+![Orders](./screenshots/orders.png)
+![Inventory](./screenshots/inventory.png)
+![Clients](./screenshots/clients.png)
+![Finances](./screenshots/finances.png)
+
 ## Features
 
 - **Client management** — manage client profiles and customer information.
