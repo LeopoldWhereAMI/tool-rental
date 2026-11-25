@@ -15,7 +15,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
 
       async authorize(credentials) {
-        console.log("credentials:", credentials);
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
@@ -25,7 +24,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             email: credentials.email as string,
           },
         });
-        console.log("user:", user);
+
         if (!user) {
           return null;
         }
@@ -34,7 +33,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           credentials.password as string,
           user.password,
         );
-        console.log("passwordValid:", passwordValid);
+
         if (!passwordValid) {
           return null;
         }
