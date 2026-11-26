@@ -54,17 +54,6 @@ export default function Calendar({ inventoryId }: Props) {
     }
   }
 
-  // const disabledDays = useMemo(() => {
-  //   return bookings
-  //     .filter((booking) => booking.status !== "cancelled")
-  //     .flatMap((booking) =>
-  //       eachDayOfInterval({
-  //         start: parseISODate(booking.start_date), // строка → Date
-  //         end: parseISODate(booking.end_date),
-  //       }),
-  //     );
-  // }, [bookings]);
-
   const bookedDays = useMemo(() => {
     return bookings
       .filter((booking) => booking.status !== "cancelled")

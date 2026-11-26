@@ -20,7 +20,6 @@ export function useInventoryAndClients() {
     isLoading: isClientsLoading,
   } = useSWR<Client[]>("clients", loadClients);
 
-  // 🔔 Тосты ошибок
   useEffect(() => {
     if (inventoryError) {
       console.error("Ошибка загрузки инвентаря:", inventoryError);
@@ -32,14 +31,11 @@ export function useInventoryAndClients() {
     }
   }, [inventoryError, clientsError]);
 
-  // ✅ Только доступный инвентарь
   const inventory = useMemo(
     () => allInventory.filter((i) => i.status === "available"),
     [allInventory],
   );
 
-  // 🗺️ Object для быстрых lookup'ов по id (не Map, а обычный объект)
-  // ✅ ИСПРАВЛЕНО: использован объект вместо Map для совместимости с InventoryMap
   const inventoryMap: InventoryMap = useMemo(() => {
     const map: InventoryMap = {};
     inventory.forEach((item) => {

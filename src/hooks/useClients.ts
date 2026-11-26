@@ -8,7 +8,6 @@ import { ClientWithOrders, CreateClientInput } from "@/types";
 import { toast } from "sonner";
 
 export function useClients() {
-  // Ключ "clients" теперь связан с mutate("clients") в useBlacklist
   const { data, error, isLoading, mutate } = useSWR<ClientWithOrders[]>(
     "clients",
     loadClients,
@@ -35,7 +34,7 @@ export function useClients() {
     try {
       await deleteClientService(id);
       toast.success("Клиент удалён");
-      mutate(); // Перезапрашиваем данные
+      mutate();
       return true;
     } catch (err) {
       const errorMessage =

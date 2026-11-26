@@ -54,7 +54,7 @@ export async function POST(request: Request) {
     ]);
 
     const resetUrl = `${process.env.APP_URL}/auth/reset-password?token=${token}`;
-    console.log("RESET URL:", resetUrl);
+
     await sendEmail({
       to: user.email,
       subject: "Восстановление пароля",

@@ -7,7 +7,6 @@ import { OrderUI, ClientWithOrders } from "@/types";
 export function useClientDetails(id: string) {
   const swrKey = id ? `client-${id}` : null;
 
-  // Добавляем тип <ClientWithOrders> для SWR
   const {
     data: client,
     error,
@@ -19,7 +18,6 @@ export function useClientDetails(id: string) {
     const orders: OrderUI[] = client?.orders || [];
     const totalOrders = orders.length;
 
-    // Типизируем sum и o
     const totalSpent = orders.reduce(
       (sum: number, o: OrderUI) => sum + (o.total_price || 0),
       0,
@@ -43,27 +41,25 @@ export function useClientDetails(id: string) {
   const sortedOrders = useMemo(() => {
     if (!client?.orders) return { activeOrders: [], historyOrders: [] };
 
-    return (
-      client.orders
-        .slice()
-        // Типизируем a и b
-        .sort(
-          (a: OrderUI, b: OrderUI) =>
-            Number(b.order_number) - Number(a.order_number),
-        )
-        // Типизируем acc и order
-        .reduce(
-          (acc, order: OrderUI) => {
-            const isActive = ["rented", "active", "pending"].includes(
-              order.status,
-            );
-            if (isActive) acc.activeOrders.push(order);
-            else acc.historyOrders.push(order);
-            return acc;
-          },
-          { activeOrders: [] as OrderUI[], historyOrders: [] as OrderUI[] },
-        )
-    );
+    return client.orders
+      .slice()
+
+      .sort(
+        (a: OrderUI, b: OrderUI) =>
+          Number(b.order_number) - Number(a.order_number),
+      )
+
+      .reduce(
+        (acc, order: OrderUI) => {
+          const isActive = ["rented", "active", "pending"].includes(
+            order.status,
+          );
+          if (isActive) acc.activeOrders.push(order);
+          else acc.historyOrders.push(order);
+          return acc;
+        },
+        { activeOrders: [] as OrderUI[], historyOrders: [] as OrderUI[] },
+      );
   }, [client]);
 
   return {
