@@ -18,7 +18,6 @@ export const createOrder = async (orderData: CreateOrderParams) => {
   return result.data;
 };
 
-// ✅ ИСПРАВЛЕННАЯ функция getOrderById
 export const getOrderById = async (id: string): Promise<OrderDetailsUI> => {
   const response = await fetch(`/api/orders/${id}`);
 
